@@ -1,0 +1,32 @@
+,ru,en
+KEY_WELCOME,Добро пожалоать,Welcome
+KEY_NEW_GAME,Новая игра,New game
+KEY_CONTINUE,Продолжить,Continue
+KEY_RULES,База знаний,Rules
+KEY_SETTINGS,Настройки,Settings
+KEY_EXIT,Взять перерыв,Take a break
+KEY_EXPANSION,Расширение,Expansion
+KEY_LANGUAGE,Язык,Language
+KEY_SOUND,Звук,Sound
+KEY_RESET SETTINGS,Сбросить настройки,Reset settings
+KEY_RUSSIAN,Русский,Russian
+KEY_ENGLISH,Английский,English
+KEY_BACK,Назад,Back
+KEY_FORWARD,Вперёд,Forward
+KEY_NAME,Туррель - ,Turel - 
+KEY_LVL,Уровень ,Level  
+KEY_DAMAGE,Урон: ,Damage: 
+KEY_RELOAD,Перезарядка: ,Reload: 
+KEY_RANGE,Радиус: ,Range: 
+KEY_INFLICTED,Нанесено: ,Inflicted: 
+KEY_LVL_UP,Улучшить,Lvl Up
+KEY_LVL_MAX,Макс уровень,Lvl Max
+KEY_CLOSE,Закрыть,Close
+KEY_STRATEGY,Стратегия,Strategy
+KEY_FIRST,Первый,First
+KEY_LAST,Последний,Last
+KEY_RANDOM,Случайная,Random
+KEY_INTENSIVITY,Интенсивность,Intensivity
+KEY_DURATION,Длительность,Duration,
+KEY_DISTANCE,Дистанция,Distance
+KEY_CURRENT_WAVE,Текущая волна:,Current wave:

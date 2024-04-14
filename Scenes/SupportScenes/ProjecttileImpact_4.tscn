@@ -1,0 +1,60 @@
+[gd_scene load_steps=9 format=3 uid="uid://cgp1v0w7u10fc"]
+
+[ext_resource type="Texture2D" uid="uid://bc8fylukj7itp" path="res://Assets/Props/range_overlay_1.png" id="1_m7gwt"]
+[ext_resource type="Texture2D" uid="uid://daj4jrwsj7qet" path="res://Assets/Props/range_overlay_2.png" id="2_em0mm"]
+[ext_resource type="Texture2D" uid="uid://cfxsqqfqklfng" path="res://Assets/Props/range_overlay_3.png" id="3_qifaa"]
+[ext_resource type="Texture2D" uid="uid://5aqncqoy4f7b" path="res://Assets/Props/range_overlay_4.png" id="4_sn3fu"]
+[ext_resource type="Texture2D" uid="uid://lau88wx3wq7w" path="res://Assets/Props/range_overlay_5.png" id="5_1dbp2"]
+[ext_resource type="Script" path="res://Scenes/SupportScenes/ProjecttileImpact_3.gd" id="6_a025n"]
+[ext_resource type="Texture2D" uid="uid://d25qtrghpbxut" path="res://Assets/Props/range_overlay_6.png" id="6_ujgsr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_nk1ym"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_m7gwt")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_em0mm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qifaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_sn3fu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1dbp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_ujgsr")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_1dbp2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_sn3fu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_qifaa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_em0mm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("1_m7gwt")
+}],
+"loop": false,
+"name": &"Impact",
+"speed": 10.0
+}]
+
+[node name="ProjecttileImpact" type="AnimatedSprite2D"]
+position = Vector2(-2, 0)
+scale = Vector2(0.2, 0.2)
+sprite_frames = SubResource("SpriteFrames_nk1ym")
+animation = &"Impact"
+speed_scale = 4.0
+script = ExtResource("6_a025n")
+
+[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

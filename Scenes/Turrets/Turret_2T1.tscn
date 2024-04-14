@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=3 uid="uid://6w8rl4uenxud"]
+
+[ext_resource type="Script" path="res://Scenes/Turrets/Turret_2T1.gd" id="1_11jue"]
+[ext_resource type="Texture2D" uid="uid://dlmwqxmkyr3q4" path="res://Assets/Props/towerDefense_tile181.png" id="2_666p5"]
+[ext_resource type="Texture2D" uid="uid://deiqtcsdrqv6s" path="res://Assets/Props/towerDefense_tile252.png" id="3_s2j6i"]
+[ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_i0d1p"]
+[ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="5_id7a5"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ygois"]
+radius = 175.0
+
+[sub_resource type="Animation" id="Animation_qljwc"]
+resource_name = "Fire"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
+_data = {
+"Fire": SubResource("Animation_qljwc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_busvp"]
+
+[node name="Turret_2T1" type="Node2D"]
+script = ExtResource("1_11jue")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("2_666p5")
+
+[node name="Turret" type="Sprite2D" parent="."]
+texture = ExtResource("3_s2j6i")
+
+[node name="Muzzle" type="Marker2D" parent="Turret"]
+visible = false
+position = Vector2(-12, 2)
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("4_i0d1p")
+offset = Vector2(-2, -65)
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_ygois")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_yclq1")
+}
+
+[node name="MenuButton" type="TouchScreenButton" parent="."]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_busvp")
+
+[node name="Menu" parent="." instance=ExtResource("5_id7a5")]
+visible = false
+z_index = 1
+
+[connection signal="body_entered" from="Range" to="." method="_oe_body_entered"]
+[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

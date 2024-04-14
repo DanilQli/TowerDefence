@@ -1,0 +1,137 @@
+[gd_scene load_steps=4 format=3 uid="uid://b4se4a745v858"]
+
+[ext_resource type="Script" path="res://Scenes/UI/Menu.gd" id="1_01eto"]
+[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="2_nd48n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8ixs5"]
+bg_color = Color(0, 0, 0, 0.784314)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.623529, 0.262745, 0.141176, 1)
+corner_radius_top_left = 20
+corner_radius_top_right = 20
+corner_radius_bottom_right = 20
+corner_radius_bottom_left = 20
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 543.0
+offset_top = 53.0
+offset_right = 543.0
+offset_bottom = 53.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_01eto")
+
+[node name="Map_1" parent="." instance=ExtResource("2_nd48n")]
+
+[node name="MarginContainer2" type="MarginContainer" parent="."]
+layout_mode = 0
+offset_top = 170.0
+offset_right = 500.0
+offset_bottom = 670.0
+theme_override_constants/margin_left = 120
+
+[node name="Panel" type="Panel" parent="MarginContainer2"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_8ixs5")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer2/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/Panel/MarginContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="TextureButton_1" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_NEW_GAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton_2" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_RULES"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton_3" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_SETTINGS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="TextureButton_4" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_EXIT"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1" to="." method="_on_texture_button_1_pressed"]
+[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3" to="." method="_on_texture_button_3_pressed"]
+[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_4" to="." method="_on_texture_button_4_pressed"]

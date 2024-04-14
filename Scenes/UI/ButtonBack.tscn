@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8xlg4d7ul6dd"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cixkv"]
+
+[node name="ButtonBack" type="Button"]
+custom_minimum_size = Vector2(300, 45)
+offset_right = 8.0
+offset_bottom = 8.0
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxTexture_cixkv")
+text = "KEY_BACK"

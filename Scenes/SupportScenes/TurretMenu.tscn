@@ -1,0 +1,335 @@
+[gd_scene load_steps=8 format=3 uid="uid://cs6cybobt3jr0"]
+
+[ext_resource type="Texture2D" uid="uid://bpx5ss7ytkvsg" path="res://Assets/Icons/damage.png" id="1_bkv8p"]
+[ext_resource type="Texture2D" uid="uid://b524h1pa3gby1" path="res://Assets/Icons/reload.png" id="2_f32am"]
+[ext_resource type="Script" path="res://Scenes/SupportScenes/TurretMenu.gd" id="2_j65fi"]
+[ext_resource type="Texture2D" uid="uid://wlvgtjcqr7ab" path="res://Assets/Icons/range.png" id="3_wo1gx"]
+[ext_resource type="Texture2D" uid="uid://c0fljhvsh4q0i" path="res://Assets/Icons/inflicted.png" id="4_ed2jo"]
+[ext_resource type="Texture2D" uid="uid://cx78trpbjc2yg" path="res://Assets/Icons/lvl_up.png" id="5_yimri"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="6_18ceo"]
+
+[node name="Menu" type="Control"]
+custom_minimum_size = Vector2(250, 250)
+layout_mode = 3
+anchors_preset = 0
+offset_left = 50.0
+offset_top = -200.0
+offset_right = 310.0
+offset_bottom = 65.0
+script = ExtResource("2_j65fi")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+custom_minimum_size = Vector2(260, 260)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.364706, 0.364706, 0.364706, 0.392157)
+
+[node name="V" type="VBoxContainer" parent="."]
+custom_minimum_size = Vector2(250, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 5.0
+offset_right = 5.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NameAndLvl" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Name" type="Label" parent="V/NameAndLvl"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_NAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Lvl" type="Label" parent="V/NameAndLvl"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_LVL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HDamage" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 2
+
+[node name="HText" type="HBoxContainer" parent="V/HDamage"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="V/HDamage/HText"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("1_bkv8p")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="V/HDamage/HText"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_DAMAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HValue" type="HBoxContainer" parent="V/HDamage"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Value" type="Label" parent="V/HDamage/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "10
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Up" type="Label" parent="V/HDamage/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
+text = "+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HReload" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 2
+
+[node name="HText" type="HBoxContainer" parent="V/HReload"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="V/HReload/HText"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("2_f32am")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="V/HReload/HText"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_RELOAD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HValue" type="HBoxContainer" parent="V/HReload"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Value" type="Label" parent="V/HReload/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "10
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Up" type="Label" parent="V/HReload/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
+text = "-
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HRange" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 2
+
+[node name="HText" type="HBoxContainer" parent="V/HRange"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="V/HRange/HText"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("3_wo1gx")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="V/HRange/HText"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_RANGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HValue" type="HBoxContainer" parent="V/HRange"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Value" type="Label" parent="V/HRange/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "10
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Up" type="Label" parent="V/HRange/HValue"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
+text = "+
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HInflicted" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(250, 30)
+layout_mode = 2
+
+[node name="HText" type="HBoxContainer" parent="V/HInflicted"]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="V/HInflicted/HText"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("4_ed2jo")
+expand_mode = 1
+
+[node name="Name" type="Label" parent="V/HInflicted/HText"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_INFLICTED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HValue" type="HBoxContainer" parent="V/HInflicted"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+
+[node name="Value" type="Label" parent="V/HInflicted/HValue"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "10
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HButton" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="Up" type="Button" parent="V/HButton"]
+custom_minimum_size = Vector2(125, 60)
+layout_mode = 2
+
+[node name="ColorRect" type="ColorRect" parent="V/HButton/Up"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="V/HButton/Up"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 47.0
+offset_top = 15.0
+offset_right = 77.0
+offset_bottom = 45.0
+texture = ExtResource("5_yimri")
+expand_mode = 1
+
+[node name="LabelBut" type="Label" parent="V/HButton/Up"]
+custom_minimum_size = Vector2(125, 15)
+layout_mode = 0
+offset_right = 125.0
+offset_bottom = 17.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+theme_override_constants/shadow_outline_size = 0
+theme_override_font_sizes/font_size = 10
+text = "KEY_LVL_UP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LabelValue" type="Label" parent="V/HButton/Up"]
+custom_minimum_size = Vector2(30, 15)
+layout_mode = 0
+offset_left = 42.0
+offset_top = 35.0
+offset_right = 82.0
+offset_bottom = 61.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Close" type="Button" parent="V/HButton"]
+custom_minimum_size = Vector2(125, 60)
+layout_mode = 2
+mouse_force_pass_scroll_events = false
+
+[node name="ColorRect" type="ColorRect" parent="V/HButton/Close"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 1, 0, 1)
+
+[node name="TextureRect" type="TextureRect" parent="V/HButton/Close"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 0
+offset_left = 47.0
+offset_top = 15.0
+offset_right = 77.0
+offset_bottom = 45.0
+texture = ExtResource("6_18ceo")
+expand_mode = 1
+
+[node name="LabelBut" type="Label" parent="V/HButton/Close"]
+custom_minimum_size = Vector2(125, 15)
+layout_mode = 0
+offset_right = 125.0
+offset_bottom = 17.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 10
+text = "KEY_CLOSE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HStrateg" type="HBoxContainer" parent="V"]
+custom_minimum_size = Vector2(260, 30)
+layout_mode = 2
+
+[node name="StrategName" type="Label" parent="V/HStrateg"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_STRATEGY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Strateg" type="Button" parent="V/HStrateg"]
+custom_minimum_size = Vector2(125, 0)
+layout_mode = 2

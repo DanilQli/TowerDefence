@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bti28kt5lqv1s"]
+
+[ext_resource type="Script" path="res://Scenes/Enemies/Enemy_6.gd" id="1_qsko3"]
+[ext_resource type="Texture2D" uid="uid://cd08hi6hfx16o" path="res://Assets/Props/towerDefense_tile270.png" id="2_k6noa"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="3_dv081"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6u6nd"]
+size = Vector2(45, 42)
+
+[node name="Enemy_6" type="PathFollow2D"]
+loop = false
+script = ExtResource("1_qsko3")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+position = Vector2(-0.5, 0)
+shape = SubResource("RectangleShape2D_6u6nd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_k6noa")
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = -24.0
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_dv081")
+texture_progress = ExtResource("3_dv081")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(0, 0.760784, 0.0117647, 1)
+
+[node name="Impact" type="Marker2D" parent="."]
+position = Vector2(-15, -15)

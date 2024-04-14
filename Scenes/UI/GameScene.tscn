@@ -1,0 +1,366 @@
+[gd_scene load_steps=14 format=3 uid="uid://fd6cfixonynn"]
+
+[ext_resource type="Script" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
+[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="1_o6o0m"]
+[ext_resource type="Script" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
+[ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
+[ext_resource type="Texture2D" uid="uid://bnjhsaaqs8c27" path="res://Assets/Props/towerDefense_tile249.png" id="5_hbjhd"]
+[ext_resource type="Texture2D" uid="uid://deiqtcsdrqv6s" path="res://Assets/Props/towerDefense_tile252.png" id="7_x3imu"]
+[ext_resource type="Texture2D" uid="uid://dtv6the7g3jp1" path="res://Assets/Props/towerDefense_3.png" id="8_7elkr"]
+[ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
+[ext_resource type="Texture2D" uid="uid://cypylt54wob5y" path="res://Assets/Props/icons8-sand-watch-80.png" id="9_a7036"]
+[ext_resource type="Texture2D" uid="uid://oed1la5pwslk" path="res://Assets/Props/towerDefense_1.png" id="9_cpxr8"]
+[ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="9_e86o2"]
+[ext_resource type="Texture2D" uid="uid://bhdypowo2q6tx" path="res://Assets/Icons/fastForward.png" id="10_ak280"]
+[ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="11_8v5s3"]
+
+[node name="GameScene" type="Node2D"]
+script = ExtResource("1_8hq5t")
+
+[node name="Map_1" parent="." instance=ExtResource("1_o6o0m")]
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_m5o3g")
+
+[node name="HUD" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 18.0
+offset_top = -12.0
+offset_right = 18.0
+offset_bottom = -12.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BuldBar" type="VBoxContainer" parent="UI/HUD"]
+custom_minimum_size = Vector2(80, 630)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -360.0
+offset_right = 80.0
+offset_bottom = 270.0
+grow_vertical = 2
+theme_override_constants/separation = 50
+
+[node name="Tower_1" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_1"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 74.0
+offset_bottom = 74.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_hbjhd")
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_1"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_1/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_2" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_2"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_x3imu")
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_2"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_2/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_3" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_3"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("8_7elkr")
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_3"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_3/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_4" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_4"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_cpxr8")
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_4"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_4/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_5" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_5"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_a7036")
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_5"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_5/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GameControl" type="HBoxContainer" parent="UI/HUD"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -164.0
+offset_top = -90.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="PausePlay" type="TextureButton" parent="UI/HUD/GameControl"]
+process_mode = 3
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+toggle_mode = true
+button_pressed = true
+texture_normal = ExtResource("8_kkfhj")
+texture_pressed = ExtResource("9_e86o2")
+
+[node name="SpeedUp" type="TextureButton" parent="UI/HUD/GameControl"]
+custom_minimum_size = Vector2(70, 70)
+layout_mode = 2
+texture_normal = ExtResource("10_ak280")
+
+[node name="InfoBar" type="ColorRect" parent="UI/HUD"]
+self_modulate = Color(0, 0, 0, 0.470588)
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="H" type="HBoxContainer" parent="UI/HUD/InfoBar"]
+layout_mode = 0
+offset_right = 426.0
+offset_bottom = 60.0
+theme_override_constants/separation = 5
+
+[node name="Sumbol" type="Label" parent="UI/HUD/InfoBar/H"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
+theme_override_font_sizes/font_size = 40
+text = "$"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Money" type="Label" parent="UI/HUD/InfoBar/H"]
+custom_minimum_size = Vector2(110, 60)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
+theme_override_font_sizes/font_size = 40
+text = "100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="H2" type="HBoxContainer" parent="UI/HUD/InfoBar"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -65.0
+offset_bottom = 60.0
+grow_horizontal = 0
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/InfoBar/H2"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("11_8v5s3")
+
+[node name="HP" type="Label" parent="UI/HUD/InfoBar/H2"]
+custom_minimum_size = Vector2(110, 60)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
+theme_override_font_sizes/font_size = 40
+text = "100"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="UI/HUD/InfoBar/H2"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+
+[node name="H3" type="HBoxContainer" parent="UI/HUD/InfoBar"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -117.5
+offset_right = 182.5
+offset_bottom = 60.0
+grow_horizontal = 2
+theme_override_constants/separation = 5
+
+[node name="Wave" type="Label" parent="UI/HUD/InfoBar/H3"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
+theme_override_font_sizes/font_size = 40
+text = "KEY_CURRENT_WAVE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WaveValue" type="Label" parent="UI/HUD/InfoBar/H3"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 2
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
+theme_override_font_sizes/font_size = 40
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="UI/HUD/BuldBar/Tower_1" to="." method="_on_tower_1_pressed"]
+[connection signal="pressed" from="UI/HUD/GameControl/PausePlay" to="UI" method="_on_pause_play_pressed"]
+[connection signal="pressed" from="UI/HUD/GameControl/SpeedUp" to="UI" method="_on_speed_up_pressed"]
