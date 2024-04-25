@@ -1,16 +1,16 @@
 extends Node
 
-var strengthening_enemies = 0.24
+var strengthening_enemies = 0.32
 var strengthening_enemies_dop = 0.115
-var strengthening_money = 0.35
+var strengthening_money = 0.25
 var current_wave = 0
-var current_money = 10000
+var current_money = 4000
 
 var list_open_menu_turrets = []
 
 var tower_data = {
 	"Turret_1T1": {
-		"damage": [45, 75, 120, 195, 315, 510, 825, 1335, 2165, 39],
+		"damage": [45, 75, 120, 195, 315, 510, 825, 1335, 2165, 3900],
 		"rof": [1.0, 0.95, 0.9, 0.84, 0.78, 0.71, 0.64, 0.55, 0.45, 0.35],
 		"range": [245, 247, 250, 253, 257, 262, 268, 275, 283, 292],
 		"upgrade for": [50, 75, 125, 200, 325, 525, 850, 1375, 2225, 3600],
@@ -38,7 +38,7 @@ var tower_data = {
 		"category": "Missile2"},
 	"Turret_4T1": {
 		"intensivity": [0.05, 0.06, 0.08, 0.1, 0.13, 0.16, 0.2, 0.24, 0.28, 0.32],
-		"duration": [30, 31, 32, 33, 34, 35, 37, 39, 41, 43],
+		"duration": [60.0, 62.0, 64.0, 66.0, 68.0, 70.0, 74.0, 78.0, 82.0, 86.0],
 		"rof": [1.5, 1.48, 1.45, 1.42, 1.38, 1.34, 1.3, 1.25, 1.2, 1.15],
 		"range": [250, 260, 270, 285, 300, 320, 340, 365, 390, 420],
 		"upgrade for": [300, 450, 750, 1200, 1950, 3150, 5100, 8250, 13350, 21600],

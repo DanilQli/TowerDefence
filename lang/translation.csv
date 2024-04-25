@@ -30,3 +30,5 @@ KEY_INTENSIVITY,Интенсивность,Intensivity
 KEY_DURATION,Длительность,Duration,
 KEY_DISTANCE,Дистанция,Distance
 KEY_CURRENT_WAVE,Текущая волна:,Current wave:
+KEY_END,Вы проиграли,You've lost
+KEY_RESTART,Попробовать снова,Try again

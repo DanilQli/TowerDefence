@@ -49,8 +49,8 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 			on_destroy()
 	elif type_attack == 1:
 		self.speed -= (self.speed * float(GameData.tower_data[type_turret]["intensivity"][level]))
-		if self.speed < 10:
-			self.speed = 10
+		if self.speed < 50:
+			self.speed = 50
 		self.duration_speed_mod = int(GameData.tower_data[type_turret]["duration"][level])
 	else:
 		self.progress -= float(GameData.tower_data[type_turret]["distance"][level])

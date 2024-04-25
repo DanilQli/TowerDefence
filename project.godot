@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Games"
-run/main_scene="res://Scenes/Menu.tscn"
+run/main_scene="res://Scenes/UI/Menu.tscn"
 config/features=PackedStringArray("4.2", "GL Compatibility")
 
 [autoload]

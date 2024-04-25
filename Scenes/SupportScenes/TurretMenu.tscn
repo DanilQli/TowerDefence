@@ -9,7 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="6_18ceo"]
 
 [node name="Menu" type="Control"]
-custom_minimum_size = Vector2(250, 250)
+custom_minimum_size = Vector2(250, 200)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 50.0
@@ -19,7 +19,7 @@ offset_bottom = 65.0
 script = ExtResource("2_j65fi")
 
 [node name="ColorRect" type="ColorRect" parent="."]
-custom_minimum_size = Vector2(260, 260)
+custom_minimum_size = Vector2(260, 200)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

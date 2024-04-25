@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://df6ilpx7r5c3o"]
+[gd_scene load_steps=6 format=3 uid="uid://df6ilpx7r5c3o"]
 
 [ext_resource type="Script" path="res://Scenes/UI/MenuSettings.gd" id="1_m2o63"]
 [ext_resource type="PackedScene" uid="uid://c8xlg4d7ul6dd" path="res://Scenes/UI/ButtonBack.tscn" id="2_3n1c4"]
+[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="2_lnwhy"]
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_ek36s"]
 [ext_resource type="StyleBox" path="res://Styles/StylesTransparent.tres" id="3_p2qoy"]
 
 [node name="Control" type="Control"]
@@ -13,14 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_m2o63")
 
-[node name="ColorRect" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.231373, 0.176471, 0.32549, 1)
+[node name="Map_1" parent="." instance=ExtResource("2_lnwhy")]
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -34,28 +29,45 @@ theme_override_constants/margin_top = 100
 theme_override_constants/margin_right = 100
 theme_override_constants/margin_bottom = 100
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="Panel" type="Panel" parent="MarginContainer"]
+layout_mode = 2
+theme_override_styles/panel = ExtResource("3_ek36s")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer"]
 layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 2
+size_flags_vertical = 0
 theme_override_font_sizes/font_size = 32
 text = "KEY_SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
+alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 2
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label2" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 0
@@ -66,7 +78,7 @@ text = "KEY_EXPANSION"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label3" type="Label" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(500, 40)
 layout_mode = 2
 size_flags_vertical = 0
@@ -75,14 +87,14 @@ text = "KEY_LANGUAGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="VBoxContainer2" type="VBoxContainer" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 
-[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(500, 45)
 layout_mode = 2
 
-[node name="OptionButton2" type="OptionButton" parent="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
+[node name="OptionButton2" type="OptionButton" parent="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2"]
 custom_minimum_size = Vector2(500, 45)
 layout_mode = 2
 item_count = 2
@@ -91,21 +103,7 @@ popup/item_0/id = 0
 popup/item_1/text = "KEY_RUSSIAN"
 popup/item_1/id = 1
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 40)
-layout_mode = 2
-size_flags_vertical = 1
-theme_override_font_sizes/font_size = 32
-text = "KEY_SOUND"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HSlider" type="HSlider" parent="MarginContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 25)
-layout_mode = 2
-size_flags_vertical = 2
-
-[node name="ButtonReset" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="ButtonReset" type="Button" parent="MarginContainer/Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(300, 45)
 layout_mode = 2
 size_flags_vertical = 8
@@ -113,13 +111,13 @@ theme_override_font_sizes/font_size = 32
 theme_override_styles/normal = ExtResource("3_p2qoy")
 text = "KEY_RESET SETTINGS"
 
-[node name="ButtonBack" parent="MarginContainer" instance=ExtResource("2_3n1c4")]
+[node name="ButtonBack" parent="MarginContainer/Panel/MarginContainer" instance=ExtResource("2_3n1c4")]
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
+size_flags_stretch_ratio = 0.0
 
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton" to="." method="_on_option_button_item_selected"]
-[connection signal="item_selected" from="MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton2" to="." method="_on_option_button_2_item_selected"]
-[connection signal="value_changed" from="MarginContainer/VBoxContainer/HSlider" to="." method="_on_h_slider_value_changed"]
-[connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]
-[connection signal="pressed" from="MarginContainer/ButtonBack" to="." method="_on_button_back_pressed"]
+[connection signal="item_selected" from="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="item_selected" from="MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton2" to="." method="_on_option_button_2_item_selected"]
+[connection signal="pressed" from="MarginContainer/Panel/MarginContainer/VBoxContainer/ButtonReset" to="." method="_on_button_reset_pressed"]
+[connection signal="pressed" from="MarginContainer/Panel/MarginContainer/ButtonBack" to="." method="_on_button_back_pressed"]

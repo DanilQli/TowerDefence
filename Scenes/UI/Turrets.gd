@@ -103,8 +103,30 @@ func _on_menu_button_pressed():
 		self.get_node("Menu/V/HButton/Up").disabled = false
 	if self.type_attack == 0:
 		self.get_node("Menu/V/HInflicted/HValue/Value").text = str(self.inflicted)
-	#hide_menu()
+
 	GameData.list_open_menu_turrets.append(self.get_node("Menu"))
+	"""Справо снизу"""
+	if get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400 and get_parent().get_parent().get_parent().get_node("UI/HUD").size[1] - self.position[1] < 300:
+		"""Справо снизу"""
+		get_node("Menu").position[0] = -300
+		get_node("Menu").position[1] = -330
+	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400 and self.position[1] < 150:
+		"""Справо сверху"""
+		get_node("Menu").position[0] = -300
+		get_node("Menu").position[1] = 50
+	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400:
+		"""Снизу"""
+		get_node("Menu").position[0] = -300
+	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[1] - self.position[1] < 300:
+		"""Справо"""
+		get_node("Menu").position[1] = -330
+	elif self.position[1] < 150:
+		"""Сверху"""
+		get_node("Menu").position[1] = 50
+	else:
+		"""По умолчанию"""
+		get_node("Menu").position[0] = 50
+		get_node("Menu").position[1] = -200
 	self.get_node("Menu").show()
 	
 func hide_menu():
@@ -152,7 +174,7 @@ func update_menu():
 		self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
 		self.get_node("Menu/V/HInflicted/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
 	else:
-		self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["distance"][self.current_lvl]  * 100)
+		self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["distance"][self.current_lvl])
 		self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
 		self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
 

@@ -10,10 +10,10 @@ func _ready():
 	load_main_menu()
 
 func _on_texture_button_1_pressed():
-	get_tree().change_scene_to_file("res://Scenes/GameScene.tscn")
+	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 func _on_texture_button_3_pressed():
-	get_tree().change_scene_to_file("res://Scenes/MenuSettings.tscn")
+	get_tree().change_scene_to_file("res://Scenes/UI/MenuSettings.tscn")
 
 
 func _on_texture_button_4_pressed():
@@ -21,19 +21,14 @@ func _on_texture_button_4_pressed():
 
 func load_main_menu():
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1").pressed.connect(on_new_game_pressed) 
+	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3").pressed.connect(settings)
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_4").pressed.connect(on_quit_pressed)
 	
 func on_new_game_pressed():
-	self.queue_free()
-	var game_scene = load("res://Scenes/GameScene.tscn").instantiate()
-	game_scene.game_finished.connect(unload_game)
-	add_child(game_scene)
+	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
+	
+func settings():
+	get_tree().change_scene_to_file("res://Scenes/UI/MenuSettings.tscn")
 	
 func on_quit_pressed():
 	get_tree().quit()
-	
-func unload_game(result):
-	get_node("GameScene" ).queue_free( )
-	var main_menu = load("res://Scenes/Menu.tscn").instantiate()
-	add_child(main_menu)
-	load_main_menu()
