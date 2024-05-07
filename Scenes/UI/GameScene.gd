@@ -14,6 +14,10 @@ var base_health = 100
 var wave_data = GameData.wave_data[GameData.current_wave]
 var node_mouse_entered
 var type_attack
+var list_gift
+var list_random
+var list_sprite_box
+var have_open_present = false
 
 
 func _ready():
@@ -42,7 +46,7 @@ func _ready():
 func _process(delta):
 	if build_mode:
 		update_tower_preview()
-		
+
 func _unhandled_input(event):
 	if event.is_action_released("ui_cancel") and build_mode == true: 
 		cancel_build_mode()
@@ -59,11 +63,103 @@ func start_next_wave():
 	spawn_enemies(wave_data)
 	
 func retrieve_wave_data():
-	wave_data = GameData.wave_data[GameData.current_wave]	
+	wave_data = GameData.wave_data[GameData.current_wave]
+	if GameData.current_wave in GameData.list_wave_gift and not have_open_present:
+		have_open_present = true
+		var box_gift = load("res://Scenes/SupportScenes/buf.tscn").instantiate()
+		get_node("UI").add_child(box_gift)
+		generate_gift()
+		box_gift.get_node("Panel/V/H/Box1").pressed.connect(gift_open.bind(0))
+		box_gift.get_node("Panel/V/H/Box2").pressed.connect(gift_open.bind(1))
+		box_gift.get_node("Panel/V/H/Box3").pressed.connect(gift_open.bind(2))
 	GameData.current_wave += 1
 	enemies_in_wave = wave_data.size()
 	return wave_data
-	
+
+func generate_gift():
+	list_gift = []
+	list_sprite_box = []
+	var t
+	Engine.set_time_scale(1.0)
+	for i in range(3):
+		var sprite_box = randi() % [0, 1, 2, 3].size() + 1
+		list_sprite_box.append(sprite_box)
+		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer").play("stay_" + str(sprite_box))
+		t = randi() % [0, 1, 2, 3].size()
+		while t in list_gift:
+			t = randi() % [0, 1, 2, 3].size()
+		list_gift.append(t)
+		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/Label").text = tr("KEY_UP_" + str(t))
+	list_random = []
+	for i in list_gift:
+		if i in [0, 1, 2]:
+			list_random.append(randi_range(0, 2))
+		elif i == 3:
+			list_random.append(randi_range(1, 2))
+		elif i == 4:
+			list_random.append(randi_range(1, 3))
+
+func gift_open(ind):
+	for i in range(3):
+		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer").play("open_" + str(list_sprite_box[i]))
+		var modifer = get_node("UI/Buf/Panel/V/HBox/Modifer" + str(i + 1))
+		modifer.visible = true
+		var icon
+		if list_random[i] == 0:
+			icon = "res://Assets/Icons/damage.png"
+		elif list_random[i] == 1:
+			icon = "res://Assets/Icons/reload.png"
+		elif list_random[i] == 2:
+			icon = "res://Assets/Icons/range.png"
+		elif list_random[i] == 3:
+			icon = "res://Assets/Icons/distance.png"
+		modifer.get_node("TextureRect").texture = load(icon)
+		modifer.get_node("Name").text = tr("KEY_UP_UP_" + str(list_random[i]))
+		var inde
+		if list_random[i] == 1:
+			inde = " - "
+		else:
+			inde = " + "
+		modifer.get_node("Up").text = inde + str(GameData.modifer_value) + " %"
+	"""Модификация данных в GameData"""
+	var up = 1 + GameData.modifer_value / 100
+	if list_random[ind] == 0:
+		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"])):
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] *= up
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i], 3)
+		for i in map_node.get_node("Turret").get_children():
+			i.damage = GameData.tower_data[i.type]["damage"][i.current_lvl]
+	elif list_random[ind] == 1:
+		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"])):
+			up = 1 - GameData.modifer_value / 100
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i] *= up
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i], 3)
+		for i in map_node.get_node("Turret").get_children():
+			i.rof = GameData.tower_data[i.type]["rof"][i.current_lvl]
+	elif list_random[ind] == 2:
+		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"])):
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i] *= up
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i], 3)
+		for i in map_node.get_node("Turret").get_children():
+			i.range = GameData.tower_data[i.type]["range"][i.current_lvl]
+	elif list_random[ind] == 3:
+		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"])):
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i] *= up
+			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i], 3)
+		"""Дистанцию писать не нужно, она используется из словаря в on_hit из enemy"""
+	await get_tree().create_timer(1.5).timeout
+	for i in range(3):
+		if i != ind:
+			get_node("UI/Buf/Panel/V/H/Box" + str(i + 1)).queue_free()
+			get_node("UI/Buf/Panel/V/HBox/Modifer" + str(i + 1)).queue_free()
+	get_node("UI/Buf/Panel/V/Play").visible = true
+	get_node("UI/Buf/Panel/V/Play").pressed.connect(continue_game)
+
+func continue_game():
+	get_node("UI/Buf").queue_free()
+	have_open_present = false
+	Engine.set_time_scale(GameData.spped_game)
+
 func spawn_enemies(wave_data):
 	get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameData.current_wave)
 	for i in wave_data:

@@ -46,7 +46,9 @@ func _on_pause_play_pressed():
 
 	
 func _on_speed_up_pressed():
-	if Engine.get_time_scale() == 4.0:
-		Engine.set_time_scale(1.0)
+	if GameData.spped_game == 4.0:
+		GameData.spped_game = 1.0
+		Engine.set_time_scale(GameData.spped_game)
 	else:
-		Engine.set_time_scale(4.0)
+		GameData.spped_game = 4.0
+		Engine.set_time_scale(GameData.spped_game)

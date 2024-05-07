@@ -31,7 +31,7 @@ func _ready():
 		self.get_node("V/HRange/HText/Name").text = tr("KEY_RANGE")
 		self.get_node("V/HInflicted/HText/Name").text = tr("KEY_INFLICTED")
 		self.get_node("V/HStrateg/Strateg").text = list_strategy[st]
-		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex")
+		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/distance.png-a3097e1cb8e56e338aba8f1c30601538.ctex")
 		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
 		self.get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
 		self.get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/inflicted.png-1c2e6895b23b900526e6ad6b6c10ab68.ctex")

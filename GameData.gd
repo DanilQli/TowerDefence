@@ -5,9 +5,15 @@ var strengthening_enemies_dop = 0.115
 var strengthening_money = 0.25
 var current_wave = 0
 var current_money = 4000
+const modifer_value = 1.00
+var spped_game = 1.0
+var list_wave_gift = [1, 2]
 
 var list_open_menu_turrets = []
 
+static func round_to_dec(num, digit):
+	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+	
 var tower_data = {
 	"Turret_1T1": {
 		"damage": [45, 75, 120, 195, 315, 510, 825, 1335, 2165, 3900],

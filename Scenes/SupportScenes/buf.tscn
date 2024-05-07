@@ -1,0 +1,93 @@
+[gd_scene load_steps=4 format=3 uid="uid://cry71tab2u4ud"]
+
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_7u6y1"]
+[ext_resource type="PackedScene" uid="uid://cwxchvcxn3wg4" path="res://Scenes/SupportScenes/box.tscn" id="2_nqf6e"]
+[ext_resource type="PackedScene" uid="uid://do1qvn13m8ej" path="res://Scenes/SupportScenes/modifer.tscn" id="2_pmfbu"]
+
+[node name="Buf" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(800, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_7u6y1")
+
+[node name="Label" type="Label" parent="Panel"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -150.0
+offset_top = 50.0
+offset_right = 150.0
+offset_bottom = 80.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 18
+text = "KEY_CHOOSE_REWARD"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="V" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -254.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBox" type="HBoxContainer" parent="Panel/V"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+alignment = 1
+
+[node name="Modifer1" parent="Panel/V/HBox" instance=ExtResource("2_pmfbu")]
+visible = false
+layout_mode = 2
+
+[node name="Modifer2" parent="Panel/V/HBox" instance=ExtResource("2_pmfbu")]
+visible = false
+layout_mode = 2
+
+[node name="Modifer3" parent="Panel/V/HBox" instance=ExtResource("2_pmfbu")]
+visible = false
+layout_mode = 2
+
+[node name="H" type="HBoxContainer" parent="Panel/V"]
+custom_minimum_size = Vector2(500, 160)
+layout_mode = 2
+alignment = 1
+
+[node name="Box1" parent="Panel/V/H" instance=ExtResource("2_nqf6e")]
+layout_mode = 2
+
+[node name="Box2" parent="Panel/V/H" instance=ExtResource("2_nqf6e")]
+layout_mode = 2
+
+[node name="Box3" parent="Panel/V/H" instance=ExtResource("2_nqf6e")]
+layout_mode = 2
+
+[node name="Play" type="Button" parent="Panel/V"]
+visible = false
+layout_mode = 2
+theme_override_colors/font_color = Color(0.768627, 0.764706, 0, 1)
+text = "KEY_PLAY"
