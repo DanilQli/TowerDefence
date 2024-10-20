@@ -1,0 +1,111 @@
+[gd_scene load_steps=4 format=3 uid="uid://d4cftwus4hcci"]
+
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_2gl8y"]
+[ext_resource type="Script" path="res://Scenes/SupportScenes/choose_game_mode.gd" id="1_gdyyg"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="2_nicg6"]
+
+[node name="ChooseGameMode" type="ColorRect"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.294118, 0.294118, 0.294118, 0.392157)
+script = ExtResource("1_gdyyg")
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(380, 500)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_2gl8y")
+
+[node name="Close" type="TextureButton" parent="Panel"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -55.0
+offset_top = 5.0
+offset_right = -5.0
+offset_bottom = 55.0
+grow_horizontal = 0
+texture_normal = ExtResource("2_nicg6")
+stretch_mode = 0
+
+[node name="MarginContainer" type="MarginContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/MarginContainer"]
+custom_minimum_size = Vector2(350, 0)
+layout_mode = 2
+size_flags_horizontal = 8
+theme_override_constants/separation = 35
+alignment = 1
+
+[node name="TextureButton_1" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TextureButton_1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_COMPANY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton_2" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TextureButton_2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_SANDBOX"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButton_3" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/TextureButton_3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_TRIALS"
+horizontal_alignment = 1
+vertical_alignment = 1

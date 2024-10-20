@@ -43,3 +43,6 @@ KEY_UP_UP_1,Перезарядка,Reload
 KEY_UP_UP_2,Радиус,Range
 KEY_UP_UP_3,Дистанция,Distance
 KEY_PLAY,Играть,Play
+KEY_COMPANY,Компания,Company
+KEY_SANDBOX,Песочница,Sandbox
+KEY_TRIALS,Испытания,Trials

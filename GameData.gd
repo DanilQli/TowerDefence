@@ -7,7 +7,7 @@ var current_wave = 0
 var current_money = 4000
 const modifer_value = 1.00
 var spped_game = 1.0
-var list_wave_gift = [1, 2]
+var list_wave_gift = [10, 20]
 
 var list_open_menu_turrets = []
 
