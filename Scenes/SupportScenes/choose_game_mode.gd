@@ -9,6 +9,7 @@ func _ready():
 	get_node("Panel/Close").pressed.connect(close)
 
 func close():
+	get_parent().get_node("MarginContainer2").visible = true
 	get_node(".").queue_free()
 	
 func choose_game_mode(index):

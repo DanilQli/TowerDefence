@@ -15,6 +15,7 @@ func _ready():
 
 func on_new_game_pressed():
 	menu = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
+	get_node("MarginContainer2").visible = false
 	get_node(".").add_child(menu)
 
 	
