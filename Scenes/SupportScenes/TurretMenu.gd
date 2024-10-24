@@ -3,7 +3,7 @@ var st = 0
 var list_strategy = [tr("KEY_FIRST"), tr("KEY_LAST"), tr("KEY_RANDOM")]
 
 func _ready():
-	if get_parent().type_attack == 0:
+	if get_parent().type_attack in [0, 3]:
 		self.get_node("V/HStrateg/Strateg").pressed.connect(strateg)
 		self.get_node("V/HDamage/HText/Name").text = tr("KEY_DAMAGE")
 		self.get_node("V/HReload/HText/Name").text = tr("KEY_RELOAD")

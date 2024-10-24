@@ -37,9 +37,9 @@ func move(delta):
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
 func on_hit(damage, type_turret, type_explosion, type_attack, level):
-	if type_attack in [0, 2]:
+	if type_attack in [0, 2, 3]:
 		impact(type_explosion, type_attack)
-	if type_attack == 0:
+	if type_attack in [0, 3]:
 		self.hp -= damage
 		self.health_bar.visible = true
 		self.health_bar.value = hp
@@ -47,7 +47,7 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 			GameData.current_money += int(GameData.enemy_data[self.names]["money death"]) + int(float(GameData.enemy_data[self.names]["money death"]) * GameData.current_wave * GameData.strengthening_money)
 			get_parent().get_parent().get_parent().base_money()
 			on_destroy()
-	elif type_attack == 1:
+	elif type_attack == 1: 
 		self.speed -= (self.speed * float(GameData.tower_data[type_turret]["intensivity"][level]))
 		if self.speed < 50:
 			self.speed = 50

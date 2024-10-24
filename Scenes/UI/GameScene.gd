@@ -222,7 +222,7 @@ func verify_and_build():
 		new_tower.current_lvl = 0
 		new_tower.type_explosion = GameData.tower_data[build_type]["type explosion"]
 		new_tower.type_attack = GameData.tower_data[build_type]["type attack"]
-		if new_tower.type_attack == 0:
+		if new_tower.type_attack in [0, 3]:
 			new_tower.damage = GameData.tower_data[build_type]["damage"][new_tower.current_lvl]
 		elif new_tower.type_attack == 1:
 			new_tower.damage = 0
@@ -233,7 +233,6 @@ func verify_and_build():
 		new_tower.rof = GameData.tower_data[build_type]["rof"][new_tower.current_lvl]
 		new_tower.range = GameData.tower_data[build_type]["range"][new_tower.current_lvl]
 		new_tower.strategy = 0
-		new_tower.category = GameData.tower_data[build_type]["category"]
 		new_tower.max_lvl = GameData.tower_data["Turret_1T1"]["damage"].size() - 1
 		new_tower.built = true
 		new_tower.set_name(build_type + "_1")
@@ -294,7 +293,7 @@ func title_show(id):
 	type_attack = GameData.tower_data["Turret_" + id + "T1"]["type attack"]
 	node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id).position[1] + 50)
-	if type_attack == 0:
+	if type_attack in [0, 3]:
 		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["damage"][0])
 		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
 		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
@@ -306,6 +305,7 @@ func title_show(id):
 		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
 		node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
 	else:
+		print(type_attack)
 		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["distance"][0])
 		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
 		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])

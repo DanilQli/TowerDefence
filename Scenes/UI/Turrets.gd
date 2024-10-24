@@ -9,7 +9,6 @@ var enemy_array = []
 var built = false
 var enemy
 var is_ready = true
-var category
 var inflicted = 0
 var intensivity
 var duration
@@ -68,7 +67,7 @@ func fire():
 		fire_missile2()
 	if self.type_attack == 0:
 		self.inflicted += self.damage
-	if self.type_attack == 1:
+	if self.type_attack in [1, 3]:
 		for i in enemy_array:
 			i.on_hit(self.damage, self.type, self.type_explosion, self.type_attack, self.current_lvl)
 	else:
@@ -143,7 +142,7 @@ func upgrade():
 			get_parent().get_parent().get_parent().base_money()
 			emit_signal("base_money") 
 			self.current_lvl += 1
-			if self.type_attack == 0:
+			if self.type_attack in [0, 3]:
 				self.damage = GameData.tower_data[self.type]["damage"][self.current_lvl]
 			elif self.type_attack == 1:
 				self.intensivity = GameData.tower_data[self.type]["intensivity"][self.current_lvl]
@@ -164,7 +163,7 @@ func upgrade():
 		self.get_node("Menu/V/HButton/Up/LabelBut").text = tr("KEY_LVL_MAX")
 		
 func update_menu():
-	if self.type_attack == 0:
+	if self.type_attack in [0, 3]:
 		self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["damage"][self.current_lvl])
 		self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
 		self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
@@ -181,7 +180,7 @@ func update_menu():
 	self.get_node("Menu/V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(self.current_lvl + 1) + "/" + str(self.max_lvl + 1)
 	
 func update_menu_upgrade():
-	if self.type_attack == 0:
+	if self.type_attack in [0, 3]:
 		self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["damage"][self.current_lvl + 1] - GameData.tower_data[self.type]["damage"][self.current_lvl])
 		self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl])
 		self.get_node("Menu/V/HRange/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["range"][self.current_lvl + 1] - GameData.tower_data[self.type]["range"][self.current_lvl])

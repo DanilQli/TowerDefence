@@ -157,8 +157,6 @@ func _ready():
 		dict["type explosion"] = list
 		list = config.get_value(section, "type_attack")
 		dict["type attack"] = list
-		list = config.get_value(section, "category")
-		dict["category"] = list
 		tower_data[section] = dict
 	for i in range(8):
 		dict = {}
