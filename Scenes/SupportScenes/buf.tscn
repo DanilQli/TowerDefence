@@ -5,6 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://do1qvn13m8ej" path="res://Scenes/SupportScenes/modifer.tscn" id="2_pmfbu"]
 
 [node name="Buf" type="Control"]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

@@ -1,13 +1,10 @@
 extends Control
 
-var language_codes = ["ru", "en"]
 var menu
 
 func _ready():
-	var options = GlobalFiles.read("options")
-	var expansion = options[1][1].split("*")
-	TranslationServer.set_locale(options[1][3])
-	DisplayServer.window_set_size(Vector2i(int(expansion[0]),int(expansion[1])))
+	TranslationServer.set_locale(GameData.config.get_value("settings_game", "language"))
+	DisplayServer.window_set_size(Vector2i(GameData.config.get_value("settings_game", "width"), GameData.config.get_value("settings_game", "height")))
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1").pressed.connect(on_new_game_pressed) 
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_2").pressed.connect(settings)
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3").pressed.connect(on_quit_pressed)

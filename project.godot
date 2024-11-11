@@ -16,7 +16,6 @@ config/features=PackedStringArray("4.2", "GL Compatibility")
 
 [autoload]
 
-GlobalFiles="*res://GlobalFiles.gd"
 GameData="*res://GameData.gd"
 
 [display]

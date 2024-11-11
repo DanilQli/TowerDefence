@@ -8,6 +8,7 @@ const modifer_value = 1.0
 var spped_game = 1.0
 var list_wave_gift
 var list_open_menu_turrets = []
+var config 
 
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
@@ -125,7 +126,7 @@ var wave_data = [
 		["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]]]
 
 func _ready():
-	var config = ConfigFile.new()
+	config = ConfigFile.new()
 	config.load("res://Files/options.cfg")
 	var dict = {}
 	var list = []
@@ -188,3 +189,6 @@ func _ready():
 			["Enemy_4", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0], ["Enemy_3", 1.0], ["Enemy_4", 1.0],
 			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
 			["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]])
+
+func write_file():
+	config.save("res://Files/options.cfg") 

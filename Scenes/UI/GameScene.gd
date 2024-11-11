@@ -66,6 +66,7 @@ func retrieve_wave_data():
 	wave_data = GameData.wave_data[GameData.current_wave]
 	if GameData.current_wave in GameData.list_wave_gift and not have_open_present:
 		have_open_present = true
+		get_tree().paused = true
 		var box_gift = load("res://Scenes/SupportScenes/buf.tscn").instantiate()
 		get_node("UI").add_child(box_gift)
 		generate_gift()
@@ -128,7 +129,8 @@ func gift_open(ind):
 			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] *= up
 			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i], 3)
 		for i in map_node.get_node("Turret").get_children():
-			i.damage = GameData.tower_data[i.type]["damage"][i.current_lvl]
+			if GameData.tower_data[i.type].has("damage"):
+				i.damage = GameData.tower_data[i.type]["damage"][i.current_lvl]
 	elif list_random[ind] == 1:
 		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"])):
 			up = 1 - GameData.modifer_value / 100
@@ -158,6 +160,7 @@ func gift_open(ind):
 func continue_game():
 	get_node("UI/Buf").queue_free()
 	have_open_present = false
+	get_tree().paused = false
 	Engine.set_time_scale(GameData.spped_game)
 
 func spawn_enemies(wave_data):
