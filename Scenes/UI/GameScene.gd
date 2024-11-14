@@ -70,9 +70,9 @@ func retrieve_wave_data():
 		var box_gift = load("res://Scenes/SupportScenes/buf.tscn").instantiate()
 		get_node("UI").add_child(box_gift)
 		generate_gift()
-		box_gift.get_node("Panel/V/H/Box1").pressed.connect(gift_open.bind(0))
-		box_gift.get_node("Panel/V/H/Box2").pressed.connect(gift_open.bind(1))
-		box_gift.get_node("Panel/V/H/Box3").pressed.connect(gift_open.bind(2))
+		box_gift.get_node("Panel/V/H/Box1").pressed.connect(gift_open.bind(0, box_gift))
+		box_gift.get_node("Panel/V/H/Box2").pressed.connect(gift_open.bind(1, box_gift))
+		box_gift.get_node("Panel/V/H/Box3").pressed.connect(gift_open.bind(2, box_gift))
 	GameData.current_wave += 1
 	enemies_in_wave = wave_data.size()
 	return wave_data
@@ -100,7 +100,10 @@ func generate_gift():
 		elif i == 4:
 			list_random.append(randi_range(1, 3))
 
-func gift_open(ind):
+func gift_open(ind, box_gift):
+	box_gift.get_node("Panel/V/H/Box1").pressed.disconnect(gift_open.bind(0, box_gift))
+	box_gift.get_node("Panel/V/H/Box2").pressed.disconnect(gift_open.bind(0, box_gift))
+	box_gift.get_node("Panel/V/H/Box3").pressed.disconnect(gift_open.bind(0, box_gift))
 	for i in range(3):
 		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer").play("open_" + str(list_sprite_box[i]))
 		var modifer = get_node("UI/Buf/Panel/V/HBox/Modifer" + str(i + 1))
@@ -275,11 +278,19 @@ func base_money():
 func on_base_damage(damage):
 	base_health -= damage
 	if base_health < 1:
-		
+		get_node("UI").update_health(0)
+		get_tree().paused = true
 		var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
+		if GameData.current_game_score > GameData.best_score:
+			GameData.best_score = GameData.current_game_score
+			GameData.config.set_value("settings_game", "best_score", GameData.best_score)
+			GameData.write_file()
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit)
 		get_node("UI").add_child(end)
+		GameData.current_game_score = 0
 	else:
 		get_node("UI").update_health(base_health)
 
@@ -308,7 +319,6 @@ func title_show(id):
 		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
 		node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
 	else:
-		print(type_attack)
 		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["distance"][0])
 		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
 		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])

@@ -3,12 +3,14 @@ var strengthening_enemies
 var strengthening_enemies_dop
 var strengthening_money
 var current_wave = 0
+var current_game_score = 0
 var current_money
 const modifer_value = 1.0
 var spped_game = 1.0
 var list_wave_gift
 var list_open_menu_turrets = []
 var config 
+var best_score
 
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
@@ -176,6 +178,7 @@ func _ready():
 	strengthening_money = config.get_value("settings", "strengthening_money")
 	current_money = config.get_value("settings", "current_money")
 	list_wave_gift = config.get_value("settings", "list_wave_gift")
+	best_score = config.get_value("settings_game", "best_score")
 	
 	for i in 100:
 		wave_data.append([

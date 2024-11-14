@@ -44,6 +44,7 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 		self.health_bar.visible = true
 		self.health_bar.value = hp
 		if self.hp <= 0:
+			GameData.current_game_score += int(float(GameData.enemy_data[self.names]["money death"]) / 2 * (GameData.current_wave / 3.0))
 			GameData.current_money += int(GameData.enemy_data[self.names]["money death"]) + int(float(GameData.enemy_data[self.names]["money death"]) * GameData.current_wave * GameData.strengthening_money)
 			get_parent().get_parent().get_parent().base_money()
 			on_destroy()

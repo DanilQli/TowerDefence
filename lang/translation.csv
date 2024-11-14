@@ -46,3 +46,5 @@ KEY_PLAY,Играть,Play
 KEY_COMPANY,Компания,Company
 KEY_SANDBOX,Песочница,Sandbox
 KEY_TRIALS,Испытания,Trials
+KEY_CURRENT_SCORE,Текущий счёт:,Current score:
+KEY_BEST_SCORE,Лучший счёт:,Best score:

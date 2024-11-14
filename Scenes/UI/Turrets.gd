@@ -75,7 +75,6 @@ func fire():
 	await get_tree().create_timer(self.rof).timeout
 	is_ready = true
 
-
 func fire_missile1():
 	get_node("AnimationPlayer").play("Fire")
 
