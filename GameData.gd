@@ -2,6 +2,7 @@ extends Node
 var strengthening_enemies
 var strengthening_enemies_dop
 var strengthening_money
+var resources_money
 var current_wave = 0
 var current_game_score = 0
 var current_money
@@ -160,6 +161,12 @@ func _ready():
 		dict["type explosion"] = list
 		list = config.get_value(section, "type_attack")
 		dict["type attack"] = list
+		list = config.get_value(section, "have")
+		dict["have"] = list
+		list = config.get_value(section, "activity")
+		dict["activity"] = list
+		list = config.get_value(section, "prise")
+		dict["prise"] = list
 		tower_data[section] = dict
 	for i in range(8):
 		dict = {}
@@ -179,6 +186,7 @@ func _ready():
 	current_money = config.get_value("settings", "current_money")
 	list_wave_gift = config.get_value("settings", "list_wave_gift")
 	best_score = config.get_value("settings_game", "best_score")
+	resources_money = config.get_value("Resources", "money")
 	
 	for i in 100:
 		wave_data.append([

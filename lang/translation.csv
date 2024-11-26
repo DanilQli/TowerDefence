@@ -13,6 +13,8 @@ KEY_RUSSIAN,Русский,Russian
 KEY_ENGLISH,Английский,English
 KEY_BACK,Назад,Back
 KEY_FORWARD,Вперёд,Forward
+KEY_ARMAMENT,Вооружение,Armament
+KEY_SHOP,Магазин,Shop
 KEY_NAME,Туррель - ,Turel - 
 KEY_LVL,Уровень ,Level  
 KEY_DAMAGE,Урон: ,Damage: 
@@ -33,11 +35,19 @@ KEY_CURRENT_WAVE,Текущая волна:,Current wave:
 KEY_END,Вы проиграли,You've lost
 KEY_RESTART,Попробовать снова,Try again
 KEY_CHOOSE_REWARD,Выбери свою награду,Choose your reward
+KEY_AVAILABLE,Доступные вам,Available to you
+KEY_CHOOSE,Выбрать,Choose
+KEY_NAME_TURRET_1,Пушка,Gun
+KEY_NAME_TURRET_2,Ракета,Rocket
+KEY_NAME_TURRET_3,Арбалет,Crossbow
+KEY_NAME_TURRET_4,Замедление,Slowing 
+KEY_NAME_TURRET_5,Хронопетля,Chronopetl
+KEY_BUY_FOR,Купить за,Buy for
 KEY_UP_0,Улучшайте пушку,Upgrade cannon
 KEY_UP_1,Улучшайте ракету,Upgrade rocket
 KEY_UP_2,Улучшайте арбалеты ,Upgrade crossbows
 KEY_UP_3,Улучшайте замедление,Upgrade the deceleration
-KEY_UP_4,Улучшайте временной перекос,Upgrade the time warp
+KEY_UP_4,Улучшайте хронопетлю,Upgrade the chronopetl
 KEY_UP_UP_0,Урон,Damage
 KEY_UP_UP_1,Перезарядка,Reload
 KEY_UP_UP_2,Радиус,Range

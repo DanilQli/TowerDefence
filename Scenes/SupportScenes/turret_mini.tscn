@@ -1,0 +1,45 @@
+[gd_scene load_steps=3 format=3 uid="uid://b6fy1gifshsrx"]
+
+[ext_resource type="Texture2D" path="res://Assets/Props/towerDefense_tile181.png" id="1_wdqn2"]
+[ext_resource type="Texture2D" uid="uid://c3as74g4wv3jb" path="res://Assets/Props/towerDefense_tile_turret_1.png" id="2_l83an"]
+
+[node name="Turret" type="Panel"]
+custom_minimum_size = Vector2(150, 185)
+offset_right = 150.0
+offset_bottom = 185.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 150)
+layout_mode = 2
+texture = ExtResource("1_wdqn2")
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_l83an")
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 35)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "Пушка"
+horizontal_alignment = 1
+vertical_alignment = 1

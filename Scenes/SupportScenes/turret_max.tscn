@@ -1,0 +1,99 @@
+[gd_scene load_steps=4 format=3 uid="uid://b1y58o8u6duaq"]
+
+[ext_resource type="PackedScene" uid="uid://b6fy1gifshsrx" path="res://Scenes/SupportScenes/turret_mini.tscn" id="1_esmks"]
+[ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="2_jn3jj"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hrrsa"]
+bg_color = Color(0.266667, 0.266667, 0.266667, 0.196078)
+border_width_top = 10
+border_width_bottom = 10
+border_color = Color(0.8, 0.8, 0.8, 0)
+corner_radius_top_left = 50
+corner_radius_top_right = 50
+corner_radius_bottom_right = 50
+corner_radius_bottom_left = 50
+
+[node name="Turret" instance=ExtResource("1_esmks")]
+custom_minimum_size = Vector2(200, 500)
+theme_override_styles/panel = SubResource("StyleBoxFlat_hrrsa")
+
+[node name="TextureRect" parent="VBoxContainer" index="0"]
+custom_minimum_size = Vector2(0, 200)
+
+[node name="HBoxContainer1" type="HBoxContainer" parent="VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer1" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KEY_DAMAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer1" index="1"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "588"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer" index="3"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer2" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KEY_DAMAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer2" index="1"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "588"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer" index="4"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer3" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KEY_DAMAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer3" index="1"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "588"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer4" type="HBoxContainer" parent="VBoxContainer" index="5"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/HBoxContainer4" index="0"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "KEY_DAMAGE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/HBoxContainer4" index="1"]
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+text = "588"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button" type="Button" parent="VBoxContainer" index="6"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+text = "KEY_BUY_FOR"
+icon = ExtResource("2_jn3jj")

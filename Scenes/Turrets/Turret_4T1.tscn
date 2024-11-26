@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://cril11u75jsto"]
 
 [ext_resource type="Script" path="res://Scenes/Turrets/Turret_4T1.gd" id="1_i6y07"]
-[ext_resource type="Texture2D" uid="uid://dlmwqxmkyr3q4" path="res://Assets/Props/towerDefense_tile181.png" id="2_lxlnl"]
-[ext_resource type="Texture2D" uid="uid://oed1la5pwslk" path="res://Assets/Props/towerDefense_1.png" id="3_u5rwh"]
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsc7c"]
+[ext_resource type="Texture2D" uid="uid://cnf7oapk7xb8m" path="res://Assets/Props/towerDefense_tile_turret_4.png" id="3_tvhnh"]
 [ext_resource type="Texture2D" uid="uid://bqv8dyl6nqjod" path="res://Assets/Effect/towerDefense_tile29.png" id="4_np7fb"]
 [ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="5_kart2"]
 
@@ -37,12 +37,12 @@ _data = {
 script = ExtResource("1_i6y07")
 
 [node name="Base" type="Sprite2D" parent="."]
-texture = ExtResource("2_lxlnl")
+texture = ExtResource("2_xsc7c")
 
 [node name="Turret" type="Sprite2D" parent="."]
 rotation = 6.28319
 scale = Vector2(0.4, 0.4)
-texture = ExtResource("3_u5rwh")
+texture = ExtResource("3_tvhnh")
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
 visible = false

@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://b4se4a745v858"]
+[gd_scene load_steps=5 format=3 uid="uid://b4se4a745v858"]
 
 [ext_resource type="Script" path="res://Scenes/UI/Menu.gd" id="1_01eto"]
 [ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="2_nd48n"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_7tt24"]
+[ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="3_ai51v"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -14,6 +15,37 @@ grow_vertical = 2
 script = ExtResource("1_01eto")
 
 [node name="Map_1" parent="." instance=ExtResource("2_nd48n")]
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 2
+texture = ExtResource("3_ai51v")
+
+[node name="Label" type="Label" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "85556"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
 custom_minimum_size = Vector2(0, 450)
@@ -66,6 +98,23 @@ grow_vertical = 2
 theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
 theme_override_font_sizes/font_size = 36
 text = "KEY_NEW_GAME"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureButtonShop" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButtonShop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_SHOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
