@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://b6fy1gifshsrx"]
 
-[ext_resource type="Texture2D" path="res://Assets/Props/towerDefense_tile181.png" id="1_wdqn2"]
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_7q4p3"]
 [ext_resource type="Texture2D" uid="uid://c3as74g4wv3jb" path="res://Assets/Props/towerDefense_tile_turret_1.png" id="2_l83an"]
 
 [node name="Turret" type="Panel"]
@@ -20,7 +20,7 @@ alignment = 1
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 2
-texture = ExtResource("1_wdqn2")
+texture = ExtResource("1_7q4p3")
 expand_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="VBoxContainer/TextureRect"]
