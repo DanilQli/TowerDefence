@@ -18,28 +18,19 @@ var list_gift
 var list_random
 var list_sprite_box
 var have_open_present = false
+var list_activity_turret = []
 
 
 func _ready():
 	map_node = get_node("Map_1")
-	self.get_node("UI/HUD/BuldBar/Tower_1").pressed.connect(initiate_build_mode.bind("Turret_1"))
-	self.get_node("UI/HUD/BuldBar/Tower_2").pressed.connect(initiate_build_mode.bind("Turret_2"))
-	self.get_node("UI/HUD/BuldBar/Tower_3").pressed.connect(initiate_build_mode.bind("Turret_3"))
-	self.get_node("UI/HUD/BuldBar/Tower_4").pressed.connect(initiate_build_mode.bind("Turret_4"))
-	self.get_node("UI/HUD/BuldBar/Tower_5").pressed.connect(initiate_build_mode.bind("Turret_5"))
-#	[get_node("UI/HUD/BuldBar/Tower_1"), get_node("UI/HUD/BuldBar/Tower_2"), get_node("UI/HUD/BuldBar/Tower_3")]
-#	var t = get_node("UI/HUD/BuldBar/Tower_1")
-#	t.pressed.connect(initiate_build_mode(t.get_name()))
-	self.get_node("UI/HUD/BuldBar/Tower_1").mouse_entered.connect(title_show.bind("1"))
-	self.get_node("UI/HUD/BuldBar/Tower_1").mouse_exited.connect(title_hide)
-	self.get_node("UI/HUD/BuldBar/Tower_2").mouse_entered.connect(title_show.bind("2"))
-	self.get_node("UI/HUD/BuldBar/Tower_2").mouse_exited.connect(title_hide)
-	self.get_node("UI/HUD/BuldBar/Tower_3").mouse_entered.connect(title_show.bind("3"))
-	self.get_node("UI/HUD/BuldBar/Tower_3").mouse_exited.connect(title_hide)
-	self.get_node("UI/HUD/BuldBar/Tower_4").mouse_entered.connect(title_show.bind("4"))
-	self.get_node("UI/HUD/BuldBar/Tower_4").mouse_exited.connect(title_hide)
-	self.get_node("UI/HUD/BuldBar/Tower_5").mouse_entered.connect(title_show.bind("5"))
-	self.get_node("UI/HUD/BuldBar/Tower_5").mouse_exited.connect(title_hide)
+	for i in range(5):
+		if GameData.tower_data["Turret_" + str(i + 1) + "T1"]["activity"] == true:
+			list_activity_turret.append(i + 1)
+	for i in range(len(list_activity_turret)):
+		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Icon").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(list_activity_turret[i]) + ".png")
+		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).pressed.connect(initiate_build_mode.bind("Turret_" + str(list_activity_turret[i])))
+		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_entered.connect(title_show.bind(str(i + 1),str(list_activity_turret[i])))
+		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_exited.connect(title_hide)
 	base_money()
 
 	
@@ -249,31 +240,12 @@ func verify_and_build():
 
 func base_money():
 	get_node("UI/HUD/InfoBar/H/Money").text = str(GameData.current_money)
-	get_node("UI/HUD/BuldBar/Tower_1/Color/Cost").text = str(GameData.tower_data["Turret_1T1"]["cost"])
-	get_node("UI/HUD/BuldBar/Tower_2/Color/Cost").text = str(GameData.tower_data["Turret_2T1"]["cost"])
-	get_node("UI/HUD/BuldBar/Tower_3/Color/Cost").text = str(GameData.tower_data["Turret_3T1"]["cost"])
-	get_node("UI/HUD/BuldBar/Tower_4/Color/Cost").text = str(GameData.tower_data["Turret_4T1"]["cost"])
-	get_node("UI/HUD/BuldBar/Tower_5/Color/Cost").text = str(GameData.tower_data["Turret_5T1"]["cost"])
-	if GameData.current_money < GameData.tower_data["Turret_1T1"]["cost"]:
-		get_node("UI/HUD/BuldBar/Tower_1/Color").color = ("ff0000")
-	else:
-		get_node("UI/HUD/BuldBar/Tower_1/Color").color = ("008000")
-	if GameData.current_money < GameData.tower_data["Turret_2T1"]["cost"]:
-		get_node("UI/HUD/BuldBar/Tower_2/Color").color = ("ff0000")
-	else:
-		get_node("UI/HUD/BuldBar/Tower_2/Color").color = ("008000")
-	if GameData.current_money < GameData.tower_data["Turret_3T1"]["cost"]:
-		get_node("UI/HUD/BuldBar/Tower_3/Color").color = ("ff0000")
-	else:
-		get_node("UI/HUD/BuldBar/Tower_3/Color").color = ("008000")
-	if GameData.current_money < GameData.tower_data["Turret_4T1"]["cost"]:
-		get_node("UI/HUD/BuldBar/Tower_4/Color").color = ("ff0000")
-	else:
-		get_node("UI/HUD/BuldBar/Tower_4/Color").color = ("008000")
-	if GameData.current_money < GameData.tower_data["Turret_5T1"]["cost"]:
-		get_node("UI/HUD/BuldBar/Tower_5/Color").color = ("ff0000")
-	else:
-		get_node("UI/HUD/BuldBar/Tower_5/Color").color = ("008000")
+	for i in range(len(list_activity_turret)):
+		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color/Cost").text = str(GameData.tower_data["Turret_" + str(list_activity_turret[i]) + "T1"]["cost"])
+		if GameData.current_money < GameData.tower_data["Turret_" + str(list_activity_turret[i]) + "T1"]["cost"]:
+			get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color").color = ("ff0000")
+		else:
+			get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color").color = ("008000")
 	
 func on_base_damage(damage):
 	base_health -= damage
@@ -284,18 +256,21 @@ func on_base_damage(damage):
 		if GameData.current_game_score > GameData.best_score:
 			GameData.best_score = GameData.current_game_score
 			GameData.config.set_value("settings_game", "best_score", GameData.best_score)
+			GameData.resources_money += int(GameData.current_game_score / 10)
+			GameData.config.set_value("Resources", "money", GameData.resources_money)
 			GameData.write_file()
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit)
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
 		get_node("UI").add_child(end)
 		GameData.current_game_score = 0
 	else:
 		get_node("UI").update_health(base_health)
 
-func exit():
-	get_tree().quit()
+func exit_menu():
+	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 func restart():
 	GameData.current_wave = 0
@@ -303,10 +278,10 @@ func restart():
 	GameData.list_open_menu_turrets = []
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 	
-func title_show(id):
+func title_show(id_UI,id):
 	type_attack = GameData.tower_data["Turret_" + id + "T1"]["type attack"]
 	node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
-	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id).position[1] + 50)
+	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[1] + 50)
 	if type_attack in [0, 3]:
 		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["damage"][0])
 		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])

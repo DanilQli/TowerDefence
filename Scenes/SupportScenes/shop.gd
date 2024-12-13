@@ -51,6 +51,18 @@ func _ready():
 				get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer").add_child(activity)
 		else:
 			panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
+			if data["prise"] <= GameData.resources_money:
+				panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
+
+func buy_turret(prise, num_turret):
+	GameData.resources_money -= prise
+	GameData.config.set_value("Resources", "money", GameData.resources_money)
+	get_parent().get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
+	GameData.tower_data["Turret_" + str(num_turret) + "T1"]["have"] = true
+	GameData.config.set_value("Turret_" + str(num_turret) + "T1", "have", true)
+	GameData.write_file()
+	close()
+	
 func open_armanent():
 	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = true
 	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = false

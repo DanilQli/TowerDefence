@@ -13,7 +13,7 @@ grow_vertical = 2
 size_flags_horizontal = 4
 
 [node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(800, 290)
+custom_minimum_size = Vector2(800, 240)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -46,27 +46,6 @@ layout_mode = 2
 [node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_font_sizes/font_size = 24
-text = "KEY_END"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="HBoxCoin" type="HBoxContainer" parent="Panel/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxCoin"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_font_sizes/font_size = 24
-text = "KEY_COINS_RECEIVED"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="Panel/MarginContainer/VBoxContainer/HBoxCoin"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
 theme_override_font_sizes/font_size = 24
 text = "KEY_END"
 horizontal_alignment = 1
@@ -151,6 +130,6 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
 theme_override_font_sizes/font_size = 36
-text = "KEY_EXIT_MENU"
+text = "KEY_EXIT"
 horizontal_alignment = 1
 vertical_alignment = 1

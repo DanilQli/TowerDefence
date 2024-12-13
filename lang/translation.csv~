@@ -5,7 +5,6 @@ KEY_CONTINUE,Продолжить,Continue
 KEY_RULES,База знаний,Rules
 KEY_SETTINGS,Настройки,Settings
 KEY_EXIT,Взять перерыв,Take a break
-KEY_EXIT_MENU,Выход в меню,Exit menu
 KEY_EXPANSION,Расширение,Expansion
 KEY_LANGUAGE,Язык,Language
 KEY_SOUND,Звук,Sound

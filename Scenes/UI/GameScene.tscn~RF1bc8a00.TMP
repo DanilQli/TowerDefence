@@ -1,10 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://fd6cfixonynn"]
+[gd_scene load_steps=14 format=3 uid="uid://fd6cfixonynn"]
 
 [ext_resource type="Script" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
 [ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="1_o6o0m"]
 [ext_resource type="Script" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
+[ext_resource type="Texture2D" path="res://Assets/Props/towerDefense_tile249.png" id="5_hbjhd"]
+[ext_resource type="Texture2D" path="res://Assets/Props/towerDefense_tile252.png" id="7_x3imu"]
+[ext_resource type="Texture2D" uid="uid://dtv6the7g3jp1" path="res://Assets/Props/towerDefense_3.png" id="8_7elkr"]
 [ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
+[ext_resource type="Texture2D" path="res://Assets/Props/icons8-sand-watch-80.png" id="9_a7036"]
+[ext_resource type="Texture2D" uid="uid://oed1la5pwslk" path="res://Assets/Props/towerDefense_1.png" id="9_cpxr8"]
 [ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="9_e86o2"]
 [ext_resource type="Texture2D" uid="uid://bhdypowo2q6tx" path="res://Assets/Icons/fastForward.png" id="10_ak280"]
 [ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="11_8v5s3"]
@@ -57,6 +62,7 @@ offset_right = 74.0
 offset_bottom = 74.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("5_hbjhd")
 
 [node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_1"]
 custom_minimum_size = Vector2(80, 20)
@@ -95,6 +101,7 @@ offset_right = -6.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("7_x3imu")
 
 [node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_2"]
 custom_minimum_size = Vector2(80, 20)
@@ -133,6 +140,7 @@ offset_right = -6.0
 offset_bottom = -6.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("8_7elkr")
 expand_mode = 1
 
 [node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_3"]
@@ -172,6 +180,7 @@ offset_right = -8.0
 offset_bottom = -8.0
 grow_horizontal = 2
 grow_vertical = 2
+texture = ExtResource("9_cpxr8")
 expand_mode = 1
 
 [node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_4"]
@@ -183,6 +192,46 @@ offset_bottom = 106.0
 color = Color(1, 1, 0, 1)
 
 [node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_4/Color"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 2
+offset_right = 80.0
+offset_bottom = 26.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "100
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_5" type="TextureButton" parent="UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+texture_normal = ExtResource("4_4fsld")
+ignore_texture_size = true
+
+[node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_5"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("9_a7036")
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="UI/HUD/BuldBar/Tower_5"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 0
+offset_top = 80.0
+offset_right = 80.0
+offset_bottom = 106.0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="UI/HUD/BuldBar/Tower_5/Color"]
 custom_minimum_size = Vector2(80, 20)
 layout_mode = 2
 offset_right = 80.0
