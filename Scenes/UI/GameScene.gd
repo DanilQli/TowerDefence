@@ -270,12 +270,14 @@ func on_base_damage(damage):
 		get_node("UI").update_health(base_health)
 
 func exit_menu():
+	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 func restart():
 	GameData.current_wave = 0
 	GameData.current_money = 400
 	GameData.list_open_menu_turrets = []
+	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 	
 func title_show(id_UI,id):
