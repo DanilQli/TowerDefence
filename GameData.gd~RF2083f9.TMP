@@ -13,9 +13,7 @@ var list_open_menu_turrets = []
 var config 
 var best_score
 var currrent_level = 0
-var level_option
 const NUMBER_LEVEL = 2
-const MONEY_BEGIN = [400, 10400, 800]
 
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
@@ -77,7 +75,7 @@ func _ready():
 		dict["hp"] = list
 		enemy_data[section] = dict
 	for i in range(NUMBER_LEVEL):
-		wave_data.append(config.get_value("wave_data", "level_" + str(i)))
+		wave_data.append(config.get_value(wave_data, "level_" + str(i)))
 		
 	strengthening_enemies = config.get_value("settings", "strengthening_enemies")
 	strengthening_enemies_dop = config.get_value("settings", "strengthening_enemies_dop")
@@ -86,7 +84,6 @@ func _ready():
 	list_wave_gift = config.get_value("settings", "list_wave_gift")
 	best_score = config.get_value("settings_game", "best_score")
 	resources_money = config.get_value("Resources", "money")
-	level_option = config.get_value("level_option", "level")
 	
 	#for i in 100:
 		#wave_data.append([

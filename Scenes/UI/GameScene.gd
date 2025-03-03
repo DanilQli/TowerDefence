@@ -10,8 +10,9 @@ var build_location
 var build_type
 var build_tile
 var enemies_in_wave = 0
-var base_health = 100
-var wave_data = GameData.wave_data[GameData.current_wave]
+var base_health = 10
+var wave_data_all = GameData.wave_data[GameData.currrent_level]
+var wave_data = wave_data_all[GameData.current_wave]
 var node_mouse_entered
 var type_attack
 var list_gift
@@ -22,7 +23,10 @@ var list_activity_turret = []
 
 
 func _ready():
-	map_node = get_node("Map_1")
+	GameData.current_money = GameData.MONEY_BEGIN[GameData.currrent_level]
+	map_node = load("res://Scenes/Maps/map_" + str(GameData.currrent_level) + ".tscn").instantiate()
+	get_node(".").add_child(map_node)
+	map_node = get_node("Map" + str(GameData.currrent_level))
 	for i in range(5):
 		if GameData.tower_data["Turret_" + str(i + 1) + "T1"]["activity"] == true:
 			list_activity_turret.append(i + 1)
@@ -54,7 +58,7 @@ func start_next_wave():
 	spawn_enemies(wave_data)
 	
 func retrieve_wave_data():
-	wave_data = GameData.wave_data[GameData.current_wave]
+	wave_data = wave_data_all[GameData.current_wave]
 	if GameData.current_wave in GameData.list_wave_gift and not have_open_present:
 		have_open_present = true
 		get_tree().paused = true
@@ -169,14 +173,18 @@ func spawn_enemies(wave_data):
 		new_enemy.base_damage.connect(on_base_damage)
 		map_node.get_node("Path").add_child(new_enemy,true) 
 		await get_tree().create_timer(i[1]).timeout
-	if GameData.current_wave + 1 < len(GameData.wave_data):
+	if GameData.current_wave + 1 < len(wave_data_all):
 		await get_tree().create_timer(5).timeout
 		start_next_wave()
+	else:
+		await get_tree().create_timer(10).timeout
+		end_game_company()
+		print("Игра пройдена")
 ##
 ## Building Functions
 ##
 func initiate_build_mode(tower_type):
-	for i in get_node("Map_1/Turret").get_children():
+	for i in map_node.get_node("Turret").get_children():
 		i.get_node("MenuButton").show()
 	if build_mode:
 		cancel_build_mode()
@@ -251,31 +259,71 @@ func on_base_damage(damage):
 	base_health -= damage
 	if base_health < 1:
 		get_node("UI").update_health(0)
-		get_tree().paused = true
-		var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
-		if GameData.current_game_score > GameData.best_score:
-			GameData.best_score = GameData.current_game_score
-			GameData.config.set_value("settings_game", "best_score", GameData.best_score)
-			GameData.resources_money += int(GameData.current_game_score / 10)
-			GameData.config.set_value("Resources", "money", GameData.resources_money)
-			GameData.write_file()
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
-		get_node("UI").add_child(end)
-		GameData.current_game_score = 0
+		end_game()
 	else:
 		get_node("UI").update_health(base_health)
 
+func end_game_company():
+	get_tree().paused = true
+	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1/Label").text = tr("KEY_CONTINUE")
+	var money_dop = 0
+	if base_health == 9:
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
+		if not GameData.level_option[GameData.currrent_level - 1]:
+			money_dop = int(int(GameData.current_game_score / 10) / 3)
+			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
+	elif base_health < 9:
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect2").queue_free()
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
+		if not GameData.level_option[GameData.currrent_level - 1]:
+			money_dop = int(int(GameData.current_game_score / 10) / 2.05)
+			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
+	else:
+		if GameData.level_option[GameData.currrent_level - 1]:
+			money_dop = int(int(GameData.current_game_score / 10) / 1.1)
+			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
+	get_node("UI").add_child(end)
+	if GameData.current_game_score > GameData.best_score:
+		GameData.best_score = GameData.current_game_score
+		GameData.config.set_value("settings_game", "best_score", GameData.best_score)
+		GameData.resources_money += int(GameData.current_game_score / 10) + money_dop
+		GameData.config.set_value("Resources", "money", GameData.resources_money)
+		if not GameData.level_option[GameData.currrent_level - 1]:
+			GameData.level_option[GameData.currrent_level - 1] = true
+			GameData.config.set_value("level_option", "level", GameData.level_option)
+		GameData.write_file()
+	GameData.current_game_score = 0
+	
+func end_game():
+	get_tree().paused = true
+	var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
+	if GameData.current_game_score > GameData.best_score:
+		GameData.best_score = GameData.current_game_score
+		GameData.config.set_value("settings_game", "best_score", GameData.best_score)
+		GameData.resources_money += int(GameData.current_game_score / 10)
+		GameData.config.set_value("Resources", "money", GameData.resources_money)
+		GameData.write_file()
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
+	get_node("UI").add_child(end)
+	GameData.current_game_score = 0
+		
 func exit_menu():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 func restart():
 	GameData.current_wave = 0
-	GameData.current_money = 400
+	GameData.current_money = GameData.MONEY_BEGIN[GameData.currrent_level]
 	GameData.list_open_menu_turrets = []
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")

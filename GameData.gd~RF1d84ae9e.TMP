@@ -15,7 +15,6 @@ var best_score
 var currrent_level = 0
 var level_option
 const NUMBER_LEVEL = 2
-const MONEY_BEGIN = [400, 10400, 800]
 
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)

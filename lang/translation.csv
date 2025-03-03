@@ -60,3 +60,6 @@ KEY_TRIALS,Испытания,Trials
 KEY_COINS_RECEIVED,Монет получено:,Coins received:
 KEY_CURRENT_SCORE,Текущий счёт:,Current score:
 KEY_BEST_SCORE,Лучший счёт:,Best score:
+KEY_WIN,Победа,Win
+KEY_CONTINUE,Продолжить,Continue
+KEY_REWARD_FOR_STARS,Награда за звёзды,Reward for stars

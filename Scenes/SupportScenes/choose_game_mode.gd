@@ -17,6 +17,7 @@ func choose_game_mode(index):
 		1:
 			get_tree().change_scene_to_file("res://Scenes/UI/company_world.tscn")
 		2:
+			GameData.currrent_level = 0
 			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 	

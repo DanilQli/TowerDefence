@@ -44,15 +44,19 @@ func _ready():
 			have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
 			have.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
 			get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer").add_child(have)
+			print(data["activity"])
 			if data["activity"]:
 				var activity = load('res://Scenes/SupportScenes/turret_mini.tscn').instantiate()
 				activity.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
 				activity.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
 				get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer").add_child(activity)
+			else:
+				have.get_node("VBoxContainer/Button").styles Normal
 		else:
 			panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
 			if data["prise"] <= GameData.resources_money:
 				panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
+				
 
 func buy_turret(prise, num_turret):
 	GameData.resources_money -= prise

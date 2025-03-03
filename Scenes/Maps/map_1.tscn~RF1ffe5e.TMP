@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://di5lvx568qxyv" path="res://Assets/Props/treeGreen_large.png" id="3_vhwxn"]
 [ext_resource type="Texture2D" uid="uid://c13lxa7lctcxu" path="res://Assets/Props/treeBrown_large.png" id="4_0m4ea"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ul13"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_juxnq"]
 texture = ExtResource("1_6dhmk")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
@@ -51,15 +51,15 @@ texture_region_size = Vector2i(64, 64)
 
 [sub_resource type="TileSet" id="TileSet_jlt8q"]
 tile_size = Vector2i(64, 64)
-sources/0 = SubResource("TileSetAtlasSource_1ul13")
+sources/0 = SubResource("TileSetAtlasSource_juxnq")
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v74yl"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1amy7"]
 texture = ExtResource("2_8bc0b")
 texture_region_size = Vector2i(64, 64)
 1:0/0 = 0
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_28jw4"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_lycwr"]
 texture = ExtResource("1_6dhmk")
 texture_region_size = Vector2i(64, 64)
 1:0/0 = 0
@@ -124,17 +124,17 @@ texture_region_size = Vector2i(64, 64)
 2:1/0/terrains_peering_bit/left_side = 0
 2:1/0/terrains_peering_bit/top_side = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_nn2nf"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_d1hhn"]
 texture = ExtResource("1_6dhmk")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4xar7"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_5gywj"]
 texture = ExtResource("3_vhwxn")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6fwu3"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_rstyp"]
 texture = ExtResource("4_0m4ea")
 texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
@@ -144,11 +144,11 @@ tile_size = Vector2i(64, 64)
 terrain_set_0/mode = 0
 terrain_set_0/terrain_0/name = "Road"
 terrain_set_0/terrain_0/color = Color(0.5, 0.34375, 0.25, 1)
-sources/1 = SubResource("TileSetAtlasSource_28jw4")
-sources/3 = SubResource("TileSetAtlasSource_nn2nf")
-sources/4 = SubResource("TileSetAtlasSource_4xar7")
-sources/8 = SubResource("TileSetAtlasSource_6fwu3")
-sources/0 = SubResource("TileSetAtlasSource_v74yl")
+sources/1 = SubResource("TileSetAtlasSource_lycwr")
+sources/3 = SubResource("TileSetAtlasSource_d1hhn")
+sources/4 = SubResource("TileSetAtlasSource_5gywj")
+sources/8 = SubResource("TileSetAtlasSource_rstyp")
+sources/0 = SubResource("TileSetAtlasSource_1amy7")
 
 [sub_resource type="Curve2D" id="Curve2D_00foe"]
 _data = {

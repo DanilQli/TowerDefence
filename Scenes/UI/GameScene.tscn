@@ -1,7 +1,6 @@
-[gd_scene load_steps=9 format=3 uid="uid://fd6cfixonynn"]
+[gd_scene load_steps=8 format=3 uid="uid://fd6cfixonynn"]
 
 [ext_resource type="Script" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
-[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/Map_1.tscn" id="1_o6o0m"]
 [ext_resource type="Script" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
 [ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
@@ -11,8 +10,6 @@
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_8hq5t")
-
-[node name="Map_1" parent="." instance=ExtResource("1_o6o0m")]
 
 [node name="UI" type="CanvasLayer" parent="."]
 script = ExtResource("3_m5o3g")
@@ -275,7 +272,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 0.705882)
 theme_override_font_sizes/font_size = 40
-text = "100"
+text = "10"
 horizontal_alignment = 2
 vertical_alignment = 1
 
@@ -311,6 +308,8 @@ theme_override_font_sizes/font_size = 40
 text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
 
 [connection signal="pressed" from="UI/HUD/BuldBar/Tower_1" to="." method="_on_tower_1_pressed"]
 [connection signal="pressed" from="UI/HUD/GameControl/PausePlay" to="UI" method="_on_pause_play_pressed"]
