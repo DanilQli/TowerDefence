@@ -1,0 +1,17 @@
+[gd_scene load_steps=3 format=3 uid="uid://boev4nrtod2aw"]
+
+[ext_resource type="PackedScene" uid="uid://b6fy1gifshsrx" path="res://Scenes/SupportScenes/turret_mini.tscn" id="1_jmi3l"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hw62g"]
+bg_color = Color(100, 0, 0, 1)
+
+[node name="Turret" instance=ExtResource("1_jmi3l")]
+custom_minimum_size = Vector2(150, 225)
+
+[node name="Button" type="Button" parent="VBoxContainer" index="2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_hw62g")
+text = "KEY_CHOOSE"

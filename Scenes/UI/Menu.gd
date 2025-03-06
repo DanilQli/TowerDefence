@@ -1,6 +1,6 @@
 extends Control
 
-var menu
+
 
 func _ready():
 	TranslationServer.set_locale(GameData.config.get_value("settings_game", "language"))
@@ -12,14 +12,14 @@ func _ready():
 	get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
 
 func on_new_game_pressed():
-	menu = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
+	GameData.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
-	get_node(".").add_child(menu)
+	get_node(".").add_child(GameData.menu_object)
 
 func shop():
-	menu = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	GameData.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
-	get_node(".").add_child(menu)
+	get_node(".").add_child(GameData.menu_object)
 	
 func settings():
 	get_tree().change_scene_to_file("res://Scenes/UI/MenuSettings.tscn")

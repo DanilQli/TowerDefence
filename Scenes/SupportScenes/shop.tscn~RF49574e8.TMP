@@ -88,7 +88,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 50
+theme_override_constants/separation = 10
 alignment = 1
 
 [node name="Title1" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer" instance=ExtResource("4_w43yi")]
@@ -126,7 +126,6 @@ theme_override_constants/v_separation = 5
 columns = 6
 
 [node name="Shop" type="VBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
-visible = false
 layout_mode = 2
 size_flags_vertical = 3
 

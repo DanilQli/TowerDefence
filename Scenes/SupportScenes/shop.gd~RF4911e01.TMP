@@ -1,14 +1,11 @@
 extends Control
 
-var number_card_choose_characters_choose_item = 90
+var number_card_choose_characters_choose_item
 var list_button = []
-var list_button_activity = []
-var ind
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	ind = 0
-	list_button_activity = []
+	var ind = 0
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/ButArmanent").pressed.connect(open_armanent)
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/ButShop").pressed.connect(open_shop)
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/Close").pressed.connect(close)
@@ -50,13 +47,13 @@ func _ready():
 			have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
 			have.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
 			get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer").add_child(have)
+			print(data["activity"])
 			if data["activity"]:
 				var activity = load('res://Scenes/SupportScenes/turret_mini.tscn').instantiate()
 				activity.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
 				activity.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-				get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title" + str(ind + 1)).add_child(activity)
+				get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title" + str(ind + 1)).add_child(activity)
 				list_button.append(activity)
-				list_button_activity.append(i)
 				ind += 1
 			else:
 				var style = have.get_node("VBoxContainer/Button").get_theme_stylebox("normal").duplicate()
@@ -91,34 +88,23 @@ func close():
 	get_node(".").queue_free()
 
 func choose_turret(id):
-	if number_card_choose_characters_choose_item != id:
-		number_card_choose_characters_choose_item = id
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").play("rotate")
-		
-		for i in range(len(list_button)):
-			list_button[i].pressed.disconnect(choose_characters_choose_item.bind(1))
-			list_button[i].pressed.connect(choose_characters_choose_item.bind(i))
-	else:
-		for i in range(len(list_button)):
-			list_button[i].pressed.disconnect(choose_characters_choose_item.bind(i))
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").stop()
+	print("dd")
+	number_card_choose_characters_choose_item = id
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title1/AnimationPlayer").play("rotate")
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title2/AnimationPlayer").play("rotate")
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title3/AnimationPlayer").play("rotate")
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title4/AnimationPlayer").play("rotate")
+	
+	for i in range(len(list_button)):
+		list_button[i].pressed.disconnect(choose_characters_choose_item.bind(1))
+		list_button[i].pressed.connect(choose_characters_choose_item.bind(i + 1))
 
 func choose_characters_choose_item(id):
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").stop()
-	GameData.tower_data["Turret_" + str(list_button_activity[id] + 1) + "T1"]["activity"] = false
-	GameData.tower_data["Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1"]["activity"] = true
-	GameData.config.set_value("Turret_" + str(list_button_activity[id] + 1) + "T1", "activity", false)
-	GameData.config.set_value("Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1", "activity", true)
-	GameData.menu_object.queue_free()
-	GameData.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
-	get_parent().get_node(".").add_child(GameData.menu_object)
-	GameData.write_file()
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title1/AnimationPlayer").stop()
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title2/AnimationPlayer").stop()
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title3/AnimationPlayer").stop()
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer/Title4/AnimationPlayer").stop()
+	GameData.tower_data["Turret_" + str(id) + "T1"]["activity"] = 0
+	GameData.tower_data["Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1"]["activity"] = 1
+	for i in range(len(list_button)):
+		list_button[i].pressed.disconnect(choose_characters_choose_item.bind(i + 1))

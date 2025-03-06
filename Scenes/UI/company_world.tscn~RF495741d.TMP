@@ -1,0 +1,229 @@
+[gd_scene load_steps=6 format=3 uid="uid://cjirldacwhlmk"]
+
+[ext_resource type="Script" path="res://Scenes/UI/company_world.gd" id="1_q510f"]
+[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/map_0.tscn" id="1_ycrs0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s18il"]
+bg_color = Color(0.370365, 0.370364, 0.370364, 0.392157)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ubho6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4tqvd"]
+bg_color = Color(0.0915606, 0.865341, 0.727461, 1)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+
+[node name="CompanyWorld" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_q510f")
+
+[node name="Map_1" parent="." instance=ExtResource("1_ycrs0")]
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.995054, 0.97184)
+theme_override_styles/panel = SubResource("StyleBoxFlat_s18il")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 25.0
+offset_top = 25.0
+offset_right = -25.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="GridContainer" type="GridContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+columns = 10
+
+[node name="Level1" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level1"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level2" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level2"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "2"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level3" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level3"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "3"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level4" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level4"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level5" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level5"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level6" type="Button" parent="Panel/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level6"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "6"
+horizontal_alignment = 1
+vertical_alignment = 1

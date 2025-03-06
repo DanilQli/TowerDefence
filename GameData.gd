@@ -1,4 +1,5 @@
 extends Node
+var menu_object
 var strengthening_enemies
 var strengthening_enemies_dop
 var strengthening_money
