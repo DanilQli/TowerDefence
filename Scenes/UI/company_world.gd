@@ -1,10 +1,9 @@
 extends Control
 
-
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	for i in range(len(get_node("Panel/VBoxContainer/GridContainer").get_children())):
-		get_node("Panel/VBoxContainer/GridContainer").get_child(i).pressed.connect(game_start.bind(i + 1))
+	for i in range(len(get_node("Panel").get_children())):
+		get_node("Panel").get_child(i).pressed.connect(game_start.bind(i))
 		
 func game_start(level):
 	GameData.currrent_level = level

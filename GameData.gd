@@ -88,7 +88,7 @@ func _ready():
 	best_score = config.get_value("settings_game", "best_score")
 	resources_money = config.get_value("Resources", "money")
 	level_option = config.get_value("level_option", "level")
-	
+
 	#for i in 100:
 		#wave_data.append([
 			#["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_5", 1.0],
@@ -102,5 +102,9 @@ func _ready():
 			#["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
 			#["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]])
 
+func _input(event):
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+		
 func write_file():
 	config.save("res://Files/options.cfg") 

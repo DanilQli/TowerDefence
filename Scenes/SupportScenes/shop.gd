@@ -62,7 +62,7 @@ func _ready():
 				var style = have.get_node("VBoxContainer/Button").get_theme_stylebox("normal").duplicate()
 				style.set("bg_color", Color(0.0, 0.553, 0.251))
 				have.get_node("VBoxContainer/Button").add_theme_stylebox_override("normal", style)
-			have.get_node("VBoxContainer/Button").pressed.connect(choose_turret.bind(i))
+				have.get_node("VBoxContainer/Button").pressed.connect(choose_turret.bind(i))
 		else:
 			panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
 			if data["prise"] <= GameData.resources_money:

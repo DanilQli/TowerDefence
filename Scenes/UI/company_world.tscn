@@ -1,15 +1,14 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjirldacwhlmk"]
 
 [ext_resource type="Script" path="res://Scenes/UI/company_world.gd" id="1_q510f"]
-[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/map_0.tscn" id="1_ycrs0"]
+[ext_resource type="Texture2D" uid="uid://25c5klntcgrn" path="res://Assets/Bg/company_bg.png" id="2_8o4ik"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s18il"]
-bg_color = Color(0.370365, 0.370364, 0.370364, 0.392157)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bbnl2"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ubho6"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4tqvd"]
-bg_color = Color(0.0915606, 0.865341, 0.727461, 1)
+bg_color = Color(0.092, 0.865, 0.727, 1)
 corner_radius_top_left = 100
 corner_radius_top_right = 100
 corner_radius_bottom_right = 100
@@ -24,7 +23,14 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_q510f")
 
-[node name="Map_1" parent="." instance=ExtResource("1_ycrs0")]
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_8o4ik")
 
 [node name="Panel" type="Panel" parent="."]
 layout_mode = 1
@@ -33,33 +39,19 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-scale = Vector2(0.995054, 0.97184)
-theme_override_styles/panel = SubResource("StyleBoxFlat_s18il")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_bbnl2")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
-layout_mode = 1
-anchors_preset = -1
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 25.0
-offset_top = 25.0
-offset_right = -25.0
-offset_bottom = -25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="GridContainer" type="GridContainer" parent="Panel/VBoxContainer"]
+[node name="Level1" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
 layout_mode = 2
-theme_override_constants/h_separation = 10
-theme_override_constants/v_separation = 10
-columns = 10
-
-[node name="Level1" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+offset_left = 570.0
+offset_top = 120.0
+offset_right = 640.0
+offset_bottom = 190.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+metadata/_edit_use_anchors_ = true
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level1"]
+[node name="Panel" type="Panel" parent="Panel/Level1"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -70,7 +62,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level1"]
+[node name="Label" type="Label" parent="Panel/Level1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -83,12 +75,15 @@ text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level2" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+[node name="Level2" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 850.0
+offset_top = 280.0
+offset_right = 920.0
+offset_bottom = 350.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level2"]
+[node name="Panel" type="Panel" parent="Panel/Level2"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -99,7 +94,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level2"]
+[node name="Label" type="Label" parent="Panel/Level2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -112,12 +107,15 @@ text = "2"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level3" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+[node name="Level3" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 1005.0
+offset_top = 445.0
+offset_right = 1075.0
+offset_bottom = 515.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level3"]
+[node name="Panel" type="Panel" parent="Panel/Level3"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -128,7 +126,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level3"]
+[node name="Label" type="Label" parent="Panel/Level3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -137,16 +135,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 22
-text = "3"
+text = "3
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level4" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+[node name="Level4" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 1140.0
+offset_top = 410.0
+offset_right = 1210.0
+offset_bottom = 480.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level4"]
+[node name="Panel" type="Panel" parent="Panel/Level4"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -157,7 +159,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level4"]
+[node name="Label" type="Label" parent="Panel/Level4"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -170,12 +172,15 @@ text = "4"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level5" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+[node name="Level5" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 1012.0
+offset_top = 570.0
+offset_right = 1082.0
+offset_bottom = 640.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level5"]
+[node name="Panel" type="Panel" parent="Panel/Level5"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -186,7 +191,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level5"]
+[node name="Label" type="Label" parent="Panel/Level5"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -195,16 +200,20 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 22
-text = "5"
+text = "5
+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Level6" type="Button" parent="Panel/VBoxContainer/GridContainer"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
+[node name="Level6" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 763.0
+offset_top = 510.0
+offset_right = 833.0
+offset_bottom = 580.0
 theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
 
-[node name="Panel" type="Panel" parent="Panel/VBoxContainer/GridContainer/Level6"]
+[node name="Panel" type="Panel" parent="Panel/Level6"]
 custom_minimum_size = Vector2(50, 50)
 layout_mode = 1
 anchors_preset = 15
@@ -215,7 +224,7 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
 
-[node name="Label" type="Label" parent="Panel/VBoxContainer/GridContainer/Level6"]
+[node name="Label" type="Label" parent="Panel/Level6"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -224,6 +233,105 @@ grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_font_sizes/font_size = 22
-text = "6"
+text = "6
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level7" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 560.0
+offset_top = 345.0
+offset_right = 630.0
+offset_bottom = 415.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/Level7"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/Level7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "7
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level8" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 405.0
+offset_top = 420.0
+offset_right = 475.0
+offset_bottom = 490.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/Level8"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/Level8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "8"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Level9" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(70, 70)
+offset_left = 647.0
+offset_top = 625.0
+offset_right = 717.0
+offset_bottom = 695.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ubho6")
+
+[node name="Panel" type="Panel" parent="Panel/Level9"]
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4tqvd")
+
+[node name="Label" type="Label" parent="Panel/Level9"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 22
+text = "9
+"
 horizontal_alignment = 1
 vertical_alignment = 1

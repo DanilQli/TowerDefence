@@ -21,7 +21,7 @@ GameData="*res://GameData.gd"
 [display]
 
 window/size/viewport_width=1600
-window/size/viewport_height=840
+window/size/viewport_height=900
 window/stretch/mode="viewport"
 window/stretch/aspect="expand"
 mouse_cursor/custom_image="res://Assets/Button/cursor.png"
