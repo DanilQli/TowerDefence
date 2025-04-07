@@ -311,6 +311,5 @@ vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="."]
 
-[connection signal="pressed" from="UI/HUD/BuldBar/Tower_1" to="." method="_on_tower_1_pressed"]
 [connection signal="pressed" from="UI/HUD/GameControl/PausePlay" to="UI" method="_on_pause_play_pressed"]
 [connection signal="pressed" from="UI/HUD/GameControl/SpeedUp" to="UI" method="_on_speed_up_pressed"]

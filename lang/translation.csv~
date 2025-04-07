@@ -1,0 +1,67 @@
+,ru,en
+KEY_WELCOME,Добро пожалоать,Welcome
+KEY_NEW_GAME,Новая игра,New game
+KEY_CONTINUE,Продолжить,Continue
+KEY_RULES,База знаний,Rules
+KEY_SETTINGS,Настройки,Settings
+KEY_EXIT,Взять перерыв,Take a break
+KEY_EXIT_MENU,Выход в меню,Exit menu
+KEY_EXPANSION,Расширение,Expansion
+KEY_LANGUAGE,Язык,Language
+KEY_SOUND,Звук,Sound
+KEY_RESET SETTINGS,Сбросить настройки,Reset settings
+KEY_RUSSIAN,Русский,Russian
+KEY_ENGLISH,Английский,English
+KEY_BACK,Назад,Back
+KEY_FORWARD,Вперёд,Forward
+KEY_ARMAMENT,Вооружение,Armament
+KEY_SHOP,Магазин,Shop
+KEY_NAME,Туррель - ,Turel - 
+KEY_LVL,Уровень ,Level  
+KEY_DAMAGE,Урон: ,Damage: 
+KEY_RELOAD,Перезарядка: ,Reload: 
+KEY_RANGE,Радиус: ,Range: 
+KEY_INFLICTED,Нанесено: ,Inflicted: 
+KEY_LVL_UP,Улучшить,Lvl Up
+KEY_LVL_MAX,Макс уровень,Lvl Max
+KEY_CLOSE,Закрыть,Close
+KEY_STRATEGY,Стратегия,Strategy
+KEY_FIRST,Первый,First
+KEY_LAST,Последний,Last
+KEY_RANDOM,Случайная,Random
+KEY_INTENSIVITY,Интенсивность,Intensivity
+KEY_DURATION,Длительность,Duration
+KEY_DISTANCE,Дистанция,Distance
+KEY_INCOME,Доход,Income
+KEY_SPEED,Скорость,Speed
+KEY_CURRENT_WAVE,Текущая волна:,Current wave:
+KEY_END,Вы проиграли,You've lost
+KEY_RESTART,Попробовать снова,Try again
+KEY_CHOOSE_REWARD,Выбери свою награду,Choose your reward
+KEY_AVAILABLE,Доступные вам,Available to you
+KEY_CHOOSE,Выбрать,Choose
+KEY_NAME_TURRET_1,Пушка,Gun
+KEY_NAME_TURRET_2,Ракета,Rocket
+KEY_NAME_TURRET_3,Арбалет,Crossbow
+KEY_NAME_TURRET_4,Замедление,Slowing 
+KEY_NAME_TURRET_5,Хронопетля,Chronopetl
+KEY_BUY_FOR,Купить за,Buy for
+KEY_UP_0,Улучшайте пушку,Upgrade cannon
+KEY_UP_1,Улучшайте ракету,Upgrade rocket
+KEY_UP_2,Улучшайте арбалеты ,Upgrade crossbows
+KEY_UP_3,Улучшайте замедление,Upgrade the deceleration
+KEY_UP_4,Улучшайте хронопетлю,Upgrade the chronopetl
+KEY_UP_UP_0,Урон,Damage
+KEY_UP_UP_1,Перезарядка,Reload
+KEY_UP_UP_2,Радиус,Range
+KEY_UP_UP_3,Дистанция,Distance
+KEY_PLAY,Играть,Play
+KEY_COMPANY,Компания,Company
+KEY_SANDBOX,Песочница,Sandbox
+KEY_TRIALS,Испытания,Trials
+KEY_COINS_RECEIVED,Монет получено:,Coins received:
+KEY_CURRENT_SCORE,Текущий счёт:,Current score:
+KEY_BEST_SCORE,Лучший счёт:,Best score:
+KEY_WIN,Победа,Win
+KEY_CONTINUE,Продолжить,Continue
+KEY_REWARD_FOR_STARS,Награда за звёзды,Reward for stars

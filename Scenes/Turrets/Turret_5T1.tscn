@@ -44,7 +44,6 @@ scale = Vector2(0.6, 0.6)
 texture = ExtResource("3_br8k8")
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
-visible = false
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
 rotation = 1.5708

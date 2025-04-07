@@ -8,7 +8,7 @@ var current_wave = 0
 var current_game_score = 0
 var current_money
 const modifer_value = 1.0
-var spped_game = 1.0
+var spped_game = 0.0
 var list_wave_gift
 var list_open_menu_turrets = []
 var config 
@@ -32,25 +32,31 @@ func _ready():
 	var dict = {}
 	var list = []
 	var section
-	for i in range(5):
+	for i in range(6):
 		dict = {}
 		list = []
 		section = "Turret_" + str(i + 1) + "T1"
-		if i not in [3, 4]:
-			list = config.get_value(section, "damage")
-			dict["damage"] = list
-		elif i == 3:
-			list = config.get_value(section, "intensivity")
-			dict["intensivity"] = list
-			list = config.get_value(section, "duration")
-			dict["duration"] = list
+		if i != 5:
+			if i in [0, 1, 2]:
+				list = config.get_value(section, "damage")
+				dict["damage"] = list
+			elif i == 3:
+				list = config.get_value(section, "intensivity")
+				dict["intensivity"] = list
+				list = config.get_value(section, "duration")
+				dict["duration"] = list
+			elif i == 4:
+				list = config.get_value(section, "distance")
+				dict["distance"] = list
+			list = config.get_value(section, "rof")
+			dict["rof"] = list
+			list = config.get_value(section, "range")
+			dict["range"] = list
 		else:
-			list = config.get_value(section, "distance")
-			dict["distance"] = list
-		list = config.get_value(section, "rof")
-		dict["rof"] = list
-		list = config.get_value(section, "range")
-		dict["range"] = list
+			list = config.get_value(section, "speed")
+			dict["speed"] = list
+			list = config.get_value(section, "income")
+			dict["income"] = list
 		list = config.get_value(section, "upgrade_for")
 		dict["upgrade for"] = list
 		list = config.get_value(section, "cost")

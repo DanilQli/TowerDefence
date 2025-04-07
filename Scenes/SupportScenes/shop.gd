@@ -42,6 +42,13 @@ func _ready():
 			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
 			panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
 			panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
+		elif data["type attack"] == 4:
+			panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INCOME")
+			panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_SPEED")
+			panel.get_node("VBoxContainer/HBoxContainer3").queue_free()
+			panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["speed"][0])
+			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["income"][0])
+			panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
 		get_node("VBoxContainer/Panel/VBoxContainer/Shop/ScrollContainer/HBoxContainer").add_child(panel)
 		
 		if data["have"]:

@@ -27,7 +27,7 @@ func _ready():
 	map_node = load("res://Scenes/Maps/map_" + str(GameData.currrent_level) + ".tscn").instantiate()
 	get_node(".").add_child(map_node)
 	map_node = get_node("Map" + str(GameData.currrent_level))
-	for i in range(5):
+	for i in range(6):
 		if GameData.tower_data["Turret_" + str(i + 1) + "T1"]["activity"] == true:
 			list_activity_turret.append(i + 1)
 	for i in range(len(list_activity_turret)):
@@ -36,7 +36,6 @@ func _ready():
 		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_entered.connect(title_show.bind(str(i + 1),str(list_activity_turret[i])))
 		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_exited.connect(title_hide)
 	base_money()
-
 	
 func _process(delta):
 	if build_mode:
@@ -176,7 +175,7 @@ func spawn_enemies(wave_data):
 	if GameData.current_wave + 1 < len(wave_data_all):
 		await get_tree().create_timer(5).timeout
 		start_next_wave()
-	else:
+	elif GameData.spped_game != 0.0:
 		await get_tree().create_timer(10).timeout
 		end_game_company()
 		print("Игра пройдена")
@@ -219,7 +218,6 @@ func cancel_build_mode():
 	
 func verify_and_build():
 	if build_valid:
-		## Test to verify player has enough cash
 		var new_tower = load("res://Scenes/Turrets/" + build_type + ".tscn").instantiate()
 		new_tower.position = build_location
 		new_tower.type = build_type
@@ -227,17 +225,21 @@ func verify_and_build():
 		new_tower.current_lvl = 0
 		new_tower.type_explosion = GameData.tower_data[build_type]["type explosion"]
 		new_tower.type_attack = GameData.tower_data[build_type]["type attack"]
-		if new_tower.type_attack in [0, 3]:
-			new_tower.damage = GameData.tower_data[build_type]["damage"][new_tower.current_lvl]
-		elif new_tower.type_attack == 1:
-			new_tower.damage = 0
-			new_tower.intensivity = GameData.tower_data[build_type]["intensivity"][new_tower.current_lvl]
-			new_tower.duration = GameData.tower_data[build_type]["duration"][new_tower.current_lvl]
+		if new_tower.type_attack != 4:
+			if new_tower.type_attack in [0, 3]:
+				new_tower.damage = GameData.tower_data[build_type]["damage"][new_tower.current_lvl]
+			elif new_tower.type_attack == 1:
+				new_tower.damage = 0
+				new_tower.intensivity = GameData.tower_data[build_type]["intensivity"][new_tower.current_lvl]
+				new_tower.duration = GameData.tower_data[build_type]["duration"][new_tower.current_lvl]
+			else:
+				new_tower.damage = 0
+			new_tower.rof = GameData.tower_data[build_type]["rof"][new_tower.current_lvl]
+			new_tower.range = GameData.tower_data[build_type]["range"][new_tower.current_lvl]
+			new_tower.strategy = 0
 		else:
-			new_tower.damage = 0
-		new_tower.rof = GameData.tower_data[build_type]["rof"][new_tower.current_lvl]
-		new_tower.range = GameData.tower_data[build_type]["range"][new_tower.current_lvl]
-		new_tower.strategy = 0
+			new_tower.speed = GameData.tower_data[build_type]["speed"][new_tower.current_lvl]
+			new_tower.income = GameData.tower_data[build_type]["income"][new_tower.current_lvl]
 		new_tower.max_lvl = GameData.tower_data["Turret_1T1"]["damage"].size() - 1
 		new_tower.built = true
 		new_tower.set_name(build_type + "_1")
@@ -332,23 +334,29 @@ func title_show(id_UI,id):
 	type_attack = GameData.tower_data["Turret_" + id + "T1"]["type attack"]
 	node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[1] + 50)
-	if type_attack in [0, 3]:
-		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["damage"][0])
-		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
-		node_mouse_entered.get_node("V/HInflicted").queue_free()
-		node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
-	elif type_attack == 1:
-		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["intensivity"][0] * 100)
-		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["duration"][0])
-		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-		node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
+	if type_attack != 4:
+		if type_attack in [0, 3]:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["damage"][0])
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
+			node_mouse_entered.get_node("V/HInflicted").queue_free()
+			node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
+		elif type_attack == 1:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["intensivity"][0] * 100)
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["duration"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
+		else:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["distance"][0])
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
+			node_mouse_entered.get_node("V/HInflicted").queue_free()
+			node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
 	else:
-		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["distance"][0])
-		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-		node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
+		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["speed"][0])
+		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["income"][0])
+		node_mouse_entered.get_node("V/HRange").queue_free()
 		node_mouse_entered.get_node("V/HInflicted").queue_free()
-		node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
 	node_mouse_entered.get_node("V/HDamage/HValue/Up").queue_free()
 	node_mouse_entered.get_node("V/HReload/HValue/Up").queue_free()
 	node_mouse_entered.get_node("V/HRange/HValue/Up").queue_free()

@@ -24,6 +24,14 @@ func _ready():
 		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
 		self.get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
 		self.get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
+	elif get_parent().type_attack == 4:
+		self.get_node("V/HStrateg/Strateg").disabled = true
+		self.get_node("V/HDamage/HText/Name").text = tr("KEY_SPEED")
+		self.get_node("V/HReload/HText/Name").text = tr("KEY_INCOME")
+		self.get_node("V/HRange").queue_free()
+		self.get_node("V/HInflicted/").queue_free()
+		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
+		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
 	else:
 		self.get_node("V/HStrateg/Strateg").disabled = true
 		self.get_node("V/HDamage/HText/Name").text = tr("KEY_DISTANCE")
