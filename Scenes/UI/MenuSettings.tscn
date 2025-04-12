@@ -1,10 +1,10 @@
 [gd_scene load_steps=6 format=3 uid="uid://df6ilpx7r5c3o"]
 
-[ext_resource type="Script" path="res://Scenes/UI/MenuSettings.gd" id="1_m2o63"]
+[ext_resource type="Script" uid="uid://c6jlw2flfqwnm" path="res://Scenes/UI/MenuSettings.gd" id="1_m2o63"]
 [ext_resource type="PackedScene" uid="uid://c8xlg4d7ul6dd" path="res://Scenes/UI/ButtonBack.tscn" id="2_3n1c4"]
 [ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/map_0.tscn" id="2_lnwhy"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_ek36s"]
-[ext_resource type="StyleBox" path="res://Styles/StylesTransparent.tres" id="3_p2qoy"]
+[ext_resource type="StyleBox" uid="uid://bb05jp3q1l8qj" path="res://Styles/StylesTransparent.tres" id="3_p2qoy"]
 
 [node name="Control" type="Control"]
 layout_mode = 3

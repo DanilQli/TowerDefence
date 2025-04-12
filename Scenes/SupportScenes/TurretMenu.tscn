@@ -2,7 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bpx5ss7ytkvsg" path="res://Assets/Icons/damage.png" id="1_bkv8p"]
 [ext_resource type="Texture2D" uid="uid://b524h1pa3gby1" path="res://Assets/Icons/reload.png" id="2_f32am"]
-[ext_resource type="Script" path="res://Scenes/SupportScenes/TurretMenu.gd" id="2_j65fi"]
+[ext_resource type="Script" uid="uid://ba4ohilephw28" path="res://Scenes/SupportScenes/TurretMenu.gd" id="2_j65fi"]
 [ext_resource type="Texture2D" uid="uid://wlvgtjcqr7ab" path="res://Assets/Icons/range.png" id="3_wo1gx"]
 [ext_resource type="Texture2D" uid="uid://c0fljhvsh4q0i" path="res://Assets/Icons/inflicted.png" id="4_ed2jo"]
 [ext_resource type="Texture2D" uid="uid://cx78trpbjc2yg" path="res://Assets/Icons/lvl_up.png" id="5_yimri"]

@@ -40,6 +40,9 @@ func _ready():
 func _process(delta):
 	if build_mode:
 		update_tower_preview()
+	if GameData.spped_game != 0.0 and GameData.current_wave >= len(wave_data_all) and (get_node("Map1/Path").get_child_count() == 0 or base_health == 0):
+		##Конечные волны только в компании
+		end_game_company()
 
 func _unhandled_input(event):
 	if event.is_action_released("ui_cancel") and build_mode == true: 
@@ -175,10 +178,7 @@ func spawn_enemies(wave_data):
 	if GameData.current_wave + 1 < len(wave_data_all):
 		await get_tree().create_timer(5).timeout
 		start_next_wave()
-	elif GameData.spped_game != 0.0:
-		await get_tree().create_timer(10).timeout
-		end_game_company()
-		print("Игра пройдена")
+		
 ##
 ## Building Functions
 ##
@@ -261,7 +261,10 @@ func on_base_damage(damage):
 	base_health -= damage
 	if base_health < 1:
 		get_node("UI").update_health(0)
-		end_game()
+		if not GameData.FLAG_GAME_COMPANY:
+			end_game()
+		else:
+			end_game_company()
 	else:
 		get_node("UI").update_health(base_health)
 
@@ -270,20 +273,30 @@ func end_game_company():
 	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1/Label").text = tr("KEY_CONTINUE")
 	var money_dop = 0
-	if base_health == 9:
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
+	if base_health >= 9:
+		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
 		if not GameData.level_option[GameData.currrent_level - 1]:
 			money_dop = int(int(GameData.current_game_score / 10) / 3)
 			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
-	elif base_health < 9:
+	elif base_health > 7:
+		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
+		if not GameData.level_option[GameData.currrent_level - 1]:
+			money_dop = int(int(GameData.current_game_score / 10) / 3.1)
+			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
+	elif base_health > 5:
+		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect2").queue_free()
 		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
 		if not GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 2.05)
+			money_dop = int(int(GameData.current_game_score / 10) / 3.2)
 			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
 	else:
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect1").queue_free()
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect2").queue_free()
+		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
 		if GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 1.1)
+			money_dop = int(int(GameData.current_game_score / 10) / 4)
 			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))

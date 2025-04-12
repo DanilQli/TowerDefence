@@ -18,6 +18,8 @@ func choose_game_mode(index):
 			get_tree().change_scene_to_file("res://Scenes/UI/company_world.tscn")
 		2:
 			GameData.currrent_level = 0
+			GameData.current_wave = 0
+			GameData.FLAG_GAME_COMPANY = false
 			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 	

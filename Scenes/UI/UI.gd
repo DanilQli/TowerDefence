@@ -35,19 +35,18 @@ func update_tower_preview(new_position, color):
 func update_health(base_health):
 	hp_label.text = str(base_health)
 	
-## ## Game Control functions ##
+##Game Control functions ##
 func _on_pause_play_pressed():
 	if get_parent().build_mode:
 		get_parent().cancel_build_mode()
 	if GameData.current_wave == 0:
 		get_parent().start_next_wave()
-	if get_tree().is_paused():
+	elif get_tree().is_paused():
 		GameData.spped_game = 1.0
 		get_tree().paused = false
 	else:
 		get_tree().paused = true
 		GameData.spped_game = 0.0
-
 	
 func _on_speed_up_pressed():
 	if GameData.current_wave == 0:

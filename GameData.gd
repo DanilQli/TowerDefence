@@ -18,6 +18,9 @@ var level_option
 const NUMBER_LEVEL = 2
 const MONEY_BEGIN = [400, 10400, 800]
 
+##Нужно для отображения верного меню завершения игры
+var FLAG_GAME_COMPANY = false 
+
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
@@ -83,9 +86,9 @@ func _ready():
 		list = config.get_value(section, "hp")
 		dict["hp"] = list
 		enemy_data[section] = dict
+	#0 - уровень песочницы
 	for i in range(NUMBER_LEVEL):
 		wave_data.append(config.get_value("wave_data", "level_" + str(i)))
-		
 	strengthening_enemies = config.get_value("settings", "strengthening_enemies")
 	strengthening_enemies_dop = config.get_value("settings", "strengthening_enemies_dop")
 	strengthening_money = config.get_value("settings", "strengthening_money")

@@ -151,15 +151,15 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_77l5j"]
 _data = {
-"RESET": SubResource("Animation_binmm"),
-"open_1": SubResource("Animation_1xdkj"),
-"open_2": SubResource("Animation_huiqr"),
-"open_3": SubResource("Animation_tfeam"),
-"open_4": SubResource("Animation_ib6df"),
-"stay_1": SubResource("Animation_ltuv5"),
-"stay_2": SubResource("Animation_r7iuo"),
-"stay_3": SubResource("Animation_lahny"),
-"stay_4": SubResource("Animation_lmkks")
+&"RESET": SubResource("Animation_binmm"),
+&"open_1": SubResource("Animation_1xdkj"),
+&"open_2": SubResource("Animation_huiqr"),
+&"open_3": SubResource("Animation_tfeam"),
+&"open_4": SubResource("Animation_ib6df"),
+&"stay_1": SubResource("Animation_ltuv5"),
+&"stay_2": SubResource("Animation_r7iuo"),
+&"stay_3": SubResource("Animation_lahny"),
+&"stay_4": SubResource("Animation_lmkks")
 }
 
 [node name="Box" type="TextureButton"]

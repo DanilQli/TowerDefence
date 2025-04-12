@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://d4cftwus4hcci"]
 
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_2gl8y"]
-[ext_resource type="Script" path="res://Scenes/SupportScenes/choose_game_mode.gd" id="1_gdyyg"]
+[ext_resource type="Script" uid="uid://kd36ghvuf4tw" path="res://Scenes/SupportScenes/choose_game_mode.gd" id="1_gdyyg"]
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="2_nicg6"]
 
 [node name="ChooseGameMode" type="ColorRect"]
@@ -59,7 +59,7 @@ size_flags_horizontal = 4
 theme_override_constants/separation = 35
 alignment = 1
 
-[node name="TextureButton_1" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TextureButton_1" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 
@@ -76,7 +76,7 @@ text = "KEY_COMPANY"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton_2" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TextureButton_2" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 
@@ -93,7 +93,7 @@ text = "KEY_SANDBOX"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton_3" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer"]
+[node name="TextureButton_3" type="Button" parent="Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 

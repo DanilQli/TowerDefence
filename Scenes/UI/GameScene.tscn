@@ -1,12 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://fd6cfixonynn"]
+[gd_scene load_steps=10 format=3 uid="uid://fd6cfixonynn"]
 
-[ext_resource type="Script" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
-[ext_resource type="Script" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
+[ext_resource type="Script" uid="uid://cyqyvfr6ycsvc" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
+[ext_resource type="Script" uid="uid://lga5qpeu5xaf" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
 [ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
 [ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="9_e86o2"]
 [ext_resource type="Texture2D" uid="uid://bhdypowo2q6tx" path="res://Assets/Icons/fastForward.png" id="10_ak280"]
 [ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="11_8v5s3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8e88j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1q7y"]
 
 [node name="GameScene" type="Node2D"]
 script = ExtResource("1_8hq5t")
@@ -39,11 +43,11 @@ offset_bottom = 270.0
 grow_vertical = 2
 theme_override_constants/separation = 50
 
-[node name="Tower_1" type="TextureButton" parent="UI/HUD/BuldBar"]
+[node name="Tower_1" type="Button" parent="UI/HUD/BuldBar"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
-texture_normal = ExtResource("4_4fsld")
-ignore_texture_size = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8e88j")
+icon = ExtResource("4_4fsld")
 
 [node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_1"]
 custom_minimum_size = Vector2(60, 60)
@@ -74,11 +78,11 @@ text = "100
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Tower_2" type="TextureButton" parent="UI/HUD/BuldBar"]
+[node name="Tower_2" type="Button" parent="UI/HUD/BuldBar"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
-texture_normal = ExtResource("4_4fsld")
-ignore_texture_size = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("4_4fsld")
 
 [node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_2"]
 custom_minimum_size = Vector2(60, 60)
@@ -112,11 +116,11 @@ text = "100
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Tower_3" type="TextureButton" parent="UI/HUD/BuldBar"]
+[node name="Tower_3" type="Button" parent="UI/HUD/BuldBar"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
-texture_normal = ExtResource("4_4fsld")
-ignore_texture_size = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("4_4fsld")
 
 [node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_3"]
 custom_minimum_size = Vector2(60, 60)
@@ -151,11 +155,11 @@ text = "100
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Tower_4" type="TextureButton" parent="UI/HUD/BuldBar"]
+[node name="Tower_4" type="Button" parent="UI/HUD/BuldBar"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2
-texture_normal = ExtResource("4_4fsld")
-ignore_texture_size = true
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("4_4fsld")
 
 [node name="Icon" type="TextureRect" parent="UI/HUD/BuldBar/Tower_4"]
 custom_minimum_size = Vector2(60, 60)

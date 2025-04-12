@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dcm16eeumnnto"]
 
-[ext_resource type="Script" path="res://Scenes/Enemies/Enemy_4.gd" id="1_s7ic2"]
+[ext_resource type="Script" uid="uid://bwq0wklra514r" path="res://Scenes/Enemies/Enemy_4.gd" id="1_s7ic2"]
 [ext_resource type="Texture2D" uid="uid://mt71jxcgjijq" path="res://Assets/Props/tank_sand.png" id="2_1bkf1"]
 [ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="3_racjw"]
 

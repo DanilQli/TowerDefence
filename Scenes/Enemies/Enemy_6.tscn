@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bti28kt5lqv1s"]
 
-[ext_resource type="Script" path="res://Scenes/Enemies/Enemy_6.gd" id="1_qsko3"]
+[ext_resource type="Script" uid="uid://b6bc7qkk51yrk" path="res://Scenes/Enemies/Enemy_6.gd" id="1_qsko3"]
 [ext_resource type="Texture2D" uid="uid://cd08hi6hfx16o" path="res://Assets/Props/towerDefense_tile270.png" id="2_k6noa"]
 [ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="3_dv081"]
 

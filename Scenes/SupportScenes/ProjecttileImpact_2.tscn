@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://cfxsqqfqklfng" path="res://Assets/Props/range_overlay_3.png" id="3_227rx"]
 [ext_resource type="Texture2D" uid="uid://5aqncqoy4f7b" path="res://Assets/Props/range_overlay_4.png" id="4_7j538"]
 [ext_resource type="Texture2D" uid="uid://lau88wx3wq7w" path="res://Assets/Props/range_overlay_5.png" id="5_l0n6n"]
-[ext_resource type="Script" path="res://Scenes/SupportScenes/ProjecttileImpact_2.gd" id="6_eou4b"]
+[ext_resource type="Script" uid="uid://0shrnd70m7hr" path="res://Scenes/SupportScenes/ProjecttileImpact_2.gd" id="6_eou4b"]
 [ext_resource type="Texture2D" uid="uid://d25qtrghpbxut" path="res://Assets/Props/range_overlay_6.png" id="6_m251i"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nk1ym"]

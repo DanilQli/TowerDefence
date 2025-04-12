@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://6w8rl4uenxud"]
 
-[ext_resource type="Script" path="res://Scenes/Turrets/Turret_2T1.gd" id="1_11jue"]
+[ext_resource type="Script" uid="uid://b3axy4qy1n3ch" path="res://Scenes/Turrets/Turret_2T1.gd" id="1_11jue"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_u1m3h"]
 [ext_resource type="Texture2D" uid="uid://dn7e5x4wc6jn2" path="res://Assets/Props/towerDefense_tile_turret_2.png" id="3_oou1b"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_i0d1p"]
@@ -28,7 +28,7 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
 _data = {
-"Fire": SubResource("Animation_qljwc")
+&"Fire": SubResource("Animation_qljwc")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_busvp"]

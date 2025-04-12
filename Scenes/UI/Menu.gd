@@ -5,10 +5,6 @@ extends Control
 func _ready():
 	TranslationServer.set_locale(GameData.config.get_value("settings_game", "language"))
 	DisplayServer.window_set_size(Vector2i(GameData.config.get_value("settings_game", "width"), GameData.config.get_value("settings_game", "height")))
-	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1").pressed.connect(on_new_game_pressed) 
-	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_2").pressed.connect(settings)
-	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3").pressed.connect(on_quit_pressed)
-	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButtonShop").pressed.connect(shop)
 	get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
 
 func on_new_game_pressed():

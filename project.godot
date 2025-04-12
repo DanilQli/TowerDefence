@@ -12,7 +12,7 @@ config_version=5
 
 config/name="Games"
 run/main_scene="res://Scenes/UI/Menu.tscn"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.4", "GL Compatibility")
 
 [autoload]
 
@@ -45,6 +45,7 @@ ui_cancel={
 
 [input_devices]
 
+compatibility/legacy_just_pressed_behavior=true
 pointing/emulate_touch_from_mouse=true
 
 [internationalization]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://blyxkhs3bsryj"]
 
-[ext_resource type="Script" path="res://Scenes/SupportScenes/shop.gd" id="1_2vv2r"]
+[ext_resource type="Script" uid="uid://ce80a5otelal0" path="res://Scenes/SupportScenes/shop.gd" id="1_2vv2r"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_tbalp"]
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="2_plpne"]
 [ext_resource type="PackedScene" uid="uid://dwf1oxu8qpwn2" path="res://Scenes/SupportScenes/title.tscn" id="4_w43yi"]
@@ -59,12 +59,10 @@ size_flags_horizontal = 3
 theme_override_styles/normal = SubResource("StyleBoxEmpty_5bity")
 text = "KEY_ARMAMENT"
 
-[node name="Close" type="TextureButton" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+[node name="Close" type="Button" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 2
-texture_normal = ExtResource("2_plpne")
-ignore_texture_size = true
-stretch_mode = 0
+icon = ExtResource("2_plpne")
 
 [node name="Armanent" type="VBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2

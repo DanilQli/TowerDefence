@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://57nw0gl5pwn4" path="res://Assets/Effect/explosionSmoke3.png" id="3_thyje"]
 [ext_resource type="Texture2D" uid="uid://c5ac2uiguyeiw" path="res://Assets/Effect/explosionSmoke4.png" id="4_pf6km"]
 [ext_resource type="Texture2D" uid="uid://doqc0ls34nk73" path="res://Assets/Effect/explosionSmoke5.png" id="5_u1cw1"]
-[ext_resource type="Script" path="res://Scenes/SupportScenes/ProjecttileImpact_3.gd" id="6_tof64"]
+[ext_resource type="Script" uid="uid://b73ccrl6o3j4i" path="res://Scenes/SupportScenes/ProjecttileImpact_3.gd" id="6_tof64"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_nk1ym"]
 animations = [{

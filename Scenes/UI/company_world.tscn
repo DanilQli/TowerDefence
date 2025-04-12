@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://cjirldacwhlmk"]
 
-[ext_resource type="Script" path="res://Scenes/UI/company_world.gd" id="1_q510f"]
+[ext_resource type="Script" uid="uid://by3ja2tixv8ly" path="res://Scenes/UI/company_world.gd" id="1_q510f"]
 [ext_resource type="Texture2D" uid="uid://25c5klntcgrn" path="res://Assets/Bg/company_bg.png" id="2_8o4ik"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bbnl2"]
