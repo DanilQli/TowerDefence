@@ -23,7 +23,7 @@ GameData="*res://GameData.gd"
 window/size/viewport_width=1600
 window/size/viewport_height=900
 window/stretch/mode="viewport"
-window/stretch/aspect="expand"
+window/stretch/aspect="ignore"
 mouse_cursor/custom_image="res://Assets/Button/cursor.png"
 
 [input]

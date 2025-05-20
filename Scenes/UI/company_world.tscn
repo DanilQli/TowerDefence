@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=3 uid="uid://cjirldacwhlmk"]
+[gd_scene load_steps=7 format=3 uid="uid://cjirldacwhlmk"]
 
 [ext_resource type="Script" uid="uid://by3ja2tixv8ly" path="res://Scenes/UI/company_world.gd" id="1_q510f"]
 [ext_resource type="Texture2D" uid="uid://25c5klntcgrn" path="res://Assets/Bg/company_bg.png" id="2_8o4ik"]
+[ext_resource type="PackedScene" uid="uid://buhu8215c08ls" path="res://Scenes/SupportScenes/back.tscn" id="3_hb8iq"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bbnl2"]
 
@@ -343,3 +344,15 @@ text = "9
 "
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Back" parent="." instance=ExtResource("3_hb8iq")]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -350.0
+offset_top = 30.0
+offset_right = -30.0
+grow_horizontal = 0
+
+[connection signal="pressed" from="Back" to="." method="back"]

@@ -10,3 +10,7 @@ func game_start(level):
 	GameData.current_wave = 0
 	GameData.FLAG_GAME_COMPANY = true
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
+
+
+func back() -> void:
+	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
