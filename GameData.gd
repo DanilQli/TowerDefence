@@ -15,8 +15,8 @@ var config
 var best_score
 var currrent_level = 0
 var level_option
-const NUMBER_LEVEL = 2
-const MONEY_BEGIN = [400, 10400, 800]
+const NUMBER_LEVEL = 3
+const MONEY_BEGIN = [4000, 10400, 800]
 
 ##Нужно для отображения верного меню завершения игры
 var FLAG_GAME_COMPANY = false 
