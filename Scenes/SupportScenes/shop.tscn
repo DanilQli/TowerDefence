@@ -113,12 +113,22 @@ text = "KEY_AVAILABLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Hb" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox"]
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox"]
 layout_mode = 2
-alignment = 1
+size_flags_vertical = 3
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
 
-[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb"]
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
 theme_override_constants/h_separation = 5
 theme_override_constants/v_separation = 5
 columns = 6

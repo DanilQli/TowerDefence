@@ -2,16 +2,17 @@ extends Control
 	
 # Пути к сценам
 const SCENE_PATH := "res://Scenes/Maps/map_0.tscn"
-const OUTPUT_PATH := "res://Scenes/Maps/map_0.tscn"
 const TILE_LAYER_PATH := "TowerExlusion"
 
 # Terrain параметры
 const TERRAIN_SET_ID := 0       # ID набора местности (TerrainSet)
-const TERRAIN_ID_ROAD := 0      # ID местности "road" внутри набора
 
 # Обычные tile ID
 const TILE_ID_ATLAS_8_0 = [4, 8, 8]    # tile ID для значений 2, 3, 4 вручную
 
+var n = 3
+var url = "https://lobste.pythonanywhere.com/generate"
+var request = HTTPRequest.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	get_node("Panel/MarginContainer/VBoxContainer/TextureButton_1").pressed.connect(choose_game_mode.bind(1))
@@ -31,17 +32,10 @@ func choose_game_mode(index):
 			GameData.currrent_level = 0
 			GameData.current_wave = 0
 			GameData.FLAG_GAME_COMPANY = false
-			var url = "https://lobste.pythonanywhere.com/generate"
-			var request = HTTPRequest.new()
-			add_child(request)
-
-			request.request(
-				url,
-				[],
-				HTTPClient.METHOD_POST,
-				""
-			)
-			request.connect("request_completed", Callable(self, "_on_request_completed"))
+			#add_child(request)
+			#request.request( url, [], HTTPClient.METHOD_POST, "" )
+			#request.connect("request_completed", Callable(self, "_on_request_completed"))
+			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 	
 func _on_request_completed(result, response_code, headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
@@ -64,7 +58,7 @@ func update_tilemap_with_map_data(data: Array):
 
 	var scene_instance = original_scene.instantiate()
 
-	var tilemap: TileMap = scene_instance.get_node(TILE_LAYER_PATH)
+	var tilemap: TileMapLayer = scene_instance.get_node(TILE_LAYER_PATH)
 	if not tilemap:
 		return
 
@@ -79,11 +73,11 @@ func update_tilemap_with_map_data(data: Array):
 	# 📌 Шаг 1: Собираем точки для terrain ("дорожки")
 	var terrain_points := []  # координаты Vector2i
 	for i in range(len(data) + 2):
-		tilemap.set_cell(0, Vector2i(0, i), 8, Vector2i(0, 0))
-		tilemap.set_cell(0, Vector2i(len(data[0]) + 2, i), 4, Vector2i(0, 0))
+		tilemap.set_cell(Vector2i(0, i), 8, Vector2i(0, 0))
+		tilemap.set_cell(Vector2i(len(data[0]) + 2, i), 4, Vector2i(0, 0))
 	for i in range(len(data[0]) + 2):
-		tilemap.set_cell(0, Vector2i(i, 0), 8, Vector2i(0, 0))
-		tilemap.set_cell(0, Vector2i(i, len(data) + 2), 4, Vector2i(0, 0))
+		tilemap.set_cell(Vector2i(i, 0), 8, Vector2i(0, 0))
+		tilemap.set_cell(Vector2i(i, len(data) + 2), 4, Vector2i(0, 0))
 	for y in data.size():
 		for x in data[y].size():
 			var value = int(data[y][x])
@@ -92,11 +86,11 @@ func update_tilemap_with_map_data(data: Array):
 					terrain_points.append(Vector2i(x + 1, y + 1))  # только собираем пока
 				2, 3, 4:
 					# ставим обычный tile
-					tilemap.set_cell(0, Vector2i(x + 1, y + 1), TILE_ID_ATLAS_8_0[value - 2], Vector2i(0, 0))
+					tilemap.set_cell(Vector2i(x + 1, y + 1), TILE_ID_ATLAS_8_0[value - 2], Vector2i(0, 0))
 				_:
 					pass
 	var sorted_path = order_path(terrain_points.duplicate())
-	
+
 	if scene_instance.get_node("Path").curve:
 		scene_instance.get_node("Path").curve.clear_points()
 	var curve = Curve2D.new()
@@ -107,19 +101,27 @@ func update_tilemap_with_map_data(data: Array):
 		# Умножаем на размер тайла (предполагая, что размер тайла 64x64)
 		var world_position = Vector2(point.x * 64 + 32, point.y * 64 + 32)
 		curve.add_point(world_position)
-	
 
 	# Устанавливаем кривую для пути
 	scene_instance.get_node("Path").curve = curve
-	
 	# 🏗️ Шаг 2: Автоматическая дорога
-	tilemap.set_cells_terrain_connect(0, sorted_path, TERRAIN_SET_ID, TERRAIN_ID_ROAD, true)
+	tilemap.set_cells_terrain_connect(sorted_path, TERRAIN_SET_ID, randi_range(0, 3), true)
 	# 💾 Сохраняем сцену
 	var packed = PackedScene.new()
 	packed.pack(scene_instance)
-	var result = ResourceSaver.save(packed, OUTPUT_PATH)
+	#var result = ResourceSaver.save(packed, "res://Scenes/Maps/map_" + str(n) + ".tscn")
+	print(n)
+	send_next_request()
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
+func send_next_request():
+	if n >= 10:
+		print("Все запросы отправлены.")
+		return
+	else:
+		request.request( url, [], HTTPClient.METHOD_POST, "" )
+	n += 1
+	
 # Упорядочивает список клеток так, чтобы идти от начала до конца (жадно по ближайшей)
 func order_path(points: Array) -> Array:
 	points.sort_custom(func(a, b): return a.x < b.x)

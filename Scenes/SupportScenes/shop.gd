@@ -56,7 +56,7 @@ func _ready():
 			var have = load('res://Scenes/SupportScenes/turret_choose.tscn').instantiate()
 			have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
 			have.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-			get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Hb/GridContainer").add_child(have)
+			get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer/ScrollContainer/GridContainer").add_child(have)
 			if data["activity"]:
 				var activity = load('res://Scenes/SupportScenes/turret_mini.tscn').instantiate()
 				activity.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")

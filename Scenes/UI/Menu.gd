@@ -3,8 +3,8 @@ extends Control
 
 
 func _ready():
-	TranslationServer.set_locale(GameData.config.get_value("settings_game", "language"))
-	DisplayServer.window_set_size(Vector2i(GameData.config.get_value("settings_game", "width"), GameData.config.get_value("settings_game", "height")))
+	TranslationServer.set_locale(GameData.data.get("SettingsGame", {}).get("language", "en"))
+	DisplayServer.window_set_size(Vector2i(GameData.data.get("SettingsGame", {}).get("width", 1600), GameData.data.get("SettingsGame", {}).get("height", 900)))
 	get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
 
 func on_new_game_pressed():

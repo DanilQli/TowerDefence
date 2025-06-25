@@ -41,7 +41,7 @@ func _ready():
 		self.get_node("Menu/V/HButton/Up").disabled = true
 		update_menu()
 		update_menu_upgrade()
-			
+	
 func _physics_process(delta):
 	if enemy_array.size() != 0 and built and self.type_attack != 4:
 		select_enemy()
@@ -53,7 +53,6 @@ func _physics_process(delta):
 		enemy = null
 		
 func turn():
-#	var enemy_position = i.get_parent().get_curve().get_baked_length() - i.progress()
 	get_node("Turret").look_at(enemy.position)
 
 func select_enemy():
@@ -108,7 +107,7 @@ func _on_Range_body_exited(body):
 func _on_menu_button_pressed():
 	for i in self.get_parent().get_children():
 		i.get_node("MenuButton").hide()
-	if GameData.current_money >= GameData.tower_data[self.type]["upgrade for"][self.current_lvl]:
+	if GameData.current_money >= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]:
 		self.get_node("Menu/V/HButton/Up").disabled = false
 	if self.type_attack == 0:
 		self.get_node("Menu/V/HInflicted/HValue/Value").text = str(self.inflicted)
@@ -147,8 +146,8 @@ func hide_menu():
 
 func upgrade():
 	if self.current_lvl < self.max_lvl:
-		if GameData.current_money >= GameData.tower_data[self.type]["upgrade for"][self.current_lvl]:
-			GameData.current_money -= GameData.tower_data[self.type]["upgrade for"][self.current_lvl]
+		if GameData.current_money >= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]:
+			GameData.current_money -= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]
 			get_parent().get_parent().get_parent().base_money()
 			emit_signal("base_money") 
 			self.current_lvl += 1
@@ -162,6 +161,7 @@ func upgrade():
 					self.duration = GameData.tower_data[self.type]["distance"][self.current_lvl]
 				self.rof = GameData.tower_data[self.type]["rof"][self.current_lvl]
 				self.range = GameData.tower_data[self.type]["range"][self.current_lvl]
+				self.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * self.range
 			else:
 				self.speed = GameData.tower_data[self.type]["speed"][self.current_lvl]
 				self.income = GameData.tower_data[self.type]["income"][self.current_lvl]
@@ -206,7 +206,6 @@ func update_menu_upgrade():
 			self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["intensivity"][self.current_lvl + 1] - GameData.tower_data[self.type]["intensivity"][self.current_lvl])
 			self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["duration"][self.current_lvl + 1] - GameData.tower_data[self.type]["duration"][self.current_lvl])
 			self.get_node("Menu/V/HRange/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl + 1])
-	#		self.get_node("Menu/V/HInflicted/HValue/Up").text = str(GameData.tower_data[self.type]["range"][self.current_lvl] - GameData.tower_data[self.type]["range"][self.current_lvl])
 		else:
 			self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["distance"][self.current_lvl + 1] - GameData.tower_data[self.type]["distance"][self.current_lvl])
 			self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl])
@@ -214,7 +213,7 @@ func update_menu_upgrade():
 	else:
 		self.get_node("Menu/V/HDamage/HValue/Up").text = str(GameData.tower_data[self.type]["speed"][self.current_lvl + 1] - GameData.tower_data[self.type]["speed"][self.current_lvl])
 		self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["income"][self.current_lvl + 1] - GameData.tower_data[self.type]["income"][self.current_lvl])
-	self.get_node("Menu/V/HButton/Up/LabelValue").text = str(GameData.tower_data[self.type]["upgrade for"][self.current_lvl])
+	self.get_node("Menu/V/HButton/Up/LabelValue").text = str(GameData.tower_data[self.type]["upgrade_for"][self.current_lvl])
 
 func update_money():
 	"""Получить монеты в башни"""

@@ -89,8 +89,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
-text = "10
-"
+text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -99,8 +98,7 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
-text = "+
-"
+text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -133,8 +131,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
-text = "10
-"
+text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -143,8 +140,7 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
-text = "-
-"
+text = "-"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -177,8 +173,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
-text = "10
-"
+text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -187,8 +182,7 @@ custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0.32549, 1, 0.298039, 1)
-text = "+
-"
+text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -221,8 +215,7 @@ layout_mode = 2
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 1
-text = "10
-"
+text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -241,6 +234,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 1, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="V/HButton/Up"]
@@ -250,6 +244,7 @@ offset_left = 47.0
 offset_top = 15.0
 offset_right = 77.0
 offset_bottom = 45.0
+mouse_filter = 2
 texture = ExtResource("5_yimri")
 expand_mode = 1
 
@@ -293,6 +288,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(1, 1, 0, 1)
 
 [node name="TextureRect" type="TextureRect" parent="V/HButton/Close"]
@@ -302,6 +298,7 @@ offset_left = 47.0
 offset_top = 15.0
 offset_right = 77.0
 offset_bottom = 45.0
+mouse_filter = 2
 texture = ExtResource("6_18ceo")
 expand_mode = 1
 

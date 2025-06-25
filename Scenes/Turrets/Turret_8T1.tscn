@@ -1,0 +1,86 @@
+[gd_scene load_steps=11 format=3 uid="uid://be7j1v7e5b6nu"]
+
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_ovkfe"]
+[ext_resource type="Script" uid="uid://cnjiv3wt8d2rh" path="res://Scenes/Turrets/Turret_8T1.gd" id="1_pnhbx"]
+[ext_resource type="Texture2D" uid="uid://g34j3re212w0" path="res://Assets/Props/ground_shaker_asset/Camo/Weapons/weapons.png" id="2_pnhbx"]
+[ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="3_jwsdu"]
+[ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_au358"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dqtj1"]
+radius = 175.0
+
+[sub_resource type="Animation" id="Animation_ovkfe"]
+resource_name = "Fire"
+length = 0.15
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="Animation" id="Animation_pnhbx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jwsdu"]
+_data = {
+&"Fire": SubResource("Animation_ovkfe"),
+&"RESET": SubResource("Animation_pnhbx")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_au358"]
+size = Vector2(60, 60)
+
+[node name="Turret_8T1" type="Node2D"]
+script = ExtResource("1_pnhbx")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("1_ovkfe")
+
+[node name="Turret" type="Sprite2D" parent="."]
+scale = Vector2(0.9, 0.9)
+texture = ExtResource("2_pnhbx")
+hframes = 4
+vframes = 4
+frame = 4
+
+[node name="Muzzle" type="Marker2D" parent="Turret"]
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_jwsdu")
+offset = Vector2(0, -75)
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_dqtj1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_jwsdu")
+}
+
+[node name="MenuButton" type="TouchScreenButton" parent="."]
+shape = SubResource("RectangleShape2D_au358")
+
+[node name="Menu" parent="." instance=ExtResource("4_au358")]
+visible = false

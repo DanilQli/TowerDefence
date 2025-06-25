@@ -10,7 +10,7 @@ func set_tower_preview(tower_type, mouse_position):
 	control.add_child(drag_tower, true)
 	var range_texture = Sprite2D.new()
 	var scaling
-	if GameData.tower_data[tower_type]["type attack"] != 4:
+	if int(GameData.tower_data[tower_type]["type_attack"]) != 4:
 		scaling = GameData.tower_data[tower_type]["range"][0] / 600.0
 	else:
 		scaling = 0.1

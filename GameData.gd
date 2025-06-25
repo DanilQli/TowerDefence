@@ -1,4 +1,5 @@
 extends Node
+"""type_attack: 0 обычная 1 - замедление 2 - перемещение 3 - по области 4 - приносит деньги"""
 var menu_object
 var strengthening_enemies
 var strengthening_enemies_dop
@@ -8,6 +9,7 @@ var current_wave = 0
 var current_game_score = 0
 var current_money
 const modifer_value = 1.0
+const NUMBER_TURRET = 10
 var spped_game = 0.0
 var list_wave_gift
 var list_open_menu_turrets = []
@@ -15,6 +17,7 @@ var config
 var best_score
 var currrent_level = 0
 var level_option
+var data
 const NUMBER_LEVEL = 3
 const MONEY_BEGIN = [4000, 10400, 800]
 
@@ -30,86 +33,70 @@ var enemy_data = {}
 var wave_data = []
 	
 func _ready():
-	config = ConfigFile.new()
-	config.load("res://Files/options.cfg")
-	var dict = {}
-	var list = []
-	var section
-	for i in range(6):
-		dict = {}
-		list = []
-		section = "Turret_" + str(i + 1) + "T1"
-		if i != 5:
-			if i in [0, 1, 2]:
-				list = config.get_value(section, "damage")
-				dict["damage"] = list
-			elif i == 3:
-				list = config.get_value(section, "intensivity")
-				dict["intensivity"] = list
-				list = config.get_value(section, "duration")
-				dict["duration"] = list
-			elif i == 4:
-				list = config.get_value(section, "distance")
-				dict["distance"] = list
-			list = config.get_value(section, "rof")
-			dict["rof"] = list
-			list = config.get_value(section, "range")
-			dict["range"] = list
-		else:
-			list = config.get_value(section, "speed")
-			dict["speed"] = list
-			list = config.get_value(section, "income")
-			dict["income"] = list
-		list = config.get_value(section, "upgrade_for")
-		dict["upgrade for"] = list
-		list = config.get_value(section, "cost")
-		dict["cost"] = list
-		list = config.get_value(section, "type_explosion")
-		dict["type explosion"] = list
-		list = config.get_value(section, "type_attack")
-		dict["type attack"] = list
-		list = config.get_value(section, "have")
-		dict["have"] = list
-		list = config.get_value(section, "activity")
-		dict["activity"] = list
-		list = config.get_value(section, "prise")
-		dict["prise"] = list
-		tower_data[section] = dict
-	for i in range(8):
-		dict = {}
-		list = []
-		section = "Enemy_" + str(i + 1)
-		list = config.get_value(section, "speed")
-		dict["speed"] = list
-		list = config.get_value(section, "money_death")
-		dict["money death"] = list
-		list = config.get_value(section, "hp")
-		dict["hp"] = list
-		enemy_data[section] = dict
-	#0 - уровень песочницы
-	for i in range(NUMBER_LEVEL):
-		wave_data.append(config.get_value("wave_data", "level_" + str(i)))
-	strengthening_enemies = config.get_value("settings", "strengthening_enemies")
-	strengthening_enemies_dop = config.get_value("settings", "strengthening_enemies_dop")
-	strengthening_money = config.get_value("settings", "strengthening_money")
-	current_money = config.get_value("settings", "current_money")
-	list_wave_gift = config.get_value("settings", "list_wave_gift")
-	best_score = config.get_value("settings_game", "best_score")
-	resources_money = config.get_value("Resources", "money")
-	level_option = config.get_value("level_option", "level")
+	var file = FileAccess.open("res://Files/resurse.json", FileAccess.READ)
+	if file == null:
+		printerr("⛔ Не удалось открыть файл resurse.json")
+		return
+	
+	var content = file.get_as_text()
+	var result = JSON.parse_string(content)
+	
+	if typeof(result) != TYPE_DICTIONARY:
+		printerr("⛔ Неверный формат JSON данных")
+		return
+	
+	data = result
+	
+	# 1. 🪙 Ресурсы
+	resources_money = data.get("Resources", {}).get("money", 0)
 
-	#for i in 100:
-		#wave_data.append([
-			#["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_5", 1.0],
-			#["Enemy_5", 1.5], ["Enemy_8", 2.5], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
-			#["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
-			#["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0],
-			#["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_4", 1.0], ["Enemy_5", 1.0],
-			#["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_4", 1.0], ["Enemy_3", 1.0], ["Enemy_2", 1.0],
-			#["Enemy_2", 0.7], ["Enemy_6", 0.8], ["Enemy_1", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
-			#["Enemy_4", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0], ["Enemy_3", 1.0], ["Enemy_4", 1.0],
-			#["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
-			#["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]])
+	# 2. 🧱 Башни
+	var turrets = data.get("Turrets", {})
+	for name in turrets.keys():
+		tower_data[name] = turrets[name]
+
+	# 3. 👾 Враги
+	var enemies = data.get("Enemies", {})
+	for name in enemies.keys():
+		enemy_data[name] = enemies[name]
+
+	# 4. 🌊 Волны
+	var wave = data.get("WaveData", {})
+	for i in range(wave.size()):
+		var key = "level_" + str(i)
+		if wave.has(key):
+			wave_data.append(wave[key])
+		else:
+			wave_data.append([])
+
+	# 5. ⚙️ Настройки
+	var settings = data.get("Settings", {})
+	strengthening_enemies = settings.get("strengthening_enemies", 0)
+	strengthening_enemies_dop = settings.get("strengthening_enemies_dop", 0)
+	strengthening_money = settings.get("strengthening_money", 0)
+	current_money = settings.get("current_money", 0)
+	list_wave_gift = settings.get("list_wave_gift", [])
+
+	# 6. 🖥Настройки игры
+	var game_settings = data.get("SettingsGame", {})
+	best_score = game_settings.get("best_score", 0)
+
+	# 7. 📘 Уровни
+	level_option = data.get("LevelOption", {}).get("level", [])
+	
+	
+	for i in 100:
+		wave_data[0].append([
+			["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_5", 1.0],
+			["Enemy_5", 1.5], ["Enemy_8", 2.5], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
+			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
+			["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0],
+			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_4", 1.0], ["Enemy_5", 1.0],
+			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_4", 1.0], ["Enemy_3", 1.0], ["Enemy_2", 1.0],
+			["Enemy_2", 0.7], ["Enemy_6", 0.8], ["Enemy_1", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
+			["Enemy_4", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0], ["Enemy_3", 1.0], ["Enemy_4", 1.0],
+			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
+			["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]])
 
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):

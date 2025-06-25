@@ -10,7 +10,7 @@ var build_location
 var build_type
 var build_tile
 var enemies_in_wave = 0
-var base_health = 10
+var base_health = 100
 var wave_data_all = GameData.wave_data[GameData.currrent_level]
 var wave_data = wave_data_all[GameData.current_wave]
 var node_mouse_entered
@@ -27,7 +27,7 @@ func _ready():
 	map_node = load("res://Scenes/Maps/map_" + str(GameData.currrent_level) + ".tscn").instantiate()
 	get_node(".").add_child(map_node)
 	map_node = get_node("Map" + str(GameData.currrent_level))
-	for i in range(6):
+	for i in range(GameData.NUMBER_TURRET):
 		if GameData.tower_data["Turret_" + str(i + 1) + "T1"]["activity"] == true:
 			list_activity_turret.append(i + 1)
 	for i in range(len(list_activity_turret)):
@@ -173,7 +173,7 @@ func spawn_enemies(wave_data):
 		new_enemy.speed = GameData.enemy_data[new_enemy.names]["speed"]
 		new_enemy.duration_speed_mod = 0
 		new_enemy.base_damage.connect(on_base_damage)
-		map_node.get_node("Path").add_child(new_enemy,true) 
+		map_node.get_node("Path/" + str(randi_range(0, map_node.get_node("Path").get_child_count() - 1))).add_child(new_enemy,true) 
 		await get_tree().create_timer(i[1]).timeout
 	if GameData.current_wave + 1 < len(wave_data_all):
 		await get_tree().create_timer(5).timeout
@@ -200,7 +200,7 @@ func update_tower_preview():
 	var mouse_position = get_global_mouse_position()
 	var current_tile = map_node.get_node("TowerExlusion").local_to_map(mouse_position)
 	var tile_position = map_node.get_node("TowerExlusion").map_to_local(current_tile)
-	if map_node.get_node("TowerExlusion").get_cell_source_id(0, current_tile) == -1:  
+	if map_node.get_node("TowerExlusion").get_cell_source_id(current_tile) == -1:  
 		get_node("UI").update_tower_preview(tile_position, "008000")
 		build_valid = true
 		build_location = tile_position
@@ -223,8 +223,8 @@ func verify_and_build():
 		new_tower.type = build_type
 		new_tower.inflicted = 0
 		new_tower.current_lvl = 0
-		new_tower.type_explosion = GameData.tower_data[build_type]["type explosion"]
-		new_tower.type_attack = GameData.tower_data[build_type]["type attack"]
+		new_tower.type_explosion = int(GameData.tower_data[build_type]["type_explosion"])
+		new_tower.type_attack = int(GameData.tower_data[build_type]["type_attack"])
 		if new_tower.type_attack != 4:
 			if new_tower.type_attack in [0, 3]:
 				new_tower.damage = GameData.tower_data[build_type]["damage"][new_tower.current_lvl]
@@ -244,7 +244,7 @@ func verify_and_build():
 		new_tower.built = true
 		new_tower.set_name(build_type + "_1")
 		map_node.get_node("Turret").add_child(new_tower, true)
-		map_node.get_node("TowerExlusion").set_cell(0, build_tile, 0, Vector2i(0,4))
+		map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0,4))
 		GameData.current_money -= GameData.tower_data[build_type]["cost"]
 		base_money()
 
@@ -343,8 +343,8 @@ func restart():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 	
-func title_show(id_UI,id):
-	type_attack = GameData.tower_data["Turret_" + id + "T1"]["type attack"]
+func title_show(id_UI, id):
+	type_attack = int(GameData.tower_data["Turret_" + id + "T1"]["type_attack"])
 	node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[1] + 50)
 	if type_attack != 4:
