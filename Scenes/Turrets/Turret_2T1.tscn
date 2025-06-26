@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://6w8rl4uenxud"]
 
-[ext_resource type="Script" uid="uid://b3axy4qy1n3ch" path="res://Scenes/Turrets/Turret_2T1.gd" id="1_11jue"]
+[ext_resource type="Script" uid="uid://bpvyodh3m651h" path="res://Scenes/Turrets/AreaTower.gd" id="1_o67pk"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_u1m3h"]
 [ext_resource type="Texture2D" uid="uid://dn7e5x4wc6jn2" path="res://Assets/Props/towerDefense_tile_turret_2.png" id="3_oou1b"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_i0d1p"]
@@ -34,7 +34,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_busvp"]
 
 [node name="Turret_2T1" type="Node2D"]
-script = ExtResource("1_11jue")
+script = ExtResource("1_o67pk")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_u1m3h")

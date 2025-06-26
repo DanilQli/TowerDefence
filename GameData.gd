@@ -103,4 +103,4 @@ func _input(event):
 		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 		
 func write_file():
-	config.save("res://Files/options.cfg") 
+	data.save("res://Files/resurse.json") 

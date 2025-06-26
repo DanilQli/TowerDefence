@@ -6,9 +6,9 @@ func _ready() -> void:
 		get_node("Panel").get_child(i).pressed.connect(game_start.bind(i + 1))
 		
 func game_start(level):
-	GameData.currrent_level = level
-	GameData.current_wave = 0
-	GameData.FLAG_GAME_COMPANY = true
+	GameSession.current_level = level
+	GameSession.current_wave = 0
+	GameSession.game_mode = GameConstants.GameMode.CAMPAIGN
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 

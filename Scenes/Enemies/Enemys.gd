@@ -1,7 +1,7 @@
 extends PathFollow2D
 
 signal base_damage(damage)
-signal base_money()
+signal money_in_game_session_changed()
 var damage = 1
 
 var speed
@@ -17,7 +17,7 @@ var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
 
 func _ready():
-	self.hp += self.hp * GameData.current_wave * (GameData.strengthening_enemies + (GameData.strengthening_enemies_dop * GameData.current_wave))
+	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.health_bar.max_value = hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
@@ -44,17 +44,16 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 		self.health_bar.visible = true
 		self.health_bar.value = hp
 		if self.hp <= 0:
-			GameData.current_game_score += int(float(GameData.enemy_data[self.names]["money_death"]) / 2 * (GameData.current_wave / 3.0))
-			GameData.current_money += int(GameData.enemy_data[self.names]["money_death"]) + int(float(GameData.enemy_data[self.names]["money_death"]) * GameData.current_wave * GameData.strengthening_money)
-			get_parent().get_parent().get_parent().get_parent().base_money()
+			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 	elif type_attack == 1: 
-		self.speed -= (self.speed * float(GameData.tower_data[type_turret]["intensivity"][level]))
+		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))
 		if self.speed < 50:
 			self.speed = 50
-		self.duration_speed_mod = int(GameData.tower_data[type_turret]["duration"][level])
+		self.duration_speed_mod = int(DataManager.tower_data[type_turret]["duration"][level])
 	else:
-		self.progress -= float(GameData.tower_data[type_turret]["distance"][level])
+		self.progress -= float(DataManager.tower_data[type_turret]["distance"][level])
 
 func impact(type_explosion, type_attack):
 	randomize()

@@ -10,8 +10,8 @@ func set_tower_preview(tower_type, mouse_position):
 	control.add_child(drag_tower, true)
 	var range_texture = Sprite2D.new()
 	var scaling
-	if int(GameData.tower_data[tower_type]["type_attack"]) != 4:
-		scaling = GameData.tower_data[tower_type]["range"][0] / 600.0
+	if int(DataManager.tower_data[tower_type]["type_attack"]) != 4:
+		scaling = DataManager.tower_data[tower_type]["range"][0] / 600.0
 	else:
 		scaling = 0.1
 	range_texture.scale = Vector2(scaling, scaling)
@@ -39,21 +39,21 @@ func update_health(base_health):
 func _on_pause_play_pressed():
 	if get_parent().build_mode:
 		get_parent().cancel_build_mode()
-	if GameData.current_wave == 0:
+	if GameSession.current_wave == 0:
 		get_parent().start_next_wave()
 	elif get_tree().is_paused():
-		GameData.spped_game = 1.0
+		GameSession.speed_game = 1.0
 		get_tree().paused = false
 	else:
 		get_tree().paused = true
-		GameData.spped_game = 0.0
+		GameSession.speed_game = 0.0
 	
 func _on_speed_up_pressed():
-	if GameData.current_wave == 0:
+	if GameSession.current_wave == 0:
 		get_parent().start_next_wave()
-	if GameData.spped_game == 4.0:
-		GameData.spped_game = 1.0
-		Engine.set_time_scale(GameData.spped_game)
+	if GameSession.speed_game == 4.0:
+		GameSession.speed_game = 1.0
+		Engine.set_time_scale(GameSession.speed_game)
 	else:
-		GameData.spped_game = 4.0
-		Engine.set_time_scale(GameData.spped_game)
+		GameSession.speed_game = 4.0
+		Engine.set_time_scale(GameSession.speed_game)

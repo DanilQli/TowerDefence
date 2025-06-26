@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cril11u75jsto"]
 
-[ext_resource type="Script" uid="uid://uv5h664uvcda" path="res://Scenes/Turrets/Turret_4T1.gd" id="1_i6y07"]
+[ext_resource type="Script" uid="uid://dgpoqe3gn3gey" path="res://Scenes/Turrets/SlowTower.gd" id="1_o2toj"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsc7c"]
 [ext_resource type="Texture2D" uid="uid://cnf7oapk7xb8m" path="res://Assets/Props/towerDefense_tile_turret_4.png" id="3_tvhnh"]
 [ext_resource type="Texture2D" uid="uid://bqv8dyl6nqjod" path="res://Assets/Effect/towerDefense_tile29.png" id="4_np7fb"]
@@ -34,7 +34,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_75gvj"]
 
 [node name="Turret_4T1" type="Node2D"]
-script = ExtResource("1_i6y07")
+script = ExtResource("1_o2toj")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_xsc7c")
@@ -61,7 +61,7 @@ shape = SubResource("CircleShape2D_bbscr")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MenuButton")
 libraries = {
-"": SubResource("AnimationLibrary_yclq1")
+&"": SubResource("AnimationLibrary_yclq1")
 }
 
 [node name="MenuButton" type="TouchScreenButton" parent="."]

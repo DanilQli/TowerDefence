@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://cxoc426ms2sac"]
 
-[ext_resource type="Script" uid="uid://ddeus8voifjxb" path="res://Scenes/Turrets/Turret_6T1.gd" id="1_h24cq"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_kfpwl"]
+[ext_resource type="Script" uid="uid://djm6oxar5nkag" path="res://Scenes/Turrets/MoneyTower.gd" id="1_l7q3k"]
 [ext_resource type="Texture2D" uid="uid://but4q60dblysg" path="res://Assets/Props/towerDefense_tile_turret_6.png" id="2_b7i2s"]
 [ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_b0npw"]
 
@@ -45,7 +45,7 @@ _data = {
 }
 
 [node name="Turret_6T1" type="Node2D"]
-script = ExtResource("1_h24cq")
+script = ExtResource("1_l7q3k")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_kfpwl")
