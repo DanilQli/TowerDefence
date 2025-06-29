@@ -1,12 +1,21 @@
-## Башня для генерации денег, не участвует в бою
 extends TowerBase
 class_name MoneyTower
 
-## Инициализация башни, устанавливает тип как MONEY
-func _ready() -> void:
-	type_attack = GameConstants.TowerType.MONEY
-	super._ready()
+var income: float
+var speed: float
 
-## Переопределяет физический процесс, так как башня не атакует
-func _physics_process(_delta: float) -> void:
-	pass
+func _ready():
+	type_attack = GameConstants.TowerType.MONEY
+	get_node("Timer").wait_time = speed
+	get_node("Timer").timeout.connect(_on_timer_timeout)
+	get_node("Timer").start()
+	super._ready()
+	get_node("AnimationPlayer").play("Fire")
+
+func fire(): pass
+func _apply_damage(): pass
+
+func _on_timer_timeout():
+	var profit = income * (GameSession.speed_game if GameSession.speed_game != 0.0 else 1.0)
+	ResourceManager.add_money(int(profit))
+	emit_signal("money_in_game_session_changed")

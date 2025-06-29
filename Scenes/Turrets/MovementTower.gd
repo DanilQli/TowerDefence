@@ -1,12 +1,15 @@
-## Башня для перемещения врагов
 extends TowerBase
 class_name MovementTower
 
-## Инициализация башни, устанавливает тип как MOVEMENT
-func _ready() -> void:
-	type_attack = GameConstants.TowerType.MOVEMENT
-	super._ready()
+var distance: float
 
-## Применяет эффект перемещения к выбранному врагу
+func fire() -> void:
+	is_ready = false
+	get_node("AnimationPlayer").play("Fire")
+	_apply_damage()
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
 func _apply_damage() -> void:
-	enemy.on_hit(duration, type, type_explosion, type_attack, current_lvl)
+	if enemy:
+		enemy.on_hit(distance, type, 0, GameConstants.TowerType.MOVEMENT, current_lvl)

@@ -1,0 +1,53 @@
+extends Node
+
+var main_scene: Node2D
+var wave_data_all: Array
+var wave_data: Array
+var enemies_in_wave: int
+var gift_controller
+var game_end_controller
+
+func initialize(scene: Node2D):
+	main_scene = scene
+	wave_data_all = DataManager.wave_data[GameSession.current_level]
+	gift_controller = main_scene.gift_controller
+	game_end_controller = main_scene.game_end_controller
+
+func start_next_wave():
+	wave_data = retrieve_wave_data()
+	await get_tree().create_timer(0.2).timeout
+	spawn_enemies(wave_data)
+
+func retrieve_wave_data() -> Array:
+	wave_data = wave_data_all[GameSession.current_wave]
+
+	if GameSession.current_wave in DataManager.list_wave_gift and not main_scene.gift_controller.have_open_present:
+		main_scene.gift_controller.launch_gift_box()
+	
+	GameSession.current_wave += 1
+	enemies_in_wave = wave_data.size()
+	return wave_data
+
+func spawn_enemies(wave: Array):
+	main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameSession.current_wave)
+
+	for unit in wave:
+		var type = unit[0]
+		var delay = unit[1]
+		var enemy = load("res://Scenes/Enemies/%s.tscn" % type).instantiate()
+		enemy.names = type
+		enemy.hp = DataManager.enemy_data[type]["hp"]
+		enemy.current_speed = DataManager.enemy_data[type]["speed"]
+		enemy.speed = DataManager.enemy_data[type]["speed"]
+		enemy.duration_speed_mod = 0
+		enemy.base_damage.connect(main_scene.on_base_damage)
+		
+		var num_paths = main_scene.map_node.get_node("Path").get_child_count()
+		var path_index = randi_range(0, num_paths - 1)
+		main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
+
+		await get_tree().create_timer(delay).timeout
+
+	if GameSession.current_wave < wave_data_all.size():
+		await get_tree().create_timer(5).timeout
+		start_next_wave()

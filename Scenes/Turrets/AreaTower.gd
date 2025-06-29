@@ -1,13 +1,19 @@
-## Башня с уроном по области, наносит урон всем врагам в радиусе действия
 extends TowerBase
 class_name AreaTower
 
-## Инициализация башни, устанавливает тип атаки как AREA
-func _ready() -> void:
-	type_attack = GameConstants.TowerType.AREA
-	super._ready()
+var damage: float = 0.0
 
-## Наносит урон всем врагам в радиусе действия
+func fire() -> void:
+	is_ready = false
+	get_node("AnimationPlayer").play("Fire")
+	_apply_damage()
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
 func _apply_damage() -> void:
-	for target in enemy_array:
-		target.on_hit(damage, type, type_explosion, type_attack, current_lvl)
+	for e in enemy_array:
+		if is_instance_valid(e):
+			e.on_hit(damage, type, 0, GameConstants.TowerType.AREA, current_lvl)
+
+func _initialize() -> void:
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range

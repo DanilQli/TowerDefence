@@ -1,51 +1,46 @@
-# TurretFactory.gd
-# Создание и конфигурация башен по данным
-
 extends Node
 class_name TurretFactory
 
-## Создает и настраивает башню по идентификатору и позиции
 static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
-	var scene_path = "res://Scenes/Turrets/" + tower_id + ".tscn"
-	var tower_scene = load(scene_path)
-	if not tower_scene:
-		push_error("❌ Не удалось загрузить башню: " + scene_path)
+	var path = "res://Scenes/Turrets/%s.tscn" % tower_id
+	var scene = load(path)
+	if not scene:
+		push_error("❌ Can't load turret: " + path)
 		return null
-	
-	var tower: TowerBase = tower_scene.instantiate()
-	var data: Dictionary = DataManager.tower_data.get(tower_id, {})
 
+	var turret: TowerBase = scene.instantiate()
+	var data = DataManager.tower_data.get(tower_id, {})
 	if data.is_empty():
-		push_error("❌ Нет данных о башне: " + tower_id)
+		push_error("❌ No data for turret: " + tower_id)
 		return null
-	
-	# Базовые параметры
-	tower.type = tower_id
-	tower.position = position
-	tower.built = true
-	tower.type_attack = data["type_attack"]
-	tower.type_explosion = data["type_explosion"]
-	tower.current_lvl = 0
-	tower.max_lvl = data.get("damage", []).size() - 1  # может быть другой стат
 
-	# Настройки по типу атаки
-	match tower.type_attack:
-		GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
-			tower.damage = data["damage"][0]
-		GameConstants.TowerType.SLOW:
-			tower.intensivity = data["intensivity"][0]
-			tower.duration = data["duration"][0]
-		GameConstants.TowerType.MOVEMENT:
-			tower.duration = data["distance"][0]
-		GameConstants.TowerType.MONEY:
-			tower.income = data["income"][0]
-			tower.speed = data["speed"][0]
-			# У денежной башни не нужно дальше настраивать
-			return tower
+	turret.type = tower_id
+	turret.position = position
+	turret.built = true
+	turret.type_attack = data["type_attack"]
+	turret.type_explosion = data["type_explosion"]
+	turret.current_lvl = 0
+	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
 
-	# Настройка боевых параметров
-	tower.rof = data["rof"][0]
-	tower.range = data["range"][0]
-	tower.strategy = 0  # может быть вытащено из `data` позже
+	# базовые значения
+	turret.rof = data["rof"][0]
+	turret.range = data["range"][0]
 
-	return tower
+	if turret is NormalTower:
+		turret.damage = data["damage"][0]
+	elif turret is SlowTower:
+		turret.intensivity = data["intensivity"][0]
+		turret.duration = data["duration"][0]
+	elif turret is MovementTower:
+		turret.distance = data["distance"][0]
+	elif turret is AreaTower:
+		turret.damage = data["damage"][0]
+	elif turret is MoneyTower:
+		turret.income = data["income"][0]
+		turret.speed = data["speed"][0]
+	elif turret is PoisonTower:
+		turret.damage = data["damage"][0]
+		turret.duration = data["duration"][0]
+		turret.tick = data["tick"][0]
+
+	return turret

@@ -1,19 +1,28 @@
-## Башня замедления, снижает скорость врагов
 extends TowerBase
 class_name SlowTower
 
-## Инициализация башни, устанавливает тип как SLOW
-func _ready() -> void:
-	type_attack = GameConstants.TowerType.SLOW
-	super._ready()
+var damage: float
+var intensivity: float
+var duration: float
 
-## Применяет эффект замедления ко всем врагам в радиусе
 func fire() -> void:
 	is_ready = false
-	fire_missile2()
-	
-	for target in enemy_array:
-		target.on_hit(intensivity, type, type_explosion, type_attack, current_lvl)
-	
+	fire_missile()
+
+	for e in enemy_array:
+		if is_instance_valid(e):
+			e.on_hit(intensivity, type, 0, GameConstants.TowerType.SLOW, current_lvl)
+
 	await get_tree().create_timer(rof).timeout
 	is_ready = true
+
+func _initialize() -> void:
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+func fire_missile() -> void:
+	var fx = preload("res://Scenes/SupportScenes/ProjecttileImpact_2.tscn").instantiate()
+	fx.scale = Vector2(range / 50, range / 50)
+	add_child(fx)
+
+func _apply_damage() -> void:
+	pass  # нет применения напрямую, всё внутри fire

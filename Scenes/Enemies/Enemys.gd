@@ -10,9 +10,13 @@ var hp
 var names
 var new_impact
 var duration_speed_mod
+var poison_data = null
+var poison_tick_timer = 0.0
+
 
 @onready var health_bar = self.get_node("HealthBar")
 @onready var impact_area = self.get_node("Impact")
+@onready var poison_effect = $PoisonEffect
 var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_1.tscn")
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
 
@@ -27,6 +31,46 @@ func _physics_process(delta):
 		emit_signal("base_damage", self.damage) 
 		queue_free()
 	move(delta)
+	process_poison(delta)  # Добавить эту строку
+
+func apply_poison(data: Dictionary) -> void:
+	poison_data = {
+		"damage": data.damage,
+		"duration": data.duration,
+		"tick": data.tick,
+		"timer": 0.0
+	}
+	poison_tick_timer = 0.0
+	# Запускаем анимацию
+	poison_effect.visible = true
+	poison_effect.get_node("AnimationPlayer").play("Poison")
+
+func process_poison(delta: float) -> void:
+	if poison_data == null:
+		return
+		
+	poison_data.duration -= delta
+	poison_tick_timer -= delta
+	
+	# Наносим урон по тику
+	if poison_tick_timer <= 0:
+		poison_tick_timer = poison_data.tick
+		self.hp -= poison_data.damage
+		self.health_bar.visible = true
+		self.health_bar.value = hp
+		
+		if self.hp <= 0:
+			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
+			on_destroy()
+			return
+	
+	# Проверяем окончание действия яда
+	if poison_data.duration <= 0:
+		poison_data = null
+		# Останавливаем анимацию
+		poison_effect.visible = false
+		poison_effect.get_node("AnimationPlayer").stop()
 	
 func move(delta):
 	self.progress += self.speed * delta

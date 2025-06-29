@@ -69,6 +69,3 @@ shape = SubResource("RectangleShape2D_busvp")
 [node name="Menu" parent="." instance=ExtResource("5_id7a5")]
 visible = false
 z_index = 1
-
-[connection signal="body_entered" from="Range" to="." method="_oe_body_entered"]
-[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

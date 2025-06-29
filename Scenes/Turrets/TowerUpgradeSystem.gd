@@ -70,7 +70,10 @@ func _upgrade_combat_tower() -> void:
 			tower.duration = tower_data["duration"][tower.current_lvl]
 		GameConstants.TowerType.MOVEMENT:
 			tower.duration = tower_data["distance"][tower.current_lvl]
-	
+		GameConstants.TowerType.POISON:
+			tower.damage = tower_data["damage"][tower.current_lvl]
+			tower.duration = tower_data["duration"][tower.current_lvl]
+			tower.tick = tower_data["tick"][tower.current_lvl]
 	tower.rof = tower_data["rof"][tower.current_lvl]
 	tower.range = tower_data["range"][tower.current_lvl]
 	tower.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * tower.range

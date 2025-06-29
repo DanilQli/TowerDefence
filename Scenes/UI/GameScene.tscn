@@ -1,7 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://fd6cfixonynn"]
+[gd_scene load_steps=9 format=3 uid="uid://fd6cfixonynn"]
 
-[ext_resource type="Script" uid="uid://cyqyvfr6ycsvc" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
-[ext_resource type="Script" uid="uid://lga5qpeu5xaf" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
+[ext_resource type="Script" uid="uid://rh7uewl1l152" path="res://Controllers/GameScene.gd" id="1_sy1la"]
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
 [ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
 [ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="9_e86o2"]
@@ -13,10 +12,9 @@
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1q7y"]
 
 [node name="GameScene" type="Node2D"]
-script = ExtResource("1_8hq5t")
+script = ExtResource("1_sy1la")
 
 [node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource("3_m5o3g")
 
 [node name="HUD" type="Control" parent="UI"]
 layout_mode = 3
@@ -314,6 +312,3 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="."]
-
-[connection signal="pressed" from="UI/HUD/GameControl/PausePlay" to="UI" method="_on_pause_play_pressed"]
-[connection signal="pressed" from="UI/HUD/GameControl/SpeedUp" to="UI" method="_on_speed_up_pressed"]

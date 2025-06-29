@@ -12,7 +12,7 @@ func setup(tower_base: TowerBase) -> void:
 	update_menu_upgrade()
 	
 	# Подписываемся на изменение урона
-	if tower.type_attack == GameConstants.TowerType.NORMAL:
+	if tower.type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.POISON]:
 		tower.damage_inflicted_changed.connect(_on_damage_inflicted_changed)
 
 ## Обработчик изменения нанесенного урона
@@ -39,12 +39,6 @@ func update_menu() -> void:
 func _connect_signals() -> void:
 	tower.get_node("MenuButton").pressed.connect(_on_menu_button_pressed)
 	tower.get_node("Menu/V/HButton/Close").pressed.connect(hide_menu)
-	
-	# Если башня денежная, удаляем ненужные элементы UI
-	if tower.type_attack == GameConstants.TowerType.MONEY:
-		tower.get_node("Menu/V/HRange").queue_free()
-		tower.get_node("Menu/V/HStrateg").queue_free()
-		tower.get_node("Menu").size[1] = 100
 
 ## Обработчик нажатия на кнопку меню
 func _on_menu_button_pressed() -> void:
@@ -67,7 +61,7 @@ func _check_upgrade_possibility() -> void:
 
 ## Обновление отображения нанесенного урона
 func _update_inflicted_damage() -> void:
-	if tower.type_attack == GameConstants.TowerType.NORMAL:
+	if tower.type_attack in [GameConstants.TowerType.NORMAL,  GameConstants.TowerType.AREA]:
 		tower.get_node("Menu/V/HInflicted/HValue/Value").text = str(tower.inflicted)
 
 ## Добавление меню в список открытых
@@ -105,20 +99,29 @@ func hide_menu() -> void:
 func _update_combat_menu() -> void:
 	var menu = tower.get_node("Menu")
 	var tower_data = DataManager.tower_data[tower.type]
-	
-	if tower.type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA]:
-		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["damage"][tower.current_lvl])
-		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
-	elif tower.type_attack == GameConstants.TowerType.SLOW:
-		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["intensivity"][tower.current_lvl] * 100)
-		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["duration"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
-		menu.get_node("V/HInflicted/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
-	else:
-		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["distance"][tower.current_lvl])
-		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+	match tower.type_attack:
+		GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
+			menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["damage"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+		GameConstants.TowerType.SLOW:
+			menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["intensivity"][tower.current_lvl] * 100)
+			menu.get_node("V/HReload/HValue/Value").text = str(tower_data["duration"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HInflicted/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+		GameConstants.TowerType.MONEY:
+			menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["speed"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Value").text = str(tower_data["income"][tower.current_lvl])
+		GameConstants.TowerType.MOVEMENT:
+			menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["distance"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+		GameConstants.TowerType.POISON:
+			menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["damage"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+			menu.get_node("V/HTick/HValue/Value").text = str(tower_data["tick"][tower.current_lvl])
+			menu.get_node("V/HInflicted/HValue/Value").text = str(tower_data["duration"][tower.current_lvl])
 
 ## Обновление меню денежной башни
 func _update_money_menu() -> void:
@@ -149,10 +152,9 @@ func _clear_upgrade_texts() -> void:
 	menu.get_node("V/HDamage/HValue/Up").text = ""
 	menu.get_node("V/HReload/HValue/Up").text = ""
 	menu.get_node("V/HRange/HValue/Up").text = ""
-	
-	# Если есть дополнительное поле для некоторых типов башен
-	if tower.type_attack == GameConstants.TowerType.SLOW:
-		menu.get_node("V/HInflicted/HValue/Up").text = ""
+	menu.get_node("V/HInflicted/HValue/Up").text = ""
+	if menu.has_node("V/HTick"):
+		menu.get_node("V/HTick/HValue/Up").text = ""
 	
 	# Очищаем стоимость улучшения
 	menu.get_node("V/HButton/Up/LabelValue").text = ""
@@ -162,19 +164,28 @@ func _update_combat_menu_upgrade() -> void:
 	var menu = tower.get_node("Menu")
 	var tower_data = DataManager.tower_data[tower.type]
 	var next_level = tower.current_lvl + 1
-	
-	if tower.type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA]:
-		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["damage"][next_level] - tower_data["damage"][tower.current_lvl])
-		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
-	elif tower.type_attack == GameConstants.TowerType.SLOW:
-		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["intensivity"][next_level] - tower_data["intensivity"][tower.current_lvl])
-		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["duration"][next_level] - tower_data["duration"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
-	else:
-		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["distance"][next_level] - tower_data["distance"][tower.current_lvl])
-		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
-		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+	match tower.type_attack:
+		GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
+			menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["damage"][next_level] - tower_data["damage"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+		GameConstants.TowerType.SLOW:
+			menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["intensivity"][next_level] - tower_data["intensivity"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Up").text = str(tower_data["duration"][next_level] - tower_data["duration"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+		GameConstants.TowerType.MONEY:
+			menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["speed"][next_level] - tower_data["speed"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Up").text = str(tower_data["income"][next_level] - tower_data["income"][tower.current_lvl])
+		GameConstants.TowerType.MOVEMENT:
+			menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["distance"][next_level] - tower_data["distance"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+		GameConstants.TowerType.POISON:
+			menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["damage"][next_level] - tower_data["damage"][tower.current_lvl])
+			menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+			menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+			menu.get_node("V/HTick/HValue/Up").text = str(tower_data["tick"][next_level] - tower_data["tick"][tower.current_lvl])
+			menu.get_node("V/HInflicted/HValue/Up").text = str(tower_data["duration"][next_level] - tower_data["duration"][tower.current_lvl])
 
 ## Обновление информации об улучшении для денежной башни
 func _update_money_menu_upgrade() -> void:

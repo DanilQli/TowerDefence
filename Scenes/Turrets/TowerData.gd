@@ -14,6 +14,8 @@ var damage: Array[float]
 var range: Array[float]
 ## Массив значений скорости атаки для каждого уровня
 var rof: Array[float]
+## Массив значений частоты нанесения урона от яда для каждого уровня
+var tick: Array[float]
 ## Массив значений интенсивности эффекта для каждого уровня
 var intensivity: Array[float]
 ## Массив значений длительности эффекта для каждого уровня
@@ -58,7 +60,8 @@ func get_current_stats(level: int) -> Dictionary:
 		"duration": duration[level] if duration.size() > level else 0.0,
 		"distance": distance[level] if distance.size() > level else 0.0,
 		"speed": speed[level] if speed.size() > level else 0.0,
-		"income": income[level] if income.size() > level else 0.0
+		"income": income[level] if income.size() > level else 0.0,
+		"tick": tick[level] if tick.size() > level else 0.0
 	}
 
 ## Получение стоимости улучшения для указанного уровня

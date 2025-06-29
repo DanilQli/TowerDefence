@@ -1,117 +1,656 @@
-# GameData.gd
+# Controllers\BuildController.gd
 extends Node
-"""type_attack: 0 обычная 1 - замедление 2 - перемещение 3 - по области 4 - приносит деньги"""
-var menu_object
-var strengthening_enemies
-var strengthening_enemies_dop
-var strengthening_money
-var resources_money
-var current_wave = 0
-var current_game_score = 0
-var current_money
-const modifer_value = 1.0
-const NUMBER_TURRET = 10
-var spped_game = 0.0
-var list_wave_gift
-var list_open_menu_turrets = []
-var config 
-var best_score
-var currrent_level = 0
-var level_option
-var data
-const NUMBER_LEVEL = 3
-const MONEY_BEGIN = [4000, 10400, 800]
 
-##Нужно для отображения верного меню завершения игры
-var FLAG_GAME_COMPANY = false 
+var main_scene: Node2D
+var build_mode := false
+var build_valid := false
+var build_location
+var build_type
+var build_tile
 
-static func round_to_dec(num, digit):
-	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+func initialize(scene: Node2D):
+	main_scene = scene
 
-var tower_data = {}
-var enemy_data = {}
+func initiate_build_mode(tower_type: String):
+	while UiManager.list_open_menu_turrets.size() > 0:
+		var menu = UiManager.list_open_menu_turrets.pop_at(0)
+		menu.queue_free()
 
-var wave_data = []
-	
-func _ready():
-	var file = FileAccess.open("res://Files/resurse.json", FileAccess.READ)
-	if file == null:
-		printerr("⛔ Не удалось открыть файл resurse.json")
-		return
-	
-	var content = file.get_as_text()
-	var result = JSON.parse_string(content)
-	
-	if typeof(result) != TYPE_DICTIONARY:
-		printerr("⛔ Неверный формат JSON данных")
-		return
-	
-	data = result
-	
-	# 1. 🪙 Ресурсы
-	resources_money = data.get("Resources", {}).get("money", 0)
+	if build_mode:
+		cancel_build_mode()
 
-	# 2. 🧱 Башни
-	var turrets = data.get("Turrets", {})
-	for name in turrets.keys():
-		tower_data[name] = turrets[name]
+	var build_name = tower_type + "T1"
+	var cost = DataManager.tower_data[build_name]["cost"]
 
-	# 3. 👾 Враги
-	var enemies = data.get("Enemies", {})
-	for name in enemies.keys():
-		enemy_data[name] = enemies[name]
-
-	# 4. 🌊 Волны
-	var wave = data.get("WaveData", {})
-	for i in range(wave.size()):
-		var key = "level_" + str(i)
-		if wave.has(key):
-			wave_data.append(wave[key])
-		else:
-			wave_data.append([])
-
-	# 5. ⚙️ Настройки
-	var settings = data.get("Settings", {})
-	strengthening_enemies = settings.get("strengthening_enemies", 0)
-	strengthening_enemies_dop = settings.get("strengthening_enemies_dop", 0)
-	strengthening_money = settings.get("strengthening_money", 0)
-	current_money = settings.get("current_money", 0)
-	list_wave_gift = settings.get("list_wave_gift", [])
-
-	# 6. 🖥Настройки игры
-	var game_settings = data.get("SettingsGame", {})
-	best_score = game_settings.get("best_score", 0)
-
-	# 7. 📘 Уровни
-	level_option = data.get("LevelOption", {}).get("level", [])
-	
-	
-	for i in 100:
-		wave_data[0].append([
-			["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_5", 1.0],
-			["Enemy_5", 1.5], ["Enemy_8", 2.5], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
-			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
-			["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0],
-			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_4", 1.0], ["Enemy_5", 1.0],
-			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_4", 1.0], ["Enemy_3", 1.0], ["Enemy_2", 1.0],
-			["Enemy_2", 0.7], ["Enemy_6", 0.8], ["Enemy_1", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
-			["Enemy_4", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0], ["Enemy_3", 1.0], ["Enemy_4", 1.0],
-			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
-			["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0]])
-
-func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	if GameSession.current_money_in_game_session >= cost:
+		# 4. Установка режима постройки
+		build_type = build_name
+		build_mode = true
+		set_tower_preview(build_type, main_scene.get_global_mouse_position())
 		
-func write_file():
-	config.save("res://Files/options.cfg") 
+func update_tower_preview_ui(new_position: Vector2, color: String):
+	if not main_scene.get_node("UI").has_node("TowerPreview"):
+		return # ничего не делать, если preview удалён
+
+	var tower_preview = main_scene.get_node("UI/TowerPreview")
+	tower_preview.position = new_position
+
+	var drag_tower = tower_preview.get_node("DragTower")
+	var sprite = tower_preview.get_node("Sprite")
+
+	var new_color = Color(color)
+	if drag_tower.modulate != new_color:
+		drag_tower.modulate = new_color
+		sprite.modulate = new_color
+
+func set_tower_preview(tower_type: String, mouse_position: Vector2):
+	var drag_tower = load("res://Scenes/Turrets/%s.tscn" % tower_type).instantiate()
+	drag_tower.name = "DragTower"
+	var control = Control.new()
+
+	control.add_child(drag_tower, true)
+
+	var range_texture = Sprite2D.new()
+	var scaling: float
+
+	if int(DataManager.tower_data[tower_type]["type_attack"]) != 4:
+		scaling = DataManager.tower_data[tower_type]["range"][0] / 600.0
+	else:
+		scaling = 0.1
+
+	range_texture.scale = Vector2(scaling, scaling)
+	range_texture.texture = load("res://Assets/Props/range_overlay.png")
+	range_texture.modulate = Color("ad54ff3c")
+	range_texture.name = "Sprite"
+	control.add_child(range_texture, true)
+
+	control.position = mouse_position
+	control.name = "TowerPreview"
+
+	main_scene.get_node("UI").add_child(control, true)
+	main_scene.get_node("UI").move_child(control, 0)
+
+func cancel_build_mode():
+	build_mode = false
+	build_valid = false
+
+	var ui_node = main_scene.get_node("UI")
+	if ui_node.has_node("TowerPreview"):
+		ui_node.get_node("TowerPreview").queue_free()
+
+func verify_and_build():
+	if build_valid:
+		var turret = TurretFactory.create_turret(build_type, build_location)
+		if not turret:
+			printerr("❌ Не удалось создать башню: ", build_type)
+			return
+
+		var turret_layer = main_scene.map_node.get_node("Turret")
+		turret_layer.add_child(turret)
+
+		turret.position = build_location
+		turret.name = build_type + "_1"
+		turret.get_node("Menu").setup(turret.type_attack)
+		var turret_data = DataManager.tower_data.get(build_type, {})
+
+		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
+
+		GameSession.spend_money(DataManager.tower_data[build_type]["cost"])
+		main_scene.ui_controller._on_money_changed()
+
+func update_tower_preview():
+	var mouse_position = main_scene.get_global_mouse_position()
+	var tilemap = main_scene.map_node.get_node("TowerExlusion")
+	var current_tile = tilemap.local_to_map(mouse_position)
+	var tile_position = tilemap.map_to_local(current_tile)
+
+	if tilemap.get_cell_source_id(current_tile) == -1:
+		update_tower_preview_ui(tile_position, "008000")
+		build_valid = true
+		build_location = tile_position
+		build_tile = current_tile
+	else:
+		update_tower_preview_ui(tile_position, "ff0000")
+		build_valid = false
+
+
+func _unhandled_input(event):
+	if event.is_action_released("ui_accept") and build_mode:
+		verify_and_build()
+		cancel_build_mode()
+
+	if event.is_action_released("ui_cancel") and build_mode:
+		cancel_build_mode()
+
+
+# Controllers\GameEndController.gd
+extends Node
+
+var main_scene: Node2D
+
+func initialize(scene: Node2D):
+	main_scene = scene
+
+func end_game_company():
+	get_tree().paused = true
+
+	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
+	var money_dop = 0
+
+	var panel_root = "Panel/MarginContainer/VBoxContainer"
+	var score = GameSession.current_game_score
+	var health = GameSession.base_health
+
+	if health >= 9:
+		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
+		if not DataManager.level_option[GameSession.current_level - 1]:
+			money_dop = int(int(score / 10) / 3.0)
+			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
+	elif health > 7:
+		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
+		if not DataManager.level_option[GameSession.current_level - 1]:
+			money_dop = int(int(score / 10) / 3.1)
+			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
+	elif health > 5:
+		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect2").queue_free()
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
+		if not DataManager.level_option[GameSession.current_level - 1]:
+			money_dop = int(int(score / 10) / 3.2)
+			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
+	else:
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect1").queue_free()
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect2").queue_free()
+		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
+		if DataManager.level_option[GameSession.current_level - 1]:
+			money_dop = int(int(score / 10) / 4.0)
+			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
+
+	end.get_node(panel_root + "/HBoxScore/Label2").text = str(score)
+	end.get_node(panel_root + "/HBoxCoin/Label2").text = str(int(score / 10))
+	end.get_node(panel_root + "/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
+
+	end.get_node(panel_root + "/HBoxContainer/TextureButton_1").pressed.connect(restart)
+	end.get_node(panel_root + "/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
+
+	main_scene.get_node("UI").add_child(end)
+
+	if score > ResourceManager.best_score:
+		ResourceManager.best_score = score
+		DataManager.data["settings_game"]["best_score"] = score
+
+		var total_money = int(score / 10) + money_dop
+		ResourceManager.resources_money += total_money
+		DataManager.data["Resources"]["money"] = ResourceManager.resources_money
+
+		if not DataManager.level_option[GameSession.current_level - 1]:
+			DataManager.level_option[GameSession.current_level - 1] = true
+			DataManager.data["level_option"]["level"] = DataManager.level_option
+
+		DataManager.write_file()
+
+	GameSession.current_game_score = 0
+
+func end_game():
+	get_tree().paused = true
+	var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
+
+	var score = GameSession.current_game_score
+	if score > ResourceManager.best_score:
+		ResourceManager.best_score = score
+		DataManager.data["SettingsGame"]["best_score"] = score
+		ResourceManager.resources_money += int(score / 10)
+		DataManager.data["Resources"]["money"] = ResourceManager.resources_money
+		DataManager.write_file()
+
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(score / 10))
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
+
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
+
+	main_scene.get_node("UI").add_child(end)
+
+	GameSession.current_game_score = 0
+
+func restart():
+	GameSession.current_wave = 0
+	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level]
+	UiManager.list_open_menu_turrets = []
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
+
+func exit_menu():
+	get_tree().paused = false
+	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+
+
+# Controllers\GameScene.gd
+extends Node2D
+
+@onready var map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
+
+# Ссылки на контроллеры
+var build_controller
+var wave_controller
+var gift_controller
+var ui_controller
+var game_end_controller
+var health_controller
+
+func _ready():
+	add_child(map_node)
+
+	# Динамически создаем контроллеры
+	build_controller = _create_controller("res://Controllers/BuildController.gd")
+	wave_controller = _create_controller("res://Controllers/WaveController.gd")
+	gift_controller = _create_controller("res://Controllers/GiftController.gd")
+	ui_controller = _create_controller("res://Controllers/UIController.gd")
+	game_end_controller = _create_controller("res://Controllers/GameEndController.gd")
+	health_controller = _create_controller("res://Controllers/HealthController.gd")
+
+	build_controller.initialize(self)
+	wave_controller.initialize(self)
+	gift_controller.initialize(self)
+	ui_controller.initialize(self)
+	game_end_controller.initialize(self)
+	health_controller.initialize(self)
+
+	get_tree().paused = false
+
+func _process(delta):
+	if build_controller.build_mode:
+		build_controller.update_tower_preview()
+	if GameSession.speed_game > 0.0:
+		var is_last_wave = GameSession.current_wave >= DataManager.wave_data[GameSession.current_level].size()
+		var enemies_remaining = map_node.get_node("Path").get_child_count()
+
+		if is_last_wave and (enemies_remaining == 0 or GameSession.base_health == 0):
+			print(GameSession.base_health)
+			game_end_controller.end_game_company()
+
+func _create_controller(script_path: String) -> Node:
+	var script = load(script_path)
+	var controller = Node.new()
+	controller.set_script(script)
+	add_child(controller)
+	return controller
+
+func on_base_damage(damage: int):
+	health_controller.on_base_damage(damage)
+
+
+# Controllers\GiftController.gd
+extends Node
+
+var main_scene: Node2D
+var list_gift: Array = []
+var list_random: Array = []
+var list_sprite_box: Array = []
+var have_open_present: bool = false
+
+func initialize(scene: Node2D):
+	main_scene = scene
+
+func launch_gift_box():
+	have_open_present = true
+	get_tree().paused = true
+
+	var box_gift = load("res://Scenes/SupportScenes/buf.tscn").instantiate()
+	main_scene.get_node("UI").add_child(box_gift)
+	generate_gift()
+
+	box_gift.get_node("Panel/V/H/Box1").pressed.connect(gift_open.bind(0, box_gift))
+	box_gift.get_node("Panel/V/H/Box2").pressed.connect(gift_open.bind(1, box_gift))
+	box_gift.get_node("Panel/V/H/Box3").pressed.connect(gift_open.bind(2, box_gift))
+
+func generate_gift():
+	list_gift = []
+	list_sprite_box = []
+	list_random = []
+
+	for i in range(3):
+		var sprite_box = randi() % 4 + 1
+		list_sprite_box.append(sprite_box)
+
+		var box_path = "UI/Buf/Panel/V/H/Box" + str(i + 1)
+		main_scene.get_node(box_path + "/AnimationPlayer").play("stay_" + str(sprite_box))
+
+		var t = randi() % 4
+		while t in list_gift:
+			t = randi() % 4
+
+		list_gift.append(t)
+		main_scene.get_node(box_path + "/Label").text = tr("KEY_UP_" + str(t))
+
+	for i in list_gift:
+		if i == 0 or i == 1 or i == 2:
+			list_random.append(randi_range(0, 2))
+		elif i == 3:
+			list_random.append(randi_range(1, 2))
+		elif i == 4:
+			list_random.append(randi_range(1, 3))
+
+func gift_open(index: int, box_gift: Node):
+	for i in range(3):
+		box_gift.get_node("Panel/V/H/Box" + str(i + 1)).pressed.disconnect(gift_open.bind(i, box_gift))
+
+	for i in range(3):
+		var anim_path = "Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer"
+		box_gift.get_node(anim_path).play("open_" + str(list_sprite_box[i]))
+
+		var mod_path = "Panel/V/HBox/Modifer" + str(i + 1)
+		var modifier = box_gift.get_node(mod_path)
+		modifier.visible = true
+
+		var icon_path = ""
+		if list_random[i] == 0:
+			icon_path = "res://Assets/Icons/damage.png"
+		elif list_random[i] == 1:
+			icon_path = "res://Assets/Icons/reload.png"
+		elif list_random[i] == 2:
+			icon_path = "res://Assets/Icons/range.png"
+		elif list_random[i] == 3:
+			icon_path = "res://Assets/Icons/distance.png"
+
+		modifier.get_node("TextureRect").texture = load(icon_path)
+		modifier.get_node("Name").text = tr("KEY_UP_UP_" + str(list_random[i]))
+
+		var is_reload = list_random[i] == 1
+		var label_sign = " - "
+		if not is_reload:
+			label_sign = " + "
+
+		modifier.get_node("Up").text = label_sign + str(GameConstants.MODIFIER_VALUE) + " %"
+
+	var up = 1 + GameConstants.MODIFIER_VALUE / 100
+	var id = list_gift[index] + 1
+	var turret_id = "Turret_" + str(id) + "T1"
+
+	var type = list_random[index]
+	if type == 0:
+		for i in range(DataManager.tower_data[turret_id]["damage"].size()):
+			DataManager.tower_data[turret_id]["damage"][i] *= up
+			DataManager.tower_data[turret_id]["damage"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["damage"][i], 3)
+		for turret in main_scene.map_node.get_node("Turret").get_children():
+			if turret.type == turret_id:
+				turret.damage = DataManager.tower_data[turret.type]["damage"][turret.current_lvl]
+
+	elif type == 1:
+		up = 1 - GameConstants.MODIFIER_VALUE / 100
+		for i in range(DataManager.tower_data[turret_id]["rof"].size()):
+			DataManager.tower_data[turret_id]["rof"][i] *= up
+			DataManager.tower_data[turret_id]["rof"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["rof"][i], 3)
+		for turret in main_scene.map_node.get_node("Turret").get_children():
+			if turret.type == turret_id:
+				turret.rof = DataManager.tower_data[turret.type]["rof"][turret.current_lvl]
+
+	elif type == 2:
+		for i in range(DataManager.tower_data[turret_id]["range"].size()):
+			DataManager.tower_data[turret_id]["range"][i] *= up
+			DataManager.tower_data[turret_id]["range"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["range"][i], 3)
+		for turret in main_scene.map_node.get_node("Turret").get_children():
+			if turret.type == turret_id:
+				turret.range = DataManager.tower_data[turret.type]["range"][turret.current_lvl]
+
+	elif type == 3:
+		for i in range(DataManager.tower_data[turret_id]["distance"].size()):
+			DataManager.tower_data[turret_id]["distance"][i] *= up
+			DataManager.tower_data[turret_id]["distance"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["distance"][i], 3)
+
+	await get_tree().create_timer(1.5).timeout
+
+	for i in range(3):
+		if i != index:
+			box_gift.get_node("Panel/V/H/Box" + str(i + 1)).queue_free()
+			box_gift.get_node("Panel/V/HBox/Modifer" + str(i + 1)).queue_free()
+
+	box_gift.get_node("Panel/V/Play").visible = true
+	box_gift.get_node("Panel/V/Play").pressed.connect(continue_game)
+
+func continue_game():
+	main_scene.get_node("UI/Buf").queue_free()
+	have_open_present = false
+	get_tree().paused = false
+	Engine.set_time_scale(GameSession.speed_game)
+
+
+# Controllers\HealthController.gd
+extends Node
+
+var main_scene: Node2D
+@onready var hp_label: Label = null
+
+func initialize(scene: Node2D):
+	main_scene = scene
+	hp_label = main_scene.get_node("UI/HUD/InfoBar/H2/HP")
+
+func update_health(base_health: int):
+	hp_label.text = str(base_health)
+	
+func on_base_damage(damage: int):
+	GameSession.spend_base_health(damage)
+
+	if GameSession.base_health < 1:
+		update_health(0)
+
+		if GameSession.game_mode != GameConstants.GameMode.CAMPAIGN:
+			main_scene.game_end_controller.end_game()
+		else:
+			main_scene.game_end_controller.end_game_company()
+	else:
+		update_health(GameSession.base_health)
+
+
+# Controllers\UIController.gd
+extends Node
+
+var main_scene: Node2D
+var list_activity_turret: Array = []
+
+func initialize(scene: Node2D):
+	main_scene = scene
+
+	var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
+	var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
+
+	pause_button.pressed.connect(_on_pause_play_pressed)
+	speed_button.pressed.connect(_on_speed_up_pressed)
+
+	GameSession.money_in_game_session_changed.connect(_on_money_changed)
+
+	# Установка денег
+	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level]
+
+	# Получение доступных турелей
+	for i in range(GameConstants.NUMBER_TURRET):
+		var turret_id = "Turret_" + str(i + 1) + "T1"
+		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
+			list_activity_turret.append(i + 1)
+
+	# Подключаем кнопки постройки и наведения
+	for i in range(list_activity_turret.size()):
+		var index = i + 1
+		var tower_index = list_activity_turret[i]
+		var turret_name = "Turret_" + str(tower_index)
+
+		var icon_path = "UI/HUD/BuldBar/Tower_" + str(index) + "/Icon"
+		var button_path = "UI/HUD/BuldBar/Tower_" + str(index)
+
+		main_scene.get_node(icon_path).texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(tower_index) + ".png")
+
+		var button = main_scene.get_node(button_path)
+		button.pressed.connect(Callable(main_scene.build_controller, "initiate_build_mode").bind(turret_name))
+		button.mouse_entered.connect(Callable(self, "title_show").bind(str(index), str(tower_index)))
+		button.mouse_exited.connect(Callable(self, "title_hide"))
+		main_scene.get_node(button_path).mouse_entered.connect(
+			title_show.bind(str(index), str(tower_index))
+		)
+		main_scene.get_node(button_path).mouse_exited.connect(title_hide)
+
+	# Обновим стоимостные элементы в UI
+	_on_money_changed()
+
+func _on_pause_play_pressed():
+	if main_scene.build_controller.build_mode:
+		main_scene.build_controller.cancel_build_mode()
+
+	if GameSession.current_wave == 0:
+		main_scene.wave_controller.start_next_wave()
+	else:
+		var paused = get_tree().paused
+		get_tree().paused = not paused
+		if paused:
+			GameSession.speed_game = 1.0
+		else:
+			GameSession.speed_game = 0.0
+
+func _on_speed_up_pressed():
+	if GameSession.current_wave == 0:
+		main_scene.wave_controller.start_next_wave()
+		return
+
+	if GameSession.speed_game == 4.0:
+		GameSession.speed_game = 1.0
+	else:
+		GameSession.speed_game = 4.0
+
+	Engine.set_time_scale(GameSession.speed_game)
+
+func _on_money_changed():
+	main_scene.get_node("UI/HUD/InfoBar/H/Money").text = str(GameSession.current_money_in_game_session)
+
+	for i in range(list_activity_turret.size()):
+		var index = i + 1
+		var turret_id = "Turret_" + str(list_activity_turret[i]) + "T1"
+
+		var cost_label = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color/Cost")
+		cost_label.text = str(DataManager.tower_data[turret_id]["cost"])
+
+		var color_rect = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color")
+		if GameSession.current_money_in_game_session < DataManager.tower_data[turret_id]["cost"]:
+			color_rect.color = Color("ff0000")
+		else:
+			color_rect.color = Color("008000")
+
+func title_show(id_ui: String, id: String):
+	var type_attack = int(DataManager.tower_data["Turret_" + id + "T1"]["type_attack"])
+	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
+	var tower_position = main_scene.get_node("UI/HUD/BuldBar/Tower_" + id_ui).position
+	node_mouse_entered.position = tower_position + Vector2(100, 50)
+
+	# Удаляем элементы, которые не нужны для определенного типа
+	if type_attack != GameConstants.TowerType.MONEY:
+		if type_attack == GameConstants.TowerType.NORMAL or type_attack == GameConstants.TowerType.AREA:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["damage"][0])
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
+
+			node_mouse_entered.get_node("V/HInflicted").queue_free()
+			node_mouse_entered.size = node_mouse_entered.size - Vector2(0, 30)
+		
+		elif type_attack == GameConstants.TowerType.SLOW:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["intensivity"][0] * 100)
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["duration"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
+		
+		elif type_attack == GameConstants.TowerType.MOVEMENT:
+			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["distance"][0])
+			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
+			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
+
+			node_mouse_entered.get_node("V/HInflicted").queue_free()
+			node_mouse_entered.size = node_mouse_entered.size - Vector2(0, 30)
+	else:
+		# MONEY type
+		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["speed"][0])
+		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["income"][0])
+
+		node_mouse_entered.get_node("V/HRange").queue_free()
+		node_mouse_entered.get_node("V/HInflicted").queue_free()
+
+	# Удаляем апгрейды (стрелочки)
+	node_mouse_entered.get_node("V/HDamage/HValue/Up").queue_free()
+	node_mouse_entered.get_node("V/HReload/HValue/Up").queue_free()
+	node_mouse_entered.set("type_attack", type_attack)
+	if node_mouse_entered.has_node("V/HRange/HValue/Up"):
+		node_mouse_entered.get_node("V/HRange/HValue/Up").queue_free()
+
+	UiManager.list_open_menu_turrets.append(node_mouse_entered)
+	main_scene.add_child(node_mouse_entered)
+	node_mouse_entered.setup(type_attack)
+
+func title_hide():
+	for menu in UiManager.list_open_menu_turrets:
+		if is_instance_valid(menu):
+			menu.queue_free()
+	UiManager.list_open_menu_turrets.clear()
+
+
+# Controllers\WaveController.gd
+extends Node
+
+var main_scene: Node2D
+var wave_data_all: Array
+var wave_data: Array
+var enemies_in_wave: int
+var gift_controller
+var game_end_controller
+
+func initialize(scene: Node2D):
+	main_scene = scene
+	wave_data_all = DataManager.wave_data[GameSession.current_level]
+	gift_controller = main_scene.gift_controller
+	game_end_controller = main_scene.game_end_controller
+
+func start_next_wave():
+	wave_data = retrieve_wave_data()
+	await get_tree().create_timer(0.2).timeout
+	spawn_enemies(wave_data)
+
+func retrieve_wave_data() -> Array:
+	wave_data = wave_data_all[GameSession.current_wave]
+
+	if GameSession.current_wave in DataManager.list_wave_gift and not main_scene.gift_controller.have_open_present:
+		main_scene.gift_controller.launch_gift_box()
+	
+	GameSession.current_wave += 1
+	enemies_in_wave = wave_data.size()
+	return wave_data
+
+func spawn_enemies(wave: Array):
+	main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameSession.current_wave)
+
+	for unit in wave:
+		var type = unit[0]
+		var delay = unit[1]
+		var enemy = load("res://Scenes/Enemies/%s.tscn" % type).instantiate()
+		enemy.names = type
+		enemy.hp = DataManager.enemy_data[type]["hp"]
+		enemy.current_speed = DataManager.enemy_data[type]["speed"]
+		enemy.speed = DataManager.enemy_data[type]["speed"]
+		enemy.duration_speed_mod = 0
+		enemy.base_damage.connect(main_scene.on_base_damage)
+		
+		var num_paths = main_scene.map_node.get_node("Path").get_child_count()
+		var path_index = randi_range(0, num_paths - 1)
+		main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
+
+		await get_tree().create_timer(delay).timeout
+
+	if GameSession.current_wave < wave_data_all.size():
+		await get_tree().create_timer(5).timeout
+		start_next_wave()
 
 
 # Scenes\Enemies\Enemys.gd
 extends PathFollow2D
 
 signal base_damage(damage)
-signal base_money()
+signal money_in_game_session_changed()
 var damage = 1
 
 var speed
@@ -127,7 +666,7 @@ var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
 
 func _ready():
-	self.hp += self.hp * GameData.current_wave * (GameData.strengthening_enemies + (GameData.strengthening_enemies_dop * GameData.current_wave))
+	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.health_bar.max_value = hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
@@ -154,17 +693,16 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 		self.health_bar.visible = true
 		self.health_bar.value = hp
 		if self.hp <= 0:
-			GameData.current_game_score += int(float(GameData.enemy_data[self.names]["money_death"]) / 2 * (GameData.current_wave / 3.0))
-			GameData.current_money += int(GameData.enemy_data[self.names]["money_death"]) + int(float(GameData.enemy_data[self.names]["money_death"]) * GameData.current_wave * GameData.strengthening_money)
-			get_parent().get_parent().get_parent().get_parent().base_money()
+			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 	elif type_attack == 1: 
-		self.speed -= (self.speed * float(GameData.tower_data[type_turret]["intensivity"][level]))
+		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))
 		if self.speed < 50:
 			self.speed = 50
-		self.duration_speed_mod = int(GameData.tower_data[type_turret]["duration"][level])
+		self.duration_speed_mod = int(DataManager.tower_data[type_turret]["duration"][level])
 	else:
-		self.progress -= float(GameData.tower_data[type_turret]["distance"][level])
+		self.progress -= float(DataManager.tower_data[type_turret]["distance"][level])
 
 func impact(type_explosion, type_attack):
 	randomize()
@@ -560,10 +1098,12 @@ tile_set = ExtResource("2_wlapn")
 tile_map_data = PackedByteArray("AAAAAAAAEQAXAA0AAAABAAAAEQAYAA0AAAACAAAAEQALABcAAAADAAAAEQAMABcAAAAEAAAAEQALABcAAAAFAAAAEQAMABcAAAAGAAAAEQALABcAAAAHAAAAEQAMABcAAAAIAAAAEQALABcAAAAJAAAAEQAMABcAAAAKAAAAEQALABcAAAALAAAAEQAMABcAAAAMAAAAEQALABcAAAANAAAAEQAMABcAAAAOAAAAEQALABcAAAAPAAAAEQAMABcAAAAQAAAAEQALABcAAAARAAAAEQAMABcAAAASAAAAEQALABcAAAAWAAAAEQALABcAAAAXAAAAEQAMABcAAAAXAAEAEQALABYAAAAWAP//EQALABYAAAAXAP//EQAMABYAAAAAAP//EQAXAAwAAAABAP//EQAYAAwAAAACAP//EQALABYAAAADAP//EQAMABYAAAAEAP//EQALABYAAAAFAP//EQAMABYAAAAGAP//EQALABYAAAAHAP//EQAMABYAAAAIAP//EQALABYAAAAJAP//EQAMABYAAAAKAP//EQALABYAAAALAP//EQAMABYAAAAMAP//EQALABYAAAANAP//EQAMABYAAAAOAP//EQALABYAAAAPAP//EQAMABYAAAAQAP//EQALABYAAAARAP//EQAMABYAAAASAP//EQALABYAAAATAP//EQAMABYAAAAUAP//EQALABYAAAAVAP//EQAMABYAAAAXAAIAEQALABcAAAAYAAIAEQAMABcAAAAYAAEAEQAMABYAAAAAAAIAAQACAAIAAAABAAIAAQACAAIAAAACAAIAAQACAAIAAAADAAIAAQACAAIAAAAEAAIAAQACAAIAAAAFAAIAAQAEAAMAAAAFAAMAAQABAAIAAAAFAAQAAQABAAIAAAAFAAUAAQABAAIAAAAFAAYAAQABAAIAAAAFAAcAAQABAAIAAAAFAAgAAQABAAIAAAAFAAkAAQABAAIAAAAFAAoAAQAFAAMAAAAGAAoAAQACAAIAAAAHAAoAAQACAAIAAAAIAAoAAQACAAIAAAAJAAoAAQACAAIAAAAKAAoAAQACAAIAAAALAAoAAQACAAIAAAAMAAoAAQAGAAMAAAAMAAkAAQABAAIAAAAMAAgAAQABAAIAAAAMAAcAAQAEAAMAAAALAAcAAQACAAIAAAAKAAcAAQACAAIAAAAJAAcAAQAFAAMAAAAJAAYAAQABAAIAAAAJAAUAAQABAAIAAAAJAAQAAQADAAMAAAAKAAQAAQACAAIAAAALAAQAAQACAAIAAAAMAAQAAQACAAIAAAANAAQAAQACAAIAAAAOAAQAAQACAAIAAAAPAAQAAQACAAIAAAAQAAQAAQACAAIAAAARAAQAAQAEAAMAAAARAAUAAQABAAIAAAARAAYAAQABAAIAAAARAAcAAQABAAIAAAARAAgAAQAFAAMAAAASAAgAAQACAAIAAAATAAgAAQACAAIAAAAUAAgAAQACAAIAAAAVAAgAAQACAAIAAAAWAAgAAQACAAIAAAAXAAgAAQACAAIAAAAYAAgAAQACAAIAAAAZAAgAAQAEAAMAAAD//wIAAQAFAAMAAAAVAA0AEQAIABYAAAAWAA0AEQAHABYAAAAXAAkAEQAWABgAAAAXAAoAEQAWABkAAAAYAAkAEQAXABgAAAAYAAoAEQAXABkAAAATAA0AEQAIABYAAAAUAA0AEQAHABYAAAARAA0AEQAIABYAAAASAA0AEQAHABYAAAAPAA0AEQAIABYAAAAQAA0AEQAHABYAAAANAA0AEQAIABYAAAAOAA0AEQAHABYAAAALAA0AEQAIABYAAAAMAA0AEQAHABYAAAAJAA0AEQAIABYAAAAKAA0AEQAHABYAAAAHAA0AEQAIABYAAAAIAA0AEQAHABYAAAAFAA0AEQAIABYAAAAGAA0AEQAHABYAAAADAA0AEQAIABYAAAAEAA0AEQAHABYAAAABAA0AEQAIABYAAAACAA0AEQAHABYAAAAAAAYAEQAJABUAAAAAAAcAEQAJABYAAAAAAAgAEQAJABcAAAABAAYAEQAKABUAAAABAAcAEQAKABYAAAABAAgAEQAKABcAAAAAAAMAEQAJABUAAAAAAAQAEQAJABYAAAAAAAUAEQAJABcAAAABAAMAEQAKABUAAAABAAQAEQAKABYAAAABAAUAEQAKABcAAAAXAA0AEQAIABYAAAAYAA0AEQAHABYAAAD//wkAEQAHABUAAAAAAAwAEQAHABUAAAAAAA0AEQAHABYAAAAAAA4AEQAHABcAAAABAAwAEQAIABUAAAABAA4AEQAIABcAAAACAAwAEQAHABUAAAACAA4AEQAHABcAAAADAAwAEQAIABUAAAADAA4AEQAIABcAAAAEAAwAEQAHABUAAAAEAA4AEQAHABcAAAAFAAwAEQAIABUAAAAFAA4AEQAIABcAAAAGAAwAEQAHABUAAAAGAA4AEQAHABcAAAAHAAwAEQAIABUAAAAHAA4AEQAIABcAAAAIAAwAEQAHABUAAAAIAA4AEQAHABcAAAAJAAwAEQAIABUAAAAJAA4AEQAIABcAAAAKAAwAEQAHABUAAAAKAA4AEQAHABcAAAALAAwAEQAIABUAAAALAA4AEQAIABcAAAAMAAwAEQAHABUAAAAMAA4AEQAHABcAAAANAAwAEQAIABUAAAANAA4AEQAIABcAAAAOAAwAEQAHABUAAAAOAA4AEQAHABcAAAAPAAwAEQAIABUAAAAPAA4AEQAIABcAAAAQAAwAEQAHABUAAAAQAA4AEQAHABcAAAARAAwAEQAIABUAAAARAA4AEQAIABcAAAASAAwAEQAHABUAAAASAA4AEQAHABcAAAATAAwAEQAIABUAAAATAA4AEQAIABcAAAAUAAwAEQAHABUAAAAUAA4AEQAHABcAAAAVAAwAEQAIABUAAAAVAA4AEQAIABcAAAAWAAwAEQAHABUAAAAWAA4AEQAHABcAAAAXAAwAEQAIABUAAAAXAA4AEQAIABcAAAAYAAwAEQAHABUAAAAYAA4AEQAHABcAAAAZAAwAEQAIABUAAAAZAA0AEQAIABYAAAAZAA4AEQAIABcAAAAAAAkAEQAHABUAAAAAAAoAEQAHABYAAAAAAAsAEQAHABcAAAABAAkAEQAIABUAAAABAAoAEQAIABYAAAABAAsAEQAIABcAAAACAP7/EQALABUAAAADAP7/EQAMABUAAAAEAP7/EQALABUAAAAFAP7/EQAMABUAAAAGAP7/EQALABUAAAAHAP7/EQAMABUAAAAIAP7/EQALABUAAAAJAP7/EQAMABUAAAAKAP7/EQALABUAAAALAP7/EQAMABUAAAAMAP7/EQALABUAAAANAP7/EQAMABUAAAAOAP7/EQALABUAAAAPAP7/EQAMABUAAAAQAP7/EQALABUAAAARAP7/EQAMABUAAAASAP7/EQALABUAAAATAP7/EQAMABUAAAAUAP7/EQALABUAAAAVAP7/EQAMABUAAAAWAP7/EQALABUAAAAXAP7/EQAMABUAAAAYAAAAEQAMABUAAAAXAAMAEQALABUAAAAXAAQAEQALABYAAAAXAAUAEQALABcAAAAYAAMAEQAMABUAAAAYAAQAEQAMABYAAAAYAAUAEQAMABcAAAAYAAYAEQASABgAAAAYAAcAEQASABkAAAATAAAAEQAMABcAAAAUAAAAEQALABcAAAAVAAAAEQAMABcAAAAAAAEAEQAXAA4AAAAUAAEAEgBGAAAAAAAUAAIAEgBGAAEAAAAUAAMAEgBGAAIAAAAVAAEAEgBHAAAAAAAVAAIAEgBHAAEAAAAVAAMAEgBHAAIAAAAPAAkAEQAAABUAAAAPAAoAEQAAABYAAAAPAAsAEQAAABcAAAAQAAkAEQABABUAAAAQAAoAEQABABYAAAAQAAsAEQABABcAAAARAAkAEQACABUAAAARAAoAEQACABYAAAARAAsAEQACABcAAAASAAoAEQADABYAAAASAAsAEQADABcAAAA=")
 tile_set = ExtResource("2_wlapn")
 
-[node name="Turret" type="Node2D" parent="."]
+[node name="Path" type="Node2D" parent="."]
 
-[node name="0" type="Path2D" parent="Turret"]
+[node name="0" type="Path2D" parent="Path"]
 curve = SubResource("Curve2D_00foe")
+
+[node name="Turret" type="Node2D" parent="."]
 
 
 # Scenes\Maps\map_10.tscn
@@ -1154,189 +1694,32 @@ text = "KEY_PLAY"
 
 # Scenes\SupportScenes\choose_game_mode.gd
 extends Control
-	
-# Пути к сценам
-const SCENE_PATH := "res://Scenes/Maps/map_0.tscn"
-const TILE_LAYER_PATH := "TowerExlusion"
 
-# Terrain параметры
-const TERRAIN_SET_ID := 0       # ID набора местности (TerrainSet)
+@onready var button_1 = $Panel/MarginContainer/VBoxContainer/TextureButton_1
+@onready var button_2 = $Panel/MarginContainer/VBoxContainer/TextureButton_2
+@onready var button_3 = $Panel/MarginContainer/VBoxContainer/TextureButton_3
+@onready var close_button = $Panel/Close
+@onready var main_ui = get_parent().get_node("MarginContainer2")
 
-# Обычные tile ID
-const TILE_ID_ATLAS_8_0 = [4, 8, 8]    # tile ID для значений 2, 3, 4 вручную
-
-var n = 3
-var url = "https://lobste.pythonanywhere.com/generate"
-var request = HTTPRequest.new()
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	get_node("Panel/MarginContainer/VBoxContainer/TextureButton_1").pressed.connect(choose_game_mode.bind(1))
-	get_node("Panel/MarginContainer/VBoxContainer/TextureButton_2").pressed.connect(choose_game_mode.bind(2))
-	get_node("Panel/MarginContainer/VBoxContainer/TextureButton_3").pressed.connect(choose_game_mode.bind(3))
-	get_node("Panel/Close").pressed.connect(close)
+	button_1.pressed.connect(_on_mode_selected.bind(1))
+	button_2.pressed.connect(_on_mode_selected.bind(2))
+	button_3.pressed.connect(_on_mode_selected.bind(3))
+	close_button.pressed.connect(_on_close)
 
-func close():
+func _on_close():
 	get_parent().get_node("MarginContainer2").visible = true
 	get_node(".").queue_free()
 	
-func choose_game_mode(index):
+func _on_mode_selected(index):
 	match index:
 		1:
 			get_tree().change_scene_to_file("res://Scenes/UI/company_world.tscn")
 		2:
-			GameData.currrent_level = 0
-			GameData.current_wave = 0
-			GameData.FLAG_GAME_COMPANY = false
-			#add_child(request)
-			#request.request( url, [], HTTPClient.METHOD_POST, "" )
-			#request.connect("request_completed", Callable(self, "_on_request_completed"))
+			GameSession.current_level = 0
+			GameSession.current_wave = 0
+			GameSession.game_mode = GameConstants.GameMode.SANDBOX
 			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
-	
-func _on_request_completed(result, response_code, headers, body):
-	if result != HTTPRequest.RESULT_SUCCESS:
-		return
-
-	var json = JSON.new()
-	var err = json.parse(body.get_string_from_utf8())
-
-	if err != OK:
-		return
-
-	var data = json.get_data()
-	var map_data = data["map"]
-	update_tilemap_with_map_data(map_data)
-
-func update_tilemap_with_map_data(data: Array):
-	var original_scene = load(SCENE_PATH)
-	if not original_scene:
-		return
-
-	var scene_instance = original_scene.instantiate()
-
-	var tilemap: TileMapLayer = scene_instance.get_node(TILE_LAYER_PATH)
-	if not tilemap:
-		return
-
-	# ⚠️ Убедимся, что TileSet поддерживает Terrain
-	var tileset := tilemap.tile_set
-	if tileset == null:
-		return
-
-	# Очистим всю карту
-	tilemap.clear()
-
-	# 📌 Шаг 1: Собираем точки для terrain ("дорожки")
-	var terrain_points := []  # координаты Vector2i
-	for i in range(len(data) + 2):
-		tilemap.set_cell(Vector2i(0, i), 8, Vector2i(0, 0))
-		tilemap.set_cell(Vector2i(len(data[0]) + 2, i), 4, Vector2i(0, 0))
-	for i in range(len(data[0]) + 2):
-		tilemap.set_cell(Vector2i(i, 0), 8, Vector2i(0, 0))
-		tilemap.set_cell(Vector2i(i, len(data) + 2), 4, Vector2i(0, 0))
-	for y in data.size():
-		for x in data[y].size():
-			var value = int(data[y][x])
-			match value:
-				1:
-					terrain_points.append(Vector2i(x + 1, y + 1))  # только собираем пока
-				2, 3, 4:
-					# ставим обычный tile
-					tilemap.set_cell(Vector2i(x + 1, y + 1), TILE_ID_ATLAS_8_0[value - 2], Vector2i(0, 0))
-				_:
-					pass
-	var sorted_path = order_path(terrain_points.duplicate())
-
-	if scene_instance.get_node("Path").curve:
-		scene_instance.get_node("Path").curve.clear_points()
-	var curve = Curve2D.new()
-	curve.bake_interval = 20
-	# Добавляем точки в кривую
-	# Конвертируем координаты тайлов в мировые координаты
-	for point in sorted_path:
-		# Умножаем на размер тайла (предполагая, что размер тайла 64x64)
-		var world_position = Vector2(point.x * 64 + 32, point.y * 64 + 32)
-		curve.add_point(world_position)
-
-	# Устанавливаем кривую для пути
-	scene_instance.get_node("Path").curve = curve
-	# 🏗️ Шаг 2: Автоматическая дорога
-	tilemap.set_cells_terrain_connect(sorted_path, TERRAIN_SET_ID, randi_range(0, 3), true)
-	# 💾 Сохраняем сцену
-	var packed = PackedScene.new()
-	packed.pack(scene_instance)
-	#var result = ResourceSaver.save(packed, "res://Scenes/Maps/map_" + str(n) + ".tscn")
-	print(n)
-	send_next_request()
-	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
-
-func send_next_request():
-	if n >= 10:
-		print("Все запросы отправлены.")
-		return
-	else:
-		request.request( url, [], HTTPClient.METHOD_POST, "" )
-	n += 1
-	
-# Упорядочивает список клеток так, чтобы идти от начала до конца (жадно по ближайшей)
-func order_path(points: Array) -> Array:
-	points.sort_custom(func(a, b): return a.x < b.x)
-	points.insert(0, Vector2i(0, points[0][1]))
-	points.insert(0, Vector2i(-1, points[0][1]))
-	points.append(Vector2i(points[len(points) - 1][0] + 1, points[len(points) - 1][1]))
-	points.append(Vector2i(points[len(points) - 1][0] + 1, points[len(points) - 1][1]))
-	points.append(Vector2i(points[len(points) - 1][0] + 1, points[len(points) - 1][1]))
-	
-		# Результирующий упорядоченный путь
-	var ordered_points := []
-	
-	# Множество использованных точек (чтобы не добавлять одну и ту же точку дважды)
-	var used_points := {}
-	
-	# Начинаем с первой точки
-	var current_point = points[0]
-	ordered_points.append(current_point)
-	used_points[current_point] = true
-	
-	# Пока не использованы все точки
-	while ordered_points.size() < points.size():
-		var next_point = null
-		var min_distance = INF
-		
-		# Ищем ближайшую точку, которая еще не использована
-		for point in points:
-			if used_points.has(point):
-				continue
-			
-			# Вычисляем расстояние до текущей точки
-			var distance = (point - current_point).length_squared()
-			
-			# Если точка находится на расстоянии 1 (соседняя) и ближе, чем текущая минимальная
-			if distance <= 1 and distance < min_distance:
-				next_point = point
-				min_distance = distance
-		
-		# Если следующая точка найдена, добавляем её
-		if next_point != null:
-			ordered_points.append(next_point)
-			used_points[next_point] = true
-			current_point = next_point
-		else:
-			# Если не удалось найти следующую точку, значит, путь не непрерывен
-			print("Ошибка: путь не непрерывен!")
-			var url = "https://lobste.pythonanywhere.com/generate"
-			var request = HTTPRequest.new()
-			add_child(request)
-
-			request.request(
-				url,
-				[],
-				HTTPClient.METHOD_POST,
-				""
-			)
-			request.connect("request_completed", Callable(self, "_on_request_completed"))
-			break
-	
-	return ordered_points
 
 
 # Scenes\SupportScenes\choose_game_mode.tscn
@@ -2121,130 +2504,183 @@ var list_button = []
 var list_button_activity = []
 var ind
 
-# Called when the node enters the scene tree for the first time.
-func _ready():
+func _ready() -> void:
 	ind = 0
 	list_button_activity = []
+	_connect_signals()
+	_setup_turrets()
+
+func _connect_signals() -> void:
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/ButArmanent").pressed.connect(open_armanent)
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/ButShop").pressed.connect(open_shop)
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/Close").pressed.connect(close)
-	for i in range(len(GameData.tower_data)):
-		var panel = load("res://Scenes/SupportScenes/turret_max.tscn").instantiate()
-		var data = GameData.tower_data["Turret_" + str(i + 1) + "T1"]
-		panel.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
-		panel.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-		if data["type attack"] in [0, 3]:
-			panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DAMAGE")
-			panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
-			panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
-			panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["damage"][0])
-			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
-			panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
-			panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
-		elif data["type attack"] == 1:
-			panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INTENSIVITY")
-			panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_DURATION")
-			panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RELOAD")
-			panel.get_node("VBoxContainer/HBoxContainer4/Label1").text = tr("KEY_RANGE")
-			panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["intensivity"][0])
-			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["duration"][0])
-			panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["rof"][0])
-			panel.get_node("VBoxContainer/HBoxContainer4/Label2").text = str(data["range"][0])
-		elif data["type attack"] == 2:
-			panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DISTANCE")
-			panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
-			panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
-			panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["distance"][0])
-			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
-			panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
-			panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
-		elif data["type attack"] == 4:
-			panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INCOME")
-			panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_SPEED")
-			panel.get_node("VBoxContainer/HBoxContainer3").queue_free()
-			panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["speed"][0])
-			panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["income"][0])
-			panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
+
+func _setup_turrets() -> void:
+	for i in range(len(DataManager.tower_data)):
+		var data = DataManager.tower_data["Turret_" + str(i + 1) + "T1"]
+		var panel = _create_turret_panel(i, data)
 		get_node("VBoxContainer/Panel/VBoxContainer/Shop/ScrollContainer/HBoxContainer").add_child(panel)
 		
 		if data["have"]:
-			panel.get_node("VBoxContainer/Button").queue_free()
-			var have = load('res://Scenes/SupportScenes/turret_choose.tscn').instantiate()
-			have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
-			have.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-			get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer/ScrollContainer/GridContainer").add_child(have)
-			if data["activity"]:
-				var activity = load('res://Scenes/SupportScenes/turret_mini.tscn').instantiate()
-				activity.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
-				activity.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-				get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title" + str(ind + 1)).add_child(activity)
-				list_button.append(activity)
-				list_button_activity.append(i)
-				ind += 1
-			else:
-				var style = have.get_node("VBoxContainer/Button").get_theme_stylebox("normal").duplicate()
-				style.set("bg_color", Color(0.0, 0.553, 0.251))
-				have.get_node("VBoxContainer/Button").add_theme_stylebox_override("normal", style)
-				have.get_node("VBoxContainer/Button").pressed.connect(choose_turret.bind(i))
+			_setup_owned_turret(i, data, panel)
 		else:
-			panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
-			if data["prise"] <= GameData.resources_money:
-				panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
-				
+			_setup_buyable_turret(panel, data, i)
 
-func buy_turret(prise, num_turret):
-	GameData.resources_money -= prise
-	GameData.config.set_value("Resources", "money", GameData.resources_money)
-	get_parent().get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
-	GameData.tower_data["Turret_" + str(num_turret) + "T1"]["have"] = true
-	GameData.config.set_value("Turret_" + str(num_turret) + "T1", "have", true)
-	GameData.write_file()
+func _create_turret_panel(i: int, data: Dictionary) -> Node:
+	var panel = load("res://Scenes/SupportScenes/turret_max.tscn").instantiate()
+	panel.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
+	panel.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
+	
+	_setup_turret_stats(panel, data)
+	
+	return panel
+
+func _setup_turret_stats(panel: Node, data: Dictionary) -> void:
+	match data["type_attack"]:
+		0, 3:
+			_setup_damage_turret(panel, data)
+		1:
+			_setup_slow_turret(panel, data)
+		2:
+			_setup_movement_turret(panel, data)
+		4:
+			_setup_money_turret(panel, data)
+
+func _setup_damage_turret(panel: Node, data: Dictionary) -> void:
+	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DAMAGE")
+	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
+	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
+	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["damage"][0])
+	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
+	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
+	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
+
+func _setup_slow_turret(panel: Node, data: Dictionary) -> void:
+	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INTENSIVITY")
+	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_DURATION")
+	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RELOAD")
+	panel.get_node("VBoxContainer/HBoxContainer4/Label1").text = tr("KEY_RANGE")
+	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["intensivity"][0])
+	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["duration"][0])
+	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["rof"][0])
+	panel.get_node("VBoxContainer/HBoxContainer4/Label2").text = str(data["range"][0])
+
+func _setup_movement_turret(panel: Node, data: Dictionary) -> void:
+	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DISTANCE")
+	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
+	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
+	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["distance"][0])
+	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
+	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
+	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
+
+func _setup_money_turret(panel: Node, data: Dictionary) -> void:
+	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INCOME")
+	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_SPEED")
+	panel.get_node("VBoxContainer/HBoxContainer3").queue_free()
+	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["speed"][0])
+	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["income"][0])
+	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
+
+func _create_owned_turret_ui(i: int) -> Node:
+	var have = load('res://Scenes/SupportScenes/turret_choose.tscn').instantiate()
+	have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
+	have.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
+	return have
+
+func _setup_active_turret(i: int) -> void:
+	var activity = load('res://Scenes/SupportScenes/turret_mini.tscn').instantiate()
+	activity.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
+	activity.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title" + str(ind + 1)).add_child(activity)
+	list_button.append(activity)
+	list_button_activity.append(i)
+	ind += 1
+	
+func _setup_owned_turret(i: int, data: Dictionary, panel: Node) -> void:
+	panel.get_node("VBoxContainer/Button").queue_free()
+	var have = _create_owned_turret_ui(i)
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer/ScrollContainer/GridContainer").add_child(have)
+	
+	if data["activity"]:
+		_setup_active_turret(i)
+	else:
+		_setup_inactive_turret(have, i)  # Передаем i в функцию
+
+func _setup_inactive_turret(have: Node, turret_index: int) -> void:  # Добавляем параметр turret_index
+	var style = have.get_node("VBoxContainer/Button").get_theme_stylebox("normal").duplicate()
+	style.set("bg_color", Color(0.0, 0.553, 0.251))
+	have.get_node("VBoxContainer/Button").add_theme_stylebox_override("normal", style)
+	have.get_node("VBoxContainer/Button").pressed.connect(choose_turret.bind(turret_index))  # Используем turret_index
+	
+func _setup_buyable_turret(panel: Node, data: Dictionary, i: int) -> void:
+	panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
+	if data["prise"] <= ResourceManager.resources_money:
+		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
+
+func buy_turret(prise: int, num_turret: int) -> void:
+	ResourceManager.resources_money -= prise
+	DataManager.data["Resources"]["money"] = ResourceManager.resources_money
+	get_parent().get_node("Panel/HBoxContainer/Label").text = str(ResourceManager.resources_money)
+	
+	var turret_key = "Turret_" + str(num_turret) + "T1"
+	DataManager.tower_data[turret_key]["have"] = true
+	DataManager.data[turret_key]["have"] = true
+	DataManager.write_file()
 	close()
-	
-func open_armanent():
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = true
-	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = false
-	
-func open_shop():
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = false
-	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = true
-	
-func close():
-	get_parent().get_node("MarginContainer2").visible = true
-	get_node(".").queue_free()
 
-func choose_turret(id):
+func choose_turret(id: int) -> void:
 	if number_card_choose_characters_choose_item != id:
 		number_card_choose_characters_choose_item = id
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").play("rotate")
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").play("rotate")
-		
-		for i in range(len(list_button)):
-			list_button[i].pressed.disconnect(choose_characters_choose_item.bind(1))
-			list_button[i].pressed.connect(choose_characters_choose_item.bind(i))
+		_play_animations()
+		_setup_button_connections(id)
 	else:
-		for i in range(len(list_button)):
-			list_button[i].pressed.disconnect(choose_characters_choose_item.bind(i))
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").stop()
-		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").stop()
+		_stop_animations()
+		_disconnect_buttons()
 
-func choose_characters_choose_item(id):
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title1/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title2/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title3/AnimationPlayer").stop()
-	get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title4/AnimationPlayer").stop()
-	GameData.tower_data["Turret_" + str(list_button_activity[id] + 1) + "T1"]["activity"] = false
-	GameData.tower_data["Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1"]["activity"] = true
-	GameData.config.set_value("Turret_" + str(list_button_activity[id] + 1) + "T1", "activity", false)
-	GameData.config.set_value("Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1", "activity", true)
-	GameData.menu_object.queue_free()
-	GameData.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
-	get_parent().get_node(".").add_child(GameData.menu_object)
-	GameData.write_file()
+func _play_animations() -> void:
+	for i in range(1, 5):
+		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title" + str(i) + "/AnimationPlayer").play("rotate")
+
+func _stop_animations() -> void:
+	for i in range(1, 5):
+		get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer/Title" + str(i) + "/AnimationPlayer").stop()
+
+func _setup_button_connections(id: int) -> void:
+	for i in range(len(list_button)):
+		list_button[i].pressed.disconnect(choose_characters_choose_item.bind(1))
+		list_button[i].pressed.connect(choose_characters_choose_item.bind(i))
+
+func _disconnect_buttons() -> void:
+	for i in range(len(list_button)):
+		list_button[i].pressed.disconnect(choose_characters_choose_item.bind(i))
+
+func choose_characters_choose_item(id: int) -> void:
+	_stop_animations()
+	
+	var old_turret = "Turret_" + str(list_button_activity[id] + 1) + "T1"
+	var new_turret = "Turret_" + str(number_card_choose_characters_choose_item + 1) + "T1"
+	
+	DataManager.tower_data[old_turret]["activity"] = false
+	DataManager.tower_data[new_turret]["activity"] = true
+	
+	self.queue_free()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_parent().get_node(".").add_child(UiManager.menu_object)
+	
+	DataManager.write_file()
+
+func open_armanent() -> void:
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = true
+	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = false
+
+func open_shop() -> void:
+	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = false
+	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = true
+
+func close() -> void:
+	get_parent().get_node("MarginContainer2").visible = true
+	queue_free()
 
 
 # Scenes\SupportScenes\shop.tscn
@@ -2458,58 +2894,61 @@ libraries = {
 
 # Scenes\SupportScenes\TurretMenu.gd
 extends Control
-var st = 0
-var list_strategy = [tr("KEY_FIRST"), tr("KEY_LAST"), tr("KEY_RANDOM")]
 
-func _ready():
-	if get_parent().type_attack in [0, 3]:
-		self.get_node("V/HStrateg/Strateg").pressed.connect(strateg)
-		self.get_node("V/HDamage/HText/Name").text = tr("KEY_DAMAGE")
-		self.get_node("V/HReload/HText/Name").text = tr("KEY_RELOAD")
-		self.get_node("V/HRange/HText/Name").text = tr("KEY_RANGE")
-		self.get_node("V/HInflicted/HText/Name").text = tr("KEY_INFLICTED")
-		self.get_node("V/HStrateg/Strateg").text = list_strategy[st]
-		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex")
-		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-		self.get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-		self.get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/inflicted.png-1c2e6895b23b900526e6ad6b6c10ab68.ctex")
-	elif get_parent().type_attack == 1:
-		self.get_node("V/HStrateg/Strateg").disabled = true
-		self.get_node("V/HDamage/HText/Name").text = tr("KEY_INTENSIVITY")
-		self.get_node("V/HReload/HText/Name").text = tr("KEY_DURATION")
-		self.get_node("V/HRange/HText/Name").text = tr("KEY_RELOAD")
-		self.get_node("V/HInflicted/HText/Name").text = tr("KEY_RANGE")
-		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
-		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
-		self.get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-		self.get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-	elif get_parent().type_attack == 4:
-		self.get_node("V/HStrateg/Strateg").disabled = true
-		self.get_node("V/HDamage/HText/Name").text = tr("KEY_SPEED")
-		self.get_node("V/HReload/HText/Name").text = tr("KEY_INCOME")
-		self.get_node("V/HRange").queue_free()
-		self.get_node("V/HInflicted/").queue_free()
-		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
-		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
+var strategy := 0
+var st := 0
+var list_strategy := [tr("KEY_FIRST"), tr("KEY_LAST"), tr("KEY_RANDOM")]
+
+func setup(type_attack):
+	if type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA]:
+		get_node("V/HStrateg/Strateg").pressed.connect(strateg)
+		get_node("V/HDamage/HText/Name").text = tr("KEY_DAMAGE")
+		get_node("V/HReload/HText/Name").text = tr("KEY_RELOAD")
+		get_node("V/HRange/HText/Name").text = tr("KEY_RANGE")
+		get_node("V/HInflicted/HText/Name").text = tr("KEY_INFLICTED")
+		get_node("V/HStrateg/Strateg").text = list_strategy[st]
+		get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex")
+		get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
+		get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
+		get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/inflicted.png-1c2e6895b23b900526e6ad6b6c10ab68.ctex")
+	elif type_attack == GameConstants.TowerType.SLOW:
+		get_node("V/HStrateg/Strateg").disabled = true
+		get_node("V/HDamage/HText/Name").text = tr("KEY_INTENSIVITY")
+		get_node("V/HReload/HText/Name").text = tr("KEY_DURATION")
+		get_node("V/HRange/HText/Name").text = tr("KEY_RELOAD")
+		get_node("V/HInflicted/HText/Name").text = tr("KEY_RANGE")
+		get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
+		get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
+		get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
+		get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
+	elif type_attack == GameConstants.TowerType.MONEY:
+		get_node("V/HStrateg/Strateg").disabled = true
+		get_node("V/HDamage/HText/Name").text = tr("KEY_SPEED")
+		get_node("V/HReload/HText/Name").text = tr("KEY_INCOME")
+		get_node("V/HRange").queue_free()
+		get_node("V/HInflicted").queue_free()
+		get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
+		get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
 	else:
-		self.get_node("V/HStrateg/Strateg").disabled = true
-		self.get_node("V/HDamage/HText/Name").text = tr("KEY_DISTANCE")
-		self.get_node("V/HReload/HText/Name").text = tr("KEY_RELOAD")
-		self.get_node("V/HRange/HText/Name").text = tr("KEY_RANGE")
-		self.get_node("V/HInflicted/HText/Name").text = tr("KEY_INFLICTED")
-		self.get_node("V/HStrateg/Strateg").text = list_strategy[st]
-		self.get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/distance.png-a3097e1cb8e56e338aba8f1c30601538.ctex")
-		self.get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-		self.get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-		self.get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/inflicted.png-1c2e6895b23b900526e6ad6b6c10ab68.ctex")
+		get_node("V/HStrateg/Strateg").disabled = true
+		get_node("V/HDamage/HText/Name").text = tr("KEY_DISTANCE")
+		get_node("V/HReload/HText/Name").text = tr("KEY_RELOAD")
+		get_node("V/HRange/HText/Name").text = tr("KEY_RANGE")
+		get_node("V/HInflicted/HText/Name").text = tr("KEY_INFLICTED")
+		get_node("V/HStrateg/Strateg").text = list_strategy[st]
+		get_node("V/HDamage/HText/TextureRect").texture = load("res://.godot/imported/distance.png-a3097e1cb8e56e338aba8f1c30601538.ctex")
+		get_node("V/HReload/HText/TextureRect").texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
+		get_node("V/HRange/HText/TextureRect").texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
+		get_node("V/HInflicted/HText/TextureRect").texture = load("res://.godot/imported/inflicted.png-1c2e6895b23b900526e6ad6b6c10ab68.ctex")
 
 func strateg():
-	if get_parent().strategy == 2:
+	if strategy == 2:
 		st = 0
 	else:
-		st = get_parent().strategy + 1
-	self.get_node("V/HStrateg/Strateg").text = list_strategy[st]
-	get_parent().strategy = st
+		st = strategy + 1
+
+	get_node("V/HStrateg/Strateg").text = list_strategy[st]
+	strategy = st
 	
 
 
@@ -3019,16 +3458,623 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 
-# Scenes\Turrets\Turret_10T1.gd
-extends "res://Scenes/UI/Turrets.gd"
+# Scenes\Turrets\AreaTower.gd
+extends TowerBase
+class_name AreaTower
+
+var damage: float = 0.0
+
+func fire() -> void:
+	is_ready = false
+	get_node("AnimationPlayer").play("Fire")
+	_apply_damage()
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
+func _apply_damage() -> void:
+	for e in enemy_array:
+		if is_instance_valid(e):
+			e.on_hit(damage, type, 0, GameConstants.TowerType.AREA, current_lvl)
+
+func _initialize() -> void:
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
 
 
-func _on_range_area_entered(body):
-	enemy_array.append(body.get_parent())
+# Scenes\Turrets\MoneyTower.gd
+extends TowerBase
+class_name MoneyTower
+
+var income: float
+var speed: float
+
+func _ready():
+	type_attack = GameConstants.TowerType.MONEY
+	get_node("Timer").wait_time = speed
+	get_node("Timer").timeout.connect(_on_timer_timeout)
+	get_node("Timer").start()
+	super._ready()
+	get_node("AnimationPlayer").play("Fire")
+
+func fire(): pass
+func _apply_damage(): pass
+
+func _on_timer_timeout():
+	var profit = income * (GameSession.speed_game if GameSession.speed_game != 0.0 else 1.0)
+	ResourceManager.add_money(int(profit))
+	emit_signal("money_in_game_session_changed")
 
 
-func _on_range_body_exited(body):
+# Scenes\Turrets\MovementTower.gd
+extends TowerBase
+class_name MovementTower
+
+var distance: float
+
+func fire() -> void:
+	is_ready = false
+	get_node("AnimationPlayer").play("Fire")
+	_apply_damage()
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
+func _apply_damage() -> void:
+	if enemy:
+		enemy.on_hit(distance, type, 0, GameConstants.TowerType.MOVEMENT, current_lvl)
+
+
+# Scenes\Turrets\NormalTower.gd
+extends TowerBase
+class_name NormalTower
+
+var damage: float = 0.0
+
+func fire() -> void:
+	is_ready = false
+	get_node("AnimationPlayer").play("Fire")
+	_apply_damage()
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
+func _apply_damage() -> void:
+	if enemy:
+		inflicted += damage
+		enemy.on_hit(damage, type, 0, GameConstants.TowerType.NORMAL, current_lvl)
+		emit_signal("damage_inflicted_changed", inflicted)
+
+func _initialize() -> void:
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+
+# Scenes\Turrets\SlowTower.gd
+extends TowerBase
+class_name SlowTower
+
+var damage: float
+var intensivity: float
+var duration: float
+
+func fire() -> void:
+	is_ready = false
+	fire_missile()
+
+	for e in enemy_array:
+		if is_instance_valid(e):
+			e.on_hit(intensivity, type, 0, GameConstants.TowerType.SLOW, current_lvl)
+
+	await get_tree().create_timer(rof).timeout
+	is_ready = true
+
+func _initialize() -> void:
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+func fire_missile() -> void:
+	var fx = preload("res://Scenes/SupportScenes/ProjecttileImpact_2.tscn").instantiate()
+	fx.scale = Vector2(range / 50, range / 50)
+	add_child(fx)
+
+func _apply_damage() -> void:
+	pass  # нет применения напрямую, всё внутри fire
+
+
+# Scenes\Turrets\TowerBase.gd
+extends Node2D
+class_name TowerBase
+
+signal money_in_game_session_changed()
+signal damage_inflicted_changed(value: float)
+
+var type: String
+var type_attack: int
+var type_explosion: int
+
+var enemy_array: Array = []
+var enemy: Node = null
+var built: bool = false
+var is_ready: bool = true
+var inflicted: float = 0
+
+var range: float
+var rof: float
+var current_lvl: int
+var max_lvl: int
+
+var strategy: int = 0 # First/Last/Random
+
+@onready var ui_system: TowerUI
+@onready var upgrade_system: TowerUpgradeSystem
+
+@onready var range_area: Area2D = $Range
+
+func _initialize() -> void:
+	range_area.connect("body_entered", Callable(self, "_on_range_body_entered"))
+	range_area.connect("body_exited", Callable(self, "_on_range_body_exited"))
+
+	var shape = range_area.get_node("CollisionShape2D")
+	if shape and shape.shape is CircleShape2D:
+		shape.shape.radius = 0.5 * range
+		
+func _ready() -> void:
+	if built:
+		ui_system = TowerUI.new()
+		add_child(ui_system)
+		ui_system.setup(self)
+
+		upgrade_system = TowerUpgradeSystem.new()
+		add_child(upgrade_system)
+		upgrade_system.setup(self)
+
+		var range_node := get_node_or_null("Range")
+		if range_node:
+			range_node.body_entered.connect(_on_range_body_entered)
+			range_node.body_exited.connect(_on_range_body_exited)
+
+		_initialize()
+
+func _physics_process(_delta: float) -> void:
+	if not built or enemy_array.is_empty():
+		enemy = null
+		return
+
+	if enemy == null or not is_instance_valid(enemy):
+		select_enemy()
+
+	if enemy != null:
+		look_at(enemy.global_position)
+		if is_ready:
+			fire()
+
+func fire() -> void: pass
+func _apply_damage() -> void: pass  # Virtual methods
+
+func _on_range_body_entered(body: Node) -> void:
+	var parent = body.get_parent()
+	if parent and parent.has_method("on_hit"):
+		enemy_array.append(parent)
+
+func _on_range_body_exited(body: Node) -> void:
 	enemy_array.erase(body.get_parent())
+	if enemy == body.get_parent():
+		enemy = null
+		select_enemy()
+
+func select_enemy() -> void:
+	enemy_array = enemy_array.filter(func(e): return is_instance_valid(e))
+	if enemy_array.is_empty():
+		enemy = null
+		return
+
+	var values = enemy_array.map(func(e): return e.progress)
+	var target_index = 0
+
+	match strategy:
+		0: target_index = values.find(values.max()) # First
+		1: target_index = values.find(values.min()) # Last
+		2: target_index = randi_range(0, values.size() - 1)  # Random
+
+	enemy = enemy_array[target_index]
+
+
+# Scenes\Turrets\TowerData.gd
+## Класс для хранения и управления данными башни
+class_name TowerData
+extends Resource
+
+## Тип башни
+var type: String
+## Тип атаки башни
+var type_attack: int
+## Тип взрыва/эффекта
+var type_explosion: int
+## Массив значений урона для каждого уровня
+var damage: Array[float]
+## Массив значений радиуса действия для каждого уровня
+var range: Array[float]
+## Массив значений скорости атаки для каждого уровня
+var rof: Array[float]
+## Массив значений интенсивности эффекта для каждого уровня
+var intensivity: Array[float]
+## Массив значений длительности эффекта для каждого уровня
+var duration: Array[float]
+## Массив значений дистанции для каждого уровня
+var distance: Array[float]
+## Массив значений скорости для каждого уровня
+var speed: Array[float]
+## Массив значений дохода для каждого уровня
+var income: Array[float]
+## Массив стоимости улучшений для каждого уровня
+var upgrade_costs: Array[int]
+## Флаг наличия башни у игрока
+var have: bool = false
+## Флаг активности башни
+var activity: bool = false
+
+## Инициализация данных башни из словаря
+func _init(data: Dictionary) -> void:
+	type = data.get("type", "")
+	type_attack = data.get("type_attack", 0)
+	type_explosion = data.get("type_explosion", 0)
+	damage = data.get("damage", [])
+	range = data.get("range", [])
+	rof = data.get("rof", [])
+	intensivity = data.get("intensivity", [])
+	duration = data.get("duration", [])
+	distance = data.get("distance", [])
+	speed = data.get("speed", [])
+	income = data.get("income", [])
+	upgrade_costs = data.get("upgrade_for", [])
+	have = data.get("have", false)
+	activity = data.get("activity", false)
+
+## Получение текущих характеристик башни для указанного уровня
+func get_current_stats(level: int) -> Dictionary:
+	return {
+		"damage": damage[level] if damage.size() > level else 0.0,
+		"range": range[level] if range.size() > level else 0.0,
+		"rof": rof[level] if rof.size() > level else 0.0,
+		"intensivity": intensivity[level] if intensivity.size() > level else 0.0,
+		"duration": duration[level] if duration.size() > level else 0.0,
+		"distance": distance[level] if distance.size() > level else 0.0,
+		"speed": speed[level] if speed.size() > level else 0.0,
+		"income": income[level] if income.size() > level else 0.0
+	}
+
+## Получение стоимости улучшения для указанного уровня
+func get_upgrade_cost(level: int) -> int:
+	return upgrade_costs[level] if upgrade_costs.size() > level else 0
+
+
+# Scenes\Turrets\TowerUI.gd
+## Класс управления пользовательским интерфейсом башни
+extends Node
+class_name TowerUI
+
+## Ссылка на башню, которой принадлежит UI
+var tower: TowerBase
+
+func setup(tower_base: TowerBase) -> void:
+	tower = tower_base
+	_connect_signals()
+	update_menu()
+	update_menu_upgrade()
+	
+	# Подписываемся на изменение урона
+	if tower.type_attack == GameConstants.TowerType.NORMAL:
+		tower.damage_inflicted_changed.connect(_on_damage_inflicted_changed)
+
+## Обработчик изменения нанесенного урона
+func _on_damage_inflicted_changed(value: float) -> void:
+	# Обновляем значение только если меню открыто
+	if tower.get_node("Menu").visible:
+		tower.get_node("Menu/V/HInflicted/HValue/Value").text = str(value)
+	
+## Обновление меню башни
+func update_menu() -> void:
+	if tower.type_attack != GameConstants.TowerType.MONEY:
+		_update_combat_menu()
+	else:
+		_update_money_menu()
+	
+	# Обновляем отображение уровня
+	tower.get_node("Menu/V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(tower.current_lvl + 1) + "/" + str(tower.max_lvl + 1)
+	
+	# Если достигнут максимальный уровень
+	if tower.current_lvl >= tower.max_lvl:
+		set_max_level_ui()
+
+## Подключение сигналов UI элементов
+func _connect_signals() -> void:
+	tower.get_node("MenuButton").pressed.connect(_on_menu_button_pressed)
+	tower.get_node("Menu/V/HButton/Close").pressed.connect(hide_menu)
+	
+	# Если башня денежная, удаляем ненужные элементы UI
+	if tower.type_attack == GameConstants.TowerType.MONEY:
+		tower.get_node("Menu/V/HRange").queue_free()
+		tower.get_node("Menu/V/HStrateg").queue_free()
+		tower.get_node("Menu").size[1] = 100
+
+## Обработчик нажатия на кнопку меню
+func _on_menu_button_pressed() -> void:
+	_hide_other_menu_buttons()
+	_check_upgrade_possibility()
+	_update_inflicted_damage()
+	_add_to_open_menus()
+	_position_menu()
+	tower.get_node("Menu").show()
+
+## Скрытие кнопок меню других башен
+func _hide_other_menu_buttons() -> void:
+	for i in tower.get_parent().get_children():
+		i.get_node("MenuButton").hide()
+
+## Проверка возможности улучшения башни
+func _check_upgrade_possibility() -> void:
+	if GameSession.current_money_in_game_session >= DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl]:
+		tower.get_node("Menu/V/HButton/Up").disabled = false
+
+## Обновление отображения нанесенного урона
+func _update_inflicted_damage() -> void:
+	if tower.type_attack == GameConstants.TowerType.NORMAL:
+		tower.get_node("Menu/V/HInflicted/HValue/Value").text = str(tower.inflicted)
+
+## Добавление меню в список открытых
+func _add_to_open_menus() -> void:
+	UiManager.add_open_menu_turret(tower.get_node("Menu"))
+
+## Позиционирование меню относительно башни
+func _position_menu() -> void:
+	var hud = tower.get_parent().get_parent().get_parent().get_node("UI/HUD")
+	var menu = tower.get_node("Menu")
+	
+	if hud.size[0] - tower.position[0] < 400 and hud.size[1] - tower.position[1] < 300:
+		menu.position = Vector2(-300, -330)  # Справо снизу
+	elif hud.size[0] - tower.position[0] < 400 and tower.position[1] < 150:
+		menu.position = Vector2(-300, 50)    # Справо сверху
+	elif hud.size[0] - tower.position[0] < 400:
+		menu.position = Vector2(-300, 0)     # Снизу
+	elif hud.size[1] - tower.position[1] < 300:
+		menu.position = Vector2(0, -330)     # Справо
+	elif tower.position[1] < 150:
+		menu.position = Vector2(0, 50)       # Сверху
+	else:
+		menu.position = Vector2(50, -200)    # По умолчанию
+
+## Скрытие меню башни
+func hide_menu() -> void:
+	for i in tower.get_parent().get_children():
+		i.get_node("MenuButton").show()
+	
+	while UiManager.list_open_menu_turrets.size() > 0:
+		UiManager.list_open_menu_turrets[0].hide()
+		UiManager.list_open_menu_turrets.pop_at(0)
+
+## Обновление меню боевой башни
+func _update_combat_menu() -> void:
+	var menu = tower.get_node("Menu")
+	var tower_data = DataManager.tower_data[tower.type]
+	
+	if tower.type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA]:
+		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["damage"][tower.current_lvl])
+		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+	elif tower.type_attack == GameConstants.TowerType.SLOW:
+		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["intensivity"][tower.current_lvl] * 100)
+		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["duration"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+		menu.get_node("V/HInflicted/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+	else:
+		menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["distance"][tower.current_lvl])
+		menu.get_node("V/HReload/HValue/Value").text = str(tower_data["rof"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Value").text = str(tower_data["range"][tower.current_lvl])
+
+## Обновление меню денежной башни
+func _update_money_menu() -> void:
+	var menu = tower.get_node("Menu")
+	var tower_data = DataManager.tower_data[tower.type]
+	
+	menu.get_node("V/HDamage/HValue/Value").text = str(tower_data["speed"][tower.current_lvl])
+	menu.get_node("V/HReload/HValue/Value").text = str(tower_data["income"][tower.current_lvl])
+
+## Обновление информации об улучшении в меню
+func update_menu_upgrade() -> void:
+	if tower.current_lvl >= tower.max_lvl:
+		_clear_upgrade_texts()
+		return
+		
+	if tower.type_attack != GameConstants.TowerType.MONEY:
+		_update_combat_menu_upgrade()
+	else:
+		_update_money_menu_upgrade()
+	
+	tower.get_node("Menu/V/HButton/Up/LabelValue").text = str(DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl])
+
+## Очистка текстов улучшений при максимальном уровне
+func _clear_upgrade_texts() -> void:
+	var menu = tower.get_node("Menu")
+	
+	# Очищаем все тексты улучшений
+	menu.get_node("V/HDamage/HValue/Up").text = ""
+	menu.get_node("V/HReload/HValue/Up").text = ""
+	menu.get_node("V/HRange/HValue/Up").text = ""
+	
+	# Очищаем стоимость улучшения
+	menu.get_node("V/HButton/Up/LabelValue").text = ""
+	
+## Обновление информации об улучшении для боевой башни
+func _update_combat_menu_upgrade() -> void:
+	var menu = tower.get_node("Menu")
+	var tower_data = DataManager.tower_data[tower.type]
+	var next_level = tower.current_lvl + 1
+	
+	if tower.type_attack in [GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA]:
+		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["damage"][next_level] - tower_data["damage"][tower.current_lvl])
+		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+	elif tower.type_attack == GameConstants.TowerType.SLOW:
+		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["intensivity"][next_level] - tower_data["intensivity"][tower.current_lvl])
+		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["duration"][next_level] - tower_data["duration"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+	else:
+		menu.get_node("V/HDamage/HValue/Up").text = "+" + str(tower_data["distance"][next_level] - tower_data["distance"][tower.current_lvl])
+		menu.get_node("V/HReload/HValue/Up").text = str(tower_data["rof"][next_level] - tower_data["rof"][tower.current_lvl])
+		menu.get_node("V/HRange/HValue/Up").text = "+" + str(tower_data["range"][next_level] - tower_data["range"][tower.current_lvl])
+
+## Обновление информации об улучшении для денежной башни
+func _update_money_menu_upgrade() -> void:
+	var menu = tower.get_node("Menu")
+	var tower_data = DataManager.tower_data[tower.type]
+	var next_level = tower.current_lvl + 1
+	
+	menu.get_node("V/HDamage/HValue/Up").text = str(tower_data["speed"][next_level] - tower_data["speed"][tower.current_lvl])
+	menu.get_node("V/HReload/HValue/Up").text = str(tower_data["income"][next_level] - tower_data["income"][tower.current_lvl])
+
+## Установка UI для максимального уровня башни
+func set_max_level_ui() -> void:
+	var up_button = tower.get_node("Menu/V/HButton/Up")
+	up_button.disabled = true
+	up_button.get_node("TextureRect").visible = false
+	up_button.get_node("LabelValue").visible = false
+	up_button.get_node("LabelBut").text = tr("KEY_LVL_MAX")
+
+func _exit_tree() -> void:
+	if tower and tower.type_attack == GameConstants.TowerType.NORMAL:
+		if tower.damage_inflicted_changed.is_connected(_on_damage_inflicted_changed):
+			tower.damage_inflicted_changed.disconnect(_on_damage_inflicted_changed)
+
+
+# Scenes\Turrets\TowerUpgradeSystem.gd
+## Система управления улучшениями башни
+extends Node
+class_name TowerUpgradeSystem
+
+## Ссылка на башню, которой принадлежит система улучшений
+var tower: TowerBase
+
+## Инициализация системы улучшений
+func setup(tower_base: TowerBase) -> void:
+	tower = tower_base
+	_connect_signals()
+
+## Подключение сигналов для улучшения
+func _connect_signals() -> void:
+	tower.get_node("Menu/V/HButton/Up").pressed.connect(upgrade)
+	tower.get_node("Menu/V/HButton/Up").disabled = true
+
+## Основной метод улучшения башни
+func upgrade() -> void:
+	if not can_upgrade():
+		return
+		
+	if perform_upgrade():
+		apply_upgrade_effects()
+		update_ui()
+
+## Проверка возможности улучшения башни
+func can_upgrade() -> bool:
+	# Проверяем, не достигнут ли максимальный уровень
+	if tower.current_lvl >= tower.max_lvl:
+		tower.ui_system.set_max_level_ui()
+		return false
+		
+	return GameSession.current_money_in_game_session >= DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl]
+
+## Выполнение улучшения башни
+func perform_upgrade() -> bool:
+	var upgrade_cost = DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl]
+	
+	if GameSession.current_money_in_game_session - upgrade_cost > 0:
+		GameSession.spend_money(upgrade_cost)
+		tower.current_lvl += 1
+		tower.emit_signal("money_in_game_session_changed")
+		
+		# Если достигнут максимальный уровень, обновляем UI
+		if tower.current_lvl >= tower.max_lvl:
+			tower.ui_system.set_max_level_ui()
+			
+		return true
+	
+	tower.get_node("Menu/V/HButton/Up").disabled = true
+	return false
+
+## Применение эффектов улучшения
+func apply_upgrade_effects() -> void:
+	if tower.type_attack != GameConstants.TowerType.MONEY:
+		_upgrade_combat_tower()
+	else:
+		_upgrade_money_tower()
+
+## Улучшение боевой башни
+func _upgrade_combat_tower() -> void:
+	var tower_data = DataManager.tower_data[tower.type]
+	
+	match tower.type_attack:
+		GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
+			tower.damage = tower_data["damage"][tower.current_lvl]
+		GameConstants.TowerType.SLOW:
+			tower.intensivity = tower_data["intensivity"][tower.current_lvl]
+			tower.duration = tower_data["duration"][tower.current_lvl]
+		GameConstants.TowerType.MOVEMENT:
+			tower.duration = tower_data["distance"][tower.current_lvl]
+	
+	tower.rof = tower_data["rof"][tower.current_lvl]
+	tower.range = tower_data["range"][tower.current_lvl]
+	tower.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * tower.range
+
+## Улучшение денежной башни
+func _upgrade_money_tower() -> void:
+	var tower_data = DataManager.tower_data[tower.type]
+	tower.speed = tower_data["speed"][tower.current_lvl]
+	tower.income = tower_data["income"][tower.current_lvl]
+
+## Обновление UI после улучшения
+func update_ui() -> void:
+	tower.ui_system.update_menu()
+	
+	tower.ui_system.update_menu_upgrade()
+
+
+# Scenes\Turrets\TurretFactory.gd
+extends Node
+class_name TurretFactory
+
+static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
+	var path = "res://Scenes/Turrets/%s.tscn" % tower_id
+	var scene = load(path)
+	if not scene:
+		push_error("❌ Can't load turret: " + path)
+		return null
+
+	var turret: TowerBase = scene.instantiate()
+	var data = DataManager.tower_data.get(tower_id, {})
+	if data.is_empty():
+		push_error("❌ No data for turret: " + tower_id)
+		return null
+
+	turret.type = tower_id
+	turret.position = position
+	turret.built = true
+	turret.type_attack = data["type_attack"]
+	turret.type_explosion = data["type_explosion"]
+	turret.current_lvl = 0
+	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
+
+	# базовые значения
+	turret.rof = data["rof"][0]
+	turret.range = data["range"][0]
+
+	if turret is NormalTower:
+		turret.damage = data["damage"][0]
+	elif turret is SlowTower:
+		turret.intensivity = data["intensivity"][0]
+		turret.duration = data["duration"][0]
+	elif turret is MovementTower:
+		turret.distance = data["distance"][0]
+	elif turret is AreaTower:
+		turret.damage = data["damage"][0]
+	elif turret is MoneyTower:
+		turret.income = data["income"][0]
+		turret.speed = data["speed"][0]
+
+	return turret
 
 
 # Scenes\Turrets\Turret_10T1.tscn
@@ -3119,22 +4165,10 @@ shape = SubResource("RectangleShape2D_e05ir")
 visible = false
 
 
-# Scenes\Turrets\Turret_1T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _oe_body_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-
-
 # Scenes\Turrets\Turret_1T1.tscn
 [gd_scene load_steps=10 format=3 uid="uid://csxfxkvrimbwn"]
 
-[ext_resource type="Script" uid="uid://dgwh8oowa4beg" path="res://Scenes/Turrets/Turret_1T1.gd" id="1_g0luj"]
+[ext_resource type="Script" uid="uid://dlav3xepqs6vl" path="res://Scenes/Turrets/NormalTower.gd" id="1_5ehdr"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_v13rm"]
 [ext_resource type="Texture2D" uid="uid://c3as74g4wv3jb" path="res://Assets/Props/towerDefense_tile_turret_1.png" id="3_aew4y"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_60ma8"]
@@ -3168,7 +4202,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_67nnn"]
 
 [node name="Turret_1T1" type="Node2D"]
-script = ExtResource("1_g0luj")
+script = ExtResource("1_5ehdr")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_v13rm")
@@ -3208,22 +4242,10 @@ z_index = 1
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
 
 
-# Scenes\Turrets\Turret_2T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _oe_body_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-
-
 # Scenes\Turrets\Turret_2T1.tscn
 [gd_scene load_steps=10 format=3 uid="uid://6w8rl4uenxud"]
 
-[ext_resource type="Script" uid="uid://b3axy4qy1n3ch" path="res://Scenes/Turrets/Turret_2T1.gd" id="1_11jue"]
+[ext_resource type="Script" uid="uid://bpvyodh3m651h" path="res://Scenes/Turrets/AreaTower.gd" id="1_o67pk"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_u1m3h"]
 [ext_resource type="Texture2D" uid="uid://dn7e5x4wc6jn2" path="res://Assets/Props/towerDefense_tile_turret_2.png" id="3_oou1b"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_i0d1p"]
@@ -3257,7 +4279,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_busvp"]
 
 [node name="Turret_2T1" type="Node2D"]
-script = ExtResource("1_11jue")
+script = ExtResource("1_o67pk")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_u1m3h")
@@ -3297,23 +4319,10 @@ z_index = 1
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
 
 
-# Scenes\Turrets\Turret_3T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _oe_body_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-	
-
-
 # Scenes\Turrets\Turret_3T1.tscn
 [gd_scene load_steps=10 format=3 uid="uid://c1wq68wwcuvxl"]
 
-[ext_resource type="Script" uid="uid://b8powbwcs68s3" path="res://Scenes/Turrets/Turret_3T1.gd" id="1_mw0ir"]
+[ext_resource type="Script" uid="uid://dlav3xepqs6vl" path="res://Scenes/Turrets/NormalTower.gd" id="1_s4bcp"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_0jxvd"]
 [ext_resource type="Texture2D" uid="uid://d3n3ayiyjjlcf" path="res://Assets/Props/towerDefense_tile_turret_3.png" id="3_me4ah"]
 [ext_resource type="Texture2D" uid="uid://bqv8dyl6nqjod" path="res://Assets/Effect/towerDefense_tile29.png" id="4_262ms"]
@@ -3347,7 +4356,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_os0i2"]
 
 [node name="Turret_3T1" type="Node2D"]
-script = ExtResource("1_mw0ir")
+script = ExtResource("1_s4bcp")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_0jxvd")
@@ -3384,26 +4393,11 @@ shape = SubResource("RectangleShape2D_os0i2")
 visible = false
 z_index = 1
 
-[connection signal="body_entered" from="Range" to="." method="_oe_body_entered"]
-[connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
-
-
-# Scenes\Turrets\Turret_4T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _on_range_area_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-
 
 # Scenes\Turrets\Turret_4T1.tscn
 [gd_scene load_steps=10 format=3 uid="uid://cril11u75jsto"]
 
-[ext_resource type="Script" uid="uid://uv5h664uvcda" path="res://Scenes/Turrets/Turret_4T1.gd" id="1_i6y07"]
+[ext_resource type="Script" uid="uid://dgpoqe3gn3gey" path="res://Scenes/Turrets/SlowTower.gd" id="1_o2toj"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsc7c"]
 [ext_resource type="Texture2D" uid="uid://cnf7oapk7xb8m" path="res://Assets/Props/towerDefense_tile_turret_4.png" id="3_tvhnh"]
 [ext_resource type="Texture2D" uid="uid://bqv8dyl6nqjod" path="res://Assets/Effect/towerDefense_tile29.png" id="4_np7fb"]
@@ -3437,7 +4431,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_75gvj"]
 
 [node name="Turret_4T1" type="Node2D"]
-script = ExtResource("1_i6y07")
+script = ExtResource("1_o2toj")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_xsc7c")
@@ -3464,7 +4458,7 @@ shape = SubResource("CircleShape2D_bbscr")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 root_node = NodePath("../MenuButton")
 libraries = {
-"": SubResource("AnimationLibrary_yclq1")
+&"": SubResource("AnimationLibrary_yclq1")
 }
 
 [node name="MenuButton" type="TouchScreenButton" parent="."]
@@ -3479,23 +4473,10 @@ z_index = 1
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
 
 
-# Scenes\Turrets\Turret_5T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _oe_body_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-	
-
-
 # Scenes\Turrets\Turret_5T1.tscn
 [gd_scene load_steps=10 format=3 uid="uid://ir0dowja8wdc"]
 
-[ext_resource type="Script" uid="uid://c6vtmi6f4ysmx" path="res://Scenes/Turrets/Turret_5T1.gd" id="1_qnscv"]
+[ext_resource type="Script" uid="uid://br551ug1g50v2" path="res://Scenes/Turrets/MovementTower.gd" id="1_byi7x"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_5kntv"]
 [ext_resource type="Texture2D" uid="uid://re1hk4splimn" path="res://Assets/Props/towerDefense_tile_turret_5.png" id="3_br8k8"]
 [ext_resource type="Texture2D" uid="uid://c3aoc5i6rxgys" path="res://Assets/Effect/towerDefense_tile30.png" id="4_xh8jr"]
@@ -3529,7 +4510,7 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_busvp"]
 
 [node name="Turret_5T1" type="Node2D"]
-script = ExtResource("1_qnscv")
+script = ExtResource("1_byi7x")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_5kntv")
@@ -3567,15 +4548,11 @@ z_index = 1
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]
 
 
-# Scenes\Turrets\Turret_6T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
 # Scenes\Turrets\Turret_6T1.tscn
 [gd_scene load_steps=9 format=3 uid="uid://cxoc426ms2sac"]
 
-[ext_resource type="Script" uid="uid://ddeus8voifjxb" path="res://Scenes/Turrets/Turret_6T1.gd" id="1_h24cq"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_kfpwl"]
+[ext_resource type="Script" uid="uid://djm6oxar5nkag" path="res://Scenes/Turrets/MoneyTower.gd" id="1_l7q3k"]
 [ext_resource type="Texture2D" uid="uid://but4q60dblysg" path="res://Assets/Props/towerDefense_tile_turret_6.png" id="2_b7i2s"]
 [ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_b0npw"]
 
@@ -3619,7 +4596,7 @@ _data = {
 }
 
 [node name="Turret_6T1" type="Node2D"]
-script = ExtResource("1_h24cq")
+script = ExtResource("1_l7q3k")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_kfpwl")
@@ -3643,18 +4620,6 @@ libraries = {
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
-
-
-# Scenes\Turrets\Turret_7T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _on_range_area_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
 
 
 # Scenes\Turrets\Turret_7T1.tscn
@@ -3745,18 +4710,6 @@ shape = SubResource("RectangleShape2D_jk6pi")
 visible = false
 
 
-# Scenes\Turrets\Turret_8T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _on_range_area_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
-
-
 # Scenes\Turrets\Turret_8T1.tscn
 [gd_scene load_steps=11 format=3 uid="uid://be7j1v7e5b6nu"]
 
@@ -3844,18 +4797,6 @@ shape = SubResource("RectangleShape2D_au358")
 
 [node name="Menu" parent="." instance=ExtResource("4_au358")]
 visible = false
-
-
-# Scenes\Turrets\Turret_9T1.gd
-extends "res://Scenes/UI/Turrets.gd"
-
-
-func _on_range_area_entered(body):
-	enemy_array.append(body.get_parent())
-
-
-func _on_range_body_exited(body):
-	enemy_array.erase(body.get_parent())
 
 
 # Scenes\Turrets\Turret_9T1.tscn
@@ -3969,9 +4910,9 @@ func _ready() -> void:
 		get_node("Panel").get_child(i).pressed.connect(game_start.bind(i + 1))
 		
 func game_start(level):
-	GameData.currrent_level = level
-	GameData.current_wave = 0
-	GameData.FLAG_GAME_COMPANY = true
+	GameSession.current_level = level
+	GameSession.current_wave = 0
+	GameSession.game_mode = GameConstants.GameMode.CAMPAIGN
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 
@@ -4340,393 +5281,10 @@ grow_horizontal = 0
 [connection signal="pressed" from="Back" to="." method="back"]
 
 
-# Scenes\UI\GameScene.gd
-extends Node2D
-
-signal game_finished
-
-var map_node
-
-var build_mode = false
-var build_valid = false
-var build_location
-var build_type
-var build_tile
-var enemies_in_wave = 0
-var base_health = 100
-var wave_data_all = GameData.wave_data[GameData.currrent_level]
-var wave_data = wave_data_all[GameData.current_wave]
-var node_mouse_entered
-var type_attack
-var list_gift
-var list_random
-var list_sprite_box
-var have_open_present = false
-var list_activity_turret = []
-
-
-func _ready():
-	GameData.current_money = GameData.MONEY_BEGIN[GameData.currrent_level]
-	map_node = load("res://Scenes/Maps/map_" + str(GameData.currrent_level) + ".tscn").instantiate()
-	get_node(".").add_child(map_node)
-	map_node = get_node("Map" + str(GameData.currrent_level))
-	for i in range(GameData.NUMBER_TURRET):
-		if GameData.tower_data["Turret_" + str(i + 1) + "T1"]["activity"] == true:
-			list_activity_turret.append(i + 1)
-	for i in range(len(list_activity_turret)):
-		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Icon").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(list_activity_turret[i]) + ".png")
-		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).pressed.connect(initiate_build_mode.bind("Turret_" + str(list_activity_turret[i])))
-		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_entered.connect(title_show.bind(str(i + 1),str(list_activity_turret[i])))
-		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1)).mouse_exited.connect(title_hide)
-	base_money()
-	
-func _process(delta):
-	if build_mode:
-		update_tower_preview()
-	if GameData.spped_game != 0.0 and GameData.current_wave >= len(wave_data_all) and (get_node("Map1/Path").get_child_count() == 0 or base_health == 0):
-		##Конечные волны только в компании
-		end_game_company()
-
-func _unhandled_input(event):
-	if event.is_action_released("ui_cancel") and build_mode == true: 
-		cancel_build_mode()
-	if event.is_action_released("ui_accept") and build_mode == true:
-		verify_and_build()
-		cancel_build_mode()
-		
-##
-## Wave Functions
-##
-func start_next_wave():
-	wave_data = retrieve_wave_data()
-	await get_tree().create_timer(0.2).timeout
-	spawn_enemies(wave_data)
-	
-func retrieve_wave_data():
-	wave_data = wave_data_all[GameData.current_wave]
-	if GameData.current_wave in GameData.list_wave_gift and not have_open_present:
-		have_open_present = true
-		get_tree().paused = true
-		var box_gift = load("res://Scenes/SupportScenes/buf.tscn").instantiate()
-		get_node("UI").add_child(box_gift)
-		generate_gift()
-		box_gift.get_node("Panel/V/H/Box1").pressed.connect(gift_open.bind(0, box_gift))
-		box_gift.get_node("Panel/V/H/Box2").pressed.connect(gift_open.bind(1, box_gift))
-		box_gift.get_node("Panel/V/H/Box3").pressed.connect(gift_open.bind(2, box_gift))
-	GameData.current_wave += 1
-	enemies_in_wave = wave_data.size()
-	return wave_data
-
-func generate_gift():
-	list_gift = []
-	list_sprite_box = []
-	var t
-	Engine.set_time_scale(1.0)
-	for i in range(3):
-		var sprite_box = randi() % [0, 1, 2, 3].size() + 1
-		list_sprite_box.append(sprite_box)
-		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer").play("stay_" + str(sprite_box))
-		t = randi() % [0, 1, 2, 3].size()
-		while t in list_gift:
-			t = randi() % [0, 1, 2, 3].size()
-		list_gift.append(t)
-		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/Label").text = tr("KEY_UP_" + str(t))
-	list_random = []
-	for i in list_gift:
-		if i in [0, 1, 2]:
-			list_random.append(randi_range(0, 2))
-		elif i == 3:
-			list_random.append(randi_range(1, 2))
-		elif i == 4:
-			list_random.append(randi_range(1, 3))
-
-func gift_open(ind, box_gift):
-	box_gift.get_node("Panel/V/H/Box1").pressed.disconnect(gift_open.bind(0, box_gift))
-	box_gift.get_node("Panel/V/H/Box2").pressed.disconnect(gift_open.bind(0, box_gift))
-	box_gift.get_node("Panel/V/H/Box3").pressed.disconnect(gift_open.bind(0, box_gift))
-	for i in range(3):
-		get_node("UI/Buf/Panel/V/H/Box" + str(i + 1) + "/AnimationPlayer").play("open_" + str(list_sprite_box[i]))
-		var modifer = get_node("UI/Buf/Panel/V/HBox/Modifer" + str(i + 1))
-		modifer.visible = true
-		var icon
-		if list_random[i] == 0:
-			icon = "res://Assets/Icons/damage.png"
-		elif list_random[i] == 1:
-			icon = "res://Assets/Icons/reload.png"
-		elif list_random[i] == 2:
-			icon = "res://Assets/Icons/range.png"
-		elif list_random[i] == 3:
-			icon = "res://Assets/Icons/distance.png"
-		modifer.get_node("TextureRect").texture = load(icon)
-		modifer.get_node("Name").text = tr("KEY_UP_UP_" + str(list_random[i]))
-		var inde
-		if list_random[i] == 1:
-			inde = " - "
-		else:
-			inde = " + "
-		modifer.get_node("Up").text = inde + str(GameData.modifer_value) + " %"
-	"""Модификация данных в GameData"""
-	var up = 1 + GameData.modifer_value / 100
-	if list_random[ind] == 0:
-		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"])):
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] *= up
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["damage"][i], 3)
-		for i in map_node.get_node("Turret").get_children():
-			if GameData.tower_data[i.type].has("damage"):
-				i.damage = GameData.tower_data[i.type]["damage"][i.current_lvl]
-	elif list_random[ind] == 1:
-		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"])):
-			up = 1 - GameData.modifer_value / 100
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i] *= up
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["rof"][i], 3)
-		for i in map_node.get_node("Turret").get_children():
-			i.rof = GameData.tower_data[i.type]["rof"][i.current_lvl]
-	elif list_random[ind] == 2:
-		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"])):
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i] *= up
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["range"][i], 3)
-		for i in map_node.get_node("Turret").get_children():
-			i.range = GameData.tower_data[i.type]["range"][i.current_lvl]
-	elif list_random[ind] == 3:
-		for i in range(len(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"])):
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i] *= up
-			GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i] = GameData.round_to_dec(GameData.tower_data["Turret_" + str(list_gift[ind] + 1) + "T1"]["distance"][i], 3)
-		"""Дистанцию писать не нужно, она используется из словаря в on_hit из enemy"""
-	await get_tree().create_timer(1.5).timeout
-	for i in range(3):
-		if i != ind:
-			get_node("UI/Buf/Panel/V/H/Box" + str(i + 1)).queue_free()
-			get_node("UI/Buf/Panel/V/HBox/Modifer" + str(i + 1)).queue_free()
-	get_node("UI/Buf/Panel/V/Play").visible = true
-	get_node("UI/Buf/Panel/V/Play").pressed.connect(continue_game)
-
-func continue_game():
-	get_node("UI/Buf").queue_free()
-	have_open_present = false
-	get_tree().paused = false
-	Engine.set_time_scale(GameData.spped_game)
-
-func spawn_enemies(wave_data):
-	get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameData.current_wave)
-	for i in wave_data:
-		var new_enemy = load("res://Scenes/Enemies/" + i[0] + ".tscn").instantiate()
-		new_enemy.names = i[0]
-		new_enemy.hp = GameData.enemy_data[new_enemy.names]["hp"]
-		new_enemy.current_speed = GameData.enemy_data[new_enemy.names]["speed"]
-		new_enemy.speed = GameData.enemy_data[new_enemy.names]["speed"]
-		new_enemy.duration_speed_mod = 0
-		new_enemy.base_damage.connect(on_base_damage)
-		map_node.get_node("Path/" + str(randi_range(0, map_node.get_node("Path").get_child_count() - 1))).add_child(new_enemy,true) 
-		await get_tree().create_timer(i[1]).timeout
-	if GameData.current_wave + 1 < len(wave_data_all):
-		await get_tree().create_timer(5).timeout
-		start_next_wave()
-		
-##
-## Building Functions
-##
-func initiate_build_mode(tower_type):
-	for i in map_node.get_node("Turret").get_children():
-		i.get_node("MenuButton").show()
-	if build_mode:
-		cancel_build_mode()
-	while len(GameData.list_open_menu_turrets) > 0:
-		GameData.list_open_menu_turrets[0].hide()
-		GameData.list_open_menu_turrets.pop_at(0)
-	if GameData.current_money >= GameData.tower_data[tower_type + "T1"]["cost"]:
-		get_node("UI").remove_child(get_node("UI/TowerPreview"))
-		build_type = tower_type + "T1"
-		build_mode = true
-		get_node("UI").set_tower_preview(build_type, get_global_mouse_position())
-	
-func update_tower_preview():
-	var mouse_position = get_global_mouse_position()
-	var current_tile = map_node.get_node("TowerExlusion").local_to_map(mouse_position)
-	var tile_position = map_node.get_node("TowerExlusion").map_to_local(current_tile)
-	if map_node.get_node("TowerExlusion").get_cell_source_id(current_tile) == -1:  
-		get_node("UI").update_tower_preview(tile_position, "008000")
-		build_valid = true
-		build_location = tile_position
-		build_tile = current_tile
-	else:
-		get_node("UI").update_tower_preview(tile_position, "ff0000") 
-		build_valid = false
-		
-func cancel_build_mode():
-	build_mode = false
-	build_valid = false
-	var v = get_node("UI/TowerPreview")
-	if is_instance_valid(v):
-		v.free()
-	
-func verify_and_build():
-	if build_valid:
-		var new_tower = load("res://Scenes/Turrets/" + build_type + ".tscn").instantiate()
-		new_tower.position = build_location
-		new_tower.type = build_type
-		new_tower.inflicted = 0
-		new_tower.current_lvl = 0
-		new_tower.type_explosion = int(GameData.tower_data[build_type]["type_explosion"])
-		new_tower.type_attack = int(GameData.tower_data[build_type]["type_attack"])
-		if new_tower.type_attack != 4:
-			if new_tower.type_attack in [0, 3]:
-				new_tower.damage = GameData.tower_data[build_type]["damage"][new_tower.current_lvl]
-			elif new_tower.type_attack == 1:
-				new_tower.damage = 0
-				new_tower.intensivity = GameData.tower_data[build_type]["intensivity"][new_tower.current_lvl]
-				new_tower.duration = GameData.tower_data[build_type]["duration"][new_tower.current_lvl]
-			else:
-				new_tower.damage = 0
-			new_tower.rof = GameData.tower_data[build_type]["rof"][new_tower.current_lvl]
-			new_tower.range = GameData.tower_data[build_type]["range"][new_tower.current_lvl]
-			new_tower.strategy = 0
-		else:
-			new_tower.speed = GameData.tower_data[build_type]["speed"][new_tower.current_lvl]
-			new_tower.income = GameData.tower_data[build_type]["income"][new_tower.current_lvl]
-		new_tower.max_lvl = GameData.tower_data["Turret_1T1"]["damage"].size() - 1
-		new_tower.built = true
-		new_tower.set_name(build_type + "_1")
-		map_node.get_node("Turret").add_child(new_tower, true)
-		map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0,4))
-		GameData.current_money -= GameData.tower_data[build_type]["cost"]
-		base_money()
-
-func base_money():
-	get_node("UI/HUD/InfoBar/H/Money").text = str(GameData.current_money)
-	for i in range(len(list_activity_turret)):
-		self.get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color/Cost").text = str(GameData.tower_data["Turret_" + str(list_activity_turret[i]) + "T1"]["cost"])
-		if GameData.current_money < GameData.tower_data["Turret_" + str(list_activity_turret[i]) + "T1"]["cost"]:
-			get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color").color = ("ff0000")
-		else:
-			get_node("UI/HUD/BuldBar/Tower_" + str(i + 1) + "/Color").color = ("008000")
-	
-func on_base_damage(damage):
-	base_health -= damage
-	if base_health < 1:
-		get_node("UI").update_health(0)
-		if not GameData.FLAG_GAME_COMPANY:
-			end_game()
-		else:
-			end_game_company()
-	else:
-		get_node("UI").update_health(base_health)
-
-func end_game_company():
-	get_tree().paused = true
-	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1/Label").text = tr("KEY_CONTINUE")
-	var money_dop = 0
-	if base_health >= 9:
-		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
-		if not GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 3)
-			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
-	elif base_health > 7:
-		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
-		if not GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 3.1)
-			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
-	elif base_health > 5:
-		end.get_node("Panel/MarginContainer/VBoxContainer/Label").text = tr("KEY_WIN")
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect2").queue_free()
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
-		if not GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 3.2)
-			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
-	else:
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect1").queue_free()
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect2").queue_free()
-		end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer2/NinePatchRect3").queue_free()
-		if GameData.level_option[GameData.currrent_level - 1]:
-			money_dop = int(int(GameData.current_game_score / 10) / 4)
-			end.get_node("Panel/MarginContainer/VBoxContainer/HBoxStar/Label2").text = str(money_dop)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
-	get_node("UI").add_child(end)
-	if GameData.current_game_score > GameData.best_score:
-		GameData.best_score = GameData.current_game_score
-		GameData.config.set_value("settings_game", "best_score", GameData.best_score)
-		GameData.resources_money += int(GameData.current_game_score / 10) + money_dop
-		GameData.config.set_value("Resources", "money", GameData.resources_money)
-		if not GameData.level_option[GameData.currrent_level - 1]:
-			GameData.level_option[GameData.currrent_level - 1] = true
-			GameData.config.set_value("level_option", "level", GameData.level_option)
-		GameData.write_file()
-	GameData.current_game_score = 0
-	
-func end_game():
-	get_tree().paused = true
-	var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
-	if GameData.current_game_score > GameData.best_score:
-		GameData.best_score = GameData.current_game_score
-		GameData.config.set_value("settings_game", "best_score", GameData.best_score)
-		GameData.resources_money += int(GameData.current_game_score / 10)
-		GameData.config.set_value("Resources", "money", GameData.resources_money)
-		GameData.write_file()
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(GameData.current_game_score)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(GameData.current_game_score / 10))
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(GameData.best_score)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
-	get_node("UI").add_child(end)
-	GameData.current_game_score = 0
-		
-func exit_menu():
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
-
-func restart():
-	GameData.current_wave = 0
-	GameData.current_money = GameData.MONEY_BEGIN[GameData.currrent_level]
-	GameData.list_open_menu_turrets = []
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
-	
-func title_show(id_UI, id):
-	type_attack = int(GameData.tower_data["Turret_" + id + "T1"]["type_attack"])
-	node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
-	node_mouse_entered.position = Vector2i(get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[0] + 100, get_node("UI/HUD/BuldBar/Tower_" + id_UI).position[1] + 50)
-	if type_attack != 4:
-		if type_attack in [0, 3]:
-			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["damage"][0])
-			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
-			node_mouse_entered.get_node("V/HInflicted").queue_free()
-			node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
-		elif type_attack == 1:
-			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["intensivity"][0] * 100)
-			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["duration"][0])
-			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-			node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
-		else:
-			node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["distance"][0])
-			node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["rof"][0])
-			node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["range"][0])
-			node_mouse_entered.get_node("V/HInflicted").queue_free()
-			node_mouse_entered.size = Vector2i(node_mouse_entered.size[0], node_mouse_entered.size[1] - 30)
-	else:
-		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["speed"][0])
-		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(GameData.tower_data["Turret_" + id + "T1"]["income"][0])
-		node_mouse_entered.get_node("V/HRange").queue_free()
-		node_mouse_entered.get_node("V/HInflicted").queue_free()
-	node_mouse_entered.get_node("V/HDamage/HValue/Up").queue_free()
-	node_mouse_entered.get_node("V/HReload/HValue/Up").queue_free()
-	node_mouse_entered.get_node("V/HRange/HValue/Up").queue_free()
-	get_node(".").add_child(node_mouse_entered)
-
-func title_hide():
-	node_mouse_entered.queue_free()
-
-
 # Scenes\UI\GameScene.tscn
-[gd_scene load_steps=10 format=3 uid="uid://fd6cfixonynn"]
+[gd_scene load_steps=9 format=3 uid="uid://fd6cfixonynn"]
 
-[ext_resource type="Script" uid="uid://cyqyvfr6ycsvc" path="res://Scenes/UI/GameScene.gd" id="1_8hq5t"]
-[ext_resource type="Script" uid="uid://lga5qpeu5xaf" path="res://Scenes/UI/UI.gd" id="3_m5o3g"]
+[ext_resource type="Script" uid="uid://rh7uewl1l152" path="res://Controllers/GameScene.gd" id="1_sy1la"]
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="4_4fsld"]
 [ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="8_kkfhj"]
 [ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="9_e86o2"]
@@ -4738,10 +5296,9 @@ func title_hide():
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1q7y"]
 
 [node name="GameScene" type="Node2D"]
-script = ExtResource("1_8hq5t")
+script = ExtResource("1_sy1la")
 
 [node name="UI" type="CanvasLayer" parent="."]
-script = ExtResource("3_m5o3g")
 
 [node name="HUD" type="Control" parent="UI"]
 layout_mode = 3
@@ -5040,33 +5597,37 @@ vertical_alignment = 1
 
 [node name="Timer" type="Timer" parent="."]
 
-[connection signal="pressed" from="UI/HUD/GameControl/PausePlay" to="UI" method="_on_pause_play_pressed"]
-[connection signal="pressed" from="UI/HUD/GameControl/SpeedUp" to="UI" method="_on_speed_up_pressed"]
-
 
 # Scenes\UI\Menu.gd
 extends Control
 
-
-
 func _ready():
-	TranslationServer.set_locale(GameData.data.get("SettingsGame", {}).get("language", "en"))
-	DisplayServer.window_set_size(Vector2i(GameData.data.get("SettingsGame", {}).get("width", 1600), GameData.data.get("SettingsGame", {}).get("height", 900)))
-	get_node("Panel/HBoxContainer/Label").text = str(GameData.resources_money)
+	# Загрузка языковых настроек
+	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
+	
+	# Установка размера окна
+	DisplayServer.window_set_size(
+		Vector2i(
+			DataManager.data.get("SettingsGame", {}).get("width", 1600),
+			DataManager.data.get("SettingsGame", {}).get("height", 900)
+		)
+	)
+	# Обновление отображения денег
+	get_node("Panel/HBoxContainer/Label").text = str(ResourceManager.resources_money)
 
 func on_new_game_pressed():
-	GameData.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
-	get_node(".").add_child(GameData.menu_object)
+	get_node(".").add_child(UiManager.menu_object)
 
 func shop():
-	GameData.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
-	get_node(".").add_child(GameData.menu_object)
-	
+	get_node(".").add_child(UiManager.menu_object)
+
 func settings():
 	get_tree().change_scene_to_file("res://Scenes/UI/MenuSettings.tscn")
-	
+
 func on_quit_pressed():
 	get_tree().quit()
 
@@ -5237,48 +5798,59 @@ extends Control
 
 @onready var dropExpansion = $MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton
 @onready var dropLanguage = $MarginContainer/Panel/MarginContainer/VBoxContainer/HBoxContainer/VBoxContainer2/OptionButton2
-var expansion = ["1024*546", "1280*720", "1600*900", "1920*1080"]
-var language = ["en", "ru"]
 
-func _ready():
+const expansion = ["1024*546", "1280*720", "1600*900", "1920*1080"]
+const language = ["en", "ru"]
+
+func _ready() -> void:
 	add_items()
+
+func add_items() -> void:
+	for resolution in expansion:
+		dropExpansion.add_item(resolution)
 	
-func add_items():
-	dropExpansion.add_item(expansion[0])
-	dropExpansion.add_item(expansion[1])
-	dropExpansion.add_item(expansion[2])
-	dropExpansion.add_item(expansion[3])
-	dropExpansion.select(int(GameData.config.get_value("settings_game", "current_width_height")))
-	dropLanguage.select(int(GameData.config.get_value("settings_game", "current_language")))
+	dropExpansion.select(int(DataManager.data.get("SettingsGame", {}).get("current_width_height", "2")))
+	dropLanguage.select(int(DataManager.data.get("SettingsGame", {}).get("current_language", "1")))
 
-func _on_option_button_item_selected(index):
-	var currentSelectedExpansion = index
+func _on_option_button_item_selected(index: int) -> void:
 	var expansions = expansion[index].split("*")
-	DisplayServer.window_set_size(Vector2i(int(expansions[0]),int(expansions[1])))
-	GameData.config.set_value("settings_game", "current_width_height", str(index))
-	GameData.config.set_value("settings_game", "width", int(expansions[0]))
-	GameData.config.set_value("settings_game", "height", int(expansions[1]))
-	GameData.write_file()
+	var width = int(expansions[0])
+	var height = int(expansions[1])
+	
+	DisplayServer.window_set_size(Vector2i(width, height))
+		
+	DataManager.data["SettingsGame"]["current_width_height"] = str(index)
+	DataManager.data["SettingsGame"]["width"] = width
+	DataManager.data["SettingsGame"]["height"] = height
+	DataManager.write_file()
 
-func _on_option_button_2_item_selected(index):
-	var currentSelectedLanguage = index
+func _on_option_button_2_item_selected(index: int) -> void:
 	TranslationServer.set_locale(language[index])
-	GameData.config.set_value("settings_game", "current_language", str(index))
-	GameData.config.set_value("settings_game", "language", language[index])
-	GameData.write_file()
+		
+	DataManager.data["SettingsGame"]["current_language"] = str(index)
+	DataManager.data["SettingsGame"]["language"] = language[index]
+	DataManager.write_file()
 
-func _on_button_back_pressed():
+func _on_button_back_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
-func _on_button_reset_pressed():
-	GameData.config.set_value("settings_game", "current_width_height", 2)
-	var expansions = expansion[2].split("*")
-	GameData.config.set_value("settings_game", "width", int(expansions[0]))
-	GameData.config.set_value("settings_game", "height", int(expansions[1]))
-	GameData.config.set_value("settings_game", "current_language", 1)
-	GameData.config.set_value("settings_game", "language", language[1])
-	TranslationServer.set_locale(language[1])
-	GameData.write_file()
+func _on_button_reset_pressed() -> void:
+	
+	# Установка разрешения по умолчанию (1600*900)
+	var default_resolution_index = 2
+	var default_expansions = expansion[default_resolution_index].split("*")
+	
+	DataManager.data["SettingsGame"]["current_width_height"] = default_resolution_index
+	DataManager.data["SettingsGame"]["width"] = int(default_expansions[0])
+	DataManager.data["SettingsGame"]["height"] = int(default_expansions[1])
+	
+	# Установка языка по умолчанию (русский)
+	var default_language_index = 1
+	DataManager.data["SettingsGame"]["current_language"] = default_language_index
+	DataManager.data["SettingsGame"]["language"] = language[default_language_index]
+	TranslationServer.set_locale(language[default_language_index])
+	
+	DataManager.write_file()
 	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 
@@ -5287,7 +5859,7 @@ func _on_button_reset_pressed():
 
 [ext_resource type="Script" uid="uid://c6jlw2flfqwnm" path="res://Scenes/UI/MenuSettings.gd" id="1_m2o63"]
 [ext_resource type="PackedScene" uid="uid://c8xlg4d7ul6dd" path="res://Scenes/UI/ButtonBack.tscn" id="2_3n1c4"]
-[ext_resource type="PackedScene" uid="uid://bihd3xx2p5a81" path="res://Scenes/Maps/map_0.tscn" id="2_lnwhy"]
+[ext_resource type="PackedScene" uid="uid://bno3pc87e5wpg" path="res://Scenes/Maps/map_0.tscn" id="2_lnwhy"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_ek36s"]
 [ext_resource type="StyleBox" uid="uid://bb05jp3q1l8qj" path="res://Styles/StylesTransparent.tres" id="3_p2qoy"]
 
@@ -5408,299 +5980,371 @@ size_flags_stretch_ratio = 0.0
 [connection signal="pressed" from="MarginContainer/Panel/MarginContainer/ButtonBack" to="." method="_on_button_back_pressed"]
 
 
-# Scenes\UI\Turrets.gd
-extends Node2D
+# Systems\DataManager.gd
+## Класс, управляющий загрузкой и сохранением игровых данных из JSON
+extends Node
 
-signal base_money()
+var tower_data: Dictionary = {}
+var enemy_data: Dictionary = {}
+var wave_data: Array = []
+var list_wave_gift: Array = []
+var level_option: Array = []
+var data: Dictionary = {}
 
-var type
-var type_attack
-var type_explosion
-var enemy_array = []
-var built = false
-var enemy
-var is_ready = true
-var inflicted = 0
-var intensivity
-var duration
-var range
-var rof
-var damage
-var income
-var speed
-var strategy
-var radius
-var current_lvl
-var max_lvl
+var strengthening_enemies: float
+var strengthening_enemies_dop: float
+var strengthening_money: float
 
+## Вызывается при запуске. Загружает и парсит данные
+func _ready() -> void:
+	Logger.log(Logger.LogLevel.INFO, "DataManager initializing")
+	load_game_data()
 
-func _ready():
-	if built:
-		if self.type_attack == 4:
-			"""Удаление пунктов меню для башни приносящей деньги"""
-			self.get_node("Menu/V/HRange").queue_free()
-			self.get_node("Menu/V/HStrateg").queue_free()
-			self.get_node("Menu").size[1] = 100
-			get_node("Timer").wait_time = self.speed
-			get_node("Timer").connect("timeout", update_money)
-			get_node("AnimationPlayer").play("Fire")
+## Загружает json-файл, инициализирует словарь данных
+func load_game_data() -> void:
+	var file = FileAccess.open("res://Files/resurse.json", FileAccess.READ)
+	if file == null:
+		Logger.log(Logger.LogLevel.ERROR, "Failed to open resurse.json")
+		return
+	
+	var content = file.get_as_text()
+	var result = JSON.parse_string(content)
+	
+	if typeof(result) != TYPE_DICTIONARY:
+		Logger.log(Logger.LogLevel.ERROR, "Invalid JSON format")
+		return
+	
+	data = result
+	parse_game_data()
+
+## Разбирает все подкатегории данных
+func parse_game_data() -> void:
+	_parse_resources()
+	_parse_towers()
+	_parse_enemies()
+	_parse_waves()
+	_parse_settings()
+	_parse_levels()
+	DataManager.wave_data = WaveGenerator.generate_default_waves(DataManager.wave_data)
+
+## Извлекает значения ресурсов
+func _parse_resources() -> void:
+	ResourceManager.resources_money = data.get("Resources", {}).get("money", 0)
+
+## Загружает данные всех башен в словарь
+func _parse_towers() -> void:
+	var turrets = data.get("Turrets", {})
+	for name in turrets.keys():
+		tower_data[name] = turrets[name]
+
+## Загружает данные всех врагов
+func _parse_enemies() -> void:
+	var enemies = data.get("Enemies", {})
+	for name in enemies.keys():
+		enemy_data[name] = enemies[name]
+
+## Загружает данные всех волн игры
+func _parse_waves() -> void:
+	var wave = data.get("WaveData", {})
+	for i in range(wave.size()):
+		var key = "level_" + str(i)
+		if wave.has(key):
+			wave_data.append(wave[key])
 		else:
-			self.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * self.range
-		self.get_node("MenuButton").pressed.connect(_on_menu_button_pressed)
-		self.get_node("Menu/V/HButton/Close").pressed.connect(hide_menu)
-		self.get_node("Menu/V/HButton/Up").pressed.connect(upgrade)
-		self.get_node("Menu/V/HButton/Up").disabled = true
-		update_menu()
-		update_menu_upgrade()
+			wave_data.append([])
+
+## Загружает прочие числовые настройки (усиления денег, врагов и т.д.)
+func _parse_settings() -> void:
+	var settings = data.get("Settings", {})
+	strengthening_enemies = settings.get("strengthening_enemies", 0)
+	strengthening_enemies_dop = settings.get("strengthening_enemies_dop", 0)
+	strengthening_money = settings.get("strengthening_money", 0)
+	ResourceManager.current_money = int(settings.get("current_money", 0))
+	list_wave_gift = settings.get("list_wave_gift", [])
 	
-func _physics_process(delta):
-	if enemy_array.size() != 0 and built and self.type_attack != 4:
-		select_enemy()
-		if self.type_attack != 1 and not get_node("AnimationPlayer").is_playing():
-			turn()
-		if is_ready:
-			fire()
-	else: 
-		enemy = null
-		
-func turn():
-	get_node("Turret").look_at(enemy.position)
+	var game_settings = data.get("SettingsGame", {})
+	ResourceManager.best_score = game_settings.get("best_score", 0)
 
-func select_enemy():
-	var enemy_progress_array = []
-	for i in enemy_array:
-		enemy_progress_array.append(i.progress)
-	var max_offset
-	if strategy == 0:
-		max_offset = enemy_progress_array.max()
-	elif strategy == 1:
-		max_offset = enemy_progress_array.min()
-	else:
-		max_offset = enemy_progress_array[randi() % enemy_progress_array.size()]
-	var enemy_index = enemy_progress_array.find(max_offset) 
-	enemy = enemy_array[enemy_index]
+## Загружает параметры уровня кампании
+func _parse_levels() -> void:
+	level_option = data.get("LevelOption", {}).get("level", [])
 
-func fire():
-	is_ready = false
-	if self.type_attack in [0, 2]:
-		fire_missile1()
-	elif self.type_attack == 1:
-		fire_missile2()
-	if self.type_attack == 0:
-		self.inflicted += self.damage
-	if self.type_attack in [1, 3]:
-		for i in enemy_array:
-			i.on_hit(self.damage, self.type, self.type_explosion, self.type_attack, self.current_lvl)
-	else:
-		enemy.on_hit(self.damage, self.type, self.type_explosion, self.type_attack, self.current_lvl)
-	await get_tree().create_timer(self.rof).timeout
-	is_ready = true
+## Сохраняет текущее состояние игры в файл
+func write_file() -> void:
+	_update_data_before_save()
+	var file = FileAccess.open("res://Files/resurse.json", FileAccess.WRITE)
+	if file == null:
+		Logger.log(Logger.LogLevel.ERROR, "Failed to open resurse.json for writing")
+		return
+	var json_string = JSON.stringify(data, "  ")
+	file.store_string(json_string)
+	Logger.log(Logger.LogLevel.INFO, "Game data saved successfully")
 
-func fire_missile1():
-	get_node("AnimationPlayer").play("Fire")
-
-func fire_missile2():
-	var new_impact = preload("res://Scenes/SupportScenes/ProjecttileImpact_2.tscn").instantiate()
-	new_impact.scale.x = self.range / 50
-	new_impact.scale.y = self.range / 50
-	new_impact.speed_scale = 60.0 / self.duration
-	self.add_child(new_impact)
-
-func _on_range_body_entered(body):
-	enemy_array.append(body.get_parent())
+## Обновляет структуру данных перед сохранением
+func _update_data_before_save() -> void:
+	if not data.has("Resources"):
+		data["Resources"] = {}
+	data["Resources"]["money"] = ResourceManager.resources_money
 	
-func _on_Range_body_exited(body): 
-	enemy_array.erase(body.get_parent())
+	if not data.has("Turrets"):
+		data["Turrets"] = {}
+	for name in tower_data.keys():
+		data["Turrets"][name] = tower_data[name]
 	
-##
-## Меню башни
-##
-func _on_menu_button_pressed():
-	for i in self.get_parent().get_children():
-		i.get_node("MenuButton").hide()
-	if GameData.current_money >= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]:
-		self.get_node("Menu/V/HButton/Up").disabled = false
-	if self.type_attack == 0:
-		self.get_node("Menu/V/HInflicted/HValue/Value").text = str(self.inflicted)
-
-	GameData.list_open_menu_turrets.append(self.get_node("Menu"))
-	"""Справо снизу"""
-	if get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400 and get_parent().get_parent().get_parent().get_node("UI/HUD").size[1] - self.position[1] < 300:
-		"""Справо снизу"""
-		get_node("Menu").position[0] = -300
-		get_node("Menu").position[1] = -330
-	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400 and self.position[1] < 150:
-		"""Справо сверху"""
-		get_node("Menu").position[0] = -300
-		get_node("Menu").position[1] = 50
-	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[0] - self.position[0] < 400:
-		"""Снизу"""
-		get_node("Menu").position[0] = -300
-	elif get_parent().get_parent().get_parent().get_node("UI/HUD").size[1] - self.position[1] < 300:
-		"""Справо"""
-		get_node("Menu").position[1] = -330
-	elif self.position[1] < 150:
-		"""Сверху"""
-		get_node("Menu").position[1] = 50
-	else:
-		"""По умолчанию"""
-		get_node("Menu").position[0] = 50
-		get_node("Menu").position[1] = -200
-	self.get_node("Menu").show()
+	if not data.has("Settings"):
+		data["Settings"] = {}
+	data["Settings"]["strengthening_enemies"] = strengthening_enemies
+	data["Settings"]["strengthening_enemies_dop"] = strengthening_enemies_dop
+	data["Settings"]["strengthening_money"] = strengthening_money
+	data["Settings"]["current_money"] = ResourceManager.current_money
+	data["Settings"]["list_wave_gift"] = list_wave_gift
 	
-func hide_menu():
-	for i in self.get_parent().get_children():
-		i.get_node("MenuButton").show()
-	while len(GameData.list_open_menu_turrets) > 0:
-		GameData.list_open_menu_turrets[0].hide()
-		GameData.list_open_menu_turrets.pop_at(0)
-
-func upgrade():
-	if self.current_lvl < self.max_lvl:
-		if GameData.current_money >= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]:
-			GameData.current_money -= GameData.tower_data[self.type]["upgrade_for"][self.current_lvl]
-			get_parent().get_parent().get_parent().base_money()
-			emit_signal("base_money") 
-			self.current_lvl += 1
-			if self.type_attack != 4:
-				if self.type_attack in [0, 3]:
-					self.damage = GameData.tower_data[self.type]["damage"][self.current_lvl]
-				elif self.type_attack == 1:
-					self.intensivity = GameData.tower_data[self.type]["intensivity"][self.current_lvl]
-					self.duration = GameData.tower_data[self.type]["duration"][self.current_lvl]
-				else:
-					self.duration = GameData.tower_data[self.type]["distance"][self.current_lvl]
-				self.rof = GameData.tower_data[self.type]["rof"][self.current_lvl]
-				self.range = GameData.tower_data[self.type]["range"][self.current_lvl]
-				self.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * self.range
-			else:
-				self.speed = GameData.tower_data[self.type]["speed"][self.current_lvl]
-				self.income = GameData.tower_data[self.type]["income"][self.current_lvl]
-			update_menu()
-			if self.current_lvl + 1 < self.max_lvl:
-				update_menu_upgrade()
-		else:
-			self.get_node("Menu/V/HButton/Up").disabled = true
-	else:
-		self.get_node("Menu/V/HButton/Up").disabled = true
-		self.get_node("Menu/V/HButton/Up/TextureRect").visible = false
-		self.get_node("Menu/V/HButton/Up/LabelValue").visible = false
-		self.get_node("Menu/V/HButton/Up/LabelBut").text = tr("KEY_LVL_MAX")
-		
-func update_menu():
-	if self.type_attack != 4:
-		if self.type_attack in [0, 3]:
-			self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["damage"][self.current_lvl])
-			self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
-		elif self.type_attack == 1:
-			self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["intensivity"][self.current_lvl] * 100)
-			self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["duration"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
-			self.get_node("Menu/V/HInflicted/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
-		else:
-			self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["distance"][self.current_lvl])
-			self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Value").text = str(GameData.tower_data[self.type]["range"][self.current_lvl])
-	else:
-		self.get_node("Menu/V/HDamage/HValue/Value").text = str(GameData.tower_data[self.type]["speed"][self.current_lvl])
-		self.get_node("Menu/V/HReload/HValue/Value").text = str(GameData.tower_data[self.type]["income"][self.current_lvl])
-	self.get_node("Menu/V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(self.current_lvl + 1) + "/" + str(self.max_lvl + 1)
+	if not data.has("SettingsGame"):
+		data["SettingsGame"] = {}
+	data["SettingsGame"]["best_score"] = ResourceManager.best_score
 	
-func update_menu_upgrade():
-	if self.type_attack != 4:
-		if self.type_attack in [0, 3]:
-			self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["damage"][self.current_lvl + 1] - GameData.tower_data[self.type]["damage"][self.current_lvl])
-			self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["range"][self.current_lvl + 1] - GameData.tower_data[self.type]["range"][self.current_lvl])
-		elif self.type_attack == 1:
-			self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["intensivity"][self.current_lvl + 1] - GameData.tower_data[self.type]["intensivity"][self.current_lvl])
-			self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["duration"][self.current_lvl + 1] - GameData.tower_data[self.type]["duration"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl + 1])
-		else:
-			self.get_node("Menu/V/HDamage/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["distance"][self.current_lvl + 1] - GameData.tower_data[self.type]["distance"][self.current_lvl])
-			self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["rof"][self.current_lvl + 1] - GameData.tower_data[self.type]["rof"][self.current_lvl])
-			self.get_node("Menu/V/HRange/HValue/Up").text = "+" + str(GameData.tower_data[self.type]["range"][self.current_lvl + 1] - GameData.tower_data[self.type]["range"][self.current_lvl])
-	else:
-		self.get_node("Menu/V/HDamage/HValue/Up").text = str(GameData.tower_data[self.type]["speed"][self.current_lvl + 1] - GameData.tower_data[self.type]["speed"][self.current_lvl])
-		self.get_node("Menu/V/HReload/HValue/Up").text = str(GameData.tower_data[self.type]["income"][self.current_lvl + 1] - GameData.tower_data[self.type]["income"][self.current_lvl])
-	self.get_node("Menu/V/HButton/Up/LabelValue").text = str(GameData.tower_data[self.type]["upgrade_for"][self.current_lvl])
+	if not data.has("LevelOption"):
+		data["LevelOption"] = {}
+	data["LevelOption"]["level"] = level_option
 
-func update_money():
-	"""Получить монеты в башни"""
-	var sp
-	if GameData.spped_game == 0:
-		sp = self.income * GameData.spped_game
-	else:
-		sp = self.income
-	if GameData.spped_game == 1.0:
-		get_node("Timer").wait_time = self.speed
-	elif GameData.spped_game == 4.0:
-		get_node("Timer").wait_time = self.speed / GameData.spped_game
-	GameData.current_money += sp
-	get_parent().get_parent().get_parent().base_money()
+
+# Systems\GameConstants.gd
+## Хранит глобальные значения и перечисления
+extends Node
+
+## Тип режима игры
+enum GameMode {
+	SANDBOX,
+	CAMPAIGN
+}
+
+## Тип атаки башен
+enum TowerType {
+	NORMAL = 0,      ## одиночная атака
+	SLOW = 1,        ## замедление
+	MOVEMENT = 2,    ## толкание/перемещение
+	AREA = 3,        ## урон по области
+	MONEY = 4        ## генерация ресурсов
+}
+
+## Количество турелей в игре
+const NUMBER_TURRET: int = 10
+## Количество максимального уровня турелей в игре
+const NUMBER_LVL_TURRET: int = 10
+## Общее количество уровней
+const NUMBER_LEVEL: int = 3
+## Начальное количество денег/ресурсов на каждом уровне
+const MONEY_BEGIN: Array = [400000, 10400, 800]
+## Модификатор наград (например для подарков)
+const MODIFIER_VALUE: float = 1.0
+
+
+# Systems\GameManager.gd
+## Управляет глобальным состоянием игры: старт, пауза, завершение
+extends Node
+
+signal game_started
+signal game_paused
+signal game_over
+
+## Запускает новую игру с выбранным уровнем кампании
+func start_game(level: int) -> void:
+	GameSession.current_level = level
+	GameSession.current_wave = 0
+	ResourceManager.current_money_in_game_session = GameConstants.MONEY_BEGIN[level]
+	emit_signal("game_started")
+	Logger.log(Logger.LogLevel.INFO, "Game started", {"level": level})
+
+## Ставит игру на паузу
+func pause_game() -> void:
+	get_tree().paused = true
+	emit_signal("game_paused")
+	Logger.log(Logger.LogLevel.INFO, "Game paused")
+
+## Завершает текущую сессию игры
+func end_game() -> void:
+	emit_signal("game_over")
+	Logger.log(Logger.LogLevel.INFO, "Game over", {
+		"score": ResourceManager.current_score,
+		"wave": GameSession.current_wave
+	})
+
+## Позволяет вернуться в главное меню
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_cancel"):
+		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+
+
+# Systems\GameSession.gd
+## Хранит временные (runtime) данные конкретной игровой сессии
+extends Node
+
+signal money_in_game_session_changed()
+
+## Волна и уровень
+var current_wave: int = 0
+var current_level: int = 0
+
+## Тип режима игры
+var game_mode: GameConstants.GameMode = GameConstants.GameMode.SANDBOX
+
+## Скорость игры (1.0 или 4.0 и т.п.)
+var speed_game: float = 0.0
+
+## Текущее золото игрока
+var current_money_in_game_session: int
+
+## Очки за сессию
+var current_game_score: int = 0
+
+## Здоровье базы
+var base_health: int = 10
+
+## Увеличивает очки игрока
+func add_game_score(value: int) -> void:
+	current_game_score += value
+
+## Прибавляет деньги игроку
+func add_money(value: int) -> void:
+	current_money_in_game_session += value
+	emit_signal("money_in_game_session_changed")
+
+## Отнимает деньги игрока
+func spend_money(value: int) -> void:
+	current_money_in_game_session -= value
+	emit_signal("money_in_game_session_changed")
+
+## Уменьшает здоровье базы
+func spend_base_health(value: int) -> void:
+	base_health -= value
+
+
+# Systems\Logger.gd
+## Простой логгер с уровнями логирования
+extends Node
+
+## Уровни логов
+enum LogLevel {
+	DEBUG,
+	INFO,
+	WARNING,
+	ERROR
+}
+
+## Текущий уровень логгирования
+var current_level: LogLevel = LogLevel.INFO
+
+## Запись лога с информацией и контекстом
+func log(level: LogLevel, message: String, context: Dictionary = {}) -> void:
+	if level < current_level:
+		return
 	
-
-
-# Scenes\UI\UI.gd
-extends CanvasLayer
-
-@onready var hp_label = get_node("HUD/InfoBar/H2/HP") 
-
-
-func set_tower_preview(tower_type, mouse_position): 
-	var drag_tower = load("res://Scenes/Turrets/" + tower_type + ".tscn").instantiate()
-	drag_tower.set_name("DragTower")
-	var control = Control.new()
-	control.add_child(drag_tower, true)
-	var range_texture = Sprite2D.new()
-	var scaling
-	if int(GameData.tower_data[tower_type]["type_attack"]) != 4:
-		scaling = GameData.tower_data[tower_type]["range"][0] / 600.0
-	else:
-		scaling = 0.1
-	range_texture.scale = Vector2(scaling, scaling)
-	var texture = load("res://Assets/Props/range_overlay.png")
-	range_texture.texture = texture
-	range_texture.set_modulate(Color("ad54ff3c"))
-	range_texture.set_name("Sprite")
-	control.add_child(range_texture, true)
-	control.set_position(mouse_position)
-	control.set_position(mouse_position)
-	control.set_name("TowerPreview")
-	add_child(control, true)
-	move_child(get_node("TowerPreview"), 0)
+	var timestamp = Time.get_datetime_string_from_system()
+	var level_str = LogLevel.keys()[level]
+	var context_str = JSON.stringify(context) if !context.is_empty() else ""
 	
-func update_tower_preview(new_position, color):
-	get_node("TowerPreview").set_position(new_position)
-	if get_node("TowerPreview/DragTower").modulate != Color(color):
-		get_node("TowerPreview/DragTower").modulate = Color(color)
-		get_node("TowerPreview/Sprite").modulate = Color(color)
+	var log_message = "[%s] [%s] %s %s" % [timestamp, level_str, message, context_str]
+	print(log_message)
 
-func update_health(base_health):
-	hp_label.text = str(base_health)
-	
-##Game Control functions ##
-func _on_pause_play_pressed():
-	if get_parent().build_mode:
-		get_parent().cancel_build_mode()
-	if GameData.current_wave == 0:
-		get_parent().start_next_wave()
-	elif get_tree().is_paused():
-		GameData.spped_game = 1.0
-		get_tree().paused = false
-	else:
-		get_tree().paused = true
-		GameData.spped_game = 0.0
-	
-func _on_speed_up_pressed():
-	if GameData.current_wave == 0:
-		get_parent().start_next_wave()
-	if GameData.spped_game == 4.0:
-		GameData.spped_game = 1.0
-		Engine.set_time_scale(GameData.spped_game)
-	else:
-		GameData.spped_game = 4.0
-		Engine.set_time_scale(GameData.spped_game)
+
+# Systems\MathUtils.gd
+# Вспомогательные математические функции
+extends Node
+
+static func round_to_dec(num: float, digit: int) -> float:
+	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+
+
+# Systems\ResourceManager.gd
+## Управляет текущими ресурсами игрока (золото, очки, лучший результат)
+extends Node
+
+## Сигнал об изменении денег
+signal money_changed()
+## Сигнал об изменении очков
+signal score_changed()
+
+## Деньги
+var resources_money: int = 0
+## Текущие деньги в игровой сессии
+var current_money: int = 0
+## Лучший результат из сохранения
+var best_score: int = 0
+## Текущий результат (очки) в сессии
+var current_score: int = 0
+
+## Добавить золото в игровую сессию
+func add_money(value: int) -> void:
+	current_money += value
+	emit_signal("money_changed")
+
+## Списать золото с баланса игрока
+func spend_money(value: int) -> bool:
+	current_money -= value
+	emit_signal("money_changed")
+	return true
+
+## Установить текущие очки игрока и обновить рекорд
+func update_score(value: int) -> void:
+	current_score = value
+	if current_score > best_score:
+		best_score = current_score
+	emit_signal("score_changed")
+
+
+# Systems\UIManager.gd
+## Отвечает за интерфейс башен и открытые меню
+extends Node
+
+## Ссылка на текущее окно меню (например: магазин, настройки, выбор режима)
+var menu_object: Node
+
+## Список открытых меню башен
+var list_open_menu_turrets: Array[Node] = []
+
+## Добавить в список открытую башню (если ещё не добавлена)
+func add_open_menu_turret(turret: Node) -> void:
+	if not turret in list_open_menu_turrets:
+		list_open_menu_turrets.append(turret)
+
+## Убрать башню из списка открытых
+func remove_open_menu_turret(turret: Node) -> void:
+	list_open_menu_turrets.erase(turret)
+
+## Проверить, открыто ли меню башни
+func is_turret_menu_open(turret: Node) -> bool:
+	return turret in list_open_menu_turrets
+
+## Скрыть и очистить все открытые меню
+func clear_open_menus() -> void:
+	for menu in list_open_menu_turrets:
+		if is_instance_valid(menu):
+			menu.hide()
+	list_open_menu_turrets.clear()
+
+
+# Systems\WaveGenerator.gd
+## Генерирует стартовые/тестовые волны при инициализации
+extends Node
+
+## Метод генерации базового набора волн в DataManager.wave_data[0]
+func generate_default_waves(out_wave_data: Array):
+	var result = []
+	for i in range(200):
+		result.append([
+			["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_2", 1.0], ["Enemy_5", 1.0],
+			["Enemy_5", 1.5], ["Enemy_8", 2.5], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
+			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
+			["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0], ["Enemy_7", 1.0],
+			["Enemy_2", 1.0], ["Enemy_1", 1.0], ["Enemy_5", 1.0], ["Enemy_4", 1.0], ["Enemy_5", 1.0],
+			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_4", 1.0], ["Enemy_3", 1.0], ["Enemy_2", 1.0],
+			["Enemy_2", 0.7], ["Enemy_6", 0.8], ["Enemy_1", 1.0], ["Enemy_1", 1.0], ["Enemy_2", 1.0],
+			["Enemy_4", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0], ["Enemy_3", 1.0], ["Enemy_4", 1.0],
+			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
+			["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0],
+		])
+	out_wave_data.resize(1)
+	out_wave_data[0] = result
+	return out_wave_data
 
 
