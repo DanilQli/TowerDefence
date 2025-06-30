@@ -112,8 +112,5 @@ func impact(type_explosion, type_attack):
 	new_impact.position = impact_location
 	impact_area.add_child(new_impact)
 
-
 func on_destroy():
-	get_node("CharacterBody2D").queue_free()
-	await get_tree().create_timer(0.2).timeout
 	self.queue_free()

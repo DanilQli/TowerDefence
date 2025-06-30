@@ -12,7 +12,7 @@ func _ready():
 		)
 	)
 	# Обновление отображения денег
-	get_node("Panel/HBoxContainer/Label").text = str(ResourceManager.resources_money)
+	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()

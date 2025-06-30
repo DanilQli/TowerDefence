@@ -21,7 +21,7 @@ func _setup_turrets() -> void:
 		var data = DataManager.tower_data["Turret_" + str(i + 1) + "T1"]
 		var panel = _create_turret_panel(i, data)
 		get_node("VBoxContainer/Panel/VBoxContainer/Shop/ScrollContainer/HBoxContainer").add_child(panel)
-		
+		panel.setup(data, i)
 		if data["have"]:
 			_setup_owned_turret(i, data, panel)
 		else:
@@ -29,77 +29,8 @@ func _setup_turrets() -> void:
 
 func _create_turret_panel(i: int, data: Dictionary) -> Node:
 	var panel = load("res://Scenes/SupportScenes/turret_max.tscn").instantiate()
-	panel.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
-	panel.get_node("VBoxContainer/Label").text = tr("KEY_NAME_TURRET_" + str(i + 1))
-	
-	_setup_turret_stats(panel, data)
-	
 	return panel
-
-func _setup_turret_stats(panel: Node, data: Dictionary) -> void:
-	match data["type_attack"]:
-		0, 3:
-			_setup_damage_turret(panel, data)
-		1:
-			_setup_slow_turret(panel, data)
-		2:
-			_setup_movement_turret(panel, data)
-		4:
-			_setup_money_turret(panel, data)
-		5:
-			_setup_poison_turret(panel, data)
-
-func _setup_damage_turret(panel: Node, data: Dictionary) -> void:
-	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DAMAGE")
-	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
-	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
-	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["damage"][0])
-	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
-	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
-	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
-	panel.get_node("VBoxContainer/HBoxContainer5").queue_free()
-
-func _setup_slow_turret(panel: Node, data: Dictionary) -> void:
-	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INTENSIVITY")
-	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_DURATION")
-	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RELOAD")
-	panel.get_node("VBoxContainer/HBoxContainer4/Label1").text = tr("KEY_RANGE")
-	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["intensivity"][0])
-	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["duration"][0])
-	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["rof"][0])
-	panel.get_node("VBoxContainer/HBoxContainer4/Label2").text = str(data["range"][0])
-
-func _setup_movement_turret(panel: Node, data: Dictionary) -> void:
-	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DISTANCE")
-	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
-	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
-	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["distance"][0])
-	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
-	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
-	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
-	panel.get_node("VBoxContainer/HBoxContainer5").queue_free()
-
-func _setup_money_turret(panel: Node, data: Dictionary) -> void:
-	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_INCOME")
-	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_SPEED")
-	panel.get_node("VBoxContainer/HBoxContainer3").queue_free()
-	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["speed"][0])
-	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["income"][0])
-	panel.get_node("VBoxContainer/HBoxContainer4").queue_free()
-	panel.get_node("VBoxContainer/HBoxContainer5").queue_free()
-
-func _setup_poison_turret(panel: Node, data: Dictionary) -> void:
-	panel.get_node("VBoxContainer/HBoxContainer1/Label1").text = tr("KEY_DAMAGE")
-	panel.get_node("VBoxContainer/HBoxContainer2/Label1").text = tr("KEY_RELOAD")
-	panel.get_node("VBoxContainer/HBoxContainer3/Label1").text = tr("KEY_RANGE")
-	panel.get_node("VBoxContainer/HBoxContainer4/Label1").text = tr("KEY_DURATION")
-	panel.get_node("VBoxContainer/HBoxContainer5/Label1").text = tr("KEY_TICK")
-	panel.get_node("VBoxContainer/HBoxContainer1/Label2").text = str(data["damage"][0])
-	panel.get_node("VBoxContainer/HBoxContainer2/Label2").text = str(data["rof"][0])
-	panel.get_node("VBoxContainer/HBoxContainer3/Label2").text = str(data["range"][0])
-	panel.get_node("VBoxContainer/HBoxContainer4/Label2").text = str(data["duration"][0])
-	panel.get_node("VBoxContainer/HBoxContainer5/Label2").text = str(data["tick"][0])
-
+	
 func _create_owned_turret_ui(i: int) -> Node:
 	var have = load('res://Scenes/SupportScenes/turret_choose.tscn').instantiate()
 	have.get_node("VBoxContainer/TextureRect/TextureRect").texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(i + 1) + ".png")
@@ -133,13 +64,13 @@ func _setup_inactive_turret(have: Node, turret_index: int) -> void:  # Доба�
 	
 func _setup_buyable_turret(panel: Node, data: Dictionary, i: int) -> void:
 	panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
-	if data["prise"] <= ResourceManager.resources_money:
+	if data["prise"] <= DataManager.data_money:
 		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
 
 func buy_turret(prise: int, num_turret: int) -> void:
-	ResourceManager.resources_money -= prise
-	DataManager.data["Resources"]["money"] = ResourceManager.resources_money
-	get_parent().get_node("Panel/HBoxContainer/Label").text = str(ResourceManager.resources_money)
+	DataManager.data_money -= prise
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	get_parent().get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	
 	var turret_key = "Turret_" + str(num_turret) + "T1"
 	DataManager.tower_data[turret_key]["have"] = true

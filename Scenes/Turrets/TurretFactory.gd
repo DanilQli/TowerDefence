@@ -17,8 +17,8 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 	turret.type = tower_id
 	turret.position = position
 	turret.built = true
-	turret.type_attack = data["type_attack"]
-	turret.type_explosion = data["type_explosion"]
+	turret.type_attack = int(data["type_attack"])
+	turret.type_explosion = int(data["type_explosion"])
 	turret.current_lvl = 0
 	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
 
