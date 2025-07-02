@@ -1,9 +1,13 @@
-[gd_scene load_steps=9 format=3 uid="uid://cxoc426ms2sac"]
+[gd_scene load_steps=11 format=3 uid="uid://cxoc426ms2sac"]
 
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_kfpwl"]
 [ext_resource type="Script" uid="uid://djm6oxar5nkag" path="res://Scenes/Turrets/MoneyTower.gd" id="1_l7q3k"]
 [ext_resource type="Texture2D" uid="uid://but4q60dblysg" path="res://Assets/Props/towerDefense_tile_turret_6.png" id="2_b7i2s"]
 [ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_b0npw"]
+[ext_resource type="Texture2D" uid="uid://c3aoc5i6rxgys" path="res://Assets/Effect/towerDefense_tile30.png" id="4_lce22"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ipgfe"]
+radius = 175.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_oglly"]
 
@@ -53,6 +57,18 @@ texture = ExtResource("1_kfpwl")
 [node name="Turret" type="Sprite2D" parent="."]
 scale = Vector2(0.6, 0.6)
 texture = ExtResource("2_b7i2s")
+
+[node name="Muzzle" type="Marker2D" parent="Turret"]
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("4_lce22")
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_ipgfe")
 
 [node name="MenuButton" type="TouchScreenButton" parent="."]
 scale = Vector2(3, 3)

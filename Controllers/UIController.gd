@@ -93,56 +93,11 @@ func title_show(id_ui: String, id: String):
 	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	var tower_position = main_scene.get_node("UI/HUD/BuldBar/Tower_" + id_ui).position
 	node_mouse_entered.position = tower_position + Vector2(100, 50)
-
-	# Удаляем элементы, которые не нужны для определенного типа
-	if type_attack != GameConstants.TowerType.MONEY:
-		match type_attack:
-			GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
-				node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["damage"][0])
-				node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
-				node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
-
-				node_mouse_entered.get_node("V/HTick").queue_free()
-				
-			GameConstants.TowerType.SLOW:
-				node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["intensivity"][0] * 100)
-				node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["duration"][0])
-				node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
-				node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
-			
-				node_mouse_entered.get_node("V/HTick").queue_free()
-				
-			GameConstants.TowerType.MOVEMENT:
-				node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["distance"][0])
-				node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
-				node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
-
-				node_mouse_entered.get_node("V/HTick").queue_free()
-				
-			GameConstants.TowerType.POISON:
-				node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["damage"][0])
-				node_mouse_entered.get_node("V/HTick/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["tick"][0])
-				node_mouse_entered.get_node("V/HInflicted/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["duration"][0])
-				node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["rof"][0])
-				node_mouse_entered.get_node("V/HRange/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["range"][0])
-				
-				node_mouse_entered.get_node("V/HInflicted/HValue/Up").queue_free()
-				node_mouse_entered.get_node("V/HTick/HValue/Up").queue_free()
-	else:
-		# MONEY type
-		node_mouse_entered.get_node("V/HDamage/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["speed"][0])
-		node_mouse_entered.get_node("V/HReload/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"]["income"][0])
-
-		node_mouse_entered.get_node("V/HRange").queue_free()
-		node_mouse_entered.get_node("V/HInflicted").queue_free()
-
-	# Удаляем апгрейды (стрелочки)
-	node_mouse_entered.get_node("V/HDamage/HValue/Up").queue_free()
-	node_mouse_entered.get_node("V/HReload/HValue/Up").queue_free()
-	node_mouse_entered.set("type_attack", type_attack)
-	if node_mouse_entered.has_node("V/HRange/HValue/Up"):
-		node_mouse_entered.get_node("V/HRange/HValue/Up").queue_free()
-
+	for i in range(len(GameConstants.NameParameters[type_attack].text)):
+		node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"][GameConstants.NameParameters[type_attack].data[i]][0])
+		node_mouse_entered.get_node("V/" + str(i) + "/HValue/Up").queue_free()
+	for i in GameConstants.NameParameters[type_attack].queue_free:
+		node_mouse_entered.get_node("V/" + str(i)).queue_free()
 	UiManager.list_open_menu_turrets.append(node_mouse_entered)
 	main_scene.add_child(node_mouse_entered)
 	node_mouse_entered.setup(type_attack)

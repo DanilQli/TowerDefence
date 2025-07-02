@@ -18,6 +18,7 @@ var range: float
 var rof: float
 var current_lvl: int
 var max_lvl: int
+var ability: Array = []
 
 var strategy: int = 0 # First/Last/Random
 

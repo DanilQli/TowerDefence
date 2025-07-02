@@ -18,9 +18,10 @@ KEY_ARMAMENT,Вооружение,Armament
 KEY_SHOP,Магазин,Shop
 KEY_NAME,Туррель - ,Turel - 
 KEY_LVL,Уровень ,Level  
-KEY_DAMAGE,Урон: ,Damage: 
+KEY_DAMAGE,Урон: ,Damage:
+KEY_DAMAGE_REDUCTION,Увеличение  урона: ,Damage reduction:
 KEY_RELOAD,Перезарядка: ,Reload: 
-KEY_RANGE,Радиус: ,Range: 
+KEY_RANGE,Радиус: ,Range:
 KEY_INFLICTED,Нанесено: ,Inflicted: 
 KEY_LVL_UP,Улучшить,Lvl Up
 KEY_LVL_MAX,Макс уровень,Lvl Max
@@ -66,3 +67,11 @@ KEY_BEST_SCORE,Лучший счёт:,Best score:
 KEY_WIN,Победа,Win
 KEY_CONTINUE,Продолжить,Continue
 KEY_REWARD_FOR_STARS,Награда за звёзды,Reward for stars
+KEY_UNBLOCK_FOR,Разблокировать за ,Unblock for
+KEY_AVAILABLE_ON1,Будет доступно на,Will be available on
+KEY_AVAILABLE_ON2,уровне,level
+KEY_UP,Улучшить за ,Upgrade for
+
+KEY_TURRET1_DESC,Пушка наносит случайный дополнительный урон цели,The cannon deals random additional damage to the target
+KEY_TURRET1_UP0_DESC,"С шансом[color='blue'] 50%[/color] пушка атакует цели дважды","With chance[color='red'] 50%[/color], the cannon will attack the targets twice"
+KEY_TURRET1_UP1_DESC,Добавляется величина от [color='blue']0%[/color] до [color='blue']40%[/color] критического урона,A value from [color='blue']0%[/color] to [color='blue']40%[/color] critical damage is added

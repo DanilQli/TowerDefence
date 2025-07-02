@@ -55,8 +55,8 @@ func end_game_company():
 		DataManager.data["settings_game"]["best_score"] = score
 
 		var total_money = int(score / 10) + money_dop
-		ResourceManager.resources_money += total_money
-		DataManager.data["Resources"]["money"] = ResourceManager.resources_money
+		DataManager.data_money_add(total_money)
+		DataManager.data["Resources"]["money"] = DataManager.data_money
 
 		if not DataManager.level_option[GameSession.current_level - 1]:
 			DataManager.level_option[GameSession.current_level - 1] = true
@@ -74,8 +74,8 @@ func end_game():
 	if score > ResourceManager.best_score:
 		ResourceManager.best_score = score
 		DataManager.data["SettingsGame"]["best_score"] = score
-		ResourceManager.resources_money += int(score / 10)
-		DataManager.data["Resources"]["money"] = ResourceManager.resources_money
+		DataManager.data_money_add(int(score / 10))
+		DataManager.data["Resources"]["money"] = DataManager.data_money
 		DataManager.write_file()
 
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(score)

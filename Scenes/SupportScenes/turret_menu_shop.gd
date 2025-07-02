@@ -7,151 +7,80 @@ var level: int
 @onready var turretMaxLox = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/CardOf/Lock
 @onready var CardOf = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/CardOf/CardOf
 @onready var CardOfText = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/CardOf/CardOf/Label
-@onready var parametr0Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect0/HBoxContainer/Value
-@onready var parametr0Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect0/HBoxContainer/Label2
-@onready var parametr1Icon = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect1/HBoxContainer/NinePatchRect
-@onready var parametr1Name = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect1/HBoxContainer/Name
-@onready var parametr1Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect1/HBoxContainer/Value
-@onready var parametr1Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect1/HBoxContainer/Label2
-@onready var parametr2Icon = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect2/HBoxContainer/NinePatchRect
-@onready var parametr2Name = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect2/HBoxContainer/Name
-@onready var parametr2Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect2/HBoxContainer/Value
-@onready var parametr2Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect2/HBoxContainer/Label2
-@onready var parametr3 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect3
-@onready var parametr3Icon = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect3/HBoxContainer/NinePatchRect
-@onready var parametr3Name = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect3/HBoxContainer/Name
-@onready var parametr3Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect3/HBoxContainer/Value
-@onready var parametr3Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect3/HBoxContainer/Label2
-@onready var parametr4 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect4
-@onready var parametr4Icon = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect4/HBoxContainer/NinePatchRect
-@onready var parametr4Name = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect4/HBoxContainer/Name
-@onready var parametr4Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect4/HBoxContainer/Value
-@onready var parametr4Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect4/HBoxContainer/Label2
-@onready var parametr5 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect5
-@onready var parametr5Icon = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect5/HBoxContainer/NinePatchRect
-@onready var parametr5Name = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect5/HBoxContainer/Name
-@onready var parametr5Value = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect5/HBoxContainer/Value
-@onready var parametr5Value2 = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ColorRect5/HBoxContainer/Label2
+@onready var CardOfDesc = $Panel/MarginContainer/ScrollContainer/VBoxContainer/RichTextLabel
+@onready var PanelParametr = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ScrollContainer/HBoxContainer
+@onready var openLvlBut = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button
+@onready var abilityText = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/RichTextLabel, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/RichTextLabel]
+@onready var abilityTextLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/Label, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/Label]
+@onready var abilityLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer/NinePatchRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer/NinePatchRect]
+@onready var abilityBut = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer2/Button, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer2/Button]
+@onready var abilityColor = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/ColorRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/ColorRect]
+
 @onready var close = $Panel/Close
+
 
 func setup(data: Dictionary, number: int) -> void:
 	turretMaxIcon.texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(number + 1) + ".png")
 	turretMaxName.text = tr("KEY_NAME_TURRET_" + str(number + 1))
 	level = int(data["level"]) - 1
+	CardOfDesc.text = tr("KEY_TURRET" + str(number + 1) + "_DESC")
+	var prise: int
 	if not data["have"]:
-		turretMaxLvl.text = tr("KEY_NOT_FOUND") 
+		turretMaxLvl.text = tr("KEY_NOT_FOUND")
+		prise = GameConstants.PriseUnblockCard[TowerCards._get_tower_rarity(number)].prise_up_money[0]
+		openLvlBut.text = tr("KEY_UNBLOCK_FOR") + str(prise)
 	else:
 		turretMaxLvl.text = tr("KEY_LVL") + str(level + 1)
-	if data["have"]:
+		prise = GameConstants.PriseUnblockCard[TowerCards._get_tower_rarity(number)].prise_up_card[level + 1]
+		openLvlBut.text = tr("KEY_UP") + str(prise)
 		turretMaxLox.queue_free()
 		CardOf.max_value = TowerCards.get_cards_needed(number)
 		CardOf.value = int(data["cards"])
 		CardOfText.text = str(int(CardOf.value)) + "/" + str(int(CardOf.max_value))
 	close.pressed.connect(_close)
-	parametr0Value.text = str(level + 1) + " " + tr("KEY_LVL")
-	parametr0Value2.text = str(level + 2) + " " + tr("KEY_LVL")
-	match int(data["type_attack"]):
-		0, 3:
-			_setup_damage_turret(data)
-		1:
-			_setup_slow_turret(data)
-		2:
-			_setup_movement_turret(data)
-		4:
-			_setup_money_turret(data)
-		5:
-			_setup_poison_turret(data)
+	_create_card_of_parametr(data, int(data["type_attack"]))
+	if prise >= DataManager.data_money:
+		openLvlBut.pressed.connect(upgrade_card)
+		var style = openLvlBut.get_theme_stylebox("normal").duplicate()
+		style.set("bg_color", Color(0.4, 0.7, 0.0))
+		openLvlBut.add_theme_stylebox_override("normal", style)
+	for i in range(len(GameConstants.LEVEL_OPEN_ABILITY)):
+		abilityText[i].text = tr("KEY_TURRET" + str(number + 1) + "_UP" + str(i) + "_DESC")
+		if not data["ability"][i] and level + 1 < GameConstants.LEVEL_OPEN_ABILITY[i]:
+			abilityTextLock[i].text = tr("KEY_AVAILABLE_ON1") + " " + str(GameConstants.LEVEL_OPEN_ABILITY[i]) + " " + tr("KEY_AVAILABLE_ON2")
+			abilityBut[i].text = tr("KEY_UNBLOCK_FOR") + str(GameConstants.PriseUnblockCard[TowerCards._get_tower_rarity(number)].abilit_prise[i])
+		elif not data["ability"][i] and level + 1 >= GameConstants.LEVEL_OPEN_ABILITY[i] and GameConstants.PriseUnblockCard[TowerCards._get_tower_rarity(number)].abilit_prise[i] >= DataManager.data_money:
+			var style = abilityBut.get_theme_stylebox("normal").duplicate()
+			style.set("bg_color", Color(0.4, 0.7, 0.0))
+			abilityBut[i].add_theme_stylebox_override("normal", style)
+			openLvlBut.pressed.connect(open_ability.bind(i))
+		else:
+			abilityColor[i].queue_free()
+			abilityBut[i].queue_free()
+			abilityLock[i].queue_free()
+			abilityTextLock[i].queue_free()
 
-func _setup_damage_turret(data: Dictionary) -> void:
-	parametr1Name.text = tr("KEY_DAMAGE")
-	parametr2Name.text = tr("KEY_RELOAD")
-	parametr3Name.text = tr("KEY_RANGE")
-	parametr1Value.text = str(data["damage"][level])
-	parametr2Value.text = str(data["rof"][level])
-	parametr3Value.text = str(data["range"][level])
-	parametr1Icon.texture = load("res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex")
-	parametr2Icon.texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-	parametr3Icon.texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-	if int(data["level"]) - 1 < GameConstants.NUMBER_LVL_TURRET_CARD:
-		parametr1Value2.text = str(data["damage"][level + 1])
-		parametr2Value2.text = str(data["rof"][level + 1])
-		parametr3Value2.text = str(data["range"][level + 1])
-	parametr4.queue_free()
-	parametr5.queue_free()
-
-func _setup_slow_turret(data: Dictionary) -> void:
-	parametr1Name.text = tr("KEY_INTENSIVITY")
-	parametr2Name.text = tr("KEY_DURATION")
-	parametr3Name.text = tr("KEY_RELOAD")
-	parametr4Name.text = tr("KEY_RANGE")
-	parametr1Value.text = str(data["intensivity"][level])
-	parametr2Value.text = str(data["duration"][level])
-	parametr3Value.text = str(data["rof"][level])
-	parametr4Value.text = str(data["range"][level])
-	parametr1Icon.texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
-	parametr2Icon.texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
-	parametr3Icon.texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-	parametr4Icon.texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-	if int(data["level"]) - 1 < GameConstants.NUMBER_LVL_TURRET_CARD:
-		parametr1Value2.text = str(data["intensivity"][level + 1])
-		parametr2Value2.text = str(data["duration"][level + 1])
-		parametr3Value2.text = str(data["rof"][level + 1])
-		parametr4Value2.text = str(data["range"][level + 1])
-	parametr5.queue_free()
-
-func _setup_movement_turret(data: Dictionary) -> void:
-	parametr1Name.text = tr("KEY_DISTANCE")
-	parametr2Name.text = tr("KEY_RELOAD")
-	parametr3Name.text = tr("KEY_RANGE")
-	parametr1Value.text = str(data["distance"][level])
-	parametr2Value.text = str(data["rof"][level])
-	parametr3Value.text = str(data["range"][level])
-	parametr1Icon.texture = load("res://.godot/imported/distance.png-a3097e1cb8e56e338aba8f1c30601538.ctex")
-	parametr2Icon.texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-	parametr3Icon.texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-	if int(data["level"]) - 1 < GameConstants.NUMBER_LVL_TURRET_CARD:
-		parametr1Value2.text = str(data["distance"][level + 1])
-		parametr2Value2.text = str(data["rof"][level + 1])
-		parametr3Value2.text = str(data["range"][level + 1])
-	parametr4.queue_free()
-	parametr5.queue_free()
-
-func _setup_money_turret(data: Dictionary) -> void:
-	parametr1Name.text = tr("KEY_INCOME")
-	parametr2Name.text = tr("KEY_SPEED")
-	parametr1Value.text = str(data["speed"][level])
-	parametr2Value.text = str(data["income"][level])
-	parametr1Icon.texture = load("res://.godot/imported/intensivity.png-1ce49c6ac50637b96205d06fd83040cd.ctex")
-	parametr2Icon.texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
-	if int(data["level"]) - 1 < GameConstants.NUMBER_LVL_TURRET_CARD:
-		parametr1Value2.text = str(data["speed"][level + 1])
-		parametr2Value2.text = str(data["income"][level + 1])
-	parametr3.queue_free()
-	parametr4.queue_free()
-	parametr5.queue_free()
-
-func _setup_poison_turret(data: Dictionary) -> void:
-	parametr1Name.text = tr("KEY_DAMAGE")
-	parametr2Name.text = tr("KEY_RELOAD")
-	parametr3Name.text = tr("KEY_RANGE")
-	parametr4Name.text = tr("KEY_DURATION")
-	parametr5Name.text = tr("KEY_TICK")
-	parametr1Value.text = str(data["damage"][level])
-	parametr2Value.text = str(data["rof"][level])
-	parametr3Value.text = str(data["range"][level])
-	parametr4Value.text = str(data["duration"][level])
-	parametr5Value.text = str(data["tick"][level])
-	parametr1Icon.texture = load("res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex")
-	parametr2Icon.texture = load("res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex")
-	parametr3Icon.texture = load("res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex")
-	parametr4Icon.texture = load("res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex")
-	parametr5Icon.texture = load("res://Assets/Icons/tick.png")
-	if int(data["level"]) - 1 < GameConstants.NUMBER_LVL_TURRET_CARD:
-		parametr1Value2.text = str(data["damage"][level + 1])
-		parametr2Value2.text = str(data["rof"][level + 1])
-		parametr3Value2.text = str(data["range"][level + 1])
-		parametr4Value2.text = str(data["duration"][level + 1])
-		parametr5Value2.text = str(data["tick"][level + 1])
+func open_ability(ind):
+	pass
+	
+func upgrade_card():
+	pass
+	
+func _create_card_of_parametr(data, type):
+	var obj
+	var text
+	for i in range(len(GameConstants.NameParameters[type].text)):
+		obj = load("res://Scenes/SupportScenes/card_of_parametr.tscn").instantiate()
+		PanelParametr.add_child(obj)
+		obj.get_node("VBoxContainer/HBoxContainer/NinePatchRect").texture = load(GameConstants.NameParameters[type].img[i])
+		obj.get_node("VBoxContainer/Label").text = GameConstants.NameParameters[type].text[i]
+		obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(data[GameConstants.NameParameters[type].data[i]][level])
+		if GameConstants.NameParameters[type].text[i] != "KEY_RELOAD":
+			text = "+"
+		else:
+			text = ""
+		text += str(data[GameConstants.NameParameters[type].data[i]][level + 1] - data[GameConstants.NameParameters[type].data[i]][level])
+		obj.get_node("VBoxContainer/HBoxContainer2/Label2").text = text
 
 func _close():
 	self.queue_free()

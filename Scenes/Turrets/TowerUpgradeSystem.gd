@@ -63,7 +63,7 @@ func _upgrade_combat_tower() -> void:
 	var tower_data = DataManager.tower_data[tower.type]
 	
 	match tower.type_attack:
-		GameConstants.TowerType.NORMAL, GameConstants.TowerType.AREA:
+		GameConstants.TowerType.GUN, GameConstants.TowerType.AREA:
 			tower.damage = tower_data["damage"][tower.current_lvl]
 		GameConstants.TowerType.SLOW:
 			tower.intensivity = tower_data["intensivity"][tower.current_lvl]

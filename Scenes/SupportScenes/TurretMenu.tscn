@@ -10,7 +10,7 @@
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="6_18ceo"]
 
 [node name="Menu" type="Control"]
-custom_minimum_size = Vector2(250, 200)
+custom_minimum_size = Vector2(300, 200)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 50.0
@@ -35,9 +35,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 5.0
-offset_right = 5.0
-offset_bottom = 4.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -61,32 +58,35 @@ text = "KEY_LVL"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HDamage" type="HBoxContainer" parent="V"]
+[node name="0" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 
-[node name="HText" type="HBoxContainer" parent="V/HDamage"]
+[node name="HText" type="HBoxContainer" parent="V/0"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="V/HDamage/HText"]
+[node name="TextureRect" type="TextureRect" parent="V/0/HText"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 texture = ExtResource("1_bkv8p")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="V/HDamage/HText"]
+[node name="Name" type="Label" parent="V/0/HText"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
 text = "KEY_DAMAGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HValue" type="HBoxContainer" parent="V/HDamage"]
+[node name="HValue" type="HBoxContainer" parent="V/0"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="V/HDamage/HValue"]
+[node name="Value" type="Label" parent="V/0/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -94,7 +94,7 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Up" type="Label" parent="V/HDamage/HValue"]
+[node name="Up" type="Label" parent="V/0/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -103,32 +103,36 @@ text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HReload" type="HBoxContainer" parent="V"]
+[node name="1" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 
-[node name="HText" type="HBoxContainer" parent="V/HReload"]
+[node name="HText" type="HBoxContainer" parent="V/1"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="V/HReload/HText"]
+[node name="TextureRect" type="TextureRect" parent="V/1/HText"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 texture = ExtResource("2_f32am")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="V/HReload/HText"]
+[node name="Name" type="Label" parent="V/1/HText"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
 text = "KEY_RELOAD"
 horizontal_alignment = 1
 vertical_alignment = 1
+autowrap_mode = 3
 
-[node name="HValue" type="HBoxContainer" parent="V/HReload"]
+[node name="HValue" type="HBoxContainer" parent="V/1"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="V/HReload/HValue"]
+[node name="Value" type="Label" parent="V/1/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -136,7 +140,7 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Up" type="Label" parent="V/HReload/HValue"]
+[node name="Up" type="Label" parent="V/1/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -145,32 +149,35 @@ text = "-"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HRange" type="HBoxContainer" parent="V"]
+[node name="2" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 
-[node name="HText" type="HBoxContainer" parent="V/HRange"]
+[node name="HText" type="HBoxContainer" parent="V/2"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="V/HRange/HText"]
+[node name="TextureRect" type="TextureRect" parent="V/2/HText"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 texture = ExtResource("3_wo1gx")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="V/HRange/HText"]
+[node name="Name" type="Label" parent="V/2/HText"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
 text = "KEY_RANGE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HValue" type="HBoxContainer" parent="V/HRange"]
+[node name="HValue" type="HBoxContainer" parent="V/2"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="V/HRange/HValue"]
+[node name="Value" type="Label" parent="V/2/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -178,7 +185,7 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Up" type="Label" parent="V/HRange/HValue"]
+[node name="Up" type="Label" parent="V/2/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -187,32 +194,35 @@ text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HTick" type="HBoxContainer" parent="V"]
+[node name="3" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 
-[node name="HText" type="HBoxContainer" parent="V/HTick"]
+[node name="HText" type="HBoxContainer" parent="V/3"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="V/HTick/HText"]
+[node name="TextureRect" type="TextureRect" parent="V/3/HText"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 texture = ExtResource("5_svmyh")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="V/HTick/HText"]
+[node name="Name" type="Label" parent="V/3/HText"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
 text = "KEY_TICK"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HValue" type="HBoxContainer" parent="V/HTick"]
+[node name="HValue" type="HBoxContainer" parent="V/3"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="V/HTick/HValue"]
+[node name="Value" type="Label" parent="V/3/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -220,7 +230,7 @@ text = "10"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Up" type="Label" parent="V/HTick/HValue"]
+[node name="Up" type="Label" parent="V/3/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -229,32 +239,35 @@ text = "+"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HInflicted" type="HBoxContainer" parent="V"]
+[node name="4" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(250, 30)
 layout_mode = 2
 
-[node name="HText" type="HBoxContainer" parent="V/HInflicted"]
+[node name="HText" type="HBoxContainer" parent="V/4"]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="TextureRect" type="TextureRect" parent="V/HInflicted/HText"]
+[node name="TextureRect" type="TextureRect" parent="V/4/HText"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 texture = ExtResource("4_ed2jo")
 expand_mode = 1
 
-[node name="Name" type="Label" parent="V/HInflicted/HText"]
+[node name="Name" type="Label" parent="V/4/HText"]
 custom_minimum_size = Vector2(110, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
+theme_override_font_sizes/font_size = 14
 text = "KEY_INFLICTED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="HValue" type="HBoxContainer" parent="V/HInflicted"]
+[node name="HValue" type="HBoxContainer" parent="V/4"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 
-[node name="Value" type="Label" parent="V/HInflicted/HValue"]
+[node name="Value" type="Label" parent="V/4/HValue"]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -263,7 +276,7 @@ text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Up" type="Label" parent="V/HInflicted/HValue"]
+[node name="Up" type="Label" parent="V/4/HValue"]
 visible = false
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
@@ -276,6 +289,7 @@ vertical_alignment = 1
 [node name="HButton" type="HBoxContainer" parent="V"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
+alignment = 1
 
 [node name="Up" type="Button" parent="V/HButton"]
 custom_minimum_size = Vector2(125, 60)
@@ -376,6 +390,7 @@ layout_mode = 2
 [node name="StrategName" type="Label" parent="V/HStrateg"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "KEY_STRATEGY"
 horizontal_alignment = 1
@@ -384,3 +399,4 @@ vertical_alignment = 1
 [node name="Strateg" type="Button" parent="V/HStrateg"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
+size_flags_horizontal = 3

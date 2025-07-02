@@ -5,9 +5,6 @@ extends Node
 signal money_changed()
 ## Сигнал об изменении очков
 signal score_changed()
-
-## Деньги
-var resources_money: int = 0
 ## Текущие деньги в игровой сессии
 var current_money: int = 0
 ## Лучший результат из сохранения

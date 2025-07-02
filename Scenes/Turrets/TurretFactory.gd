@@ -24,10 +24,13 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 
 	# базовые значения
 	turret.rof = data["rof"][0]
-	turret.range = data["range"][0]
+	turret.ability = data["ability"]
+	if not turret is MoneyTower:
+		turret.range = data["range"][0]
 
-	if turret is NormalTower:
+	if turret is GunTower:
 		turret.damage = data["damage"][0]
+		turret.damage_reduction = data["damage_reduction"][0]
 	elif turret is SlowTower:
 		turret.intensivity = data["intensivity"][0]
 		turret.duration = data["duration"][0]
@@ -37,7 +40,6 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 		turret.damage = data["damage"][0]
 	elif turret is MoneyTower:
 		turret.income = data["income"][0]
-		turret.speed = data["speed"][0]
 	elif turret is PoisonTower:
 		turret.damage = data["damage"][0]
 		turret.duration = data["duration"][0]

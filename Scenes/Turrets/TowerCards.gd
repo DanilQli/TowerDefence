@@ -3,7 +3,6 @@ extends Node
 class_name TowerCards
 
 # Получение редкости башни
-
 static func _get_tower_rarity(tower_id: int) -> int:
 	return GameConstants.CardsParity.get(tower_id, GameConstants.Rarity.COMMON)  # второй параметр - значение по умолчанию
 

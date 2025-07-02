@@ -11,6 +11,10 @@ var data: Dictionary = {}
 var strengthening_enemies: float
 var strengthening_enemies_dop: float
 var strengthening_money: float
+## Деньги
+var data_money: int = 0
+## Критический урон
+var critical_damage: int = 200
 
 ## Вызывается при запуске. Загружает и парсит данные
 func _ready() -> void:
@@ -46,13 +50,22 @@ func parse_game_data() -> void:
 
 ## Извлекает значения ресурсов
 func _parse_resources() -> void:
-	ResourceManager.resources_money = data.get("Resources", {}).get("money", 0)
+	data_money = data.get("Resources", {}).get("money", 0)
 
+func data_money_add(value: int) -> void:
+	data_money += value
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:
 	var turrets = data.get("Turrets", {})
+	var towers_data: Dictionary = {}
 	for name in turrets.keys():
-		tower_data[name] = turrets[name]
+		towers_data[name] = turrets[name]
+	var turretss = towers_data.keys()
+	turretss.sort_custom(func(a, b): 
+		return int(a.split("_")[1].split("T")[0]) < int(b.split("_")[1].split("T")[0])
+	)
+	for tower_id in turretss:
+		tower_data[tower_id] = towers_data[tower_id]
 
 ## Загружает данные всех врагов
 func _parse_enemies() -> void:
@@ -76,7 +89,7 @@ func _parse_settings() -> void:
 	strengthening_enemies = settings.get("strengthening_enemies", 0)
 	strengthening_enemies_dop = settings.get("strengthening_enemies_dop", 0)
 	strengthening_money = settings.get("strengthening_money", 0)
-	ResourceManager.current_money = int(settings.get("current_money", 0))
+	data_money = int(settings.get("current_money", 0))
 	list_wave_gift = settings.get("list_wave_gift", [])
 	
 	var game_settings = data.get("SettingsGame", {})
@@ -88,7 +101,6 @@ func _parse_levels() -> void:
 
 ## Сохраняет текущее состояние игры в файл
 func write_file() -> void:
-	_update_data_before_save()
 	var file = FileAccess.open("res://Files/resurse.json", FileAccess.WRITE)
 	if file == null:
 		Logger.log(Logger.LogLevel.ERROR, "Failed to open resurse.json for writing")
