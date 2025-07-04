@@ -9,40 +9,26 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 		return null
 
 	var turret: TowerBase = scene.instantiate()
-	var data = DataManager.tower_data.get(tower_id, {})
-	if data.is_empty():
-		push_error("❌ No data for turret: " + tower_id)
-		return null
-
+	var tower_data = DataManager.tower_data.get(tower_id, {})
+	var parts = tower_id.left(tower_id.length() - 2).split("_")
+	var number_str = parts[parts.size() - 1]
 	turret.type = tower_id
+	turret.id = int(number_str) - 1
+	var data = GameConstants.DATA_TOWER[turret.id]
 	turret.position = position
 	turret.built = true
-	turret.type_attack = int(data["type_attack"])
-	turret.type_explosion = int(data["type_explosion"])
+	turret.type_attack = data.type_attack
+	turret.type_explosion = data.type_explosion
 	turret.current_lvl = 0
 	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
 
 	# базовые значения
-	turret.rof = data["rof"][0]
-	turret.ability = data["ability"]
-	if not turret is MoneyTower:
-		turret.range = data["range"][0]
-
-	if turret is GunTower:
-		turret.damage = data["damage"][0]
-		turret.damage_reduction = data["damage_reduction"][0]
-	elif turret is SlowTower:
-		turret.intensivity = data["intensivity"][0]
-		turret.duration = data["duration"][0]
-	elif turret is MovementTower:
-		turret.distance = data["distance"][0]
-	elif turret is AreaTower:
-		turret.damage = data["damage"][0]
-	elif turret is MoneyTower:
-		turret.income = data["income"][0]
-	elif turret is PoisonTower:
-		turret.damage = data["damage"][0]
-		turret.duration = data["duration"][0]
-		turret.tick = data["tick"][0]
+	turret.ability = tower_data["ability"]
+	#if turret is GunTower:
+	for i in range(len(data.text)):
+		if data["parametr_" + str(i + 1)] is Dictionary:
+			turret[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]
+		else:
+			turret[data.data[i]] = data["parametr_" + str(i + 1)][0]
 
 	return turret

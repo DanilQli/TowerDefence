@@ -31,12 +31,11 @@ func can_upgrade() -> bool:
 		tower.ui_system.set_max_level_ui()
 		return false
 		
-	return GameSession.current_money_in_game_session >= DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl]
+	return GameSession.current_money_in_game_session >= GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
 
 ## Выполнение улучшения башни
 func perform_upgrade() -> bool:
-	var upgrade_cost = DataManager.tower_data[tower.type]["upgrade_for"][tower.current_lvl]
-	
+	var upgrade_cost = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
 	if GameSession.current_money_in_game_session - upgrade_cost > 0:
 		GameSession.spend_money(upgrade_cost)
 		tower.current_lvl += 1

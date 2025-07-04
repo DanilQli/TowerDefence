@@ -153,10 +153,12 @@ grow_vertical = 2
 texture = ExtResource("5_pu4ph")
 
 [node name="Button" type="Button" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 25)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxFlat_1m3tb")
 text = "KEY_BUY_FOR"
 icon = ExtResource("6_pu4ph")
+autowrap_mode = 3
 expand_icon = true
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]

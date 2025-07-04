@@ -10,7 +10,7 @@ extends Button
 func setup(data: Dictionary, number: int) -> void:
 	turretMaxIcon.texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(number + 1) + ".png")
 	turretMaxName.text = tr("KEY_NAME_TURRET_" + str(number + 1))
-	var level = int(data["level"]) - 1
+	var level = int(data["level"])
 	if not data["have"]:
 		turretMaxLvl.text = tr("KEY_NOT_FOUND") 
 	else:

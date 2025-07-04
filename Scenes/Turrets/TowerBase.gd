@@ -5,6 +5,7 @@ signal money_in_game_session_changed()
 signal damage_inflicted_changed(value: float)
 
 var type: String
+var id: int
 var type_attack: int
 var type_explosion: int
 
@@ -30,7 +31,6 @@ var strategy: int = 0 # First/Last/Random
 func _initialize() -> void:
 	range_area.connect("body_entered", Callable(self, "_on_range_body_entered"))
 	range_area.connect("body_exited", Callable(self, "_on_range_body_exited"))
-
 	var shape = range_area.get_node("CollisionShape2D")
 	if shape and shape.shape is CircleShape2D:
 		shape.shape.radius = 0.5 * range
@@ -49,7 +49,6 @@ func _ready() -> void:
 		if range_node:
 			range_node.body_entered.connect(_on_range_body_entered)
 			range_node.body_exited.connect(_on_range_body_exited)
-
 		_initialize()
 
 func _physics_process(_delta: float) -> void:

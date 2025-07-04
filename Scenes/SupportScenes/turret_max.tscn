@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://b1y58o8u6duaq"]
+[gd_scene load_steps=7 format=3 uid="uid://b1y58o8u6duaq"]
 
 [ext_resource type="PackedScene" uid="uid://b6fy1gifshsrx" path="res://Scenes/SupportScenes/turret_mini.tscn" id="1_esmks"]
 [ext_resource type="Script" uid="uid://br4aykjcloutr" path="res://Scenes/SupportScenes/turret_max.gd" id="2_b8kmm"]
 [ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="2_jn3jj"]
 [ext_resource type="PackedScene" uid="uid://cgtaotdvlniv5" path="res://Scenes/SupportScenes/card_of.tscn" id="2_re0rl"]
 [ext_resource type="Texture2D" uid="uid://bnkl6k1rho3gg" path="res://Assets/Icons/lock.png" id="3_xq0hg"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_b8kmm"]
 
 [node name="Turret" instance=ExtResource("1_esmks")]
 custom_minimum_size = Vector2(150, 280)
@@ -74,6 +76,7 @@ texture = ExtResource("3_xq0hg")
 
 [node name="Button" type="Button" parent="VBoxContainer" index="4"]
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_b8kmm")
 text = "KEY_BUY_FOR"
 icon = ExtResource("2_jn3jj")
 flat = true

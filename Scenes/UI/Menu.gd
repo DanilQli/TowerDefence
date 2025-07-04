@@ -1,5 +1,7 @@
 extends Control
 
+@onready var crit_label = get_node("Panel/HBoxContainer/Label2")
+
 func _ready():
 	# Загрузка языковых настроек
 	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
@@ -29,3 +31,6 @@ func settings():
 
 func on_quit_pressed():
 	get_tree().quit()
+
+func show_critical_damage():
+	crit_label.text = str(DataManager.calculate_critical_damage())

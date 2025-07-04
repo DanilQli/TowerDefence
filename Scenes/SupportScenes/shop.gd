@@ -63,9 +63,12 @@ func _setup_inactive_turret(have: Node, turret_index: int) -> void:  # Доба�
 	have.get_node("VBoxContainer/Button").pressed.connect(choose_turret.bind(turret_index))  # Используем turret_index
 	
 func _setup_buyable_turret(panel: Node, data: Dictionary, i: int) -> void:
-	panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(data["prise"])
-	if data["prise"] <= DataManager.data_money:
-		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(data["prise"], i + 1))
+	panel.get_node("VBoxContainer/Button").text = tr("KEY_BUY_FOR") + " " + str(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[i].type].open_card)
+	if GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[i].type].open_card <= DataManager.data_money:
+		var style = panel.get_node("VBoxContainer/Button").get_theme_stylebox("normal").duplicate()
+		style.set("bg_color", Color(0.4, 0.7, 0.0))
+		panel.get_node("VBoxContainer/Button").add_theme_stylebox_override("normal", style)
+		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[i].type].open_card, i + 1))
 
 func buy_turret(prise: int, num_turret: int) -> void:
 	DataManager.data_money -= prise
@@ -74,8 +77,7 @@ func buy_turret(prise: int, num_turret: int) -> void:
 	
 	var turret_key = "Turret_" + str(num_turret) + "T1"
 	DataManager.tower_data[turret_key]["have"] = true
-	DataManager.data[turret_key]["have"] = true
-	DataManager.write_file()
+	#DataManager.write_file()
 	close()
 
 func choose_turret(id: int) -> void:
