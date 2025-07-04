@@ -60,21 +60,13 @@ func apply_upgrade_effects() -> void:
 ## Улучшение боевой башни
 func _upgrade_combat_tower() -> void:
 	var tower_data = DataManager.tower_data[tower.type]
-	
-	match tower.type_attack:
-		GameConstants.TowerType.GUN, GameConstants.TowerType.AREA:
-			tower.damage = tower_data["damage"][tower.current_lvl]
-		GameConstants.TowerType.SLOW:
-			tower.intensivity = tower_data["intensivity"][tower.current_lvl]
-			tower.duration = tower_data["duration"][tower.current_lvl]
-		GameConstants.TowerType.MOVEMENT:
-			tower.duration = tower_data["distance"][tower.current_lvl]
-		GameConstants.TowerType.POISON:
-			tower.damage = tower_data["damage"][tower.current_lvl]
-			tower.duration = tower_data["duration"][tower.current_lvl]
-			tower.tick = tower_data["tick"][tower.current_lvl]
-	tower.rof = tower_data["rof"][tower.current_lvl]
-	tower.range = tower_data["range"][tower.current_lvl]
+	var data = GameConstants.DATA_TOWER[tower.id]
+	for i in range(len(data.text)):
+		if data["parametr_" + str(i + 1)] is Dictionary:
+			tower[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]
+		else:
+			tower[data.data[i]] = data["parametr_" + str(i + 1)][0]
+
 	tower.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * tower.range
 
 ## Улучшение денежной башни
@@ -86,5 +78,4 @@ func _upgrade_money_tower() -> void:
 ## Обновление UI после улучшения
 func update_ui() -> void:
 	tower.ui_system.update_menu()
-	
 	tower.ui_system.update_menu_upgrade()

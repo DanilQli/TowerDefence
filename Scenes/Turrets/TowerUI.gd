@@ -125,8 +125,8 @@ func _update_combat_menu_upgrade() -> void:
 	var menu = tower.get_node("Menu")
 	var next_level = tower.current_lvl + 1
 	var text
-	for i in range(len(GameConstants.DATA_TOWER[tower.type_attack].text)):
-		if GameConstants.DATA_TOWER[tower.type_attack].text[i] != "KEY_RELOAD":
+	for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
+		if GameConstants.DATA_TOWER[tower.id].text[i] != "KEY_RELOAD":
 			text = "+"
 		else:
 			text = ""

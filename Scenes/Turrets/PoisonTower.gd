@@ -3,7 +3,7 @@ extends TowerBase
 class_name PoisonTower
 
 var damage: float
-var duration: float
+var duration: float = 4.0
 var tick: float
 
 func fire() -> void:
@@ -15,5 +15,3 @@ func fire() -> void:
 			"tick": tick
 		})
 	get_node("AnimationPlayer").play("Fire")
-	await get_tree().create_timer(rof).timeout
-	is_ready = true

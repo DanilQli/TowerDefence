@@ -15,16 +15,14 @@ var level: int
 @onready var abilityLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer/NinePatchRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer/NinePatchRect]
 @onready var abilityBut = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer2/Button, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer2/Button]
 @onready var abilityColor = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/ColorRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/ColorRect]
-
 @onready var close = $Panel/Close
-
+var prise: int
 
 func setup(data: Dictionary, number: int) -> void:
 	turretMaxIcon.texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(number + 1) + ".png")
 	turretMaxName.text = tr("KEY_NAME_TURRET_" + str(number + 1))
 	level = int(data["level"])
 	CardOfDesc.text = tr("KEY_TURRET" + str(number + 1) + "_DESC")
-	var prise: int
 	if not data["have"]:
 		turretMaxLvl.text = tr("KEY_NOT_FOUND")
 		prise = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].open_card
@@ -39,60 +37,97 @@ func setup(data: Dictionary, number: int) -> void:
 		CardOfText.text = str(int(CardOf.value)) + "/" + str(int(CardOf.max_value))
 	close.pressed.connect(_close)
 	_create_card_of_parametr(data, int(data["type_attack"]))
-	if prise <= DataManager.data_money:
+	if prise <= DataManager.data_money and (CardOf.max_value <= CardOf.value or not data["have"]):
 		if not data["have"]:
-			openLvlBut.pressed.connect(get_parent().buy_turret.bind(prise, number))
+			openLvlBut.pressed.connect(buy.bind(prise, number))
 		else:
-			openLvlBut.pressed.connect(upgrade_card)
+			if level >= GameConstants.NUMBER_LVL_TURRET_CARD:
+				openLvlBut.queue_free()
+			else:
+				openLvlBut.pressed.connect(upgrade_card.bind(number))
 		var style = openLvlBut.get_theme_stylebox("normal").duplicate()
 		style.set("bg_color", Color(0.4, 0.7, 0.0))
 		openLvlBut.add_theme_stylebox_override("normal", style)
 	for i in range(len(GameConstants.LEVEL_OPEN_ABILITY)):
 		abilityText[i].text = tr("KEY_TURRET" + str(number + 1) + "_UP" + str(i) + "_DESC")
-		if not data["ability"][i] and level + 1 < GameConstants.LEVEL_OPEN_ABILITY[i]:
-			abilityTextLock[i].text = tr("KEY_AVAILABLE_ON1") + " " + str(GameConstants.LEVEL_OPEN_ABILITY[i]) + " " + tr("KEY_AVAILABLE_ON2")
-			abilityBut[i].text = tr("KEY_UNBLOCK_FOR") + str(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].abilit_prise[i])
-		elif not data["ability"][i] and level + 1 >= GameConstants.LEVEL_OPEN_ABILITY[i] and GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].abilit_prise[i] >= DataManager.data_money:
-			var style = abilityBut.get_theme_stylebox("normal").duplicate()
+		abilityBut[i].text = tr("KEY_UNBLOCK_FOR") + str(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].abilit_prise[i])
+		abilityTextLock[i].text = tr("KEY_AVAILABLE_ON1") + " " + str(GameConstants.LEVEL_OPEN_ABILITY[i]) + " " + tr("KEY_AVAILABLE_ON2")
+		if not data["ability"][i] and level + 1 >= GameConstants.LEVEL_OPEN_ABILITY[i] and GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].abilit_prise[i] <= DataManager.data_money:
+			var style = abilityBut[i].get_theme_stylebox("normal").duplicate()
 			style.set("bg_color", Color(0.4, 0.7, 0.0))
 			abilityBut[i].add_theme_stylebox_override("normal", style)
-			openLvlBut.pressed.connect(open_ability.bind(i))
-		else:
+			abilityBut[i].pressed.connect(open_ability.bind(i, number))
+		elif data["ability"][i]:
 			abilityColor[i].queue_free()
 			abilityBut[i].queue_free()
 			abilityLock[i].queue_free()
 			abilityTextLock[i].queue_free()
 
-func open_ability(ind):
-	pass
+func buy(prise, number):
+	DataManager.data_money -= prise
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	
-func upgrade_card():
-	pass
+	var turret_key = "Turret_" + str(number + 1) + "T1"
+	DataManager.tower_data[turret_key]["have"] = true
+	#DataManager.write_file()
+	_close()
+	UiManager.menu_object.queue_free()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
+	
+func open_ability(ind, number):
+	DataManager.data_money -= GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].abilit_prise[ind]
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	
+	var turret_key = "Turret_" + str(number + 1) + "T1"
+	DataManager.tower_data[turret_key]["ability"][ind] = true
+	
+	#DataManager.write_file()
+	_close()
+	UiManager.menu_object.queue_free()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
+	
+func upgrade_card(number):
+	DataManager.data_money -= prise
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	
+	var turret_key = "Turret_" + str(number + 1) + "T1"
+	DataManager.tower_data[turret_key]["level"] = int(DataManager.tower_data[turret_key]["level"]) + 1
+	DataManager.tower_data[turret_key]["cards"] = int(DataManager.tower_data[turret_key]["cards"]) - TowerCards.get_cards_needed(number)
+	#DataManager.write_file()
+	_close()
+	UiManager.menu_object.queue_free()
+	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
 	
 func _create_card_of_parametr(data, type):
 	var obj
-	var text
+	var text = ""
 	for i in range(len(GameConstants.DATA_TOWER[type].text)):
 		obj = load("res://Scenes/SupportScenes/card_of_parametr.tscn").instantiate()
 		PanelParametr.add_child(obj)
 		obj.get_node("VBoxContainer/HBoxContainer/NinePatchRect").texture = load(GameConstants.DATA_TOWER[type].img[i])
 		obj.get_node("VBoxContainer/Label").text = GameConstants.DATA_TOWER[type].text[i]
-		if GameConstants.DATA_TOWER[type].text[i] != "KEY_RELOAD":
-			text = "+"
-		else:
-			text = ""
-		if GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1] is Array:
-			obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1][0])
-			if level + 1 == GameConstants.NUMBER_LVL_TURRET_CARD:
-				text = ""
+		if level < GameConstants.NUMBER_LVL_TURRET_CARD:
+			if GameConstants.DATA_TOWER[type].text[i] != "KEY_RELOAD":
+				text = "+"
 			else:
-				text += str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 2][0] - GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1][0])
-		else:
-			obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level])
-			if level + 1 == GameConstants.NUMBER_LVL_TURRET_CARD:
 				text = ""
+			if GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1] is Array:
+				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1][0])
+				text += str(GameConstants.round_to_dec(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1][0] - GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level][0], 2))
 			else:
-				text += str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1] - GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level])
+				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level])
+				text += str(GameConstants.round_to_dec(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level + 1] - GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level], 2))
+		else:
+			if GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level] is Array:
+				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level][0])
+			else:
+				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[type]["parametr_" + str(i + 1)][level])
 		obj.get_node("VBoxContainer/HBoxContainer2/Label2").text = text
 
 func _close():

@@ -11,6 +11,8 @@ var current_money: int = 0
 var best_score: int = 0
 ## Текущий результат (очки) в сессии
 var current_score: int = 0
+## Построенные башни по id башни
+var list_turret: Array = [[], [], [], [], [], [], [], [], [], []]
 
 ## Добавить золото в игровую сессию
 func add_money(value: int) -> void:

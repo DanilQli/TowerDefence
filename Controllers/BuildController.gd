@@ -19,7 +19,7 @@ func initiate_build_mode(tower_type: String):
 		cancel_build_mode()
 
 	var build_name = tower_type + "T1"
-	var cost = DataManager.tower_data[build_name]["cost"]
+	var cost = GameConstants.DATA_TOWER[int(tower_type.split("_")[1]) - 1].cost_in_session
 
 	if GameSession.current_money_in_game_session >= cost:
 		# 4. Установка режима постройки
@@ -51,9 +51,8 @@ func set_tower_preview(tower_type: String, mouse_position: Vector2):
 
 	var range_texture = Sprite2D.new()
 	var scaling: float
-
-	if int(DataManager.tower_data[tower_type]["type_attack"]) != 4:
-		scaling = DataManager.tower_data[tower_type]["range"][0] / 600.0
+	if GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1].type_attack != 4:
+		scaling = GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1]["parametr_" + str(GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1].parametr_range)][0] / 600.0
 	else:
 		scaling = 0.1
 
@@ -89,12 +88,11 @@ func verify_and_build():
 
 		turret.position = build_location
 		turret.name = build_type + "_1"
-		turret.get_node("Menu").setup(turret.type_attack)
+		turret.get_node("Menu").setup(turret.id)
 		var turret_data = DataManager.tower_data.get(build_type, {})
 
 		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
-
-		GameSession.spend_money(DataManager.tower_data[build_type]["cost"])
+		GameSession.spend_money(GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session)
 		main_scene.ui_controller._on_money_changed()
 
 func update_tower_preview():

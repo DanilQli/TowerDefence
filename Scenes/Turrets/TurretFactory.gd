@@ -21,10 +21,10 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 	turret.type_explosion = data.type_explosion
 	turret.current_lvl = 0
 	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
+	ResourceManager.list_turret[turret.id].append(turret)
 
 	# базовые значения
 	turret.ability = tower_data["ability"]
-	#if turret is GunTower:
 	for i in range(len(data.text)):
 		if data["parametr_" + str(i + 1)] is Dictionary:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]

@@ -80,27 +80,29 @@ func _on_money_changed():
 		var turret_id = "Turret_" + str(list_activity_turret[i]) + "T1"
 
 		var cost_label = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color/Cost")
-		cost_label.text = str(DataManager.tower_data[turret_id]["cost"])
+		cost_label.text = str(GameConstants.DATA_TOWER[list_activity_turret[i] - 1].cost_in_session)
 
 		var color_rect = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color")
-		if GameSession.current_money_in_game_session < DataManager.tower_data[turret_id]["cost"]:
+		if GameSession.current_money_in_game_session < GameConstants.DATA_TOWER[list_activity_turret[i] - 1].cost_in_session:
 			color_rect.color = Color("ff0000")
 		else:
 			color_rect.color = Color("008000")
 
 func title_show(id_ui: String, id: String):
-	var type_attack = int(DataManager.tower_data["Turret_" + id + "T1"]["type_attack"])
 	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	var tower_position = main_scene.get_node("UI/HUD/BuldBar/Tower_" + id_ui).position
 	node_mouse_entered.position = tower_position + Vector2(100, 50)
-	for i in range(len(GameConstants.NameParameters[type_attack].text)):
-		node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(DataManager.tower_data["Turret_" + id + "T1"][GameConstants.NameParameters[type_attack].data[i]][0])
+	for i in range(len(GameConstants.DATA_TOWER[int(id_ui) - 1].text)):
+		if GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)] is Dictionary:
+			node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][int(DataManager.tower_data["Turret_" + str(i + 1) + "T1"]["level"])][0])
+		else:
+			node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][0])
 		node_mouse_entered.get_node("V/" + str(i) + "/HValue/Up").queue_free()
-	for i in GameConstants.NameParameters[type_attack].queue_free:
+	for i in GameConstants.DATA_TOWER[int(id_ui) - 1].queue_free:
 		node_mouse_entered.get_node("V/" + str(i)).queue_free()
 	UiManager.list_open_menu_turrets.append(node_mouse_entered)
 	main_scene.add_child(node_mouse_entered)
-	node_mouse_entered.setup(type_attack)
+	node_mouse_entered.setup(int(id_ui) - 1)
 
 func title_hide():
 	for menu in UiManager.list_open_menu_turrets:

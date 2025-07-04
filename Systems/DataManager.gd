@@ -54,6 +54,10 @@ func _parse_resources() -> void:
 
 func data_money_add(value: int) -> void:
 	data_money += value
+	
+func calculate_critical_damage():
+	return critical_damage
+	
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:
 	var turrets = data.get("Turrets", {})
@@ -89,7 +93,6 @@ func _parse_settings() -> void:
 	strengthening_enemies = settings.get("strengthening_enemies", 0)
 	strengthening_enemies_dop = settings.get("strengthening_enemies_dop", 0)
 	strengthening_money = settings.get("strengthening_money", 0)
-	data_money = int(settings.get("current_money", 0))
 	list_wave_gift = settings.get("list_wave_gift", [])
 	
 	var game_settings = data.get("SettingsGame", {})
@@ -113,7 +116,7 @@ func write_file() -> void:
 func _update_data_before_save() -> void:
 	if not data.has("Resources"):
 		data["Resources"] = {}
-	data["Resources"]["money"] = ResourceManager.resources_money
+	data["Resources"]["money"] = data_money
 	
 	if not data.has("Turrets"):
 		data["Turrets"] = {}
@@ -125,7 +128,6 @@ func _update_data_before_save() -> void:
 	data["Settings"]["strengthening_enemies"] = strengthening_enemies
 	data["Settings"]["strengthening_enemies_dop"] = strengthening_enemies_dop
 	data["Settings"]["strengthening_money"] = strengthening_money
-	data["Settings"]["current_money"] = ResourceManager.current_money
 	data["Settings"]["list_wave_gift"] = list_wave_gift
 	
 	if not data.has("SettingsGame"):

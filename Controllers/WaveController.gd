@@ -30,11 +30,13 @@ func retrieve_wave_data() -> Array:
 
 func spawn_enemies(wave: Array):
 	main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameSession.current_wave)
-
+	var type
+	var delay
+	var enemy
 	for unit in wave:
-		var type = unit[0]
-		var delay = unit[1]
-		var enemy = load("res://Scenes/Enemies/%s.tscn" % type).instantiate()
+		type = unit[0]
+		delay = unit[1]
+		enemy = load("res://Scenes/Enemies/%s.tscn" % type).instantiate()
 		enemy.names = type
 		enemy.hp = DataManager.enemy_data[type]["hp"]
 		enemy.current_speed = DataManager.enemy_data[type]["speed"]
@@ -47,7 +49,20 @@ func spawn_enemies(wave: Array):
 		main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
 
 		await get_tree().create_timer(delay).timeout
-
+	# Спавн боссов
+	await get_tree().create_timer(1).timeout
+	type = randi_range(1, GameConstants.NUMBER_BOSS_ENEMY)
+	enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
+	enemy.names = type
+	enemy.hp = GameConstants.ENEMY_BOSS[type - 1].hp
+	enemy.current_speed = GameConstants.ENEMY_BOSS[type - 1].speed
+	enemy.speed = GameConstants.ENEMY_BOSS[type - 1].speed
+	enemy.duration_speed_mod = 0
+	enemy.base_damage.connect(main_scene.on_base_damage)
+	var num_paths = main_scene.map_node.get_node("Path").get_child_count()
+	var path_index = randi_range(0, num_paths - 1)
+	main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
+	
 	if GameSession.current_wave < wave_data_all.size():
 		await get_tree().create_timer(5).timeout
 		start_next_wave()

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://wcvmoo2k7220"
-path="res://.godot/imported/critical_damage.png-487eafa7cffdb48957c7e0aa2d2f1930.ctex"
+uid="uid://kkp0q268veuc"
+path="res://.godot/imported/enemy_1_sprite.png-3ac16ea2c1e0924d02b4fc25aa5cdce2.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Scenes/Turrets/critical_damage.png"
-dest_files=["res://.godot/imported/critical_damage.png-487eafa7cffdb48957c7e0aa2d2f1930.ctex"]
+source_file="res://Assets/Props/enemy_1_sprite.png"
+dest_files=["res://.godot/imported/enemy_1_sprite.png-3ac16ea2c1e0924d02b4fc25aa5cdce2.ctex"]
 
 [params]
 
