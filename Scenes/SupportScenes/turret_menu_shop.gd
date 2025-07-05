@@ -36,7 +36,7 @@ func setup(data: Dictionary, number: int) -> void:
 		CardOf.value = int(data["cards"])
 		CardOfText.text = str(int(CardOf.value)) + "/" + str(int(CardOf.max_value))
 	close.pressed.connect(_close)
-	_create_card_of_parametr(data, int(data["type_attack"]))
+	_create_card_of_parametr(data, int(GameConstants.DATA_TOWER[number].type_attack))
 	if prise <= DataManager.data_money and (CardOf.max_value <= CardOf.value or not data["have"]):
 		if not data["have"]:
 			openLvlBut.pressed.connect(buy.bind(prise, number))

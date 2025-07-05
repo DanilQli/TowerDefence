@@ -7,11 +7,12 @@ var current_damage_up
 var critical_damage_all
 
 func fire() -> void:
-	is_ready = false
-	get_node("AnimationPlayer").play("Fire")
-	_apply_damage()
-	await get_tree().create_timer(rof).timeout
-	is_ready = true
+	if not block_damage:
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
 
 func _apply_damage() -> void:
 	current_damage_up = DataManager.critical_damage

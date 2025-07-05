@@ -52,10 +52,8 @@ func perform_upgrade() -> bool:
 
 ## Применение эффектов улучшения
 func apply_upgrade_effects() -> void:
-	if tower.type_attack != GameConstants.TowerType.MONEY:
-		_upgrade_combat_tower()
-	else:
-		_upgrade_money_tower()
+	_upgrade_combat_tower()
+	
 
 ## Улучшение боевой башни
 func _upgrade_combat_tower() -> void:
@@ -63,17 +61,10 @@ func _upgrade_combat_tower() -> void:
 	var data = GameConstants.DATA_TOWER[tower.id]
 	for i in range(len(data.text)):
 		if data["parametr_" + str(i + 1)] is Dictionary:
-			tower[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]
+			tower[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][tower.current_lvl]
 		else:
-			tower[data.data[i]] = data["parametr_" + str(i + 1)][0]
-
+			tower[data.data[i]] = data["parametr_" + str(i + 1)][tower.current_lvl]
 	tower.get_node("Range/CollisionShape2D").get_shape().radius = 0.5 * tower.range
-
-## Улучшение денежной башни
-func _upgrade_money_tower() -> void:
-	var tower_data = DataManager.tower_data[tower.type]
-	tower.speed = tower_data["speed"][tower.current_lvl]
-	tower.income = tower_data["income"][tower.current_lvl]
 
 ## Обновление UI после улучшения
 func update_ui() -> void:

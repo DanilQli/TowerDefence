@@ -19,7 +19,7 @@ func setup(data: Dictionary, number: int) -> void:
 		turretMaxLox.queue_free()
 		CardOf.max_value = TowerCards.get_cards_needed(number)
 		CardOf.value = int(data["cards"])
-		CardOfText.text = str(int(CardOf.value)) + "/" + str(int(CardOf.max_value))
+		CardOfText.text = str(int(data["cards"])) + "/" + str(int(CardOf.max_value))
 	self.pressed.connect(turret_menu_open.bind(data, number))
 	
 func turret_menu_open(data, number):

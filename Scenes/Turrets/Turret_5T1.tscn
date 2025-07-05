@@ -68,5 +68,14 @@ shape = SubResource("RectangleShape2D_busvp")
 visible = false
 z_index = 1
 
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
 [connection signal="body_entered" from="Range" to="." method="_oe_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

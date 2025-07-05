@@ -3,6 +3,7 @@ class_name Enemy_boss
 
 signal base_damage(damage)
 signal money_in_game_session_changed()
+signal stone(duration)
 var damage = 3
 
 var speed
@@ -13,6 +14,10 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
+var id
+var is_ready: bool = true
+
+var destroy = false
 
 var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_1.tscn")
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
@@ -38,7 +43,11 @@ func _physics_process(delta):
 		on_destroy()
 	move(delta)
 	process_poison(delta)
-	
+	if is_ready:
+		fire()
+
+func fire() -> void: 
+	pass
 
 func process_poison(delta: float) -> void:
 	if poison_data == null:
@@ -55,8 +64,8 @@ func process_poison(delta: float) -> void:
 		self.health_bar.value = hp
 		
 		if self.hp <= 0:
-			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
-			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
+			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 			return
 	
@@ -101,7 +110,6 @@ func determine_direction(move_vector: Vector2):
 		else:
 			anim_player.play("walk_up")
 
-
 func on_hit(damage, type_turret, type_explosion, type_attack, level):
 	if type_attack in [0, 2, 1]:
 		impact(type_explosion, type_attack)
@@ -109,9 +117,10 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 		self.hp -= damage
 		self.health_bar.visible = true
 		self.health_bar.value = hp
-		if self.hp <= 0:
-			GameSession.add_game_score(int(float(GameConstants.ENEMY_BOSS[self.names].money_death) / 2 * (GameSession.current_wave / 3.0)))
-			GameSession.add_money(int(GameConstants.ENEMY_BOSS[self.names]["money_death"]) + int(float(GameConstants.ENEMY_BOSS[self.names].money_death) * GameSession.current_wave * DataManager.strengthening_money))
+		if self.hp <= 0 and not destroy:
+			destroy = true
+			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 	elif type_attack == 3: 
 		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))
@@ -147,12 +156,10 @@ func impact(type_explosion, type_attack):
 	impact_area.add_child(new_impact)
 
 func on_destroy():
-	print(ResourceManager.list_turret)
 	if len(ResourceManager.list_turret[1]) > 0:
 		if ResourceManager.list_turret[1][0].ability[0]:
 			var ind = randi_range(0, len(ResourceManager.list_turret[1]) - 1)
 			ResourceManager.list_turret[1][ind].ability_0 += 1
-			print("ResourceManager.list_turret[1][ind].ability_0")
-			print(ResourceManager.list_turret[1][ind].ability_0)
-			#ResourceManager.list_turret[1][ind].get_node("")
+			ResourceManager.list_turret[1][ind].get_node("Panel").visible = true
+			ResourceManager.list_turret[1][ind].get_node("Panel/Label").text = str(ResourceManager.list_turret[1][ind].ability_0)
 	self.queue_free()

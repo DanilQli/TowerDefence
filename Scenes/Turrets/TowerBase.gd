@@ -20,11 +20,13 @@ var rof: float
 var current_lvl: int
 var max_lvl: int
 var ability: Array = []
+var block_damage: bool = false
 
 var strategy: int = 0 # First/Last/Random
 
 @onready var ui_system: TowerUI
 @onready var upgrade_system: TowerUpgradeSystem
+@onready var stone_texture = preload("res://Assets/Effect/stone.png")
 
 @onready var range_area: Area2D = $Range
 
@@ -51,6 +53,18 @@ func _ready() -> void:
 			range_node.body_exited.connect(_on_range_body_exited)
 		_initialize()
 
+# Применение эффекта босса
+func stone_effect_start(duration):
+	block_damage = true
+	get_node("NinePatchRect").texture = stone_texture
+	get_node("NinePatchRect").visible = true
+	await get_tree().create_timer(duration).timeout
+	stone_effect_stop()
+
+func stone_effect_stop():
+	block_damage = false
+	get_node("NinePatchRect").visible = false
+	
 func _physics_process(_delta: float) -> void:
 	if not built or enemy_array.is_empty():
 		enemy = null
@@ -67,6 +81,7 @@ func _physics_process(_delta: float) -> void:
 			fire()
 
 func fire() -> void: pass
+
 func _apply_damage() -> void: pass  # Virtual methods
 
 func _on_range_body_entered(body: Node) -> void:

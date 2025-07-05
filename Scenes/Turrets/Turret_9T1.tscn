@@ -1,6 +1,5 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxtlqkib04fnk"]
+[gd_scene load_steps=10 format=3 uid="uid://cxtlqkib04fnk"]
 
-[ext_resource type="Script" uid="uid://dm5t7legdf0r8" path="res://Scenes/Turrets/Turret_9T1.gd" id="1_muwuh"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_66k3k"]
 [ext_resource type="Texture2D" uid="uid://c5qd122jic0yl" path="res://Assets/Props/ground_shaker_asset/Purple/Weapons/weapons.png" id="3_xfu48"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_gyk44"]
@@ -50,7 +49,6 @@ _data = {
 size = Vector2(60, 60)
 
 [node name="Turret_9T1" type="Node2D"]
-script = ExtResource("1_muwuh")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_66k3k")
@@ -83,3 +81,12 @@ shape = SubResource("RectangleShape2D_m3cm3")
 
 [node name="Menu" parent="." instance=ExtResource("5_alja4")]
 visible = false
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

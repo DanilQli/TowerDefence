@@ -85,3 +85,11 @@ libraries = {
 
 [node name="Timer" type="Timer" parent="."]
 autostart = true
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

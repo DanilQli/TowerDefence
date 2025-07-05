@@ -2,19 +2,19 @@ extends TowerBase
 class_name AreaTower
 
 var damage: float = 0.0
-var num_enemy: int = 1
+var target: int = 1
 var ability_0: int = 0
 var dam
 
 func fire() -> void:
-	is_ready = false
-	get_node("AnimationPlayer").play("Fire")
-	_apply_damage()
-	await get_tree().create_timer(rof).timeout
-	is_ready = true
+	if not block_damage:
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
 
 func _apply_damage() -> void:
-	num_enemy = (current_lvl + 1) / 2
 	var alredy = 0
 	for e in enemy_array:
 		if is_instance_valid(e):
@@ -23,7 +23,7 @@ func _apply_damage() -> void:
 			e.on_hit(dam, type, 0, GameConstants.TowerType.AREA, current_lvl)
 			alredy += 1
 			emit_signal("damage_inflicted_changed", inflicted)
-		if alredy >= num_enemy:
+		if alredy >= target:
 			break
 
 func critical_damage():

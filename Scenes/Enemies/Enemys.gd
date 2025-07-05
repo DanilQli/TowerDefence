@@ -7,6 +7,7 @@ var damage = 1
 var speed
 var current_speed
 var hp
+var id
 var names
 var new_impact
 var duration_speed_mod
@@ -60,8 +61,8 @@ func process_poison(delta: float) -> void:
 		self.health_bar.value = hp
 		
 		if self.hp <= 0:
-			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
-			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
+			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(GameConstants.DATA_ENEMY[id].money_death) + int(float(GameConstants.DATA_ENEMY[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 			return
 	
@@ -88,8 +89,8 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 		self.health_bar.visible = true
 		self.health_bar.value = hp
 		if self.hp <= 0:
-			GameSession.add_game_score(int(float(DataManager.enemy_data[self.names]["money_death"]) / 2 * (GameSession.current_wave / 3.0)))
-			GameSession.add_money(int(DataManager.enemy_data[self.names]["money_death"]) + int(float(DataManager.enemy_data[self.names]["money_death"]) * GameSession.current_wave * DataManager.strengthening_money))
+			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
+			GameSession.add_money(int(GameConstants.DATA_ENEMY[id].money_death) + int(float(GameConstants.DATA_ENEMY[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
 	elif type_attack == 3: 
 		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))

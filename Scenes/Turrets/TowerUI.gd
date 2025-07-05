@@ -145,6 +145,5 @@ func set_max_level_ui() -> void:
 	up_button.get_node("LabelBut").text = tr("KEY_LVL_MAX")
 
 func _exit_tree() -> void:
-	if tower and tower.type_attack == GameConstants.TowerType.GUN:
-		if tower.damage_inflicted_changed.is_connected(_update_inflicted_damage):
-			tower.damage_inflicted_changed.disconnect(_update_inflicted_damage)
+	if tower.damage_inflicted_changed.is_connected(_update_inflicted_damage):
+		tower.damage_inflicted_changed.disconnect(_update_inflicted_damage)
