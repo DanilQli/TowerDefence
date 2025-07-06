@@ -2,7 +2,7 @@
 extends Node
 
 ## Метод генерации базового набора волн в DataManager.wave_data[0]
-func generate_default_waves(out_wave_data: Array):
+func generate_default_waves(out_wave_data):
 	var result = []
 	for i in range(200):
 		result.append([
@@ -17,6 +17,5 @@ func generate_default_waves(out_wave_data: Array):
 			["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_6", 1.0], ["Enemy_5", 1.0], ["Enemy_5", 1.0],
 			["Enemy_1", 1.0], ["Enemy_3", 1.0], ["Enemy_5", 1.0], ["Enemy_7", 1.0], ["Enemy_4", 1.0],
 		])
-	out_wave_data.resize(1)
-	out_wave_data[0] = result
+	out_wave_data.level_0 = result
 	return out_wave_data

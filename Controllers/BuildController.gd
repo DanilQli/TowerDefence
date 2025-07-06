@@ -92,6 +92,8 @@ func verify_and_build():
 		var turret_data = DataManager.tower_data.get(build_type, {})
 
 		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
+		turret.ui_system.update_menu()
+		turret.ui_system.update_menu_upgrade()
 		GameSession.spend_money(GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session)
 		main_scene.ui_controller._on_money_changed()
 

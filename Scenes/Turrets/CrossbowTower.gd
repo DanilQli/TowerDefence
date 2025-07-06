@@ -1,9 +1,11 @@
 extends TowerBase
-class_name GunTower
+class_name CrossnowTower
 
 var damage: float = 0.0
-var damage_reduction: int = 0
-var current_damage_up
+var phase: bool = false
+var duration_1: float = 0.0
+var duration_2: float = 0.0
+var up_attack_speed: float = 0.0
 var critical_damage_all
 
 func fire() -> void:
@@ -15,15 +17,7 @@ func fire() -> void:
 		is_ready = true
 	
 func _apply_damage() -> void:
-	current_damage_up = DataManager.critical_damage
-	if enemy and self.ability[1]:
-		current_damage_up += randi_range(0, 40)
 	if enemy:
-		critical_damage_all = critical_damage()
-		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, type, 0, GameConstants.TowerType.GUN, current_lvl)
-		emit_signal("damage_inflicted_changed", inflicted)
-	if self.ability[0] and randi_range(0, 100) <= GameConstants.CHANCE_AGAIN_DAMAGE:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
 		enemy.on_hit(critical_damage_all, type, 0, GameConstants.TowerType.GUN, current_lvl)
@@ -31,9 +25,9 @@ func _apply_damage() -> void:
 
 func critical_damage():
 	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return damage + (current_damage_up * damage) / 100 + randi_range(0, damage_reduction)
+		return damage + (DataManager.critical_damage * damage) / 100
 	else:
-		return damage + randi_range(0, damage_reduction)
+		return damage
 		
 func _initialize() -> void:
 	super._initialize()

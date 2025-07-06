@@ -9,7 +9,7 @@ var game_end_controller
 
 func initialize(scene: Node2D):
 	main_scene = scene
-	wave_data_all = DataManager.wave_data[GameSession.current_level]
+	wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
 	gift_controller = main_scene.gift_controller
 	game_end_controller = main_scene.game_end_controller
 
@@ -38,9 +38,10 @@ func spawn_enemies(wave: Array):
 		delay = unit[1]
 		enemy = load("res://Scenes/Enemies/%s.tscn" % type).instantiate()
 		enemy.names = type
-		enemy.hp = DataManager.enemy_data[type]["hp"]
-		enemy.current_speed = DataManager.enemy_data[type]["speed"]
-		enemy.speed = DataManager.enemy_data[type]["speed"]
+		enemy.id = int(type.split("_")[1]) - 1
+		enemy.hp = GameConstants.DATA_ENEMY[enemy.id].hp
+		enemy.current_speed = GameConstants.DATA_ENEMY[enemy.id].speed
+		enemy.speed = GameConstants.DATA_ENEMY[enemy.id].speed
 		enemy.duration_speed_mod = 0
 		enemy.base_damage.connect(main_scene.on_base_damage)
 		
@@ -54,11 +55,13 @@ func spawn_enemies(wave: Array):
 	type = randi_range(1, GameConstants.NUMBER_BOSS_ENEMY)
 	enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
 	enemy.names = type
-	enemy.hp = GameConstants.ENEMY_BOSS[type - 1].hp
-	enemy.current_speed = GameConstants.ENEMY_BOSS[type - 1].speed
-	enemy.speed = GameConstants.ENEMY_BOSS[type - 1].speed
+	enemy.id = type - 1
+	enemy.hp = GameConstants.DATA_ENEMY_BOSS[type - 1].hp
+	enemy.current_speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed
+	enemy.speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed
 	enemy.duration_speed_mod = 0
 	enemy.base_damage.connect(main_scene.on_base_damage)
+	enemy.stone.connect(main_scene.on_stone)
 	var num_paths = main_scene.map_node.get_node("Path").get_child_count()
 	var path_index = randi_range(0, num_paths - 1)
 	main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)

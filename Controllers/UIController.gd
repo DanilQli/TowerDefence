@@ -90,19 +90,17 @@ func _on_money_changed():
 
 func title_show(id_ui: String, id: String):
 	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
+	main_scene.add_child(node_mouse_entered)
+	node_mouse_entered.setup(int(id_ui) - 1)
 	var tower_position = main_scene.get_node("UI/HUD/BuldBar/Tower_" + id_ui).position
 	node_mouse_entered.position = tower_position + Vector2(100, 50)
 	for i in range(len(GameConstants.DATA_TOWER[int(id_ui) - 1].text)):
 		if GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)] is Dictionary:
-			node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][int(DataManager.tower_data["Turret_" + str(i + 1) + "T1"]["level"])][0])
+			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][int(DataManager.tower_data["Turret_" + str(i + 1) + "T1"]["level"])][0])
 		else:
-			node_mouse_entered.get_node("V/" + str(i) + "/HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][0])
-		node_mouse_entered.get_node("V/" + str(i) + "/HValue/Up").queue_free()
-	for i in GameConstants.DATA_TOWER[int(id_ui) - 1].queue_free:
-		node_mouse_entered.get_node("V/" + str(i)).queue_free()
+			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][0])
+		node_mouse_entered.list_node[i].get_node("HValue/Up").queue_free()
 	UiManager.list_open_menu_turrets.append(node_mouse_entered)
-	main_scene.add_child(node_mouse_entered)
-	node_mouse_entered.setup(int(id_ui) - 1)
 
 func title_hide():
 	for menu in UiManager.list_open_menu_turrets:

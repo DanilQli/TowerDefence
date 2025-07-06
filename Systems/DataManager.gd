@@ -2,8 +2,6 @@
 extends Node
 
 var tower_data: Dictionary = {}
-var enemy_data: Dictionary = {}
-var wave_data: Array = []
 var list_wave_gift: Array = []
 var level_option: Array = []
 var data: Dictionary = {}
@@ -15,6 +13,12 @@ var strengthening_money: float
 var data_money: int = 0
 ## Критический урон
 var critical_damage: int = 200
+
+var data_wave = {
+	level_0=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]], [["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]], [["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]]],
+	level_1=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6]]],
+	level_2=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]]]
+}
 
 ## Вызывается при запуске. Загружает и парсит данные
 func _ready() -> void:
@@ -42,11 +46,9 @@ func load_game_data() -> void:
 func parse_game_data() -> void:
 	_parse_resources()
 	_parse_towers()
-	_parse_enemies()
-	_parse_waves()
 	_parse_settings()
 	_parse_levels()
-	DataManager.wave_data = WaveGenerator.generate_default_waves(DataManager.wave_data)
+	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
 func _parse_resources() -> void:
@@ -70,22 +72,6 @@ func _parse_towers() -> void:
 	)
 	for tower_id in turretss:
 		tower_data[tower_id] = towers_data[tower_id]
-
-## Загружает данные всех врагов
-func _parse_enemies() -> void:
-	var enemies = data.get("Enemies", {})
-	for name in enemies.keys():
-		enemy_data[name] = enemies[name]
-
-## Загружает данные всех волн игры
-func _parse_waves() -> void:
-	var wave = data.get("WaveData", {})
-	for i in range(wave.size()):
-		var key = "level_" + str(i)
-		if wave.has(key):
-			wave_data.append(wave[key])
-		else:
-			wave_data.append([])
 
 ## Загружает прочие числовые настройки (усиления денег, врагов и т.д.)
 func _parse_settings() -> void:

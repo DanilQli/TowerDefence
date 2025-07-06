@@ -24,6 +24,11 @@ KEY_RELOAD,Перезарядка: ,Reload:
 KEY_RANGE,Радиус: ,Range:
 KEY_INFLICTED,Нанесено: ,Inflicted:
 KEY_TICK,Частота: ,Inflicted:
+KEY_TARGET,Цель: ,Target:
+KEY_UP_ATTACK_SPEED,Увеличение скорости атаки,Increased attack speed
+KEY_DURATION_PHASE_1,Длительность первой фазы,Duration of the first phase
+KEY_DURATION_PHASE_2,Длительность второй фазы,Duration of the second phase
+
 KEY_LVL_UP,Улучшить,Lvl Up
 KEY_LVL_MAX,Макс уровень,Lvl Max
 KEY_CLOSE,Закрыть,Close
@@ -73,6 +78,8 @@ KEY_AVAILABLE_ON1,Будет доступно на,Will be available on
 KEY_AVAILABLE_ON2,уровне,level
 KEY_UP,Улучшить за ,Upgrade for
 KEY_NOT_FOUND, Не найдено, Not found
+
+KEY_ENEMY_BOSS_1,Каждые [color='blue']3[/color] секунды [color='blue']3[/color] башни окаменеют на [color='blue']5[/color] секунд,Every [color='blue']3[/color] seconds [color='blue']3[/color] towers will petrify for [color='blue']5[/color] seconds
 
 KEY_TURRET1_DESC,Пушка наносит [color='blue']случайный[/color] дополнительный урон цели,The cannon deals random additional damage to the target
 KEY_TURRET1_UP0_DESC,"С шансом[color='blue'] 50%[/color] пушка атакует цели дважды","With chance[color='red'] 50%[/color], the cannon will attack the targets twice"

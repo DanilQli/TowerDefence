@@ -39,7 +39,7 @@ func _ready():
 	
 func _physics_process(delta):
 	if self.progress_ratio == 1.0:
-		emit_signal("base_damage", self.damage) 
+		emit_signal("base_damage", damage) 
 		on_destroy()
 	move(delta)
 	process_poison(delta)
@@ -64,6 +64,7 @@ func process_poison(delta: float) -> void:
 		self.health_bar.value = hp
 		
 		if self.hp <= 0:
+			destroy = true
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
