@@ -5,13 +5,16 @@ var damage: float
 var intensivity: float
 var duration: float
 
+func _ready() -> void:
+	super._ready()
+	duration *= 60
+	
 func fire() -> void:
 	is_ready = false
 	fire_missile()
-
 	for e in enemy_array:
 		if is_instance_valid(e):
-			e.on_hit(intensivity, type, 0, GameConstants.TowerType.SLOW, current_lvl)
+			e.on_hit(intensivity, type, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
 
 	await get_tree().create_timer(rof).timeout
 	is_ready = true

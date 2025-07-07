@@ -7,7 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="6_18ceo"]
 
 [node name="Menu" type="Control"]
-custom_minimum_size = Vector2(340, 200)
+custom_minimum_size = Vector2(350, 200)
 layout_mode = 3
 anchors_preset = 0
 offset_left = 50.0
@@ -42,6 +42,7 @@ layout_mode = 2
 [node name="Name" type="Label" parent="V/NameAndLvl"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "KEY_NAME"
 horizontal_alignment = 1
@@ -50,6 +51,7 @@ vertical_alignment = 1
 [node name="Lvl" type="Label" parent="V/NameAndLvl"]
 custom_minimum_size = Vector2(125, 0)
 layout_mode = 2
+size_flags_horizontal = 3
 size_flags_vertical = 1
 text = "KEY_LVL"
 horizontal_alignment = 1

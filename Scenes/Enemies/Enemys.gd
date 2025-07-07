@@ -77,12 +77,12 @@ func move(delta):
 	self.progress += self.speed * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
-		if self.duration_speed_mod == 1:
+		if self.duration_speed_mod <= 1:
 			self.speed = self.current_speed
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
-func on_hit(damage, type_turret, type_explosion, type_attack, level):
-	if type_attack in [0, 2, 1]:
+func on_hit(damage, type_turret, type_explosion, type_attack, level, parametrs=false):
+	if type_attack in [0, 1]:
 		impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
 		self.hp -= damage
@@ -92,11 +92,11 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY[id].money_death) + int(float(GameConstants.DATA_ENEMY[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
-	elif type_attack == 3: 
-		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))
+	elif type_attack == 2:
+		self.speed *= (100 - damage) / 100.0
 		if self.speed < 50:
 			self.speed = 50
-		self.duration_speed_mod = int(DataManager.tower_data[type_turret]["duration"][level])
+		self.duration_speed_mod = parametrs
 	else:
 		self.progress -= float(DataManager.tower_data[type_turret]["distance"][level])
 
