@@ -5,6 +5,7 @@ extends Button
 @onready var turretMaxLvl = $VBoxContainer/Lvl
 @onready var turretMaxLox = $VBoxContainer/CardOf/Lock
 @onready var CardOf = $VBoxContainer/CardOf/CardOf
+@onready var CardOfCardOf = $VBoxContainer/CardOf
 @onready var CardOfText = $VBoxContainer/CardOf/CardOf/Label
 
 func setup(data: Dictionary, number: int) -> void:
@@ -17,9 +18,12 @@ func setup(data: Dictionary, number: int) -> void:
 		turretMaxLvl.text = tr("KEY_LVL") + str(level + 1)
 	if data["have"]:
 		turretMaxLox.queue_free()
-		CardOf.max_value = TowerCards.get_cards_needed(number)
+		if level < GameConstants.NUMBER_LVL_TURRET_CARD:
+			CardOf.max_value = TowerCards.get_cards_needed(number)
+		else:
+			CardOfCardOf.queue_free()
 		CardOf.value = int(data["cards"])
-		CardOfText.text = str(int(data["cards"])) + "/" + str(int(CardOf.max_value))
+		CardOfText.text = str(int(data["cards"])) + "/" +  str(int(CardOf.max_value))
 	self.pressed.connect(turret_menu_open.bind(data, number))
 	
 func turret_menu_open(data, number):

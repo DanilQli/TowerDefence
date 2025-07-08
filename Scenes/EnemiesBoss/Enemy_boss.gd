@@ -111,7 +111,7 @@ func determine_direction(move_vector: Vector2):
 		else:
 			anim_player.play("walk_up")
 
-func on_hit(damage, type_turret, type_explosion, type_attack, level):
+func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
 	if type_attack in [0, 1]:
 		impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
@@ -123,13 +123,13 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level):
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
-	elif type_attack == 2: 
-		self.speed -= (self.speed * float(DataManager.tower_data[type_turret]["intensivity"][level]))
+	elif type_attack == 2:
+		self.speed *= (100 - damage) / 100.0
 		if self.speed < 50:
 			self.speed = 50
-		self.duration_speed_mod = int(DataManager.tower_data[type_turret]["duration"][level])
+		self.duration_speed_mod = parametrs
 	else:
-		self.progress -= float(DataManager.tower_data[type_turret]["distance"][level])
+		self.progress -= float(DataManager.tower_data[0]["distance"][level])
 
 func apply_poison(data: Dictionary) -> void:
 	poison_data = {

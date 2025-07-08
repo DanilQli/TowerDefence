@@ -20,7 +20,7 @@ func check_level_up(tower_id: int) -> bool:
 # Получение необходимого количества карт для следующего уровня
 static func get_cards_needed(tower_id: int) -> int:
 	var tower = DataManager.tower_data[DataManager.tower_data.keys()[tower_id]]
-	var level_index = tower["level"]
+	var level_index = tower["level"] + 1
 	var rarity = GameConstants.DATA_TOWER[tower_id].type
 	return GameConstants.PriseUnblockCard[rarity].prise_up_card[int(level_index)]
 

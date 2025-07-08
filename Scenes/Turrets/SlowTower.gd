@@ -10,14 +10,21 @@ func _ready() -> void:
 	duration *= 60
 	
 func fire() -> void:
-	is_ready = false
-	fire_missile()
-	for e in enemy_array:
-		if is_instance_valid(e):
-			e.on_hit(intensivity, type, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
-
-	await get_tree().create_timer(rof).timeout
-	is_ready = true
+	if not block_damage and is_ready:
+		is_ready = false
+		fire_missile()
+		for e in enemy_array:
+			if is_instance_valid(e):
+				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
+		if ability[0]:
+			for e in enemy_array:
+				if is_instance_valid(e):
+					if ability[1] and e is Enemy_boss:
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA, current_lvl)
+					else:
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA, current_lvl)
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
 
 func _initialize() -> void:
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
@@ -26,6 +33,3 @@ func fire_missile() -> void:
 	var fx = preload("res://Scenes/SupportScenes/ProjecttileImpact_2.tscn").instantiate()
 	fx.scale = Vector2(range / 50, range / 50)
 	add_child(fx)
-
-func _apply_damage() -> void:
-	pass  # нет применения напрямую, всё внутри fire

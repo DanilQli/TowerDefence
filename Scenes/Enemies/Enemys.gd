@@ -81,7 +81,7 @@ func move(delta):
 			self.speed = self.current_speed
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
-func on_hit(damage, type_turret, type_explosion, type_attack, level, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
 	if type_attack in [0, 1]:
 		impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
@@ -98,7 +98,7 @@ func on_hit(damage, type_turret, type_explosion, type_attack, level, parametrs=f
 			self.speed = 50
 		self.duration_speed_mod = parametrs
 	else:
-		self.progress -= float(DataManager.tower_data[type_turret]["distance"][level])
+		self.progress -= float(DataManager.tower_data[0]["distance"][level])
 
 func impact(type_explosion, type_attack):
 	randomize()
