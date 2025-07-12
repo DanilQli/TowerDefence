@@ -4,7 +4,7 @@ var strategy := 0
 var st := 0
 var list_strategy := [tr("KEY_FIRST"), tr("KEY_LAST"), tr("KEY_RANDOM")]
 @onready var list_nodes = [get_node("V/0"), get_node("V/1"), get_node("V/2"), get_node("V/3"), get_node("V/4"), get_node("V/5"), 
-					get_node("V/6"), ]
+					get_node("V/6")]
 var list_node = []
 
 func _ready() -> void:

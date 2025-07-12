@@ -53,4 +53,16 @@ if __name__ == "__main__":
                         output_file.write(content)
                         output_file.write("\n\n")  # Разделитель между файлами
                     except Exception as e:
-                        print(f"⚠️ Не удалось прочитать файл: {normalized_path} ({e})")
+                        print(f"⚠️ Не удалось прочитать файл: {normalized_path} ({e})")                 
+    cons = 1.1
+    mn_lvl = 0.95
+    mn = 0.98
+    m_1 = [[cons],[round(cons * mn, 2)],[round(cons * mn * mn, 2)],
+           [round(cons * mn * mn * mn, 2)],[round(cons * mn * mn * mn * mn, 2)],
+           [round(cons * mn * mn * mn * mn * mn, 2)],[round(cons * mn * mn * mn * mn * mn * mn, 2)],
+           [round(cons * mn * mn * mn * mn * mn * mn * mn, 2)],[round(cons * mn * mn * mn * mn * mn * mn * mn * mn, 2)]
+        ,[round(cons * mn * mn * mn * mn * mn * mn * mn * mn * mn, 2)]]
+    for i in range(len(m_1)):
+        for j in range(9):
+            m_1[i].append(round(m_1[i][j] * mn_lvl, 2))
+        print(str(i) + ": " + str(m_1[i]) + ",")

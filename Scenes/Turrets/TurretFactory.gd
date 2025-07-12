@@ -22,7 +22,6 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 	turret.current_lvl = 0
 	turret.max_lvl = GameConstants.NUMBER_LVL_TURRET - 1
 	ResourceManager.list_turret[turret.id].append(turret)
-
 	# базовые значения
 	turret.ability = tower_data["ability"]
 	for i in range(len(data.text)):
@@ -30,5 +29,13 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]
 		else:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][0]
+	if turret.id == 5:
+		if turret.ability[1]:
+			turret.get_node("Panel").visible = true
+			for i in range(len(ResourceManager.list_turret[turret.id])):
+				ResourceManager.list_turret[turret.id][i].get_node("Panel/Label").text = str(len(ResourceManager.list_turret[turret.id]))
+				ResourceManager.list_turret[turret.id][i].update()
+		for i in range(len(ResourceManager.list_turret[turret.id])):
+			ResourceManager.list_turret[turret.id][i].update()
 
 	return turret

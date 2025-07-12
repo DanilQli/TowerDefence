@@ -7,6 +7,7 @@ var damage = 1
 var speed
 var current_speed
 var hp
+var base_hp
 var id
 var names
 var new_impact
@@ -23,7 +24,8 @@ var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 
 func _ready():
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
-	self.health_bar.max_value = hp
+	self.base_hp = self.hp
+	self.health_bar.max_value = base_hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
 	
@@ -97,8 +99,10 @@ func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
 		if self.speed < 50:
 			self.speed = 50
 		self.duration_speed_mod = parametrs
-	else:
-		self.progress -= float(DataManager.tower_data[0]["distance"][level])
+	elif type_attack == 3:
+		self.progress_ratio -= damage
+		if self.progress_ratio < 0:
+			self.progress_ratio = 0
 
 func impact(type_explosion, type_attack):
 	randomize()
@@ -114,4 +118,6 @@ func impact(type_explosion, type_attack):
 	impact_area.add_child(new_impact)
 
 func on_destroy():
+	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
+		GameSession.add_money(len(ResourceManager.list_turret[5]))
 	self.queue_free()

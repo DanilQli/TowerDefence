@@ -32,7 +32,7 @@ animations = [{
 
 [node name="ProjecttileImpact" type="AnimatedSprite2D"]
 position = Vector2(-2, 0)
-scale = Vector2(0.2, 0.2)
+scale = Vector2(0.3, 0.3)
 sprite_frames = SubResource("SpriteFrames_nk1ym")
 animation = &"Impact"
 speed_scale = 4.0

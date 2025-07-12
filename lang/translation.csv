@@ -53,6 +53,7 @@ KEY_NAME_TURRET_3,Арбалет,Crossbow
 KEY_NAME_TURRET_4,Замедление,Slowing 
 KEY_NAME_TURRET_5,Хронопетля,Chronopetl
 KEY_NAME_TURRET_6,Доход,Income
+KEY_NAME_TURRET_7,Отравитель,Poisoner
 KEY_BUY_FOR,Купить за,Buy for
 KEY_UP_0,Улучшайте пушку,Upgrade cannon
 KEY_UP_1,Улучшайте ракету,Upgrade rocket
@@ -87,3 +88,19 @@ KEY_TURRET1_UP1_DESC,Добавляется величина от [color='blue']
 KEY_TURRET2_DESC,"Пушка атакует [color='blue']первые несколько целей[/color] в зависимости от ранга: одна цель на первом, две на третьем, три на пятом...пять на девятом","The cannon attacks [color='blue'] the first few targets[/color] depending on the rank: one target on the first, two on the third, three on the fifth...five on the ninth"
 KEY_TURRET2_UP0_DESC,Смерть боса пометит [color='blue']случайную ракету[/color]. Урон за каждую метку увеличивается на [color='blue']3%[/color],The death of the boss will mark [color='blue']a random rocket[/color]. The damage for each mark increases by [color='blue']3%[/color]
 KEY_TURRET2_UP1_DESC,Увеличивает шанс критического урона по боссам на [color='blue']5%[/color] от всех ракет,Increases the chance of critical damage to bosses by [color='blue']5%[/color] of all missiles
+KEY_TURRET3_DESC,Арбалет периодически меняет фазу стрельбы. В первой фазе значительно увеличивает свою [color='blue']скорость стрельбы[/color]. Длительность фаз и интервал их переключения зависят от [color='blue']уровня[/color],"The crossbow periodically changes the firing phase. In the first phase, it significantly increases its [color='blue']firing rate[/color]. The duration of the phases and their switching interval depend on the [color='blue']level[/color]"
+KEY_TURRET3_UP0_DESC,С шансом[color='blue'] 10%[/color] башня может перейти в первую стадию повторно,"With a [color='blue']10% [/color]chance of , the tower can advance to the first stage again."
+KEY_TURRET3_UP1_DESC,Каждый третий переход арбалета во вторую фазу увеличит его урон на [color='blue']200%[/color] до конца фазы,Every third transition of the crossbow to the second phase will increase its damage by [color='blue']200%[/color] until the end of the phase
+KEY_TURRET4_DESC,Замедляет врагов в радиусе действия,Slows down enemies in range
+KEY_TURRET4_UP0_DESC,Во время начала действия замедления всем врагам в радиусе наносится урон равный[color='blue'] 1%[/color] от текущего здоровья врага,"During the start of the deceleration action, all enemies in the radius are dealt damage equal to [color='blue'] 1%[/color] of the enemy's current health."
+KEY_TURRET4_UP1_DESC,Урон по боссам увеличен до[color='blue'] 5%[/color],Boss damage increased to [color='blue'] 5%[/color]
+KEY_TURRET5_DESC,Отбрасывает врагов назад.,Knocks enemies back.
+KEY_TURRET5_UP0_DESC,С шансом[color='blue'] 10%[/color] отбросит врага на начало пути.,"With a 10% chance of [color='blue'],[/color] will throw the enemy back to the beginning of the path."
+KEY_TURRET5_UP1_DESC,Добивает врагов чъё здоровье меньше[color='blue'] 10%[/color]. Не действует на боссов.,Finishes off enemies whose health is less than [color='blue'] 10%[/color]. Does not work on bosses.
+KEY_TURRET6_DESC,Майнит золото,Mining gold
+KEY_TURRET6_UP0_DESC,Увеличивает количество золота добываемое с убийства врага на[color='blue'] 1[/color] единицу,Increases the amount of gold extracted from enemies by[color='blue'] 1[/color] unit
+KEY_TURRET6_UP1_DESC,Доход от башни увеличивается на[color='blue'] 1%[/color] от каждой башни на поле,Tower revenue increases by[color='blue'] 1%[/color] from each tower on the field
+KEY_TURRET7_DESC,Отравляет первого врага на пути. Отравление действует[color='blue'] 4[/color] секунды и периодически наносит урон врагу.,Poisons the first enemy on the way. Poisoning lasts for[color='blue'] 4[/color] seconds and periodically deals damage to the enemy.
+KEY_TURRET7_UP0_DESC,Отравленные враги передвигаются на[color='blue'] 5%[/color] медленнее,Poisoned enemies move[color='blue'] 5%[/color] slower
+KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,"With a 5% chance of [color='blue'][/color], the poisoner can infect[color='blue'] 2 [/color]enemies at the same time"
+KEY_TURRET8_DESC,Минотавр,

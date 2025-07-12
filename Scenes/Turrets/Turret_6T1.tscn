@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://cxoc426ms2sac"]
+[gd_scene load_steps=12 format=3 uid="uid://cxoc426ms2sac"]
 
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_kfpwl"]
 [ext_resource type="Script" uid="uid://djm6oxar5nkag" path="res://Scenes/Turrets/MoneyTower.gd" id="1_l7q3k"]
@@ -8,8 +8,6 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_ipgfe"]
 radius = 175.0
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_oglly"]
 
 [sub_resource type="Animation" id="Animation_cswut"]
 resource_name = "Fire"
@@ -48,6 +46,15 @@ _data = {
 &"RESET": SubResource("Animation_66ibe")
 }
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oglly"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lce22"]
+bg_color = Color(0.43089, 0.00162518, 0.660458, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="Turret_6T1" type="Node2D"]
 script = ExtResource("1_l7q3k")
 
@@ -70,6 +77,11 @@ texture = ExtResource("4_lce22")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
 shape = SubResource("CircleShape2D_ipgfe")
 
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_s4eli")
+}
+
 [node name="MenuButton" type="TouchScreenButton" parent="."]
 scale = Vector2(3, 3)
 shape = SubResource("RectangleShape2D_oglly")
@@ -78,14 +90,6 @@ shape = SubResource("RectangleShape2D_oglly")
 visible = false
 z_index = 1
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
-libraries = {
-&"": SubResource("AnimationLibrary_s4eli")
-}
-
-[node name="Timer" type="Timer" parent="."]
-autostart = true
-
 [node name="NinePatchRect" type="NinePatchRect" parent="."]
 custom_minimum_size = Vector2(60, 60)
 anchors_preset = 15
@@ -93,3 +97,25 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Timer" type="Timer" parent="."]
+autostart = true
+
+[node name="Panel" type="Panel" parent="."]
+visible = false
+offset_left = -30.0
+offset_top = -30.0
+offset_right = -5.0
+offset_bottom = -5.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_lce22")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
