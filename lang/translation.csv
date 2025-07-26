@@ -103,4 +103,4 @@ KEY_TURRET6_UP1_DESC,Доход от башни увеличивается на[
 KEY_TURRET7_DESC,Отравляет первого врага на пути. Отравление действует[color='blue'] 4[/color] секунды и периодически наносит урон врагу.,Poisons the first enemy on the way. Poisoning lasts for[color='blue'] 4[/color] seconds and periodically deals damage to the enemy.
 KEY_TURRET7_UP0_DESC,Отравленные враги передвигаются на[color='blue'] 5%[/color] медленнее,Poisoned enemies move[color='blue'] 5%[/color] slower
 KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,"With a 5% chance of [color='blue'][/color], the poisoner can infect[color='blue'] 2 [/color]enemies at the same time"
-KEY_TURRET8_DESC,Минотавр,
+KEY_TURRET8_DESC,Минотавр,Minotaur

@@ -54,11 +54,13 @@ func parse_game_data() -> void:
 func _parse_resources() -> void:
 	data_money = data.get("Resources", {}).get("money", 0)
 
+## Добавить монеты
 func data_money_add(value: int) -> void:
 	data_money += value
-	
-func calculate_critical_damage():
-	return critical_damage
+
+## Добавить критический урон
+func add_critical_damage(val: int) -> void:
+	critical_damage =+ val
 	
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:

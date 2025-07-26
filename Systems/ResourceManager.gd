@@ -24,7 +24,7 @@ func spend_money(value: int) -> bool:
 	current_money -= value
 	emit_signal("money_changed")
 	return true
-
+	
 ## Установить текущие очки игрока и обновить рекорд
 func update_score(value: int) -> void:
 	current_score = value

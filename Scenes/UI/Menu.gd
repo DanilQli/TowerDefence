@@ -33,4 +33,4 @@ func on_quit_pressed():
 	get_tree().quit()
 
 func show_critical_damage():
-	crit_label.text = str(DataManager.calculate_critical_damage())
+	crit_label.text = str(DataManager.critical_damage)
