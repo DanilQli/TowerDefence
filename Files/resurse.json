@@ -6,7 +6,8 @@
     ]
   },
   "Resources": {
-    "money": 77981.0
+    "critical_damage": 200,
+    "money": 72781
   },
   "Settings": {
     "list_wave_gift": [
@@ -46,9 +47,9 @@
         true
       ],
       "activity": false,
-      "cards": 432.0,
+      "cards": 372,
       "have": true,
-      "level": 9.0
+      "level": 9
     },
     "Turret_2T1": {
       "ability": [
@@ -56,9 +57,9 @@
         true
       ],
       "activity": true,
-      "cards": 237.0,
+      "cards": 437.0,
       "have": true,
-      "level": 9.0
+      "level": 1.0
     },
     "Turret_3T1": {
       "ability": [

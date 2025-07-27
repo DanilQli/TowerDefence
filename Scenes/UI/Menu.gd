@@ -5,7 +5,6 @@ extends Control
 func _ready():
 	# Загрузка языковых настроек
 	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
-	
 	# Установка размера окна
 	DisplayServer.window_set_size(
 		Vector2i(
@@ -15,6 +14,7 @@ func _ready():
 	)
 	# Обновление отображения денег
 	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()

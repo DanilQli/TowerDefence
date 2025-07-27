@@ -70,10 +70,10 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityTextLock[i].queue_free()
 
 func buy(prise, number):
-	DataManager.data_money -= prise
-	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.data_money_spend(prise)
+	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
-	
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	var turret_key = "Turret_" + str(number + 1) + "T1"
 	DataManager.tower_data[turret_key]["have"] = true
 	DataManager.write_file()
@@ -97,10 +97,10 @@ func open_ability(ind, number):
 	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
 	
 func upgrade_card(number):
-	DataManager.data_money -= prise
-	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.data_money_spend(prise)
+	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_UP_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
-	
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	var turret_key = "Turret_" + str(number + 1) + "T1"
 	DataManager.tower_data[turret_key]["cards"] = int(DataManager.tower_data[turret_key]["cards"]) - TowerCards.get_cards_needed(number)
 	DataManager.tower_data[turret_key]["level"] = int(DataManager.tower_data[turret_key]["level"]) + 1

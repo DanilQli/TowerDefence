@@ -461,6 +461,10 @@ const MODIFIER_VALUE: float = 1.0
 const NUMBER_LVL_TURRET_CARD: int = 9
 ## Количество боссов врагов
 const NUMBER_BOSS_ENEMY: int = 1
+## Сколько критического урона добавить за покупку карты
+const ADD_CRITICAL_DAMAGE_BUY_CARD: int = 1
+## Сколько критического урона добавить за улучшение карты
+const ADD_CRITICAL_DAMAGE_UP_CARD: int = 1
 
 const DATA_ENEMY_BOSS = {
 	0: {
