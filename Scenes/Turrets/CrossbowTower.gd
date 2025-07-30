@@ -63,7 +63,7 @@ func _apply_damage() -> void:
 	if enemy:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, current_lvl)
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():

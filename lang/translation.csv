@@ -41,6 +41,8 @@ KEY_DURATION,Длительность,Duration
 KEY_DISTANCE,Дистанция,Distance
 KEY_INCOME,Доход,Income
 KEY_SPEED,Скорость,Speed
+KEY_INTERVAL,Интервал,Interval
+KEY_TRAP_DAMAGE,Урон от ловушки,Trap damage
 KEY_CURRENT_WAVE,Текущая волна:,Current wave:
 KEY_END,Вы проиграли,You've lost
 KEY_RESTART,Попробовать снова,Try again
@@ -54,6 +56,7 @@ KEY_NAME_TURRET_4,Замедление,Slowing
 KEY_NAME_TURRET_5,Хронопетля,Chronopetl
 KEY_NAME_TURRET_6,Доход,Income
 KEY_NAME_TURRET_7,Отравитель,Poisoner
+KEY_NAME_TURRET_8,Минотавр,Minotaur
 KEY_BUY_FOR,Купить за,Buy for
 KEY_UP_0,Улучшайте пушку,Upgrade cannon
 KEY_UP_1,Улучшайте ракету,Upgrade rocket
@@ -103,4 +106,7 @@ KEY_TURRET6_UP1_DESC,Доход от башни увеличивается на[
 KEY_TURRET7_DESC,Отравляет первого врага на пути. Отравление действует[color='blue'] 4[/color] секунды и периодически наносит урон врагу.,Poisons the first enemy on the way. Poisoning lasts for[color='blue'] 4[/color] seconds and periodically deals damage to the enemy.
 KEY_TURRET7_UP0_DESC,Отравленные враги передвигаются на[color='blue'] 5%[/color] медленнее,Poisoned enemies move[color='blue'] 5%[/color] slower
 KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,"With a 5% chance of [color='blue'][/color], the poisoner can infect[color='blue'] 2 [/color]enemies at the same time"
-KEY_TURRET8_DESC,Минотавр,Minotaur
+KEY_TURRET8_DESC,"Минотавр атакует [color='blue']первую цель[/color] на дороге. Периодически вызывается в случайной области [color='blue']землетрясение[/color], в радиусе которого монстры замедляются и получают урон","The minotaur is attacking [color='blue'] the first target[/color] on the road. An earthquake [/color] is periodically triggered in a random area [color='blue'], in the radius of which monsters slow down and take damage."
+KEY_TURRET8_UP0_DESC,"При повышении уровня, появлении Минотавра начисляется заряд ярости, и все Минотавры входят в режим [color='blue']берсерка[/color] на [color='blue']10с[/color]. В этом режиме урон вызываемых землетрясений увеличивается на [color='blue']50%[/color] и дополнительно на 1% за каждый заряд ярости","When a Minotaur level up, a rage charge is charged, and all Minotaurs enter [color='blue']berserk mode[/color] by [color='blue']10c[/color]. In this mode, the damage caused by earthquakes increases by [color='blue']50%[/color] and an additional 1% for each rage charge"
+KEY_TURRET8_UP1_DESC,Каждый заряд ярости увеличивает действия режима [color='blue']берсерка[/color] на [color='blue']1[/color] секунду. Максимум [color='blue']30[/color] секунд,Each rage charge increases the effects of the [color='blue']Berserker mode[/color] by [color='blue']1[/color] second. Maximum [color='blue']30[/color] seconds
+KEY_TURRET9_DESC,Добивает врагов со здоровьём меньше  [color='blue'][/color],

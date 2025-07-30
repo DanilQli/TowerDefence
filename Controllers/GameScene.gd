@@ -13,6 +13,7 @@ var health_controller
 func _ready():
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
+	map_node.name = "Map"
 	add_child(map_node)
 
 	# Динамически создаем контроллеры
@@ -29,6 +30,7 @@ func _ready():
 	ui_controller.initialize(self)
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
+	GameManager.get_road_coords(self)
 
 	get_tree().paused = false
 

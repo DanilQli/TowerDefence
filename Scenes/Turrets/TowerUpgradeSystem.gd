@@ -1,7 +1,7 @@
 ## Система управления улучшениями башни
 extends Node
 class_name TowerUpgradeSystem
-
+signal upgrades
 ## Ссылка на башню, которой принадлежит система улучшений
 var tower: TowerBase
 
@@ -23,6 +23,7 @@ func upgrade() -> void:
 	if perform_upgrade():
 		apply_upgrade_effects()
 		update_ui()
+		emit_signal("upgrades")
 
 ## Проверка возможности улучшения башни
 func can_upgrade() -> bool:

@@ -22,3 +22,13 @@ func _on_timer_timeout():
 	if not block_damage:
 		var profit = income_end * GameSession.speed_game
 		GameSession.add_money(profit)
+
+func _initialize() -> void:
+	super._initialize()
+	if self.ability[1]:
+		self.get_node("Panel").visible = true
+		for i in range(len(ResourceManager.list_turret[self.id])):
+			ResourceManager.list_turret[self.id][i].get_node("Panel/Label").text = str(len(ResourceManager.list_turret[self.id]))
+			ResourceManager.list_turret[self.id][i].update()
+	for i in range(len(ResourceManager.list_turret[self.id])):
+		ResourceManager.list_turret[self.id][i].update()

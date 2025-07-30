@@ -776,7 +776,7 @@ func impact(type_explosion, type_attack):
 	impact_area.add_child(new_impact)
 
 func on_destroy():
-	if len(ResourceManager.list_turret[5]) >= 0 and ResourceManager.list_turret[5][0].ability[0]:
+	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
 	self.queue_free()
 
@@ -1288,7 +1288,7 @@ func on_destroy():
 			ResourceManager.list_turret[1][ind].ability_0 += 1
 			ResourceManager.list_turret[1][ind].get_node("Panel").visible = true
 			ResourceManager.list_turret[1][ind].get_node("Panel/Label").text = str(ResourceManager.list_turret[1][ind].ability_0)
-	if len(ResourceManager.list_turret[5]) >= 0 and ResourceManager.list_turret[5][0].ability[0]:
+	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
 	self.queue_free()
 
@@ -3079,13 +3079,14 @@ func _setup_buyable_turret(panel: Node, data: Dictionary, i: int) -> void:
 		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[i].type].open_card, i + 1))
 
 func buy_turret(prise: int, num_turret: int) -> void:
-	DataManager.data_money -= prise
-	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.data_money_spend(prise)
+	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
 	get_parent().get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	get_parent().get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	
 	var turret_key = "Turret_" + str(num_turret) + "T1"
 	DataManager.tower_data[turret_key]["have"] = true
-	#DataManager.write_file()
+	DataManager.write_file()
 	close()
 
 func choose_turret(id: int) -> void:
@@ -4263,10 +4264,10 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityTextLock[i].queue_free()
 
 func buy(prise, number):
-	DataManager.data_money -= prise
-	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.data_money_spend(prise)
+	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
-	
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	var turret_key = "Turret_" + str(number + 1) + "T1"
 	DataManager.tower_data[turret_key]["have"] = true
 	DataManager.write_file()
@@ -4290,10 +4291,10 @@ func open_ability(ind, number):
 	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
 	
 func upgrade_card(number):
-	DataManager.data_money -= prise
-	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.data_money_spend(prise)
+	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_UP_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
-	
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	var turret_key = "Turret_" + str(number + 1) + "T1"
 	DataManager.tower_data[turret_key]["cards"] = int(DataManager.tower_data[turret_key]["cards"]) - TowerCards.get_cards_needed(number)
 	DataManager.tower_data[turret_key]["level"] = int(DataManager.tower_data[turret_key]["level"]) + 1
@@ -4897,8 +4898,9 @@ func _ready():
 	get_node("AnimationPlayer").play("Fire")
 
 func _on_timer_timeout():
-	var profit = income_end * GameSession.speed_game
-	GameSession.add_money(profit)
+	if not block_damage:
+		var profit = income_end * GameSession.speed_game
+		GameSession.add_money(profit)
 
 
 # Scenes\Turrets\MovementTower.gd
@@ -4937,18 +4939,32 @@ extends TowerBase
 class_name PoisonTower
 
 var damage: float
-var duration: float = 4.0
+var duration: float
 var tick: float
 
+var num: bool = false
+
 func fire() -> void:
-	is_ready = false
-	if enemy:
-		enemy.apply_poison({
-			"damage": damage,
-			"duration": duration,
-			"tick": tick
-		})
-	get_node("AnimationPlayer").play("Fire")
+	if not block_damage:
+		is_ready = false
+		for e in enemy_array:
+			e.apply_poison({
+				"damage": damage,
+				"duration": duration,
+				"tick": tick
+			})
+			if self.ability[0]:
+				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
+			if self.ability[1]:
+				if num:
+					break
+				if randf_range(0, 100) < GameConstants.TURRET_7_ABILITY_1:
+					num = true
+			else:
+				break
+		get_node("AnimationPlayer").play("Fire")
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
 
 
 # Scenes\Turrets\SlowTower.gd
@@ -7080,7 +7096,6 @@ extends Control
 func _ready():
 	# Загрузка языковых настроек
 	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
-	
 	# Установка размера окна
 	DisplayServer.window_set_size(
 		Vector2i(
@@ -7090,6 +7105,7 @@ func _ready():
 	)
 	# Обновление отображения денег
 	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
@@ -7108,7 +7124,7 @@ func on_quit_pressed():
 	get_tree().quit()
 
 func show_critical_damage():
-	crit_label.text = str(DataManager.calculate_critical_damage())
+	crit_label.text = str(DataManager.critical_damage)
 
 
 # Scenes\UI\Menu.tscn
@@ -7168,12 +7184,20 @@ layout_mode = 2
 texture = ExtResource("4_t06ot")
 
 [node name="Label2" type="Label" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_font_sizes/font_size = 30
+text = "200"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="LabelPr" type="Label" parent="Panel/HBoxContainer"]
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_font_sizes/font_size = 30
-text = "200%"
-horizontal_alignment = 1
+text = "%"
 vertical_alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
@@ -7547,7 +7571,7 @@ var strengthening_money: float
 ## Деньги
 var data_money: int = 0
 ## Критический урон
-var critical_damage: int = 200
+var critical_damage: int
 
 var data_wave = {
 	level_0=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]], [["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]], [["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]]],
@@ -7588,12 +7612,22 @@ func parse_game_data() -> void:
 ## Извлекает значения ресурсов
 func _parse_resources() -> void:
 	data_money = data.get("Resources", {}).get("money", 0)
+	critical_damage = data.get("Resources", {}).get("critical_damage", 0)
 
+## Добавить монеты
 func data_money_add(value: int) -> void:
 	data_money += value
+	data["Resources"]["money"] = data_money
+
+## Списать монеты
+func data_money_spend(value: int) -> void:
+	data_money -= value
+	data["Resources"]["money"] = data_money
 	
-func calculate_critical_damage():
-	return critical_damage
+## Добавить критический урон(в случаи улучшении карт)
+func add_critical_damage(val: int) -> void:
+	critical_damage += val
+	data["Resources"]["critical_damage"] = critical_damage
 	
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:
@@ -7638,6 +7672,7 @@ func _update_data_before_save() -> void:
 	if not data.has("Resources"):
 		data["Resources"] = {}
 	data["Resources"]["money"] = data_money
+	data["Resources"]["critical_damage"] = critical_damage
 	
 	if not data.has("Turrets"):
 		data["Turrets"] = {}
@@ -7993,16 +8028,34 @@ const DATA_TOWER = {
 		type_explosion = 0,
 		cost_in_session = 100,
 		parametr_1 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
+			0: [30.0, 33.6, 37.63, 42.15, 47.21, 52.88, 59.23, 66.34, 74.3, 83.22],
+			1: [31.5, 35.28, 39.51, 44.25, 49.56, 55.51, 62.17, 69.63, 77.99, 87.35],
+			2: [33.08, 37.05, 41.5, 46.48, 52.06, 58.31, 65.31, 73.15, 81.93, 91.76],
+			3: [34.73, 38.9, 43.57, 48.8, 54.66, 61.22, 68.57, 76.8, 86.02, 96.34],
+			4: [36.47, 40.85, 45.75, 51.24, 57.39, 64.28, 71.99, 80.63, 90.31, 101.15],
+			5: [38.29, 42.88, 48.03, 53.79, 60.24, 67.47, 75.57, 84.64, 94.8, 106.18],
+			6: [40.2, 45.02, 50.42, 56.47, 63.25, 70.84, 79.34, 88.86, 99.52, 111.46],
+			7: [42.21, 47.28, 52.95, 59.3, 66.42, 74.39, 83.32, 93.32, 104.52, 117.06],
+			8: [44.32, 49.64, 55.6, 62.27, 69.74, 78.11, 87.48, 97.98, 109.74, 122.91],
+			9: [46.54, 52.12, 58.37, 65.37, 73.21, 82.0, 91.84, 102.86, 115.2, 129.02]
 		},
-		parametr_2 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
-		},
+		parametr_2 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
 		parametr_3 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
-		parametr_4 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
-		parametr_range = 4,
+		parametr_4 = [4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0, 4.0],
+		parametr_5 = {
+			0: [1.1, 1.04, 0.99, 0.94, 0.89, 0.85, 0.81, 0.77, 0.73, 0.69],
+			1: [1.08, 1.03, 0.98, 0.93, 0.88, 0.84, 0.8, 0.76, 0.72, 0.68],
+			2: [1.06, 1.01, 0.96, 0.91, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66],
+			3: [1.04, 0.99, 0.94, 0.89, 0.85, 0.81, 0.77, 0.73, 0.69, 0.66],
+			4: [1.01, 0.96, 0.91, 0.86, 0.82, 0.78, 0.74, 0.7, 0.66, 0.63],
+			5: [0.99, 0.94, 0.89, 0.85, 0.81, 0.77, 0.73, 0.69, 0.66, 0.63],
+			6: [0.97, 0.92, 0.87, 0.83, 0.79, 0.75, 0.71, 0.67, 0.64, 0.61],
+			7: [0.95, 0.9, 0.85, 0.81, 0.77, 0.73, 0.69, 0.66, 0.63, 0.6],
+			8: [0.94, 0.89, 0.85, 0.81, 0.77, 0.73, 0.69, 0.66, 0.63, 0.6],
+			9: [0.92, 0.87, 0.83, 0.79, 0.75, 0.71, 0.67, 0.64, 0.61, 0.58]
+		},
+		parametr_range = 3,
+		name_label = ["ед", "с", "ед", "с", "с"],
 		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_DURATION", "KEY_TICK"],
 		data = ["damage", "rof", "range", "duration", "tick"],
 		img = ["res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex",
@@ -8011,7 +8064,7 @@ const DATA_TOWER = {
 		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex",
 		"res://Assets/Icons/tick.png"],
 		strateg = false,
-		queue_free = []
+		queue_free = [5]
 	},
 	7: {
 		type = Rarity.COMMON,
@@ -8106,6 +8159,10 @@ const MODIFIER_VALUE: float = 1.0
 const NUMBER_LVL_TURRET_CARD: int = 9
 ## Количество боссов врагов
 const NUMBER_BOSS_ENEMY: int = 1
+## Сколько критического урона добавить за покупку карты
+const ADD_CRITICAL_DAMAGE_BUY_CARD: int = 1
+## Сколько критического урона добавить за улучшение карты
+const ADD_CRITICAL_DAMAGE_UP_CARD: int = 1
 
 const DATA_ENEMY_BOSS = {
 	0: {
@@ -8121,6 +8178,8 @@ const TURRET_4_ABILITY_0: int = 100
 const TURRET_4_ABILITY_1: int = 20
 const TURRET_5_ABILITY_0: int = 10
 const TURRET_5_ABILITY_1: int = 10
+const TURRET_7_ABILITY_0: int = 5
+const TURRET_7_ABILITY_1: int = 5
 
 
 # Systems\GameManager.gd
@@ -8268,7 +8327,7 @@ func spend_money(value: int) -> bool:
 	current_money -= value
 	emit_signal("money_changed")
 	return true
-
+	
 ## Установить текущие очки игрока и обновить рекорд
 func update_score(value: int) -> void:
 	current_score = value

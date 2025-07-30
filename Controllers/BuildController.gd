@@ -88,8 +88,9 @@ func verify_and_build():
 
 		turret.position = build_location
 		turret.name = build_type + "_1"
+		turret.built = true
+		turret._ready()
 		turret.get_node("Menu").setup(turret.id)
-		var turret_data = DataManager.tower_data.get(build_type, {})
 
 		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
 		turret.ui_system.update_menu()

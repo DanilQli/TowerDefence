@@ -13,9 +13,8 @@ var level: int
 @onready var openLvlBut = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button
 @onready var abilityText = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/RichTextLabel, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/RichTextLabel]
 @onready var abilityTextLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/Label, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/Label]
-@onready var abilityLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer/NinePatchRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer/NinePatchRect]
+@onready var abilityLockAll = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock]
 @onready var abilityBut = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer2/Button, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer2/Button]
-@onready var abilityColor = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/ColorRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/ColorRect]
 @onready var close = $Panel/Close
 var prise: int
 
@@ -64,10 +63,7 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityBut[i].add_theme_stylebox_override("normal", style)
 			abilityBut[i].pressed.connect(open_ability.bind(i, number))
 		elif data["ability"][i]:
-			abilityColor[i].queue_free()
-			abilityBut[i].queue_free()
-			abilityLock[i].queue_free()
-			abilityTextLock[i].queue_free()
+			abilityLockAll[i].queue_free()
 
 func buy(prise, number):
 	DataManager.data_money_spend(prise)

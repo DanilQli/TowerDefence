@@ -18,7 +18,7 @@ func fire() -> void:
 				"tick": tick
 			})
 			if self.ability[0]:
-				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
+				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, duration)
 			if self.ability[1]:
 				if num:
 					break

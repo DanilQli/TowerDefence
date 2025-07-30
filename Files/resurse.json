@@ -6,8 +6,8 @@
     ]
   },
   "Resources": {
-    "critical_damage": 200,
-    "money": 72781
+    "critical_damage": 208.0,
+    "money": 64581
   },
   "Settings": {
     "list_wave_gift": [
@@ -47,9 +47,9 @@
         true
       ],
       "activity": false,
-      "cards": 372,
+      "cards": 372.0,
       "have": true,
-      "level": 9
+      "level": 9.0
     },
     "Turret_2T1": {
       "ability": [
@@ -76,7 +76,7 @@
         true,
         true
       ],
-      "activity": true,
+      "activity": false,
       "cards": 0.0,
       "have": true,
       "level": 9.0
@@ -103,21 +103,21 @@
     },
     "Turret_7T1": {
       "ability": [
-        false,
-        false
+        true,
+        true
       ],
       "activity": true,
-      "cards": 0.0,
+      "cards": 400.0,
       "have": true,
-      "level": 1.0
+      "level": 9.0
     },
     "Turret_8T1": {
       "ability": [
-        false,
-        false
+        true,
+        true
       ],
-      "activity": false,
-      "cards": 0.0,
+      "activity": true,
+      "cards": 340.0,
       "cost": 100.0,
       "damage": [
         45.0,
@@ -132,7 +132,7 @@
         3250.0
       ],
       "have": true,
-      "level": 1.0,
+      "level": 9.0,
       "prise": 0.0,
       "range": [
         245.0,

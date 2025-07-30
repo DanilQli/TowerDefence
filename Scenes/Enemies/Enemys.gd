@@ -14,7 +14,8 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
-
+# Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь раз в секунду
+var hole_move = 59
 
 @onready var health_bar = self.get_node("HealthBar")
 @onready var impact_area = self.get_node("Impact")
@@ -23,6 +24,7 @@ var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
 
 func _ready():
+	self.z_index = 1
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.base_hp = self.hp
 	self.health_bar.max_value = base_hp
@@ -76,16 +78,32 @@ func process_poison(delta: float) -> void:
 		poison_effect.get_node("AnimationPlayer").stop()
 	
 func move(delta):
+	var is_in_hole = false
+	for hole in get_tree().get_nodes_in_group("holes"):
+		if position.distance_to(hole.position) <= hole.radius:
+			is_in_hole = hole
+			break
+	if is_in_hole:
+		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
+		if hole_move % 60 == 0:
+			on_hit(is_in_hole.damage, -1, GameConstants.TowerType.GUN)
+		hole_move += 1
+	else:
+		if self.duration_speed_mod <= 1:
+			self.speed = self.current_speed
+		hole_move = 59
+	
 	self.progress += self.speed * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
-		if self.duration_speed_mod <= 1:
+		if self.duration_speed_mod < 1:
 			self.speed = self.current_speed
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
-func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, parametrs=false):
 	if type_attack in [0, 1]:
-		impact(type_explosion, type_attack)
+		if type_explosion > 0:
+			impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
 		self.hp -= damage
 		self.health_bar.visible = true
