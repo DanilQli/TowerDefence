@@ -6,6 +6,7 @@ var wave_data: Array
 var enemies_in_wave: int
 var gift_controller
 var game_end_controller
+var rng = RandomNumberGenerator.new()
 
 func initialize(scene: Node2D):
 	main_scene = scene
@@ -46,13 +47,13 @@ func spawn_enemies(wave: Array):
 		enemy.base_damage.connect(main_scene.on_base_damage)
 		
 		var num_paths = main_scene.map_node.get_node("Path").get_child_count()
-		var path_index = randi_range(0, num_paths - 1)
+		var path_index = rng.randi_range(0, num_paths - 1)
 		main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
 
 		await get_tree().create_timer(delay).timeout
 	# Спавн боссов
 	await get_tree().create_timer(1).timeout
-	type = randi_range(1, GameConstants.NUMBER_BOSS_ENEMY)
+	type = rng.randi_range(1, len(GameConstants.DATA_ENEMY_BOSS))
 	enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
 	enemy.names = type
 	enemy.id = type - 1

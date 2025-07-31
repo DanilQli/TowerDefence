@@ -14,8 +14,8 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
-# Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь раз в секунду
-var hole_move = 59
+# Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь 3 раза в секунду
+var hole_move = 19
 
 @onready var health_bar = self.get_node("HealthBar")
 @onready var impact_area = self.get_node("Impact")
@@ -85,15 +85,15 @@ func move(delta):
 			break
 	if is_in_hole:
 		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
-		if hole_move % 60 == 0:
-			on_hit(is_in_hole.damage, -1, GameConstants.TowerType.GUN)
+		if hole_move % 20 == 0:
+			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN)
 		hole_move += 1
 	else:
 		if self.duration_speed_mod <= 1:
 			self.speed = self.current_speed
-		hole_move = 59
+		hole_move = 19
 	
-	self.progress += self.speed * delta
+	self.progress += self.speed * ResourceManager.speed_modifer * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
 		if self.duration_speed_mod < 1:

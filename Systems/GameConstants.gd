@@ -27,7 +27,7 @@ const DATA_ENEMY = {
 		},
 	3: {
 		hp = 130,
-		speed = 200,
+		speed = 190,
 		money_death = 12
 		},
 	4: {
@@ -37,12 +37,12 @@ const DATA_ENEMY = {
 		},
 	5: {
 		hp = 135,
-		speed = 210,
+		speed = 200,
 		money_death = 13
 		},
 	6: {
 		hp = 200,
-		speed = 220,
+		speed = 210,
 		money_death = 13
 		},
 	7: {
@@ -488,8 +488,6 @@ const MONEY_BEGIN: Array = [400000, 10400, 800]
 const MODIFIER_VALUE: float = 1.0
 ## Количество максимального уровня турелей путём улучшения карт
 const NUMBER_LVL_TURRET_CARD: int = 9
-## Количество боссов врагов
-const NUMBER_BOSS_ENEMY: int = 1
 ## Сколько критического урона добавить за покупку карты
 const ADD_CRITICAL_DAMAGE_BUY_CARD: int = 1
 ## Сколько критического урона добавить за улучшение карты
@@ -502,8 +500,18 @@ const OBSTACLE_SLOW: float = 0.7
 
 const DATA_ENEMY_BOSS = {
 	0: {
-		hp = 1000,
+		hp = 2000,
 		speed = 80,
+		money_death = 20.0
+		},
+	1: {
+		hp = 1000,
+		speed = 220,
+		money_death = 20.0
+		},
+	2: {
+		hp = 1300,
+		speed = 100,
 		money_death = 20.0
 		}
 }

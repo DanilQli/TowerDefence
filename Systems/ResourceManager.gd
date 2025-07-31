@@ -13,6 +13,8 @@ var best_score: int = 0
 var current_score: int = 0
 ## Построенные башни по id башни
 var list_turret: Array = [[], [], [], [], [], [], [], [], [], []]
+## Модификация скорости от 3 боса
+var speed_modifer: int = 1
 
 ## Добавить золото в игровую сессию
 func add_money(value: int) -> void:
