@@ -497,7 +497,6 @@ const ROAD_OBSTACLE: int = 3
 ## Насколько % движется враг при существовании препятсвия
 const OBSTACLE_SLOW: float = 0.7
 
-
 const DATA_ENEMY_BOSS = {
 	0: {
 		hp = 2000,
