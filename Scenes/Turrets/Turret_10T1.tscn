@@ -1,5 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://viq20br83ws7"]
+[gd_scene load_steps=11 format=3 uid="uid://viq20br83ws7"]
 
+[ext_resource type="Script" uid="uid://b4ppli6gv4ilo" path="res://Scenes/Turrets/BullyTower.gd" id="1_tsfhh"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsu46"]
 [ext_resource type="Texture2D" uid="uid://d3m6hmgb4gwog" path="res://Assets/Props/ground_shaker_asset/Red/Weapons/weapons.png" id="3_e5c14"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_0hxs7"]
@@ -49,6 +50,7 @@ _data = {
 size = Vector2(60, 60)
 
 [node name="Turret_10T1" type="Node2D"]
+script = ExtResource("1_tsfhh")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_xsu46")
@@ -57,11 +59,12 @@ texture = ExtResource("2_xsu46")
 texture = ExtResource("3_e5c14")
 hframes = 4
 vframes = 4
-frame = 12
+frame = 3
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_0hxs7")
 offset = Vector2(0, -75)

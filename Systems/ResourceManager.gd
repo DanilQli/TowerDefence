@@ -15,6 +15,8 @@ var current_score: int = 0
 var list_turret: Array = [[], [], [], [], [], [], [], [], [], []]
 ## Модификация скорости от 3 боса
 var speed_modifer: int = 1
+## Список активных 
+var list_active_enemy: Array = []
 
 ## Добавить золото в игровую сессию
 func add_money(value: int) -> void:

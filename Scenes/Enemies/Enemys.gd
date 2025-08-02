@@ -1,4 +1,5 @@
 extends PathFollow2D
+class_name Enemy
 
 signal base_damage(damage)
 signal money_in_game_session_changed()
@@ -22,6 +23,7 @@ var hole_move = 19
 @onready var poison_effect = $PoisonEffect
 var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_1.tscn")
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
+var projectile_impact_4 = preload("res://Scenes/SupportScenes/ProjecttileImpact_4.tscn")
 
 func _ready():
 	self.z_index = 1
@@ -30,6 +32,7 @@ func _ready():
 	self.health_bar.max_value = base_hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
+	ResourceManager.list_active_enemy.append(self)
 	
 func _physics_process(delta):
 	if self.progress_ratio == 1.0:
@@ -123,19 +126,26 @@ func on_hit(damage, type_explosion, type_attack, parametrs=false):
 			self.progress_ratio = 0
 
 func impact(type_explosion, type_attack):
-	randomize()
-	var x_pos = randi() % 31
-	randomize()
-	var y_pos = randi() % 31
-	var impact_location = Vector2(x_pos, y_pos)
-	if type_attack == 0 and type_explosion == 1:
-		new_impact = projectile_impact_3.instantiate()
+	if type_explosion == 5:
+		new_impact = projectile_impact_4.instantiate()
+		new_impact.position = Vector2(impact_area.global_position.x, impact_area.global_position.y - 10)
+		new_impact.z_index = 5
+		get_tree().current_scene.add_child(new_impact)
 	else:
-		new_impact = projectile_impact_1.instantiate()
-	new_impact.position = impact_location
-	impact_area.add_child(new_impact)
+		randomize()
+		var x_pos = randi() % 31
+		randomize()
+		var y_pos = randi() % 31
+		var impact_location = Vector2(x_pos, y_pos)
+		if type_attack == 0 and type_explosion == 1:
+			new_impact = projectile_impact_3.instantiate()
+		else:
+			new_impact = projectile_impact_1.instantiate()
+		new_impact.position = impact_location
+		impact_area.add_child(new_impact)
 
 func on_destroy():
 	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
+	ResourceManager.list_active_enemy.erase(self)
 	self.queue_free()

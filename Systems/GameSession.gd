@@ -19,8 +19,8 @@ var current_money_in_game_session: float
 ## Очки за сессию
 var current_game_score: int = 0
 
-## Здоровье базы
-var base_health: int = 10
+## Максимальное здоровье базы в игре
+var base_health: int = 100
 
 ## Увеличивает очки игрока
 func add_game_score(value: int) -> void:

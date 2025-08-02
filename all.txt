@@ -89,8 +89,9 @@ func verify_and_build():
 
 		turret.position = build_location
 		turret.name = build_type + "_1"
+		turret.built = true
+		turret._ready()
 		turret.get_node("Menu").setup(turret.id)
-		var turret_data = DataManager.tower_data.get(build_type, {})
 
 		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
 		turret.ui_system.update_menu()
@@ -243,6 +244,7 @@ var health_controller
 func _ready():
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
+	map_node.name = "Map"
 	add_child(map_node)
 
 	# Динамически создаем контроллеры
@@ -259,6 +261,7 @@ func _ready():
 	ui_controller.initialize(self)
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
+	GameManager.get_road_coords(self)
 
 	get_tree().paused = false
 
@@ -563,14 +566,14 @@ func _on_money_changed():
 func title_show(id_ui: String, id: String):
 	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
 	main_scene.add_child(node_mouse_entered)
-	node_mouse_entered.setup(int(id_ui) - 1)
 	var tower_position = main_scene.get_node("UI/HUD/BuldBar/Tower_" + id_ui).position
 	node_mouse_entered.position = tower_position + Vector2(100, 50)
-	for i in range(len(GameConstants.DATA_TOWER[int(id_ui) - 1].text)):
-		if GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)] is Dictionary:
-			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][int(DataManager.tower_data["Turret_" + str(i + 1) + "T1"]["level"])][0])
+	node_mouse_entered.setup(int(id) - 1)
+	for i in range(len(GameConstants.DATA_TOWER[int(id) - 1].text)):
+		if GameConstants.DATA_TOWER[int(id) - 1]["parametr_" + str(i + 1)] is Dictionary:
+			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id) - 1]["parametr_" + str(i + 1)][int(DataManager.tower_data["Turret_" + str(i + 1) + "T1"]["level"])][0])
 		else:
-			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id_ui) - 1]["parametr_" + str(i + 1)][0])
+			node_mouse_entered.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[int(id) - 1]["parametr_" + str(i + 1)][0])
 		node_mouse_entered.list_node[i].get_node("HValue/Up").queue_free()
 	UiManager.list_open_menu_turrets.append(node_mouse_entered)
 
@@ -590,6 +593,7 @@ var wave_data: Array
 var enemies_in_wave: int
 var gift_controller
 var game_end_controller
+var rng = RandomNumberGenerator.new()
 
 func initialize(scene: Node2D):
 	main_scene = scene
@@ -630,13 +634,13 @@ func spawn_enemies(wave: Array):
 		enemy.base_damage.connect(main_scene.on_base_damage)
 		
 		var num_paths = main_scene.map_node.get_node("Path").get_child_count()
-		var path_index = randi_range(0, num_paths - 1)
+		var path_index = rng.randi_range(0, num_paths - 1)
 		main_scene.map_node.get_node("Path").get_child(path_index).add_child(enemy, true)
 
 		await get_tree().create_timer(delay).timeout
 	# Спавн боссов
 	await get_tree().create_timer(1).timeout
-	type = randi_range(1, GameConstants.NUMBER_BOSS_ENEMY)
+	type = rng.randi_range(1, len(GameConstants.DATA_ENEMY_BOSS))
 	enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
 	enemy.names = type
 	enemy.id = type - 1
@@ -657,6 +661,7 @@ func spawn_enemies(wave: Array):
 
 # Scenes\Enemies\Enemys.gd
 extends PathFollow2D
+class_name Enemy
 
 signal base_damage(damage)
 signal money_in_game_session_changed()
@@ -672,20 +677,24 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
-
+# Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь 3 раза в секунду
+var hole_move = 19
 
 @onready var health_bar = self.get_node("HealthBar")
 @onready var impact_area = self.get_node("Impact")
 @onready var poison_effect = $PoisonEffect
 var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_1.tscn")
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
+var projectile_impact_4 = preload("res://Scenes/SupportScenes/ProjecttileImpact_4.tscn")
 
 func _ready():
+	self.z_index = 1
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.base_hp = self.hp
 	self.health_bar.max_value = base_hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
+	ResourceManager.list_active_enemy.append(self)
 	
 func _physics_process(delta):
 	if self.progress_ratio == 1.0:
@@ -734,16 +743,32 @@ func process_poison(delta: float) -> void:
 		poison_effect.get_node("AnimationPlayer").stop()
 	
 func move(delta):
-	self.progress += self.speed * delta
+	var is_in_hole = false
+	for hole in get_tree().get_nodes_in_group("holes"):
+		if position.distance_to(hole.position) <= hole.radius:
+			is_in_hole = hole
+			break
+	if is_in_hole:
+		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
+		if hole_move % 20 == 0:
+			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN)
+		hole_move += 1
+	else:
+		if self.duration_speed_mod <= 1:
+			self.speed = self.current_speed
+		hole_move = 19
+	
+	self.progress += self.speed * ResourceManager.speed_modifer * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
-		if self.duration_speed_mod <= 1:
+		if self.duration_speed_mod < 1:
 			self.speed = self.current_speed
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
-func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, parametrs=false):
 	if type_attack in [0, 1]:
-		impact(type_explosion, type_attack)
+		if type_explosion > 0:
+			impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
 		self.hp -= damage
 		self.health_bar.visible = true
@@ -763,21 +788,28 @@ func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
 			self.progress_ratio = 0
 
 func impact(type_explosion, type_attack):
-	randomize()
-	var x_pos = randi() % 31
-	randomize()
-	var y_pos = randi() % 31
-	var impact_location = Vector2(x_pos, y_pos)
-	if type_attack == 0 and type_explosion == 1:
-		new_impact = projectile_impact_3.instantiate()
+	if type_explosion == 5:
+		new_impact = projectile_impact_4.instantiate()
+		new_impact.position = Vector2(impact_area.global_position.x, impact_area.global_position.y - 10)
+		new_impact.z_index = 5
+		get_tree().current_scene.add_child(new_impact)
 	else:
-		new_impact = projectile_impact_1.instantiate()
-	new_impact.position = impact_location
-	impact_area.add_child(new_impact)
+		randomize()
+		var x_pos = randi() % 31
+		randomize()
+		var y_pos = randi() % 31
+		var impact_location = Vector2(x_pos, y_pos)
+		if type_attack == 0 and type_explosion == 1:
+			new_impact = projectile_impact_3.instantiate()
+		else:
+			new_impact = projectile_impact_1.instantiate()
+		new_impact.position = impact_location
+		impact_area.add_child(new_impact)
 
 func on_destroy():
 	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
+	ResourceManager.list_active_enemy.erase(self)
 	self.queue_free()
 
 
@@ -1136,6 +1168,8 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
+# Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь 3 раза в секунду
+var hole_move = 19
 var id
 var is_ready: bool = true
 
@@ -1143,6 +1177,8 @@ var destroy = false
 
 var projectile_impact_1 = preload("res://Scenes/SupportScenes/ProjecttileImpact_1.tscn")
 var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_3.tscn")
+var projectile_impact_4 = preload("res://Scenes/SupportScenes/ProjecttileImpact_4.tscn")
+
 @onready var health_bar = $HealthBar
 @onready var impact_area = $Impact
 @onready var poison_effect = $PoisonEffect
@@ -1153,12 +1189,14 @@ var previous_global_pos: Vector2 = Vector2.ZERO  # Предыдущая пози
 var move_threshold: float = 0.1                  # Минимальное движение для переключения анимации
 
 func _ready():
+	self.z_index = 1
 	previous_global_pos = global_position  # Инициализируем начальную позицию
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.base_hp = hp
 	self.health_bar.max_value = base_hp
 	self.health_bar.value = hp
 	self.health_bar.top_level = true
+	ResourceManager.list_active_enemy.append(self)
 	
 func _physics_process(delta):
 	if self.progress_ratio == 1.0:
@@ -1201,7 +1239,22 @@ func process_poison(delta: float) -> void:
 		poison_effect.get_node("AnimationPlayer").stop()
 		
 func move(delta):
-	self.progress += self.speed * delta
+	var is_in_hole = false
+	for hole in get_tree().get_nodes_in_group("holes"):
+		if position.distance_to(hole.position) <= hole.radius:
+			is_in_hole = hole
+			break
+	if is_in_hole:
+		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
+		if hole_move % 20 == 0:
+			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN)
+		hole_move += 1
+	else:
+		if self.duration_speed_mod <= 1:
+			self.speed = self.current_speed
+		hole_move = 19
+		
+	self.progress += self.speed * ResourceManager.speed_modifer * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
 		if self.duration_speed_mod == 1:
@@ -1230,11 +1283,11 @@ func determine_direction(move_vector: Vector2):
 	else:
 		# Движение по вертикали (вверх/вниз)
 		if move_vector.y > 0:
-			anim_player.play("walk_down")  # Вниз (в Godot Y растет вниз)
+			anim_player.play("walk_down")  # Вниз
 		else:
 			anim_player.play("walk_up")
 
-func on_hit(damage, type_explosion, type_attack, level, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, parametrs=false):
 	if type_attack in [0, 1]:
 		impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
@@ -1269,17 +1322,23 @@ func apply_poison(data: Dictionary) -> void:
 	poison_effect.get_node("AnimationPlayer").play("Poison")
 	
 func impact(type_explosion, type_attack):
-	randomize()
-	var x_pos = randi() % 31
-	randomize()
-	var y_pos = randi() % 31
-	var impact_location = Vector2(x_pos, y_pos)
-	if type_attack == 0 and type_explosion == 1:
-		new_impact = projectile_impact_3.instantiate()
+	if type_explosion == 5:
+		new_impact = projectile_impact_4.instantiate()
+		new_impact.position = Vector2(impact_area.global_position.x, impact_area.global_position.y - 10)
+		new_impact.z_index = 5
+		get_tree().current_scene.add_child(new_impact)
 	else:
-		new_impact = projectile_impact_1.instantiate()
-	new_impact.position = impact_location
-	impact_area.add_child(new_impact)
+		randomize()
+		var x_pos = randi() % 31
+		randomize()
+		var y_pos = randi() % 31
+		var impact_location = Vector2(x_pos, y_pos)
+		if type_attack == 0 and type_explosion == 1:
+			new_impact = projectile_impact_3.instantiate()
+		else:
+			new_impact = projectile_impact_1.instantiate()
+		new_impact.position = impact_location
+		impact_area.add_child(new_impact)
 
 func on_destroy():
 	if len(ResourceManager.list_turret[1]) > 0:
@@ -1290,6 +1349,7 @@ func on_destroy():
 			ResourceManager.list_turret[1][ind].get_node("Panel/Label").text = str(ResourceManager.list_turret[1][ind].ability_0)
 	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
+	ResourceManager.list_active_enemy.erase(self)
 	self.queue_free()
 
 
@@ -1451,6 +1511,414 @@ libraries = {
 }
 
 
+# Scenes\EnemiesBoss\Enemy_boss_2.gd
+extends Enemy_boss
+class_name Enemy_boss_2
+const BLOCK: float = 0.9
+
+func on_hit(damage, type_explosion, type_attack, parametrs=false) -> void:
+	damage *= BLOCK
+	super.on_hit(damage, type_explosion, type_attack, parametrs)
+
+
+# Scenes\EnemiesBoss\Enemy_boss_2.tscn
+[gd_scene load_steps=12 format=3 uid="uid://detc1miwwcubr"]
+
+[ext_resource type="Script" uid="uid://colseqyph0w4y" path="res://Scenes/EnemiesBoss/Enemy_boss_2.gd" id="1_8vlbi"]
+[ext_resource type="Texture2D" uid="uid://btq6n2cokh81l" path="res://Assets/Props/enemy_2_sprite.png" id="1_ox0x2"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_8vlbi"]
+[ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_5ggbs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbc0k"]
+size = Vector2(60, 60)
+
+[sub_resource type="Animation" id="Animation_gw3ks"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_fy467"]
+resource_name = "walk_down"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_ii477"]
+resource_name = "walk_left"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [9, 10, 11]
+}
+
+[sub_resource type="Animation" id="Animation_qiqwr"]
+resource_name = "walk_right"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [18, 19, 20]
+}
+
+[sub_resource type="Animation" id="Animation_eaeg4"]
+resource_name = "walk_up"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [27, 28, 29]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nkcfb"]
+_data = {
+&"RESET": SubResource("Animation_gw3ks"),
+&"walk_down": SubResource("Animation_fy467"),
+&"walk_left": SubResource("Animation_ii477"),
+&"walk_right": SubResource("Animation_qiqwr"),
+&"walk_up": SubResource("Animation_eaeg4")
+}
+
+[node name="Enemy2Boss" type="PathFollow2D"]
+rotates = false
+script = ExtResource("1_8vlbi")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_lbc0k")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("1_ox0x2")
+hframes = 9
+vframes = 4
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+offset_bottom = -34.0
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_8vlbi")
+texture_progress = ExtResource("2_8vlbi")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(0, 0.760784, 0.0117647, 1)
+
+[node name="Impact" type="Marker2D" parent="."]
+position = Vector2(-15, -15)
+
+[node name="PoisonEffect" parent="." instance=ExtResource("3_5ggbs")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_nkcfb")
+}
+
+
+# Scenes\EnemiesBoss\Enemy_boss_3.gd
+extends Enemy_boss
+class_name Enemy_boss_3
+const SPEED_MODIFER: float = 1.2
+var water_nodes = []
+
+func _ready() -> void:
+	ResourceManager.speed_modifer = SPEED_MODIFER
+	super._ready()
+	generate_water_over_road(GameManager.main_scene, GameManager.LIST_COORDS_ROAD, GameManager.water_scene, GameManager.water_scene_t, GameManager.water_scene_p)
+
+func on_destroy() -> void:
+	remove_with_delay(water_nodes)
+	ResourceManager.speed_modifer = 1
+	super.on_destroy()
+
+func generate_water_over_road(parent: Node, coords: Array, water_scene: PackedScene, water_scene_t: PackedScene, water_scene_p: PackedScene):
+	var cell_set = coords_to_set(coords) # Для быстрого поиска
+	for pos in coords:
+		var water = water_scene.instantiate()
+		water.position = pos
+
+		# Проверяем наличие соседей по X и Y
+		var has_x = cell_set.has(Vector2(pos.x + 64, pos.y)) or cell_set.has(Vector2(pos.x - 64, pos.y))
+		var has_y = cell_set.has(Vector2(pos.x, pos.y + 64)) or cell_set.has(Vector2(pos.x, pos.y - 64))
+
+		var width = 32.0
+		var height = 32.0
+		if has_x and not has_y:
+			width = 64.0
+			height = 32.0
+		elif has_y and not has_x:
+			width = 32.0
+			height = 64.0
+		elif has_x and has_y:
+			var has_y_u = cell_set.has(Vector2(pos.x, pos.y + 64))
+			var has_y_d = cell_set.has(Vector2(pos.x, pos.y - 64))
+			var has_x_r = cell_set.has(Vector2(pos.x + 64, pos.y))
+			var has_x_l = cell_set.has(Vector2(pos.x - 64, pos.y))
+			if has_y_d and has_x_l and not has_x_r and not has_y_u:
+				# слево-вверх
+				var water_h = water_scene_p.instantiate()
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+			elif has_y_d and has_x_r and not has_x_l and not has_y_u:
+				# справо-вверх
+				var water_h = water_scene_p.instantiate()
+				water_h.rotation = PI / 2
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+			elif has_y_u and has_x_r and not has_x_l and not has_y_d:
+				# справо-вниз
+				var water_h = water_scene_p.instantiate()
+				water_h.rotation = PI
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+			elif has_y_u and has_x_l and not has_x_r and not has_y_d:
+				# слево-вниз
+				var water_h = water_scene_p.instantiate()
+				water_h.rotation = 3 * PI / 2
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+			elif has_y_d and has_x_r and has_x_l and not has_y_u:
+				# T повернут вверх
+				var water_h = water_scene_t.instantiate()
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+				continue
+			elif has_y_u and has_x_r and has_x_l and not has_y_d:
+				# T повернут вниз
+				var water_h = water_scene_t.instantiate()
+				water_h.rotation = PI / 2
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+				continue
+			elif has_y_u and has_x_r and has_y_d and not has_x_l:
+				# T повернут вправо
+				var water_h = water_scene_t.instantiate()
+				water_h.rotation = PI / 2
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+				continue
+			elif has_y_u and has_x_l and has_y_d and not has_x_r:
+				# T повернут влево
+				var water_h = water_scene_t.instantiate()
+				water_h.rotation = 3 * PI / 2
+				water_h.position = pos
+				parent.add_child(water_h)
+				water_nodes.append(water_h)
+				continue
+		water.scale.x = width / water.texture.get_width()
+		water.scale.y = height / water.texture.get_height()
+		water_nodes.append(water)
+		parent.add_child(water)
+		await get_tree().create_timer(0.05).timeout
+	
+func remove_with_delay(water_nodes: Array):
+	for node in water_nodes:
+		if is_instance_valid(node):
+			node.queue_free()
+
+# Вспомогательная функция для быстрого поиска
+func coords_to_set(coords: Array):
+	var s = {}
+	for pos in coords:
+		s[pos] = true
+	return s
+		
+
+
+# Scenes\EnemiesBoss\Enemy_boss_3.tscn
+[gd_scene load_steps=12 format=3 uid="uid://2kmhy4ftbldh"]
+
+[ext_resource type="Texture2D" uid="uid://cxrchgvj6xauh" path="res://Assets/Props/enemy_6_sprite.png" id="1_dmmcv"]
+[ext_resource type="Script" uid="uid://quk6nxin1k6v" path="res://Scenes/EnemiesBoss/Enemy_boss_3.gd" id="1_pg853"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_pg853"]
+[ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_d2u7r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7gvyt"]
+size = Vector2(60, 60)
+
+[sub_resource type="Animation" id="Animation_d2u7r"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_pg853"]
+resource_name = "walk_down"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_7gvyt"]
+resource_name = "walk_left"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [12, 13, 14]
+}
+
+[sub_resource type="Animation" id="Animation_h4gvr"]
+resource_name = "walk_right"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [24, 25, 26]
+}
+
+[sub_resource type="Animation" id="Animation_3q7oq"]
+resource_name = "walk_up"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [36, 37, 38]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6cwht"]
+_data = {
+&"RESET": SubResource("Animation_d2u7r"),
+&"walk_down": SubResource("Animation_pg853"),
+&"walk_left": SubResource("Animation_7gvyt"),
+&"walk_right": SubResource("Animation_h4gvr"),
+&"walk_up": SubResource("Animation_3q7oq")
+}
+
+[node name="Enemy3Boss" type="PathFollow2D"]
+rotates = false
+script = ExtResource("1_pg853")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_7gvyt")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_dmmcv")
+hframes = 12
+vframes = 8
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+offset_bottom = -34.0
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_pg853")
+texture_progress = ExtResource("2_pg853")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(0, 0.760784, 0.0117647, 1)
+
+[node name="Impact" type="Marker2D" parent="."]
+position = Vector2(-15, -15)
+
+[node name="PoisonEffect" parent="." instance=ExtResource("3_d2u7r")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_6cwht")
+}
+
+
 # Scenes\Maps\map_0.tscn
 [gd_scene load_steps=4 format=4 uid="uid://bno3pc87e5wpg"]
 
@@ -1476,7 +1944,7 @@ tile_map_data = PackedByteArray("AAAAAAAAAQAAAAAAAAAAAAEAAQAAAAAAAAAAAAIAAQAAAAA
 tile_set = ExtResource("2_3tegt")
 
 [node name="TowerExlusion" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAAAAAYAAQACAAAAAAABAAYAAQACAAAAAAACAAcAAQABAAAAAAACAAgAAQABAAAAAAD//wYAAQAFAAEAAAACAAkAAQABAAAAAAACAAoAAQAFAAEAAAADAAoAAQACAAAAAAAEAAoAAQACAAAAAAAFAAoAAQAFAAAAAAAFAAkAAQABAAAAAAAFAAgAAQABAAAAAAAFAAcAAQABAAAAAAAFAAYAAQABAAAAAAAFAAUAAQABAAAAAAAFAAQAAQABAAAAAAAFAAMAAQABAAAAAAAFAAIAAQABAAAAAAAFAAEAAQADAAEAAAAGAAEAAQACAAAAAAAHAAEAAQACAAAAAAAIAAEAAQACAAAAAAAJAAEAAQACAAAAAAAKAAEAAQACAAAAAAALAAEAAQACAAAAAAAMAAEAAQACAAAAAAANAAEAAQACAAAAAAAOAAEAAQAEAAEAAAAOAAIAAQABAAAAAAAOAAMAAQABAAAAAAAOAAQAAQABAAAAAAAOAAUAAQADAAAAAAAPAAUAAQACAAAAAAAQAAUAAQACAAAAAAARAAUAAQACAAAAAAASAAUAAQACAAAAAAATAAUAAQACAAAAAAAUAAUAAQACAAAAAAAVAAUAAQACAAAAAAAWAAUAAQACAAAAAAAXAAUAAQACAAAAAAAYAAUAAQACAAAAAAAGAAoAAQACAAAAAAAHAAoAAQACAAAAAAAIAAoAAQACAAAAAAAJAAoAAQACAAAAAAAKAAoAAQACAAAAAAALAAoAAQACAAAAAAAMAAoAAQACAAAAAAANAAoAAQACAAAAAAAOAAoAAQAGAAEAAAAOAAkAAQABAAAAAAAOAAgAAQABAAAAAAAOAAcAAQABAAAAAAAOAAYAAQABAAAAAAASAAAADwAAAAAAAAASAAEADwAAAAEAAAASAAIADwAAAAIAAAASAAMADwAAAAMAAAASAAQADwAAAAQAAAATAAAADwABAAAAAAATAAEADwABAAEAAAATAAIADwABAAIAAAATAAMADwABAAMAAAATAAQADwABAAQAAAAUAAAAFgAaAAEAAAAUAAEADwACAAEAAAAUAAIADwACAAIAAAAUAAMADwACAAMAAAAUAAQADwACAAQAAAAAAAAAFgAaAAAAAAABAP//FgAaAAAAAAABAAAAFgAaAAEAAAACAP//FgAaAAAAAAACAAAAFgAaAAEAAAADAP//FgAaAAAAAAADAAAAFgAaAAEAAAAEAP//FgAaAAAAAAAEAAAAFgAaAAEAAAAFAP//FgAaAAAAAAAFAAAAFgAaAAEAAAAGAP//FgAaAAAAAAAGAAAAFgAaAAEAAAAHAP//FgAaAAAAAAAHAAAAFgAaAAEAAAAIAP//FgAaAAAAAAAIAAAAFgAaAAEAAAAJAP//FgAaAAAAAAAJAAAAFgAaAAEAAAAKAP//FgAaAAAAAAAKAAAAFgAaAAEAAAALAP//FgAaAAAAAAALAAAAFgAaAAEAAAAMAP//FgAaAAAAAAAMAAAAFgAaAAEAAAANAP//FgAaAAAAAAANAAAAFgAaAAEAAAAOAP//FgAaAAAAAAAOAAAAFgAaAAEAAAAPAP//FgAaAAAAAAAPAAAAFgAaAAEAAAAQAP//FgAaAAAAAAAQAAAAFgAaAAEAAAARAP//FgAaAAAAAAARAAAAFgAaAAEAAAAUAP//FgAaAAAAAAAVAP//FgAaAAAAAAAVAAAAFgAaAAEAAAAWAP//FgAaAAAAAAAWAAAAFgAaAAEAAAAXAP//FgAaAAAAAAAXAAAAFgAaAAEAAAAXAAwAFgAaAAAAAAAXAA0AFgAaAAEAAAAWAAwAFgAaAAAAAAAWAA0AFgAaAAEAAAAVAAwAFgAaAAAAAAAVAA0AFgAaAAEAAAAUAAwAFgAaAAAAAAAUAA0AFgAaAAEAAAATAAwAFgAaAAAAAAATAA0AFgAaAAEAAAASAAwAFgAaAAAAAAASAA0AFgAaAAEAAAARAAwAFgAaAAAAAAARAA0AFgAaAAEAAAAQAAwAFgAaAAAAAAAQAA0AFgAaAAEAAAAPAAwAFgAaAAAAAAAPAA0AFgAaAAEAAAAOAAwAFgAaAAAAAAAOAA0AFgAaAAEAAAANAAwAFgAaAAAAAAANAA0AFgAaAAEAAAAMAAwAFgAaAAAAAAAMAA0AFgAaAAEAAAALAAwAFgAaAAAAAAALAA0AFgAaAAEAAAAKAAwAFgAaAAAAAAAKAA0AFgAaAAEAAAAJAAwAFgAaAAAAAAAJAA0AFgAaAAEAAAAIAAwAFgAaAAAAAAAIAA0AFgAaAAEAAAAHAAwAFgAaAAAAAAAHAA0AFgAaAAEAAAAGAAwAFgAaAAAAAAAGAA0AFgAaAAEAAAAAAAwAFgAaAAEAAAABAAwAFgAaAAAAAAABAA0AFgAaAAEAAAACAAwAFgAaAAAAAAACAA0AFgAaAAEAAAADAAwAFgAaAAAAAAADAA0AFgAaAAEAAAAEAAwAFgAaAAAAAAAEAA0AFgAaAAEAAAAFAAwAFgAaAAAAAAAFAA0AFgAaAAEAAAAAAAoAFgAaAAEAAAAAAAsAFgAaAAAAAAAAAAgAFgAaAAEAAAAAAAkAFgAaAAAAAAAAAAcAFgAaAAAAAAAAAAQAFgAaAAAAAAAAAAUAFgAaAAEAAAAAAAIAFgAaAAAAAAAAAAMAFgAaAAEAAAAAAAEAFgAaAAEAAAATAAoAFgAVAAQAAAATAAsAFgAVAAUAAAAUAAoAFgAWAAQAAAAUAAsAFgAWAAUAAAAVAAoAFgAXAAQAAAAVAAsAFgAXAAUAAAARAAoAFgAQABwAAAARAAsAFgAQAB0AAAASAAoAFgARABwAAAASAAsAFgARAB0AAAABAAIAFgAZABwAAAABAAMAFgAZAB0AAAAIAAUAFgAHAAEAAAAIAAYAFgAHAAIAAAAJAAQAFgAIAAAAAAAJAAUAFgAIAAEAAAAJAAYAFgAIAAIAAAAKAAQAFgAJAAAAAAAKAAUAFgAJAAEAAAAKAAYAFgAJAAIAAAAVAAkAFgAGAB4AAAAZAAUAAQAGAAEAAAAYAAwAFgAaAAAAAAAYAA0AFgAaAAEAAAAYAAoAFgAaAAAAAAAYAAsAFgAaAAEAAAAYAAYAFgAaAAAAAAAYAAcAFgAaAAEAAAAYAAgAFgAaAAAAAAAYAAkAFgAaAAEAAAAYAAMAFgAaAAAAAAAYAAQAFgAaAAEAAAAYAAEAFgAaAAAAAAAYAAIAFgAaAAEAAAAYAP//FgAaAAAAAAAYAAAAFgAaAAEAAAACAAYAAQAEAAEAAAA=")
+tile_map_data = PackedByteArray("AAAAAAYAAQACAAAAAAABAAYAAQACAAAAAAACAAcAAQABAAAAAAACAAgAAQABAAAAAAACAAkAAQABAAAAAAACAAoAAQAFAAEAAAADAAoAAQACAAAAAAAEAAoAAQACAAAAAAAFAAoAAQAFAAAAAAAFAAkAAQABAAAAAAAFAAgAAQABAAAAAAAFAAcAAQABAAAAAAAFAAYAAQABAAAAAAAFAAUAAQABAAAAAAAFAAQAAQABAAAAAAAFAAMAAQABAAAAAAAFAAIAAQABAAAAAAAFAAEAAQADAAEAAAAGAAEAAQACAAAAAAAHAAEAAQACAAAAAAAIAAEAAQACAAAAAAAJAAEAAQACAAAAAAAKAAEAAQACAAAAAAALAAEAAQACAAAAAAAMAAEAAQACAAAAAAANAAEAAQACAAAAAAAOAAEAAQAEAAEAAAAOAAIAAQABAAAAAAAOAAMAAQABAAAAAAAOAAQAAQABAAAAAAAOAAUAAQADAAAAAAAPAAUAAQACAAAAAAAQAAUAAQACAAAAAAARAAUAAQACAAAAAAASAAUAAQACAAAAAAATAAUAAQACAAAAAAAUAAUAAQACAAAAAAAVAAUAAQACAAAAAAAWAAUAAQACAAAAAAAXAAUAAQACAAAAAAAYAAUAAQACAAAAAAAGAAoAAQACAAAAAAAHAAoAAQACAAAAAAAIAAoAAQACAAAAAAAJAAoAAQACAAAAAAAKAAoAAQACAAAAAAALAAoAAQACAAAAAAAMAAoAAQACAAAAAAANAAoAAQACAAAAAAAOAAoAAQAGAAEAAAAOAAkAAQABAAAAAAAOAAgAAQABAAAAAAAOAAcAAQABAAAAAAAOAAYAAQABAAAAAAASAAAADwAAAAAAAAASAAEADwAAAAEAAAASAAIADwAAAAIAAAASAAMADwAAAAMAAAASAAQADwAAAAQAAAATAAAADwABAAAAAAATAAEADwABAAEAAAATAAIADwABAAIAAAATAAMADwABAAMAAAATAAQADwABAAQAAAAUAAAAFgAaAAEAAAAUAAEADwACAAEAAAAUAAIADwACAAIAAAAUAAMADwACAAMAAAAUAAQADwACAAQAAAAAAAAAFgAaAAAAAAABAP//FgAaAAAAAAABAAAAFgAaAAEAAAACAP//FgAaAAAAAAACAAAAFgAaAAEAAAADAP//FgAaAAAAAAADAAAAFgAaAAEAAAAEAP//FgAaAAAAAAAEAAAAFgAaAAEAAAAFAP//FgAaAAAAAAAFAAAAFgAaAAEAAAAGAP//FgAaAAAAAAAGAAAAFgAaAAEAAAAHAP//FgAaAAAAAAAHAAAAFgAaAAEAAAAIAP//FgAaAAAAAAAIAAAAFgAaAAEAAAAJAP//FgAaAAAAAAAJAAAAFgAaAAEAAAAKAP//FgAaAAAAAAAKAAAAFgAaAAEAAAALAP//FgAaAAAAAAALAAAAFgAaAAEAAAAMAP//FgAaAAAAAAAMAAAAFgAaAAEAAAANAP//FgAaAAAAAAANAAAAFgAaAAEAAAAOAP//FgAaAAAAAAAOAAAAFgAaAAEAAAAPAP//FgAaAAAAAAAPAAAAFgAaAAEAAAAQAP//FgAaAAAAAAAQAAAAFgAaAAEAAAARAP//FgAaAAAAAAARAAAAFgAaAAEAAAAUAP//FgAaAAAAAAAVAP//FgAaAAAAAAAVAAAAFgAaAAEAAAAWAP//FgAaAAAAAAAWAAAAFgAaAAEAAAAXAP//FgAaAAAAAAAXAAAAFgAaAAEAAAAXAAwAFgAaAAAAAAAXAA0AFgAaAAEAAAAWAAwAFgAaAAAAAAAWAA0AFgAaAAEAAAAVAAwAFgAaAAAAAAAVAA0AFgAaAAEAAAAUAAwAFgAaAAAAAAAUAA0AFgAaAAEAAAATAAwAFgAaAAAAAAATAA0AFgAaAAEAAAASAAwAFgAaAAAAAAASAA0AFgAaAAEAAAARAAwAFgAaAAAAAAARAA0AFgAaAAEAAAAQAAwAFgAaAAAAAAAQAA0AFgAaAAEAAAAPAAwAFgAaAAAAAAAPAA0AFgAaAAEAAAAOAAwAFgAaAAAAAAAOAA0AFgAaAAEAAAANAAwAFgAaAAAAAAANAA0AFgAaAAEAAAAMAAwAFgAaAAAAAAAMAA0AFgAaAAEAAAALAAwAFgAaAAAAAAALAA0AFgAaAAEAAAAKAAwAFgAaAAAAAAAKAA0AFgAaAAEAAAAJAAwAFgAaAAAAAAAJAA0AFgAaAAEAAAAIAAwAFgAaAAAAAAAIAA0AFgAaAAEAAAAHAAwAFgAaAAAAAAAHAA0AFgAaAAEAAAAGAAwAFgAaAAAAAAAGAA0AFgAaAAEAAAAAAAwAFgAaAAEAAAABAAwAFgAaAAAAAAABAA0AFgAaAAEAAAACAAwAFgAaAAAAAAACAA0AFgAaAAEAAAADAAwAFgAaAAAAAAADAA0AFgAaAAEAAAAEAAwAFgAaAAAAAAAEAA0AFgAaAAEAAAAFAAwAFgAaAAAAAAAFAA0AFgAaAAEAAAAAAAoAFgAaAAEAAAAAAAsAFgAaAAAAAAAAAAgAFgAaAAEAAAAAAAkAFgAaAAAAAAAAAAcAFgAaAAAAAAAAAAQAFgAaAAAAAAAAAAUAFgAaAAEAAAAAAAIAFgAaAAAAAAAAAAMAFgAaAAEAAAAAAAEAFgAaAAEAAAATAAoAFgAVAAQAAAATAAsAFgAVAAUAAAAUAAoAFgAWAAQAAAAUAAsAFgAWAAUAAAAVAAoAFgAXAAQAAAAVAAsAFgAXAAUAAAARAAoAFgAQABwAAAARAAsAFgAQAB0AAAASAAoAFgARABwAAAASAAsAFgARAB0AAAABAAIAFgAZABwAAAABAAMAFgAZAB0AAAAIAAUAFgAHAAEAAAAIAAYAFgAHAAIAAAAJAAQAFgAIAAAAAAAJAAUAFgAIAAEAAAAJAAYAFgAIAAIAAAAKAAQAFgAJAAAAAAAKAAUAFgAJAAEAAAAKAAYAFgAJAAIAAAAVAAkAFgAGAB4AAAAYAAwAFgAaAAAAAAAYAA0AFgAaAAEAAAAYAAoAFgAaAAAAAAAYAAsAFgAaAAEAAAAYAAYAFgAaAAAAAAAYAAcAFgAaAAEAAAAYAAgAFgAaAAAAAAAYAAkAFgAaAAEAAAAYAAMAFgAaAAAAAAAYAAQAFgAaAAEAAAAYAAEAFgAaAAAAAAAYAAIAFgAaAAEAAAAYAP//FgAaAAAAAAAYAAAAFgAaAAEAAAACAAYAAQAEAAEAAAA=")
 tile_set = ExtResource("2_3tegt")
 
 [node name="Turret" type="Node2D" parent="."]
@@ -1695,7 +2163,7 @@ tile_map_data = PackedByteArray("AAABAAAAAgAAAAEAAAABAAEAAgAAAAEAAAABAAIAAgAAAAE
 tile_set = ExtResource("2_xpkr8")
 
 [node name="TowerExlusion" type="TileMapLayer" parent="."]
-tile_map_data = PackedByteArray("AAD//wUAAgAFAAEAAAAAAAUAAgACAAAAAAABAAUAAgACAAAAAAACAAUAAgACAAAAAAADAAUAAgACAAAAAAAEAAUAAgACAAAAAAAFAAUAAgAEAAEAAAAFAAYAAgABAAAAAAAFAAcAAgABAAAAAAAFAAgAAgABAAAAAAAFAAkAAgAFAAEAAAAGAAkAAgACAAAAAAAHAAkAAgACAAAAAAAIAAkAAgACAAAAAAAJAAkAAgAFAAAAAAAJAAgAAgABAAAAAAAJAAcAAgABAAAAAAAJAAYAAgABAAAAAAAJAAUAAgABAAAAAAAJAAQAAgABAAAAAAAJAAMAAgABAAAAAAAJAAIAAgADAAEAAAAKAAIAAgACAAAAAAALAAIAAgACAAAAAAAMAAIAAgACAAAAAAANAAIAAgACAAAAAAAOAAIAAgACAAAAAAAPAAIAAgACAAAAAAAQAAIAAgACAAAAAAARAAIAAgACAAAAAAASAAIAAgACAAAAAAATAAIAAgAEAAEAAAATAAMAAgABAAAAAAATAAQAAgABAAAAAAATAAUAAgABAAAAAAAVAAUAAgADAAEAAAAWAAUAAgACAAAAAAAXAAUAAgACAAAAAAAYAAUAAgACAAAAAAAZAAUAAgAGAAEAAAATAAYAAgABAAAAAAATAAcAAgABAAAAAAATAAgAAgADAAAAAAAUAAgAAgACAAAAAAAVAAgAAgAGAAEAAAAVAAcAAgABAAAAAAAVAAYAAgABAAAAAAAAAP//FQAFAAAAAAAAAAAAFQAFAAEAAAABAP//FQAGAAAAAAABAAAAFQAGAAEAAAACAP//FQAHAAAAAAACAAAAFQAHAAEAAAADAP//FQAFAAAAAAADAAAAFQAFAAEAAAAEAP//FQAGAAAAAAAEAAAAFQAGAAEAAAAFAP//FQAHAAAAAAAFAAAAFQAHAAEAAAAGAP//FQAFAAAAAAAGAAAAFQAFAAEAAAAHAP//FQAGAAAAAAAHAAAAFQAGAAEAAAAIAP//FQAHAAAAAAAIAAAAFQAHAAEAAAAJAP//FQAFAAAAAAAJAAAAFQAFAAEAAAAKAP//FQAGAAAAAAAKAAAAFQAGAAEAAAALAP//FQAHAAAAAAALAAAAFQAHAAEAAAAMAP//FQAFAAAAAAAMAAAAFQAFAAEAAAANAP//FQAGAAAAAAANAAAAFQAGAAEAAAAOAP//FQAHAAAAAAAOAAAAFQAHAAEAAAAPAP//FQAFAAAAAAAPAAAAFQAFAAEAAAAQAP//FQAGAAAAAAAQAAAAFQAGAAEAAAARAP//FQAHAAAAAAARAAAAFQAHAAEAAAASAP//FQAFAAAAAAASAAAAFQAFAAEAAAATAP//FQAGAAAAAAATAAAAFQAGAAEAAAAUAP//FQAHAAAAAAAUAAAAFQAHAAEAAAAVAP//FQAFAAAAAAAVAAAAFQAFAAEAAAAWAP//FQAGAAAAAAAWAAAAFQAGAAEAAAAXAP//FQAHAAAAAAAXAAAAFQAHAAEAAAAXAAEAFQAAAAMAAAAXAAIAFQAAAAQAAAAXAAMAFQAAAAUAAAAYAAEAFQABAAMAAAAYAAIAFQABAAQAAAAYAAMAFQABAAUAAAAYAAQAFQANAAMAAAAXAAYAFQAAAAMAAAAXAAcAFQAAAAQAAAAXAAgAFQAAAAUAAAAYAAYAFQABAAMAAAAYAAcAFQABAAQAAAAYAAgAFQABAAUAAAAXAAkAFQAAAAMAAAAXAAoAFQAAAAQAAAAXAAsAFQAAAAUAAAAYAAkAFQABAAMAAAAYAAoAFQABAAQAAAAYAAsAFQABAAUAAAAXAAwAFQAAAAMAAAAXAA0AFQAAAAQAAAAXAA4AFQAAAAUAAAAYAAwAFQABAAMAAAAYAA0AFQABAAQAAAAYAA4AFQABAAUAAAAVAAwAFQAAAAMAAAAVAA0AFQAAAAQAAAAVAA4AFQAAAAUAAAAWAAwAFQABAAMAAAAWAA0AFQABAAQAAAAWAA4AFQABAAUAAAATAAwAFQAAAAMAAAATAA0AFQAAAAQAAAATAA4AFQAAAAUAAAAUAAwAFQABAAMAAAAUAA0AFQABAAQAAAAUAA4AFQABAAUAAAARAAwAFQAAAAMAAAARAA0AFQAAAAQAAAARAA4AFQAAAAUAAAASAAwAFQABAAMAAAASAA0AFQABAAQAAAASAA4AFQABAAUAAAAPAAwAFQAAAAMAAAAPAA0AFQAAAAQAAAAPAA4AFQAAAAUAAAAQAAwAFQABAAMAAAAQAA0AFQABAAQAAAAQAA4AFQABAAUAAAANAAwAFQAAAAMAAAANAA0AFQAAAAQAAAANAA4AFQAAAAUAAAAOAAwAFQABAAMAAAAOAA0AFQABAAQAAAAOAA4AFQABAAUAAAALAAwAFQAAAAMAAAALAA0AFQAAAAQAAAALAA4AFQAAAAUAAAAMAAwAFQABAAMAAAAMAA0AFQABAAQAAAAMAA4AFQABAAUAAAAJAAwAFQAAAAMAAAAJAA0AFQAAAAQAAAAJAA4AFQAAAAUAAAAKAAwAFQABAAMAAAAKAA0AFQABAAQAAAAKAA4AFQABAAUAAAAHAAwAFQAAAAMAAAAHAA0AFQAAAAQAAAAHAA4AFQAAAAUAAAAIAAwAFQABAAMAAAAIAA0AFQABAAQAAAAIAA4AFQABAAUAAAAFAAwAFQAAAAMAAAAFAA0AFQAAAAQAAAAFAA4AFQAAAAUAAAAGAAwAFQABAAMAAAAGAA0AFQABAAQAAAAGAA4AFQABAAUAAAADAAwAFQAAAAMAAAADAA0AFQAAAAQAAAADAA4AFQAAAAUAAAAEAAwAFQABAAMAAAAEAA0AFQABAAQAAAAEAA4AFQABAAUAAAABAAwAFQAAAAMAAAABAA0AFQAAAAQAAAABAA4AFQAAAAUAAAACAAwAFQABAAMAAAACAA0AFQABAAQAAAACAA4AFQABAAUAAAD//wwAFQAAAAMAAAD//w0AFQAAAAQAAAD//w4AFQAAAAUAAAAAAAwAFQABAAMAAAAAAA0AFQABAAQAAAAAAA4AFQABAAUAAAAAAAoAFQAOAAQAAAAAAAsAFQAOAAUAAAAAAAgAFQAOAAQAAAAAAAkAFQAOAAUAAAAAAAYAFQAOAAQAAAAAAAcAFQAOAAUAAAAAAAMAFQAOAAQAAAAAAAQAFQAOAAUAAAAAAAEAFQAOAAQAAAAAAAIAFQAOAAUAAAAKAAkAAgACAAAAAAALAAkAAgACAAAAAAAMAAkAAgACAAAAAAANAAkAAgAGAAEAAAANAAgAAgABAAAAAAANAAcAAgABAAAAAAANAAYAAgADAAEAAAAOAAYAAgACAAAAAAAPAAYAAgACAAAAAAAQAAYAAgAEAAEAAAAQAAcAAgABAAAAAAAQAAgAAgABAAAAAAAQAAkAAgAFAAEAAAARAAkAAgACAAAAAAASAAkAAgACAAAAAAATAAkAAgAGAAEAAAAGAAIAFQAIAAUAAAAGAAMAFQAIAAYAAAAHAAIAFQAJAAUAAAAHAAMAFQAJAAYAAAA=")
+tile_map_data = PackedByteArray("AAAAAAUAAgACAAAAAAABAAUAAgACAAAAAAACAAUAAgACAAAAAAADAAUAAgACAAAAAAAEAAUAAgACAAAAAAAFAAUAAgAEAAEAAAAFAAYAAgABAAAAAAAFAAcAAgABAAAAAAAFAAgAAgABAAAAAAAFAAkAAgAFAAEAAAAGAAkAAgACAAAAAAAHAAkAAgACAAAAAAAIAAkAAgACAAAAAAAJAAkAAgAFAAAAAAAJAAgAAgABAAAAAAAJAAcAAgABAAAAAAAJAAYAAgABAAAAAAAJAAUAAgABAAAAAAAJAAQAAgABAAAAAAAJAAMAAgABAAAAAAAJAAIAAgADAAEAAAAKAAIAAgACAAAAAAALAAIAAgACAAAAAAAMAAIAAgACAAAAAAANAAIAAgACAAAAAAAOAAIAAgACAAAAAAAPAAIAAgACAAAAAAAQAAIAAgACAAAAAAARAAIAAgACAAAAAAASAAIAAgACAAAAAAATAAIAAgAEAAEAAAATAAMAAgABAAAAAAATAAQAAgABAAAAAAATAAUAAgABAAAAAAAVAAUAAgADAAEAAAAWAAUAAgACAAAAAAAXAAUAAgACAAAAAAAYAAUAAgACAAAAAAATAAYAAgABAAAAAAATAAcAAgABAAAAAAATAAgAAgADAAAAAAAUAAgAAgACAAAAAAAVAAgAAgAGAAEAAAAVAAcAAgABAAAAAAAVAAYAAgABAAAAAAAAAP//FQAFAAAAAAAAAAAAFQAFAAEAAAABAP//FQAGAAAAAAABAAAAFQAGAAEAAAACAP//FQAHAAAAAAACAAAAFQAHAAEAAAADAP//FQAFAAAAAAADAAAAFQAFAAEAAAAEAP//FQAGAAAAAAAEAAAAFQAGAAEAAAAFAP//FQAHAAAAAAAFAAAAFQAHAAEAAAAGAP//FQAFAAAAAAAGAAAAFQAFAAEAAAAHAP//FQAGAAAAAAAHAAAAFQAGAAEAAAAIAP//FQAHAAAAAAAIAAAAFQAHAAEAAAAJAP//FQAFAAAAAAAJAAAAFQAFAAEAAAAKAP//FQAGAAAAAAAKAAAAFQAGAAEAAAALAP//FQAHAAAAAAALAAAAFQAHAAEAAAAMAP//FQAFAAAAAAAMAAAAFQAFAAEAAAANAP//FQAGAAAAAAANAAAAFQAGAAEAAAAOAP//FQAHAAAAAAAOAAAAFQAHAAEAAAAPAP//FQAFAAAAAAAPAAAAFQAFAAEAAAAQAP//FQAGAAAAAAAQAAAAFQAGAAEAAAARAP//FQAHAAAAAAARAAAAFQAHAAEAAAASAP//FQAFAAAAAAASAAAAFQAFAAEAAAATAP//FQAGAAAAAAATAAAAFQAGAAEAAAAUAP//FQAHAAAAAAAUAAAAFQAHAAEAAAAVAP//FQAFAAAAAAAVAAAAFQAFAAEAAAAWAP//FQAGAAAAAAAWAAAAFQAGAAEAAAAXAP//FQAHAAAAAAAXAAAAFQAHAAEAAAAXAAEAFQAAAAMAAAAXAAIAFQAAAAQAAAAXAAMAFQAAAAUAAAAYAAEAFQABAAMAAAAYAAIAFQABAAQAAAAYAAMAFQABAAUAAAAYAAQAFQANAAMAAAAXAAYAFQAAAAMAAAAXAAcAFQAAAAQAAAAXAAgAFQAAAAUAAAAYAAYAFQABAAMAAAAYAAcAFQABAAQAAAAYAAgAFQABAAUAAAAXAAkAFQAAAAMAAAAXAAoAFQAAAAQAAAAXAAsAFQAAAAUAAAAYAAkAFQABAAMAAAAYAAoAFQABAAQAAAAYAAsAFQABAAUAAAAXAAwAFQAAAAMAAAAXAA0AFQAAAAQAAAAXAA4AFQAAAAUAAAAYAAwAFQABAAMAAAAYAA0AFQABAAQAAAAYAA4AFQABAAUAAAAVAAwAFQAAAAMAAAAVAA0AFQAAAAQAAAAVAA4AFQAAAAUAAAAWAAwAFQABAAMAAAAWAA0AFQABAAQAAAAWAA4AFQABAAUAAAATAAwAFQAAAAMAAAATAA0AFQAAAAQAAAATAA4AFQAAAAUAAAAUAAwAFQABAAMAAAAUAA0AFQABAAQAAAAUAA4AFQABAAUAAAARAAwAFQAAAAMAAAARAA0AFQAAAAQAAAARAA4AFQAAAAUAAAASAAwAFQABAAMAAAASAA0AFQABAAQAAAASAA4AFQABAAUAAAAPAAwAFQAAAAMAAAAPAA0AFQAAAAQAAAAPAA4AFQAAAAUAAAAQAAwAFQABAAMAAAAQAA0AFQABAAQAAAAQAA4AFQABAAUAAAANAAwAFQAAAAMAAAANAA0AFQAAAAQAAAANAA4AFQAAAAUAAAAOAAwAFQABAAMAAAAOAA0AFQABAAQAAAAOAA4AFQABAAUAAAALAAwAFQAAAAMAAAALAA0AFQAAAAQAAAALAA4AFQAAAAUAAAAMAAwAFQABAAMAAAAMAA0AFQABAAQAAAAMAA4AFQABAAUAAAAJAAwAFQAAAAMAAAAJAA0AFQAAAAQAAAAJAA4AFQAAAAUAAAAKAAwAFQABAAMAAAAKAA0AFQABAAQAAAAKAA4AFQABAAUAAAAHAAwAFQAAAAMAAAAHAA0AFQAAAAQAAAAHAA4AFQAAAAUAAAAIAAwAFQABAAMAAAAIAA0AFQABAAQAAAAIAA4AFQABAAUAAAAFAAwAFQAAAAMAAAAFAA0AFQAAAAQAAAAFAA4AFQAAAAUAAAAGAAwAFQABAAMAAAAGAA0AFQABAAQAAAAGAA4AFQABAAUAAAADAAwAFQAAAAMAAAADAA0AFQAAAAQAAAADAA4AFQAAAAUAAAAEAAwAFQABAAMAAAAEAA0AFQABAAQAAAAEAA4AFQABAAUAAAABAAwAFQAAAAMAAAABAA0AFQAAAAQAAAABAA4AFQAAAAUAAAACAAwAFQABAAMAAAACAA0AFQABAAQAAAACAA4AFQABAAUAAAD//wwAFQAAAAMAAAD//w0AFQAAAAQAAAD//w4AFQAAAAUAAAAAAAwAFQABAAMAAAAAAA0AFQABAAQAAAAAAA4AFQABAAUAAAAAAAoAFQAOAAQAAAAAAAsAFQAOAAUAAAAAAAgAFQAOAAQAAAAAAAkAFQAOAAUAAAAAAAYAFQAOAAQAAAAAAAcAFQAOAAUAAAAAAAMAFQAOAAQAAAAAAAQAFQAOAAUAAAAAAAEAFQAOAAQAAAAAAAIAFQAOAAUAAAAKAAkAAgACAAAAAAALAAkAAgACAAAAAAAMAAkAAgACAAAAAAANAAkAAgAGAAEAAAANAAgAAgABAAAAAAANAAcAAgABAAAAAAANAAYAAgADAAEAAAAOAAYAAgACAAAAAAAPAAYAAgACAAAAAAAQAAYAAgAEAAEAAAAQAAcAAgABAAAAAAAQAAgAAgABAAAAAAAQAAkAAgAFAAEAAAARAAkAAgACAAAAAAASAAkAAgACAAAAAAATAAkAAgAGAAEAAAAGAAIAFQAIAAUAAAAGAAMAFQAIAAYAAAAHAAIAFQAJAAUAAAAHAAMAFQAJAAYAAAAZAAUAAgAGAAEAAAA=")
 tile_set = ExtResource("2_xpkr8")
 
 [node name="Turret" type="Node2D" parent="."]
@@ -2887,15 +3355,17 @@ script = ExtResource("6_eou4b")
 
 
 # Scenes\SupportScenes\ProjecttileImpact_3.gd
-extends AnimatedSprite2D
+extends Sprite2D
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	play()
+	$AnimationPlayer.play("start")
+	$AnimationPlayer.animation_finished.connect(_on_animation_finished)
 
-func _on_animation_finished():
-	queue_free()
+func _on_animation_finished(anim_name: String) -> void:
+	if anim_name == "start":
+		queue_free()
 
 
 # Scenes\SupportScenes\ProjecttileImpact_3.tscn
@@ -2943,66 +3413,89 @@ script = ExtResource("6_tof64")
 
 
 # Scenes\SupportScenes\ProjecttileImpact_4.tscn
-[gd_scene load_steps=9 format=3 uid="uid://cgp1v0w7u10fc"]
+[gd_scene load_steps=6 format=3 uid="uid://cgp1v0w7u10fc"]
 
-[ext_resource type="Texture2D" uid="uid://bc8fylukj7itp" path="res://Assets/Props/range_overlay_1.png" id="1_m7gwt"]
-[ext_resource type="Texture2D" uid="uid://daj4jrwsj7qet" path="res://Assets/Props/range_overlay_2.png" id="2_em0mm"]
-[ext_resource type="Texture2D" uid="uid://cfxsqqfqklfng" path="res://Assets/Props/range_overlay_3.png" id="3_qifaa"]
-[ext_resource type="Texture2D" uid="uid://5aqncqoy4f7b" path="res://Assets/Props/range_overlay_4.png" id="4_sn3fu"]
-[ext_resource type="Texture2D" uid="uid://lau88wx3wq7w" path="res://Assets/Props/range_overlay_5.png" id="5_1dbp2"]
+[ext_resource type="Texture2D" uid="uid://d0bji27k288vg" path="res://Assets/Icons/death.png" id="1_b6oi4"]
 [ext_resource type="Script" uid="uid://b73ccrl6o3j4i" path="res://Scenes/SupportScenes/ProjecttileImpact_3.gd" id="6_a025n"]
-[ext_resource type="Texture2D" uid="uid://d25qtrghpbxut" path="res://Assets/Props/range_overlay_6.png" id="6_ujgsr"]
 
-[sub_resource type="SpriteFrames" id="SpriteFrames_nk1ym"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": ExtResource("1_m7gwt")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_em0mm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_qifaa")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_sn3fu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_1dbp2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("6_ujgsr")
-}, {
-"duration": 1.0,
-"texture": ExtResource("5_1dbp2")
-}, {
-"duration": 1.0,
-"texture": ExtResource("4_sn3fu")
-}, {
-"duration": 1.0,
-"texture": ExtResource("3_qifaa")
-}, {
-"duration": 1.0,
-"texture": ExtResource("2_em0mm")
-}, {
-"duration": 1.0,
-"texture": ExtResource("1_m7gwt")
-}],
-"loop": false,
-"name": &"Impact",
-"speed": 10.0
-}]
+[sub_resource type="Animation" id="Animation_5r76k"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
 
-[node name="ProjecttileImpact" type="AnimatedSprite2D"]
-position = Vector2(-2, 0)
-scale = Vector2(0.2, 0.2)
-sprite_frames = SubResource("SpriteFrames_nk1ym")
-animation = &"Impact"
-speed_scale = 4.0
+[sub_resource type="Animation" id="Animation_mxxgj"]
+resource_name = "start"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -100)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ikkll"]
+_data = {
+&"RESET": SubResource("Animation_5r76k"),
+&"start": SubResource("Animation_mxxgj")
+}
+
+[node name="ProjecttileImpact" type="Sprite2D"]
+texture = ExtResource("1_b6oi4")
 script = ExtResource("6_a025n")
 
-[connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_ikkll")
+}
+
+
+# Scenes\SupportScenes\road_obstacle.gd
+extends Sprite2D
+
+var damage
+var radius: int = 40
+
+func _ready() -> void:
+	add_to_group("holes")
+	self.z_index = 0
+	await get_tree().create_timer(GameConstants.ROAD_OBSTACLE).timeout
+	GameManager.list_coords_road_use_index.erase(position)
+	self.queue_free()
+
+
+# Scenes\SupportScenes\road_obstacle.tscn
+[gd_scene load_steps=4 format=3 uid="uid://dvn2ogv3mifti"]
+
+[ext_resource type="Texture2D" uid="uid://dkk8dhxbyneu7" path="res://Assets/Effect/pit.png" id="1_jurp7"]
+[ext_resource type="Script" uid="uid://dxnn3qxy1ioqq" path="res://Scenes/SupportScenes/road_obstacle.gd" id="2_h3y6u"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h3y6u"]
+size = Vector2(40, 30)
+
+[node name="RoadObstacle" type="Sprite2D"]
+texture = ExtResource("1_jurp7")
+script = ExtResource("2_h3y6u")
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("RectangleShape2D_h3y6u")
 
 
 # Scenes\SupportScenes\shop.gd
@@ -3378,7 +3871,6 @@ func setup(id):
 		else:
 			list_nodes[i].queue_free()
 			size[1] -= 30
-			
 	for i in range(len(GameConstants.DATA_TOWER[id].text)):
 		list_node[i].get_node("HValue/NameValue").text = GameConstants.DATA_TOWER[id].name_label[i]
 		list_node[i].get_node("HText/VBoxContainer/TextureRect").texture = load(GameConstants.DATA_TOWER[id].img[i])
@@ -4207,9 +4699,8 @@ var level: int
 @onready var openLvlBut = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button
 @onready var abilityText = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/RichTextLabel, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/RichTextLabel]
 @onready var abilityTextLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/Label, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/Label]
-@onready var abilityLock = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer/NinePatchRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer/NinePatchRect]
+@onready var abilityLockAll = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock]
 @onready var abilityBut = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/VBoxContainer/HBoxContainer2/Button, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/VBoxContainer/HBoxContainer2/Button]
-@onready var abilityColor = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/Lock/ColorRect, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/Lock/ColorRect]
 @onready var close = $Panel/Close
 var prise: int
 
@@ -4258,10 +4749,7 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityBut[i].add_theme_stylebox_override("normal", style)
 			abilityBut[i].pressed.connect(open_ability.bind(i, number))
 		elif data["ability"][i]:
-			abilityColor[i].queue_free()
-			abilityBut[i].queue_free()
-			abilityLock[i].queue_free()
-			abilityTextLock[i].queue_free()
+			abilityLockAll[i].queue_free()
 
 func buy(prise, number):
 	DataManager.data_money_spend(prise)
@@ -4710,6 +5198,57 @@ vertical_alignment = 1
 autowrap_mode = 3
 
 
+# Scenes\SupportScenes\water_overlay.tscn
+[gd_scene load_steps=2 format=3 uid="uid://y37qwyr33v1f"]
+
+[ext_resource type="Texture2D" uid="uid://cvn4y7fxdrps8" path="res://Assets/Tilesheet/ME_Singles_Terrains_and_Fences_48x48_Props_Water_2.png" id="1_34hhk"]
+
+[node name="WaterOverlay" type="Sprite2D"]
+scale = Vector2(1.25, 1.25)
+texture = ExtResource("1_34hhk")
+
+
+# Scenes\SupportScenes\water_overlay_p.tscn
+[gd_scene load_steps=2 format=3 uid="uid://bjatq27nljsb5"]
+
+[ext_resource type="Texture2D" uid="uid://c2asehxb6j8o7" path="res://Assets/Tilesheet/ME_Singles_Terrains_and_Fences_.png" id="1_ghgsp"]
+
+[node name="WaterOverlayP" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-16, 0)
+texture = ExtResource("1_ghgsp")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("1_ghgsp")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+rotation = 0.785398
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("1_ghgsp")
+
+
+# Scenes\SupportScenes\water_overlay_t.tscn
+[gd_scene load_steps=2 format=3 uid="uid://cdoecua838p55"]
+
+[ext_resource type="Texture2D" uid="uid://c2asehxb6j8o7" path="res://Assets/Tilesheet/ME_Singles_Terrains_and_Fences_.png" id="1_axlok"]
+
+[node name="WaterOverlayT" type="Node2D"]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-16, 0)
+texture = ExtResource("1_axlok")
+
+[node name="Sprite2D2" type="Sprite2D" parent="."]
+position = Vector2(16, 0)
+texture = ExtResource("1_axlok")
+
+[node name="Sprite2D3" type="Sprite2D" parent="."]
+position = Vector2(0, -16)
+texture = ExtResource("1_axlok")
+
+
 # Scenes\Turrets\AreaTower.gd
 extends TowerBase
 class_name AreaTower
@@ -4735,7 +5274,7 @@ func _apply_damage() -> void:
 		if is_instance_valid(e):
 			dam = critical_damage()
 			inflicted += dam
-			e.on_hit(dam, 0, GameConstants.TowerType.AREA, current_lvl)
+			e.on_hit(dam, 0, GameConstants.TowerType.AREA)
 			alredy += 1
 			emit_signal("damage_inflicted_changed", inflicted)
 		if alredy >= target:
@@ -4747,6 +5286,66 @@ func critical_damage():
 		return damage_all + (DataManager.critical_damage * damage_all) / 100
 	else:
 		return damage_all
+		
+func _initialize() -> void:
+	super._initialize()
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+
+# Scenes\Turrets\BullyTower.gd
+extends TowerBase
+class_name BillyTower
+
+var damage: float = 0.0
+var damage_new: float = damage
+var critical_damage_all: float = 0.0
+var bonus_damage: int = 0
+var bonus_speed_attack: int = 0
+var rang = RandomNumberGenerator.new()
+var rage: int = 0
+var rof_new: float = rof
+
+func fire() -> void:
+	if not block_damage:
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(rof_new).timeout
+		is_ready = true
+	
+func _apply_damage() -> void:
+	if enemy:
+		if (rage == 0 and len(ResourceManager.list_active_enemy) > 5 and rang.randi_range(0, 100) <= 15) or (rage == 0 and enemy is Enemy_boss):
+			rage = 1
+			rage_interval()
+			rage_attack()
+		elif rage in [0, 1]:
+			rage_attack()
+
+func rage_attack():
+	critical_damage_all = critical_damage()
+	inflicted += critical_damage_all
+	enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
+	emit_signal("damage_inflicted_changed", inflicted)
+	
+func rage_interval():
+	rof_new = rof / 100 / (100 - bonus_speed_attack)
+	damage_new = damage_new / 100 / (100 - bonus_damage)
+	self.get_node("Turret").modulate = Color(0.7, 0.7, 0.7)
+	await get_tree().create_timer(10).timeout
+	self.get_node("Turret").modulate = Color(0.9, 0.9, 0.9)
+	rage = 2
+	await get_tree().create_timer(3).timeout
+	self.get_node("Turret").modulate = Color(1, 1, 1)
+	rage = 0
+	rof_new = rof
+	damage_new = damage
+	
+func critical_damage():
+	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		return damage_new + (DataManager.critical_damage * damage_new) / 100
+	else:
+		return damage_new
 		
 func _initialize() -> void:
 	super._initialize()
@@ -4819,7 +5418,7 @@ func _apply_damage() -> void:
 	if enemy:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, current_lvl)
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
@@ -4857,12 +5456,12 @@ func _apply_damage() -> void:
 	if enemy:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, current_lvl)
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
 		emit_signal("damage_inflicted_changed", inflicted)
 	if self.ability[0] and randi_range(0, 100) <= GameConstants.CHANCE_AGAIN_DAMAGE:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, current_lvl)
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN,)
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
@@ -4874,6 +5473,127 @@ func critical_damage():
 func _initialize() -> void:
 	super._initialize()
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+
+# Scenes\Turrets\HangmanTower.gd
+extends TowerBase
+class_name HangmanTower
+
+var damage: float = 0.0
+var health_level: float = 0
+var critical_damage_all
+var flag_dib: bool = false
+
+func fire() -> void:
+	if not block_damage:
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
+	
+func _apply_damage() -> void:
+	if enemy:
+		if enemy.hp < enemy.base_hp / 100.0 * health_level and (enemy is Enemy or self.ability[1]):
+			critical_damage_all = enemy.hp
+			enemy.on_hit(critical_damage_all, 5, GameConstants.TowerType.GUN)
+			flag_dib = true
+		else:
+			critical_damage_all = critical_damage()
+			if flag_dib and self.ability[0]:
+				critical_damage_all *= GameConstants.TURRET_9_ABILITY_0
+			else:
+				enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
+			flag_dib = false
+		inflicted += critical_damage_all
+		emit_signal("damage_inflicted_changed", inflicted)
+
+func critical_damage():
+	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		return damage + (DataManager.critical_damage * damage) / 100
+	else:
+		return damage
+		
+func _initialize() -> void:
+	super._initialize()
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+
+
+# Scenes\Turrets\MinotaurTower.gd
+extends TowerBase
+class_name MinotaurTower
+
+var damage: float = 0.0
+var interval: float = 0.0
+var trap_damage: float = 0.0
+var trap_damage_end: float = 0.0
+var critical_damage_all
+var one_attack: bool = false
+
+func _initialize() -> void:
+	super._initialize()
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+	upgrade_system.upgrades.connect(mode)
+	mode()
+
+func mode() -> void:
+	trap_damage_end = trap_damage
+	if self.ability[0]:
+		var up = 0
+		for i in range(len(ResourceManager.list_turret[7])):
+			up += ResourceManager.list_turret[7][i].current_lvl + 1
+		for i in range(len(ResourceManager.list_turret[7])):
+			ResourceManager.list_turret[7][i].trap_damage_end += GameConstants.round_to_dec(trap_damage / 100.0 * (GameConstants.TURRET_8_ABILITY_0[1] + up * GameConstants.TURRET_8_ABILITY_0[2]), 2)
+			ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 0.5, 0.5)
+			ResourceManager.list_turret[7][i].get_node("Panel").visible = true
+			ResourceManager.list_turret[7][i].get_node("Panel/Label").text = str(up)
+		var awaiting = GameConstants.TURRET_8_ABILITY_0[0]
+		if self.ability[1]:
+			awaiting += up
+			if awaiting > GameConstants.TURRET_8_ABILITY_1:
+				awaiting = GameConstants.TURRET_8_ABILITY_1
+		await get_tree().create_timer(awaiting).timeout
+		for i in range(len(ResourceManager.list_turret[7])):
+			ResourceManager.list_turret[7][i].trap_damage_end = trap_damage
+			ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 1, 1)
+			ResourceManager.list_turret[7][i].get_node("Panel").visible = false
+	
+func fire() -> void:
+	if not block_damage:
+		if not one_attack:
+			one_attack = true
+			_apply_damage_obstacle()
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(rof).timeout
+		is_ready = true
+	
+func _apply_damage() -> void:
+	if enemy:
+		critical_damage_all = critical_damage()
+		inflicted += critical_damage_all
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
+		emit_signal("damage_inflicted_changed", inflicted)
+
+func critical_damage():
+	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		return damage + (DataManager.critical_damage * damage) / 100
+	else:
+		return damage
+
+func _apply_damage_obstacle() -> void:
+	if len(GameManager.list_coords_road_use_index) < len(GameManager.LIST_COORDS_ROAD):
+		var road_obstacle = load("res://Scenes/SupportScenes/road_obstacle.tscn").instantiate()
+		var pos = GameManager.LIST_COORDS_ROAD[randi_range(0, len(GameManager.LIST_COORDS_ROAD) - 1)]
+		while pos in GameManager.list_coords_road_use_index:
+			pos = GameManager.LIST_COORDS_ROAD[randi_range(0, len(GameManager.LIST_COORDS_ROAD) - 1)]
+		GameManager.list_coords_road_use_index.append(pos)
+		road_obstacle.damage = trap_damage_end
+		road_obstacle.position = pos
+		get_tree().current_scene.get_node("Map").add_child(road_obstacle)
+	await get_tree().create_timer(interval).timeout
+	_apply_damage_obstacle()
 
 
 # Scenes\Turrets\MoneyTower.gd
@@ -4902,6 +5622,16 @@ func _on_timer_timeout():
 		var profit = income_end * GameSession.speed_game
 		GameSession.add_money(profit)
 
+func _initialize() -> void:
+	super._initialize()
+	if self.ability[1]:
+		self.get_node("Panel").visible = true
+		for i in range(len(ResourceManager.list_turret[self.id])):
+			ResourceManager.list_turret[self.id][i].get_node("Panel/Label").text = str(len(ResourceManager.list_turret[self.id]))
+			ResourceManager.list_turret[self.id][i].update()
+	for i in range(len(ResourceManager.list_turret[self.id])):
+		ResourceManager.list_turret[self.id][i].update()
+
 
 # Scenes\Turrets\MovementTower.gd
 extends TowerBase
@@ -4927,10 +5657,10 @@ func _apply_damage() -> void:
 		if self.ability[0] and randi_range(0, 100) < GameConstants.TURRET_5_ABILITY_1:
 			dist_end = enemy.progress_ratio
 		if self.ability[1] and enemy.base_hp / 10 >= enemy.hp:
-			enemy.on_hit(enemy.hp, 0, GameConstants.TowerType.GUN, current_lvl)
+			enemy.on_hit(enemy.hp, 0, GameConstants.TowerType.GUN)
 		else:
 			dist_end = distance
-			enemy.on_hit(distance, 0, GameConstants.TowerType.MOVING, current_lvl)
+			enemy.on_hit(distance, 0, GameConstants.TowerType.MOVING)
 
 
 # Scenes\Turrets\PoisonTower.gd
@@ -4954,7 +5684,7 @@ func fire() -> void:
 				"tick": tick
 			})
 			if self.ability[0]:
-				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
+				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, duration)
 			if self.ability[1]:
 				if num:
 					break
@@ -4985,14 +5715,14 @@ func fire() -> void:
 		fire_missile()
 		for e in enemy_array:
 			if is_instance_valid(e):
-				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, current_lvl, duration)
+				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, duration)
 		if ability[0]:
 			for e in enemy_array:
 				if is_instance_valid(e):
 					if ability[1] and e is Enemy_boss:
-						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA, current_lvl)
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA)
 					else:
-						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA, current_lvl)
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA)
 		await get_tree().create_timer(rof).timeout
 		is_ready = true
 
@@ -5310,7 +6040,7 @@ func _exit_tree() -> void:
 ## Система управления улучшениями башни
 extends Node
 class_name TowerUpgradeSystem
-
+signal upgrades
 ## Ссылка на башню, которой принадлежит система улучшений
 var tower: TowerBase
 
@@ -5332,6 +6062,7 @@ func upgrade() -> void:
 	if perform_upgrade():
 		apply_upgrade_effects()
 		update_ui()
+		emit_signal("upgrades")
 
 ## Проверка возможности улучшения башни
 func can_upgrade() -> bool:
@@ -5400,7 +6131,6 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 	turret.id = int(number_str) - 1
 	var data = GameConstants.DATA_TOWER[turret.id]
 	turret.position = position
-	turret.built = true
 	turret.type_attack = data.type_attack
 	turret.type_explosion = data.type_explosion
 	turret.current_lvl = 0
@@ -5413,21 +6143,13 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][int(tower_data["level"])][0]
 		else:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][0]
-	if turret.id == 5:
-		if turret.ability[1]:
-			turret.get_node("Panel").visible = true
-			for i in range(len(ResourceManager.list_turret[turret.id])):
-				ResourceManager.list_turret[turret.id][i].get_node("Panel/Label").text = str(len(ResourceManager.list_turret[turret.id]))
-				ResourceManager.list_turret[turret.id][i].update()
-		for i in range(len(ResourceManager.list_turret[turret.id])):
-			ResourceManager.list_turret[turret.id][i].update()
-
 	return turret
 
 
 # Scenes\Turrets\Turret_10T1.tscn
-[gd_scene load_steps=10 format=3 uid="uid://viq20br83ws7"]
+[gd_scene load_steps=11 format=3 uid="uid://viq20br83ws7"]
 
+[ext_resource type="Script" uid="uid://b4ppli6gv4ilo" path="res://Scenes/Turrets/BullyTower.gd" id="1_tsfhh"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsu46"]
 [ext_resource type="Texture2D" uid="uid://d3m6hmgb4gwog" path="res://Assets/Props/ground_shaker_asset/Red/Weapons/weapons.png" id="3_e5c14"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_0hxs7"]
@@ -5477,6 +6199,7 @@ _data = {
 size = Vector2(60, 60)
 
 [node name="Turret_10T1" type="Node2D"]
+script = ExtResource("1_tsfhh")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_xsu46")
@@ -5485,11 +6208,12 @@ texture = ExtResource("2_xsu46")
 texture = ExtResource("3_e5c14")
 hframes = 4
 vframes = 4
-frame = 12
+frame = 3
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_0hxs7")
 offset = Vector2(0, -75)
@@ -6187,9 +6911,10 @@ grow_vertical = 2
 
 
 # Scenes\Turrets\Turret_8T1.tscn
-[gd_scene load_steps=10 format=3 uid="uid://be7j1v7e5b6nu"]
+[gd_scene load_steps=11 format=3 uid="uid://be7j1v7e5b6nu"]
 
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_ovkfe"]
+[ext_resource type="Script" uid="uid://wi7opp33qitp" path="res://Scenes/Turrets/MinotaurTower.gd" id="1_pnhbx"]
 [ext_resource type="Texture2D" uid="uid://g34j3re212w0" path="res://Assets/Props/ground_shaker_asset/Camo/Weapons/weapons.png" id="2_pnhbx"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="3_jwsdu"]
 [ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_au358"]
@@ -6209,49 +6934,43 @@ tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.05),
 "transitions": PackedFloat32Array(1, 1),
-"update": 1,
+"update": 0,
 "values": [true, false]
-}
-
-[sub_resource type="Animation" id="Animation_pnhbx"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Turret/Muzzle:visible")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_jwsdu"]
 _data = {
-&"Fire": SubResource("Animation_ovkfe"),
-&"RESET": SubResource("Animation_pnhbx")
+&"Fire": SubResource("Animation_ovkfe")
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_au358"]
 size = Vector2(60, 60)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pnhbx"]
+bg_color = Color(0.990241, 0.452454, 0.521174, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
 [node name="Turret_8T1" type="Node2D"]
+script = ExtResource("1_pnhbx")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("1_ovkfe")
 
 [node name="Turret" type="Sprite2D" parent="."]
-scale = Vector2(0.9, 0.9)
+scale = Vector2(0.85, 0.85)
 texture = ExtResource("2_pnhbx")
 hframes = 4
 vframes = 4
-frame = 4
+frame = 3
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
+visible = false
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("3_jwsdu")
 offset = Vector2(0, -75)
@@ -6281,10 +7000,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="Panel" type="Panel" parent="."]
+visible = false
+offset_left = -30.0
+offset_top = -30.0
+offset_right = -10.0
+offset_bottom = -10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_pnhbx")
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+vertical_alignment = 1
+
 
 # Scenes\Turrets\Turret_9T1.tscn
-[gd_scene load_steps=10 format=3 uid="uid://cxtlqkib04fnk"]
+[gd_scene load_steps=11 format=3 uid="uid://cxtlqkib04fnk"]
 
+[ext_resource type="Script" uid="uid://ctlqmye3uv4w4" path="res://Scenes/Turrets/HangmanTower.gd" id="1_muwuh"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_66k3k"]
 [ext_resource type="Texture2D" uid="uid://c5qd122jic0yl" path="res://Assets/Props/ground_shaker_asset/Purple/Weapons/weapons.png" id="3_xfu48"]
 [ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="4_gyk44"]
@@ -6334,6 +7073,7 @@ _data = {
 size = Vector2(60, 60)
 
 [node name="Turret_9T1" type="Node2D"]
+script = ExtResource("1_muwuh")
 
 [node name="Base" type="Sprite2D" parent="."]
 texture = ExtResource("2_66k3k")
@@ -6342,11 +7082,12 @@ texture = ExtResource("2_66k3k")
 texture = ExtResource("3_xfu48")
 hframes = 4
 vframes = 4
-frame = 8
+frame = 3
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
 
 [node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
 scale = Vector2(0.7, 0.7)
 texture = ExtResource("4_gyk44")
 offset = Vector2(0, -75)
@@ -7578,7 +8319,6 @@ var data_wave = {
 	level_1=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6]]],
 	level_2=[[["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.5], ["Enemy_1", 0.2], ["Enemy_1", 0.6], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_1", 0.3], ["Enemy_1", 0.2]], [["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.2], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.6], ["Enemy_4", 0.3]], [["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.5], ["Enemy_3", 0.3], ["Enemy_2", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.6], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_3", 0.3], ["Enemy_2", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.4]], [["Enemy_2", 0.2], ["Enemy_4", 0.4], ["Enemy_3", 0.1], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.9], ["Enemy_1", 0.3], ["Enemy_3", 0.1], ["Enemy_1", 0.15], ["Enemy_1", 0.35], ["Enemy_4", 0.3], ["Enemy_1", 0.9], ["Enemy_4", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.1], ["Enemy_1", 0.6], ["Enemy_2", 0.3], ["Enemy_2", 0.3], ["Enemy_2", 0.9], ["Enemy_2", 0.3], ["Enemy_3", 0.3], ["Enemy_3", 0.2], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3]], [["Enemy_4", 0.2], ["Enemy_4", 0.9], ["Enemy_4", 0.2], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.2], ["Enemy_4", 0.9], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3], ["Enemy_1", 0.8], ["Enemy_1", 0.3], ["Enemy_5", 0.4], ["Enemy_5", 0.3], ["Enemy_1", 0.3], ["Enemy_2", 0.3], ["Enemy_1", 0.4], ["Enemy_3", 0.9], ["Enemy_1", 0.3], ["Enemy_1", 0.3], ["Enemy_1", 0.8], ["Enemy_4", 0.3], ["Enemy_5", 0.9], ["Enemy_1", 0.3], ["Enemy_4", 0.3]]]
 }
-
 ## Вызывается при запуске. Загружает и парсит данные
 func _ready() -> void:
 	Logger.log(Logger.LogLevel.INFO, "DataManager initializing")
@@ -7725,7 +8465,7 @@ const DATA_ENEMY = {
 		},
 	3: {
 		hp = 130,
-		speed = 200,
+		speed = 190,
 		money_death = 12
 		},
 	4: {
@@ -7735,12 +8475,12 @@ const DATA_ENEMY = {
 		},
 	5: {
 		hp = 135,
-		speed = 210,
+		speed = 200,
 		money_death = 13
 		},
 	6: {
 		hp = 200,
-		speed = 220,
+		speed = 210,
 		money_death = 13
 		},
 	7: {
@@ -7756,7 +8496,7 @@ enum TowerType {
 	SLOW = 2,        ## замедление
 	MOVING = 3,      ## перемещение
 	MONEY = 4,        ## генерация ресурсов
-	POISON = 5        ## башня яда
+	POISON = 5,        ## башня яда
 }
 ## Редкость башен
 enum Rarity {
@@ -8072,25 +8812,54 @@ const DATA_TOWER = {
 		type_explosion = 0,
 		cost_in_session = 100,
 		parametr_1 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
+			0: [50.0, 57.5, 66.12, 76.04, 87.45, 100.57, 115.66, 133.01, 152.96, 175.9],
+			1: [55.0, 63.25, 72.74, 83.65, 96.2, 110.63, 127.22, 146.3, 168.25, 193.49],
+			2: [60.5, 69.57, 80.01, 92.01, 105.81, 121.68, 139.93, 160.92, 185.06, 212.82],
+			3: [66.55, 76.53, 88.01, 101.21, 116.39, 133.85, 153.93, 177.02, 203.57, 234.11],
+			4: [73.21, 84.19, 96.82, 111.34, 128.04, 147.25, 169.34, 194.74, 223.95, 257.54],
+			5: [80.53, 92.61, 106.5, 122.47, 140.84, 161.97, 186.27, 214.21, 246.34, 283.29],
+			6: [88.58, 101.87, 117.15, 134.72, 154.93, 178.17, 204.9, 235.63, 270.97, 311.62],
+			7: [97.44, 112.06, 128.87, 148.2, 170.43, 195.99, 225.39, 259.2, 298.08, 342.79],
+			8: [107.18, 123.26, 141.75, 163.01, 187.46, 215.58, 247.92, 285.11, 327.88, 377.06],
+			9: [117.9, 135.59, 155.93, 179.32, 206.22, 237.15, 272.72, 313.63, 360.67, 414.77]
 		},
-		parametr_2 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
-		},
+		parametr_2 = [3.0, 2.94, 2.88, 2.82, 2.76, 2.7, 2.65, 2.6, 2.55, 2.5],
 		parametr_3 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
-		parametr_4 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
-		parametr_range = 4,
-		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_DURATION", "KEY_TICK"],
-		data = ["damage", "rof", "range", "duration", "tick"],
+		parametr_4 = {
+			0: [100.0, 115.0, 132.25, 152.09, 174.9, 201.13, 231.3, 266.0, 305.9, 351.78],
+			1: [110.0, 126.5, 145.47, 167.29, 192.38, 221.24, 254.43, 292.59, 336.48, 386.95],
+			2: [121.0, 139.15, 160.02, 184.02, 211.62, 243.36, 279.86, 321.84, 370.12, 425.64],
+			3: [133.1, 153.06, 176.02, 202.42, 232.78, 267.7, 307.85, 354.03, 407.13, 468.2],
+			4: [146.41, 168.37, 193.63, 222.67, 256.07, 294.48, 338.65, 389.45, 447.87, 515.05],
+			5: [161.05, 185.21, 212.99, 244.94, 281.68, 323.93, 372.52, 428.4, 492.66, 566.56],
+			6: [177.16, 203.73, 234.29, 269.43, 309.84, 356.32, 409.77, 471.24, 541.93, 623.22],
+			7: [194.87, 224.1, 257.71, 296.37, 340.83, 391.95, 450.74, 518.35, 596.1, 685.51],
+			8: [214.36, 246.51, 283.49, 326.01, 374.91, 431.15, 495.82, 570.19, 655.72, 754.08],
+			9: [235.79, 271.16, 311.83, 358.6, 412.39, 474.25, 545.39, 627.2, 721.28, 829.47]
+		},
+		parametr_5 = {
+			0: [4.0, 3.92, 3.84, 3.76, 3.68, 3.61, 3.54, 3.47, 3.4, 3.33],
+			1: [3.96, 3.88, 3.8, 3.72, 3.65, 3.58, 3.51, 3.44, 3.37, 3.3],
+			2: [3.92, 3.84, 3.76, 3.68, 3.61, 3.54, 3.47, 3.4, 3.33, 3.26],
+			3: [3.88, 3.8, 3.72, 3.65, 3.58, 3.51, 3.44, 3.37, 3.3, 3.23],
+			4: [3.84, 3.76, 3.68, 3.61, 3.54, 3.47, 3.4, 3.33, 3.26, 3.19],
+			5: [3.8, 3.72, 3.65, 3.58, 3.51, 3.44, 3.37, 3.3, 3.23, 3.17],
+			6: [3.77, 3.69, 3.62, 3.55, 3.48, 3.41, 3.34, 3.27, 3.2, 3.14],
+			7: [3.73, 3.66, 3.59, 3.52, 3.45, 3.38, 3.31, 3.24, 3.18, 3.12],
+			8: [3.69, 3.62, 3.55, 3.48, 3.41, 3.34, 3.27, 3.2, 3.14, 3.08],
+			9: [3.65, 3.58, 3.51, 3.44, 3.37, 3.3, 3.23, 3.17, 3.11, 3.05]
+		},
+		parametr_range = 3,
+		name_label = ["ед", "с", "ед", "ед", "с"],
+		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_TRAP_DAMAGE", "KEY_INTERVAL"],
+		data = ["damage", "rof", "range", "trap_damage", "interval"],
 		img = ["res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex",
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex",  
-		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex",
-		"res://Assets/Icons/tick.png"],
+		"res://Assets/Icons/damage_reduction.png",
+		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex"],
 		strateg = false,
-		queue_free = []
+		queue_free = [5]
 	},
 	8: {
 		type = Rarity.COMMON,
@@ -8098,25 +8867,41 @@ const DATA_TOWER = {
 		type_explosion = 0,
 		cost_in_session = 100,
 		parametr_1 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
+			0: [70.0, 84.0, 100.8, 120.96, 145.15, 174.18, 209.02, 250.82, 300.98, 361.18],
+			1: [77.0, 92.4, 110.88, 133.06, 159.67, 191.6, 229.92, 275.9, 331.08, 397.3],
+			2: [84.7, 101.64, 121.97, 146.36, 175.63, 210.76, 252.91, 303.49, 364.19, 437.03],
+			3: [93.17, 111.8, 134.16, 160.99, 193.19, 231.83, 278.2, 333.84, 400.61, 480.73],
+			4: [102.49, 122.99, 147.59, 177.11, 212.53, 255.04, 306.05, 367.26, 440.71, 528.85],
+			5: [112.74, 135.29, 162.35, 194.82, 233.78, 280.54, 336.65, 403.98, 484.78, 581.74],
+			6: [124.01, 148.81, 178.57, 214.28, 257.14, 308.57, 370.28, 444.34, 533.21, 639.85],
+			7: [136.41, 163.69, 196.43, 235.72, 282.86, 339.43, 407.32, 488.78, 586.54, 703.85],
+			8: [150.05, 180.06, 216.07, 259.28, 311.14, 373.37, 448.04, 537.65, 645.18, 774.22],
+			9: [165.06, 198.07, 237.68, 285.22, 342.26, 410.71, 492.85, 591.42, 709.7, 851.64]
 		},
 		parametr_2 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
+			0: [10.0, 11.0, 12.1, 13.31, 14.64, 16.1, 17.71, 19.48, 21.43, 23.57],
+			1: [10.2, 11.22, 12.34, 13.57, 14.93, 16.42, 18.06, 19.87, 21.86, 24.05],
+			2: [10.4, 11.44, 12.58, 13.84, 15.22, 16.74, 18.41, 20.25, 22.28, 24.51],
+			3: [10.61, 11.67, 12.84, 14.12, 15.53, 17.08, 18.79, 20.67, 22.74, 25.01],
+			4: [10.82, 11.9, 13.09, 14.4, 15.84, 17.42, 19.16, 21.08, 23.19, 25.51],
+			5: [11.04, 12.14, 13.35, 14.69, 16.16, 17.78, 19.56, 21.52, 23.67, 26.04],
+			6: [11.26, 12.39, 13.63, 14.99, 16.49, 18.14, 19.95, 21.95, 24.14, 26.55],
+			7: [11.49, 12.64, 13.9, 15.29, 16.82, 18.5, 20.35, 22.39, 24.63, 27.09],
+			8: [11.72, 12.89, 14.18, 15.6, 17.16, 18.88, 20.77, 22.85, 25.14, 27.65],
+			9: [11.95, 13.14, 14.45, 15.9, 17.49, 19.24, 21.16, 23.28, 25.61, 28.17]
 		},
-		parametr_3 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
-		parametr_4 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
+		parametr_3 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
+		parametr_4 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
 		parametr_range = 4,
-		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_DURATION", "KEY_TICK"],
-		data = ["damage", "rof", "range", "duration", "tick"],
+		name_label = ["ед", "ед", "с", "ед"],
+		text = ["KEY_DAMAGE", "KEY_HEALTH_LEVEL_FINISHING", "KEY_RELOAD", "KEY_RANGE"],
+		data = ["damage", "health_level", "rof", "range"],
 		img = ["res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex",
+		"res://Assets/Icons/death.png", 
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
-		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex",  
-		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex",
-		"res://Assets/Icons/tick.png"],
+		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = false,
-		queue_free = []
+		queue_free = [3, 4, 5]
 	},
 	9: {
 		type = Rarity.COMMON,
@@ -8157,17 +8942,29 @@ const MONEY_BEGIN: Array = [400000, 10400, 800]
 const MODIFIER_VALUE: float = 1.0
 ## Количество максимального уровня турелей путём улучшения карт
 const NUMBER_LVL_TURRET_CARD: int = 9
-## Количество боссов врагов
-const NUMBER_BOSS_ENEMY: int = 1
 ## Сколько критического урона добавить за покупку карты
 const ADD_CRITICAL_DAMAGE_BUY_CARD: int = 1
 ## Сколько критического урона добавить за улучшение карты
 const ADD_CRITICAL_DAMAGE_UP_CARD: int = 1
+## Сколько секунд существует препятствия на дороге
+const ROAD_OBSTACLE: int = 3
+## Насколько % движется враг при существовании препятсвия
+const OBSTACLE_SLOW: float = 0.7
 
 const DATA_ENEMY_BOSS = {
 	0: {
-		hp = 1000,
+		hp = 2000,
 		speed = 80,
+		money_death = 20.0
+		},
+	1: {
+		hp = 1000,
+		speed = 220,
+		money_death = 20.0
+		},
+	2: {
+		hp = 1300,
+		speed = 100,
 		money_death = 20.0
 		}
 }
@@ -8180,42 +8977,77 @@ const TURRET_5_ABILITY_0: int = 10
 const TURRET_5_ABILITY_1: int = 10
 const TURRET_7_ABILITY_0: int = 5
 const TURRET_7_ABILITY_1: int = 5
+const TURRET_8_ABILITY_0: Array = [10, 50, 1]
+const TURRET_8_ABILITY_1: int = 30
+const TURRET_9_ABILITY_0: int = 3
 
 
 # Systems\GameManager.gd
-## Управляет глобальным состоянием игры: старт, пауза, завершение
+## Управляет разметкой списка плиток дороги
 extends Node
 
-signal game_started
-signal game_paused
-signal game_over
+var main_scene
+var target_terrain_names = ["Road1", "Road2", "Road3", "Road4"]
+var target_terrain_set = 0
+var LIST_COORDS_ROAD
+var list_coords_road_use_index = []
+var water_scene = preload("res://Scenes/SupportScenes/water_overlay.tscn")
+var water_scene_t = preload("res://Scenes/SupportScenes/water_overlay_t.tscn")
+var water_scene_p = preload("res://Scenes/SupportScenes/water_overlay_p.tscn")
 
-## Запускает новую игру с выбранным уровнем кампании
-func start_game(level: int) -> void:
-	GameSession.current_level = level
-	GameSession.current_wave = 0
-	ResourceManager.current_money_in_game_session = GameConstants.MONEY_BEGIN[level]
-	emit_signal("game_started")
-	Logger.log(Logger.LogLevel.INFO, "Game started", {"level": level})
+func get_road_coords(scene: Node2D):
+	main_scene = scene
+	LIST_COORDS_ROAD = get_matching_tile_coords(main_scene.get_node("Map/TowerExlusion"))
+	
+func get_matching_tile_coords(tilemaplayer: TileMapLayer) -> Array:
+	var result = []
+	var tileset = tilemaplayer.tile_set
+	var cell_coords = []
+	var cell_set = {}
 
-## Ставит игру на паузу
-func pause_game() -> void:
-	get_tree().paused = true
-	emit_signal("game_paused")
-	Logger.log(Logger.LogLevel.INFO, "Game paused")
+	# Собираем все клетки дороги
+	for cell in tilemaplayer.get_used_cells():
+		var tile_data = tilemaplayer.get_cell_tile_data(cell)
+		if tile_data == null:
+			continue
+		var terrain_id = tile_data.get_terrain()
+		if terrain_id == -1:
+			continue
+		var terrain_name = tileset.get_terrain_name(target_terrain_set, terrain_id)
+		if terrain_name in target_terrain_names:
+			cell_coords.append(cell)
+			cell_set[cell] = true
 
-## Завершает текущую сессию игры
-func end_game() -> void:
-	emit_signal("game_over")
-	Logger.log(Logger.LogLevel.INFO, "Game over", {
-		"score": ResourceManager.current_score,
-		"wave": GameSession.current_wave
-	})
+	# Находим стартовую клетку (у которой только 1 сосед)
+	var start_cell = null
+	for cell in cell_coords:
+		var neighbors = 0
+		for offset in [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]:
+			if cell_set.has(cell + offset):
+				neighbors += 1
+		if neighbors == 1:
+			start_cell = cell
+			break
 
-## Позволяет вернуться в главное меню
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	if start_cell == null:
+		push_error("Не найден старт маршрута!")
+		return []
+
+	# BFS обход
+	var visited = {}
+	var queue = [start_cell]
+	visited[start_cell] = true
+
+	while queue.size() > 0:
+		var current = queue.pop_front()
+		result.append(tilemaplayer.map_to_local(current))
+		for offset in [Vector2i(1,0), Vector2i(-1,0), Vector2i(0,1), Vector2i(0,-1)]:
+			var next = current + offset
+			if cell_set.has(next) and not visited.has(next):
+				visited[next] = true
+				queue.append(next)
+
+	return result
 
 
 # Systems\GameSession.gd
@@ -8316,6 +9148,10 @@ var best_score: int = 0
 var current_score: int = 0
 ## Построенные башни по id башни
 var list_turret: Array = [[], [], [], [], [], [], [], [], [], []]
+## Модификация скорости от 3 боса
+var speed_modifer: int = 1
+## Список активных 
+var list_active_enemy: Array = []
 
 ## Добавить золото в игровую сессию
 func add_money(value: int) -> void:

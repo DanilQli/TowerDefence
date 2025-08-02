@@ -19,7 +19,6 @@ func setup(id):
 		else:
 			list_nodes[i].queue_free()
 			size[1] -= 30
-			
 	for i in range(len(GameConstants.DATA_TOWER[id].text)):
 		list_node[i].get_node("HValue/NameValue").text = GameConstants.DATA_TOWER[id].name_label[i]
 		list_node[i].get_node("HText/VBoxContainer/TextureRect").texture = load(GameConstants.DATA_TOWER[id].img[i])

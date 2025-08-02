@@ -51,7 +51,7 @@ scale = Vector2(0.85, 0.85)
 texture = ExtResource("2_pnhbx")
 hframes = 4
 vframes = 4
-frame = 4
+frame = 3
 
 [node name="Muzzle" type="Marker2D" parent="Turret"]
 visible = false

@@ -57,6 +57,9 @@ KEY_NAME_TURRET_5,Хронопетля,Chronopetl
 KEY_NAME_TURRET_6,Доход,Income
 KEY_NAME_TURRET_7,Отравитель,Poisoner
 KEY_NAME_TURRET_8,Минотавр,Minotaur
+KEY_NAME_TURRET_9,Палач,Hangman
+KEY_NAME_TURRET_10,Задира,Bully
+KEY_HEALTH_LEVEL_FINISHING,Процент здоровья для добивания,The percentage of health to finish off
 KEY_BUY_FOR,Купить за,Buy for
 KEY_UP_0,Улучшайте пушку,Upgrade cannon
 KEY_UP_1,Улучшайте ракету,Upgrade rocket
@@ -111,4 +114,10 @@ KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравител
 KEY_TURRET8_DESC,"Минотавр атакует [color='blue']первую цель[/color] на дороге. Периодически вызывается в случайной области [color='blue']землетрясение[/color], в радиусе которого монстры замедляются и получают урон","The minotaur is attacking [color='blue'] the first target[/color] on the road. An earthquake [/color] is periodically triggered in a random area [color='blue'], in the radius of which monsters slow down and take damage."
 KEY_TURRET8_UP0_DESC,"При повышении уровня, появлении Минотавра начисляется заряд ярости, и все Минотавры входят в режим [color='blue']берсерка[/color] на [color='blue']10с[/color]. В этом режиме урон вызываемых землетрясений увеличивается на [color='blue']50%[/color] и дополнительно на 1% за каждый заряд ярости","When a Minotaur level up, a rage charge is charged, and all Minotaurs enter [color='blue']berserk mode[/color] by [color='blue']10c[/color]. In this mode, the damage caused by earthquakes increases by [color='blue']50%[/color] and an additional 1% for each rage charge"
 KEY_TURRET8_UP1_DESC,Каждый заряд ярости увеличивает действия режима [color='blue']берсерка[/color] на [color='blue']1[/color] секунду. Максимум [color='blue']30[/color] секунд,Each rage charge increases the effects of the [color='blue']Berserker mode[/color] by [color='blue']1[/color] second. Maximum [color='blue']30[/color] seconds
-KEY_TURRET9_DESC,Добивает врагов со здоровьём меньше  [color='blue'][/color],
+KEY_TURRET9_DESC,"Если здоровье врага меньше определенно уровня Палач добивает его, не действует на боссов","If the enemy's health is less than a certain level, the Executioner finishes him off, does not affect bosses."
+KEY_TURRET9_UP0_DESC,После добивания врага следующий выстрел нанесёт урон на [color='blue']300%[/color] больше,"After finishing off the enemy, the next shot will cause damage by [color='blue']300%[/color] more"
+KEY_TURRET9_UP1_DESC,Открывает возможность добивать боссов,Opens up the opportunity to finish off bosses
+KEY_TURRET10_DESC,"При наличии на поле более [color='blue']5[/color] врагов с вероятностью [color='blue']15%[/color] может прийти в состояние [color='blue']ярости[/color], получая бонус к [color='blue']скорости атаки, урону[/color]. Всегда в [color='blue']ярости[/color] в битве с боссами. После завершения [color='blue']ярости[/color] не может атаковать и повторно применять ярость в течении [color='blue']3[/color]с.","If there are more than [color='blue']5[/color] enemies on the field, with a probability of [color='blue']15%[/color] can enter a state of [color='blue']rage[/color], receiving a bonus to [color='blue']attack speed, damage[/color]. Always in [color='blue']rage[/color] in boss battles. After completing [color='blue']rage, [/color] cannot attack and reapply rage for [color='blue']3[/color]seconds."
+KEY_TURRET10_UP0_DESC,С шансом [color='blue']5%[/color] Задира может совершить усиленный удар при атаке босса. Такой удар наносит [color='blue']1000%[/color] урона от атаки Задиры,With a [color='blue']5%[/color] chance of  The bully can make an enhanced hit when attacking the boss. This strike deals [color='blue']1000%[/color] damage from the Bully's attack
+KEY_TURRET10_UP1_DESC,Урон Задиры увеличивается на [color='blue']10%[/color] за каждого монстра на дороге. Максимальный бонус - [color='blue']100%[/color],Bully's damage increases by [color='blue']10%[/color] for each monster on the road. The maximum bonus is [color='blue']100%[/color]
+
