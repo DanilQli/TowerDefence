@@ -54,9 +54,9 @@ if __name__ == "__main__":
                         output_file.write("\n\n")  # Разделитель между файлами
                     except Exception as e:
                         print(f"⚠️ Не удалось прочитать файл: {normalized_path} ({e})")                 
-    cons = 30.0
-    mn_lvl = 1.06
-    mn = 1.03
+    cons = 50.0
+    mn_lvl = 1.16
+    mn = 1.11
     m_1 = [[cons],[round(cons * mn, 2)],[round(cons * mn * mn, 2)],
            [round(cons * mn * mn * mn, 2)],[round(cons * mn * mn * mn * mn, 2)],
            [round(cons * mn * mn * mn * mn * mn, 2)],[round(cons * mn * mn * mn * mn * mn * mn, 2)],

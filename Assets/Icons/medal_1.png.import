@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cu1y1j2ugfx20"
-path="res://.godot/imported/turret_01_mk4.png-7a8522dcf9038a4b413a4e63da2e5d4a.ctex"
+uid="uid://pvmingum46it"
+path="res://.godot/imported/medal_1.png-6a1393d3b3e16c898df755d5064ce45f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Props/ground_shaker_asset/Camo/Weapons/turret_01_mk4.png"
-dest_files=["res://.godot/imported/turret_01_mk4.png-7a8522dcf9038a4b413a4e63da2e5d4a.ctex"]
+source_file="res://Assets/Icons/medal_1.png"
+dest_files=["res://.godot/imported/medal_1.png-6a1393d3b3e16c898df755d5064ce45f.ctex"]
 
 [params]
 

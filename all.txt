@@ -2813,6 +2813,265 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 
+# Scenes\SupportScenes\details_promotion.gd
+extends Control
+
+
+func setup(id) -> void:
+	get_node("VBoxContainer/Panel/Close").pressed.connect(close)
+	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/Label2").text = str(int(DataManager.promotion_progress_level[id]))
+	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/Label4").text = str(GameConstants.NUMBER_MINI_PROMOTION)
+	get_node("VBoxContainer/Panel/VBoxContainer/TextureProgressBar").max_value = GameConstants.NUMBER_MINI_PROMOTION
+	get_node("VBoxContainer/Panel/VBoxContainer/TextureProgressBar").value = int(DataManager.promotion_progress_level[id])
+	var k = 0
+	for i in get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer2").get_children():
+		i.get_node("VBoxContainer/VBoxContainer/Label").text = tr("KEY_PROMOTION_DESC_" + str(id + 1)) + str(GameConstants.NUMBER_LEVEL_PROMOTION[id][DataManager.promotion_progress_level[id]])
+		i.get_node("VBoxContainer/VBoxContainer/HBoxContainer/NinePatchRect").texture = load("res://Assets/Icons/medal_" + str(id + 1) + ".png")
+		i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer/Label").text = str(GameConstants.NUMBER_EXPERIENCE_PROMOTION[id][k])
+		if k < DataManager.promotion_progress_level[id]:
+			i.get_node("ColorRect").queue_free()
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label2").queue_free()
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label3").queue_free()
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label4").queue_free()
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label1").text = tr("KEY_COMPLETED") +  " " + str(DataManager.promotion_progress_level_data_end[id][k])
+		elif k == DataManager.promotion_progress_level[id]:
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label2").text = str(int(DataManager.promotion_progress[id]))
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label4").text = str(int(GameConstants.NUMBER_LEVEL_PROMOTION[id][DataManager.promotion_progress_level[id]]))
+		else:
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label1").text = ""
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label2").text = ""
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label3").text = ""
+			i.get_node("VBoxContainer/VBoxContainer2/HBoxContainer2/Label4").text = ""
+		k += 1
+	
+func close():
+	UiManager.menu_object.visible = true
+	self.queue_free()
+
+
+# Scenes\SupportScenes\details_promotion.tscn
+[gd_scene load_steps=6 format=3 uid="uid://bm1jwuy45mwjk"]
+
+[ext_resource type="Script" uid="uid://cnfm2vvbpyhd" path="res://Scenes/SupportScenes/details_promotion.gd" id="1_xy0jm"]
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="2_51rt1"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="3_aqtxs"]
+[ext_resource type="PackedScene" uid="uid://b4kdvfwebjy5u" path="res://Scenes/SupportScenes/details_promotion_panel.tscn" id="4_gwu0k"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="5_8rde0"]
+
+[node name="DetailsPromotion" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xy0jm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_right = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_51rt1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "Детали достижения"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "Прогресс:"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.823529, 0.882353, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "22"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "50"
+vertical_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="VBoxContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 5.0
+nine_patch_stretch = true
+texture_under = ExtResource("3_aqtxs")
+texture_progress = ExtResource("3_aqtxs")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(1, 0.945098, 0.247059, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 2
+alignment = 1
+
+[node name="DetailsPromotionPanel" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gwu0k")]
+layout_mode = 2
+
+[node name="DetailsPromotionPanel2" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gwu0k")]
+layout_mode = 2
+
+[node name="DetailsPromotionPanel3" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gwu0k")]
+layout_mode = 2
+
+[node name="DetailsPromotionPanel4" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gwu0k")]
+layout_mode = 2
+
+[node name="DetailsPromotionPanel5" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer2" instance=ExtResource("4_gwu0k")]
+layout_mode = 2
+
+[node name="Close" type="Button" parent="VBoxContainer/Panel"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+offset_left = 1334.0
+offset_top = 10.0
+offset_right = 1390.0
+offset_bottom = 66.0
+icon = ExtResource("5_8rde0")
+
+
+# Scenes\SupportScenes\details_promotion_panel.tscn
+[gd_scene load_steps=2 format=3 uid="uid://b4kdvfwebjy5u"]
+
+[ext_resource type="Texture2D" uid="uid://dcenp42xfn4s7" path="res://Assets/Icons/experience.png" id="1_l87yt"]
+
+[node name="DetailsPromotionPanel" type="Panel"]
+custom_minimum_size = Vector2(180, 350)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(180, 180)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "ЗОЛОТОЙ СТРАТЕГ4444444"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 2
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("1_l87yt")
+
+[node name="Label" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "320"
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/VBoxContainer2"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label1" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "KEY_PROGRESS"
+
+[node name="Label2" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.823529, 0.882353, 0, 1)
+text = "2"
+
+[node name="Label3" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "/"
+
+[node name="Label4" type="Label" parent="VBoxContainer/VBoxContainer2/HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.9, 0.9, 0.9, 1)
+text = "8"
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.3)
+
+
 # Scenes\SupportScenes\EndGame.tscn
 [gd_scene load_steps=2 format=3 uid="uid://e73ml6c52id0"]
 
@@ -3224,6 +3483,116 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 
+# Scenes\SupportScenes\panel_promotion.gd
+extends Button
+
+func setup(id):
+	id = int(id)
+	self.pressed.connect(details.bind(id))
+	get_node("VBoxContainer/Label").text = tr("KEY_PROMOTION_NAME_" + str(id + 1))
+	get_node("VBoxContainer/HBoxContainer/NinePatchRect").texture = load("res://Assets/Icons/medal_" + str(id + 1) + ".png")
+	if int(DataManager.promotion_progress_level[id]) == 0:
+		get_node("HBoxContainer2").queue_free()
+	else:
+		get_node("ColorRect").queue_free()
+		get_node("HBoxContainer2/Label1").text = str(int(DataManager.promotion_progress_level[id]))
+	get_node("HBoxContainer2/Label3").text = str(GameConstants.NUMBER_MINI_PROMOTION)
+	get_node("VBoxContainer/TextureProgressBar").value = int(DataManager.promotion_progress[id])
+	get_node("VBoxContainer/TextureProgressBar").max_value = int(GameConstants.NUMBER_LEVEL_PROMOTION[id][DataManager.promotion_progress_level[id]])
+
+func details(id):
+	UiManager.menu_object.visible = false
+	var obj = load("res://Scenes/SupportScenes/details_promotion.tscn").instantiate()
+	obj.setup(id)
+	get_tree().current_scene.add_child(obj)
+
+
+# Scenes\SupportScenes\panel_promotion.tscn
+[gd_scene load_steps=3 format=3 uid="uid://bqkkn3i2y1goa"]
+
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="1_vtj3i"]
+[ext_resource type="Script" uid="uid://c4no658grq7gb" path="res://Scenes/SupportScenes/panel_promotion.gd" id="1_y6m0d"]
+
+[node name="PanelPromotion" type="Button"]
+custom_minimum_size = Vector2(160, 190)
+offset_right = 160.0
+offset_bottom = 190.0
+script = ExtResource("1_y6m0d")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "ЗОЛОТОЙ СТРАТЕГ4444444"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 5.0
+nine_patch_stretch = true
+texture_under = ExtResource("1_vtj3i")
+texture_progress = ExtResource("1_vtj3i")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(1, 0.945098, 0.247059, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 20.0
+grow_horizontal = 0
+
+[node name="Label1" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.823529, 0.882353, 0, 1)
+text = "4"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="HBoxContainer2"]
+layout_mode = 2
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0.3)
+
+
 # Scenes\SupportScenes\ProjecttileImpact_1.gd
 extends AnimatedSprite2D
 
@@ -3463,6 +3832,267 @@ script = ExtResource("6_a025n")
 libraries = {
 &"": SubResource("AnimationLibrary_ikkll")
 }
+
+
+# Scenes\SupportScenes\promotion.gd
+extends Control
+
+func _ready() -> void:
+	_connect_signals()
+	var ob
+	var all = 0
+	for i in range(GameConstants.NUMBER_PROMOTION):
+		ob = load("res://Scenes/SupportScenes/panel_promotion.tscn").instantiate()
+		ob.setup(i)
+		get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/ScrollContainer/HFlowContainer").add_child(ob)
+		all += int(DataManager.promotion_progress_level[i])
+	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer/Label2").text = str(all)
+	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer/Label4").text = str(GameConstants.NUMBER_PROMOTION * GameConstants.NUMBER_MINI_PROMOTION)
+
+func _connect_signals() -> void:
+	get_node("VBoxContainer/Panel/Close").pressed.connect(close)
+	
+func close() -> void:
+	get_parent().get_node("MarginContainer2").visible = true
+	queue_free()
+
+
+# Scenes\SupportScenes\promotion.tscn
+[gd_scene load_steps=8 format=3 uid="uid://2d27x014nmsq"]
+
+[ext_resource type="Script" uid="uid://bhtd08g56e5tw" path="res://Scenes/SupportScenes/promotion.gd" id="1_aubtw"]
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_oasyw"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="2_mqfuk"]
+[ext_resource type="Texture2D" uid="uid://dp51tpg2nhyec" path="res://Assets/Props/towerDefense_tile205.png" id="3_a8hxh"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="4_3f03l"]
+[ext_resource type="Texture2D" uid="uid://dcenp42xfn4s7" path="res://Assets/Icons/experience.png" id="5_aubtw"]
+[ext_resource type="Texture2D" uid="uid://cw61bv3pdt55o" path="res://Assets/Icons/magnifier.png" id="5_fhot7"]
+
+[node name="Promotion" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_aubtw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 100.0
+offset_right = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Panel" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 600)
+layout_mode = 2
+theme_override_styles/panel = ExtResource("1_oasyw")
+
+[node name="VBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 50.0
+offset_top = 50.0
+offset_right = -50.0
+offset_bottom = -50.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+
+[node name="HBoxContainerLevel" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
+custom_minimum_size = Vector2(400, 0)
+layout_mode = 2
+
+[node name="TextureButton" type="Button" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 2
+texture = ExtResource("5_fhot7")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("3_a8hxh")
+
+[node name="Label1" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_LVL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "5"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("5_aubtw")
+
+[node name="Label1" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+theme_override_colors/font_color = Color(0.823529, 0.882353, 0, 1)
+text = "460"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "1000"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+value = 5.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_3f03l")
+texture_progress = ExtResource("4_3f03l")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(1, 0.945098, 0.247059, 1)
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_vertical = 1
+text = "KEY_LEVEL_REWARDS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer2"]
+layout_mode = 2
+size_flags_horizontal = 3
+alignment = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer2/HBoxContainer"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+texture = ExtResource("5_fhot7")
+
+[node name="HSeparator" type="HSeparator" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainerAll" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="Label1" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "KEY_ACHIEVEMENTS_COMPLETED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.823529, 0.882353, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "22"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label3" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "/"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label4" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 26
+text = "50"
+vertical_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="HFlowContainer" type="HFlowContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerAll/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+
+[node name="Close" type="Button" parent="VBoxContainer/Panel"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 2
+offset_left = 1334.0
+offset_top = 10.0
+offset_right = 1390.0
+offset_bottom = 66.0
+icon = ExtResource("2_mqfuk")
 
 
 # Scenes\SupportScenes\road_obstacle.gd
@@ -5304,7 +5934,13 @@ var bonus_speed_attack: int = 0
 var rang = RandomNumberGenerator.new()
 var rage: int = 0
 var rof_new: float = rof
+var dop_mn: float = 0.0
 
+func _initialize() -> void:
+	super._initialize()
+	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+	rof_new = rof
+	
 func fire() -> void:
 	if not block_damage:
 		is_ready = false
@@ -5315,41 +5951,52 @@ func fire() -> void:
 	
 func _apply_damage() -> void:
 	if enemy:
-		if (rage == 0 and len(ResourceManager.list_active_enemy) > 5 and rang.randi_range(0, 100) <= 15) or (rage == 0 and enemy is Enemy_boss):
+		if self.ability[1]:
+			dop_mn = len(ResourceManager.list_active_enemy)
+			if dop_mn > GameConstants.TURRET_10_ABILITY_1[1]:
+				dop_mn = 1 + GameConstants.TURRET_10_ABILITY_1[0] * GameConstants.TURRET_10_ABILITY_1[1] / 100.0
+		if rage in [0, 1] and self.ability[0] and enemy is Enemy_boss and rang.randi_range(0, 100) <= GameConstants.TURRET_10_ABILITY_0[0]:
+			critical_damage_all = critical_damage() * GameConstants.TURRET_10_ABILITY_0[1] / 100.0
+			rage_attack()
+		elif (rage == 0 and len(ResourceManager.list_active_enemy) > 5 and rang.randi_range(0, 100) <= 15) or (rage == 0 and enemy is Enemy_boss):
 			rage = 1
 			rage_interval()
+			critical_damage_all = critical_damage()
 			rage_attack()
 		elif rage in [0, 1]:
+			critical_damage_all = critical_damage()
 			rage_attack()
 
 func rage_attack():
-	critical_damage_all = critical_damage()
 	inflicted += critical_damage_all
 	enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
 	emit_signal("damage_inflicted_changed", inflicted)
 	
 func rage_interval():
-	rof_new = rof / 100 / (100 - bonus_speed_attack)
-	damage_new = damage_new / 100 / (100 - bonus_damage)
+	rof_new = rof / (1 + bonus_speed_attack / 100.0)
+	damage_new = damage * (1 + bonus_damage / 100.0)
 	self.get_node("Turret").modulate = Color(0.7, 0.7, 0.7)
 	await get_tree().create_timer(10).timeout
-	self.get_node("Turret").modulate = Color(0.9, 0.9, 0.9)
+	self.get_node("Turret").modulate = Color(0.1, 0.1, 0.1)
 	rage = 2
+	rof_new = 3
 	await get_tree().create_timer(3).timeout
 	self.get_node("Turret").modulate = Color(1, 1, 1)
-	rage = 0
 	rof_new = rof
 	damage_new = damage
+	rage = 0
 	
 func critical_damage():
 	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return damage_new + (DataManager.critical_damage * damage_new) / 100
+		if self.ability[1]:
+			return (damage_new + (DataManager.critical_damage * damage_new) / 100) * dop_mn
+		else:
+			return damage_new + (DataManager.critical_damage * damage_new) / 100
 	else:
-		return damage_new
-		
-func _initialize() -> void:
-	super._initialize()
-	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
+		if self.ability[1]:
+			return damage_new * dop_mn
+		else:
+			return damage_new
 
 
 # Scenes\Turrets\CrossbowTower.gd
@@ -7833,6 +8480,11 @@ vertical_alignment = 1
 extends Control
 
 @onready var crit_label = get_node("Panel/HBoxContainer/Label2")
+@onready var but_1 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_1")
+@onready var but_2 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_2")
+@onready var but_3 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_3")
+@onready var but_4 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4")
+@onready var but_5 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5")
 
 func _ready():
 	# Загрузка языковых настроек
@@ -7847,6 +8499,11 @@ func _ready():
 	# Обновление отображения денег
 	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
+	but_1.pressed.connect(on_new_game_pressed)
+	but_2.pressed.connect(shop)
+	but_3.pressed.connect(settings)
+	but_4.pressed.connect(promotion)
+	but_5.pressed.connect(on_quit_pressed)
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
@@ -7855,6 +8512,11 @@ func on_new_game_pressed():
 
 func shop():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_node("MarginContainer2").visible = false
+	get_node(".").add_child(UiManager.menu_object)
+
+func promotion():
+	UiManager.menu_object = load("res://Scenes/SupportScenes/promotion.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 
@@ -7869,13 +8531,23 @@ func show_critical_damage():
 
 
 # Scenes\UI\Menu.tscn
-[gd_scene load_steps=6 format=3 uid="uid://b4se4a745v858"]
+[gd_scene load_steps=11 format=3 uid="uid://b4se4a745v858"]
 
 [ext_resource type="Script" uid="uid://twi5usir1kp6" path="res://Scenes/UI/Menu.gd" id="1_01eto"]
 [ext_resource type="PackedScene" uid="uid://bno3pc87e5wpg" path="res://Scenes/Maps/map_0.tscn" id="2_nd48n"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_7tt24"]
 [ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="3_ai51v"]
 [ext_resource type="Texture2D" uid="uid://wcvmoo2k7220" path="res://Assets/Icons/critical_damage.png" id="4_t06ot"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t06ot"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_s6sq0"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6487p"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_v3kjt"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_3hayu"]
 
 [node name="Menu" type="Control"]
 layout_mode = 3
@@ -7942,7 +8614,7 @@ text = "%"
 vertical_alignment = 1
 
 [node name="MarginContainer2" type="MarginContainer" parent="."]
-custom_minimum_size = Vector2(0, 450)
+custom_minimum_size = Vector2(0, 510)
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -7965,6 +8637,8 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_top = -40.0
+offset_bottom = 40.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 50
@@ -7975,14 +8649,15 @@ theme_override_constants/margin_bottom = 50
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer2/Panel/MarginContainer"]
 custom_minimum_size = Vector2(350, 0)
 layout_mode = 2
-theme_override_constants/separation = 35
+theme_override_constants/separation = 20
 alignment = 1
 
-[node name="TextureButton_1" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="Button_1" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_t06ot")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_1"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -7995,11 +8670,12 @@ text = "KEY_NEW_GAME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButtonShop" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="Button_2" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_s6sq0")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButtonShop"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -8012,11 +8688,12 @@ text = "KEY_SHOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton_2" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="Button_3" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_6487p")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_2"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_3"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -8029,11 +8706,30 @@ text = "KEY_SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureButton_3" type="TextureButton" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="Button_4" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_v3kjt")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.937255, 0.65098, 0.54902, 1)
+theme_override_font_sizes/font_size = 36
+text = "KEY_PROMOTION"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Button_5" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(350, 70)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_3hayu")
+
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -8045,11 +8741,6 @@ theme_override_font_sizes/font_size = 36
 text = "KEY_EXIT"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_1" to="." method="on_new_game_pressed"]
-[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButtonShop" to="." method="shop"]
-[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_2" to="." method="settings"]
-[connection signal="pressed" from="MarginContainer2/Panel/MarginContainer/VBoxContainer/TextureButton_3" to="." method="on_quit_pressed"]
 
 
 # Scenes\UI\MenuSettings.gd
@@ -8305,6 +8996,9 @@ var tower_data: Dictionary = {}
 var list_wave_gift: Array = []
 var level_option: Array = []
 var data: Dictionary = {}
+var promotion_progress: Array = []
+var promotion_progress_level: Array = []
+var promotion_progress_level_data_end: Array = []
 
 var strengthening_enemies: float
 var strengthening_enemies_dop: float
@@ -8347,6 +9041,7 @@ func parse_game_data() -> void:
 	_parse_towers()
 	_parse_settings()
 	_parse_levels()
+	_parse_promotion()
 	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
@@ -8396,6 +9091,11 @@ func _parse_settings() -> void:
 ## Загружает параметры уровня кампании
 func _parse_levels() -> void:
 	level_option = data.get("LevelOption", {}).get("level", [])
+	
+func _parse_promotion() -> void:
+	promotion_progress = data.get("Promotion", {}).get("progress", [])
+	promotion_progress_level = data.get("Promotion", {}).get("progress_level", [])
+	promotion_progress_level_data_end = data.get("Promotion", {}).get("progress_level_data_end", [])
 
 ## Сохраняет текущее состояние игры в файл
 func write_file() -> void:
@@ -8441,6 +9141,11 @@ extends Node
 
 static func round_to_dec(num, digit):
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
+
+static func create_data_promotion():
+	var now = Time.get_datetime_dict_from_system()
+	var date_str = "%04d-%02d-%02d" % [now.year, now.month, now.day]
+	return date_str
 	
 ## Тип режима игры
 enum GameMode {
@@ -8909,35 +9614,75 @@ const DATA_TOWER = {
 		type_explosion = 0,
 		cost_in_session = 100,
 		parametr_1 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
+			0: [40.0, 46.0, 52.9, 60.83, 69.95, 80.44, 92.51, 106.39, 122.35, 140.7],
+			1: [44.0, 50.6, 58.19, 66.92, 76.96, 88.5, 101.77, 117.04, 134.6, 154.79],
+			2: [48.4, 55.66, 64.01, 73.61, 84.65, 97.35, 111.95, 128.74, 148.05, 170.26],
+			3: [53.24, 61.23, 70.41, 80.97, 93.12, 107.09, 123.15, 141.62, 162.86, 187.29],
+			4: [58.56, 67.34, 77.44, 89.06, 102.42, 117.78, 135.45, 155.77, 179.14, 206.01],
+			5: [64.42, 74.08, 85.19, 97.97, 112.67, 129.57, 149.01, 171.36, 197.06, 226.62],
+			6: [70.86, 81.49, 93.71, 107.77, 123.94, 142.53, 163.91, 188.5, 216.77, 249.29],
+			7: [77.95, 89.64, 103.09, 118.55, 136.33, 156.78, 180.3, 207.34, 238.44, 274.21],
+			8: [85.74, 98.6, 113.39, 130.4, 149.96, 172.45, 198.32, 228.07, 262.28, 301.62],
+			9: [94.32, 108.47, 124.74, 143.45, 164.97, 189.72, 218.18, 250.91, 288.55, 331.83]
 		},
-		parametr_2 = {
-			1: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0],
-			2: [45.0, 72.0, 115.0, 184.0, 295.0, 475.0, 765.0, 1238.0, 2006.0, 3250.0]
-		},
+		parametr_2 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
 		parametr_3 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
-		parametr_4 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
-		parametr_range = 4,
-		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_DURATION", "KEY_TICK"],
-		data = ["damage", "rof", "range", "duration", "tick"],
+		parametr_4 = {
+			0: [60.0, 63.0, 66.15, 69.46, 72.93, 76.58, 80.41, 84.43, 88.65, 93.08],
+			1: [61.2, 64.26, 67.47, 70.84, 74.38, 78.1, 82.0, 86.1, 90.41, 94.93],
+			2: [62.42, 65.54, 68.82, 72.26, 75.87, 79.66, 83.64, 87.82, 92.21, 96.82],
+			3: [63.67, 66.85, 70.19, 73.7, 77.39, 81.26, 85.32, 89.59, 94.07, 98.77],
+			4: [64.95, 68.2, 71.61, 75.19, 78.95, 82.9, 87.05, 91.4, 95.97, 100.77],
+			5: [66.24, 69.55, 73.03, 76.68, 80.51, 84.54, 88.77, 93.21, 97.87, 102.76],
+			6: [67.57, 70.95, 74.5, 78.23, 82.14, 86.25, 90.56, 95.09, 99.84, 104.83],
+			7: [68.92, 72.37, 75.99, 79.79, 83.78, 87.97, 92.37, 96.99, 101.84, 106.93],
+			8: [70.3, 73.81, 77.5, 81.38, 85.45, 89.72, 94.21, 98.92, 103.87, 109.06],
+			9: [71.71, 75.3, 79.06, 83.01, 87.16, 91.52, 96.1, 100.91, 105.96, 111.26]
+		},
+		parametr_5 = {
+			0: [70.0, 74.2, 78.65, 83.37, 88.37, 93.67, 99.29, 105.25, 111.57, 118.26],
+			1: [72.1, 76.43, 81.02, 85.88, 91.03, 96.49, 102.28, 108.42, 114.93, 121.83],
+			2: [74.26, 78.72, 83.44, 88.45, 93.76, 99.39, 105.35, 111.67, 118.37, 125.47],
+			3: [76.49, 81.08, 85.94, 91.1, 96.57, 102.36, 108.5, 115.01, 121.91, 129.22],
+			4: [78.79, 83.52, 88.53, 93.84, 99.47, 105.44, 111.77, 118.48, 125.59, 133.13],
+			5: [81.15, 86.02, 91.18, 96.65, 102.45, 108.6, 115.12, 122.03, 129.35, 137.11],
+			6: [83.58, 88.59, 93.91, 99.54, 105.51, 111.84, 118.55, 125.66, 133.2, 141.19],
+			7: [86.09, 91.26, 96.74, 102.54, 108.69, 115.21, 122.12, 129.45, 137.22, 145.45],
+			8: [88.67, 93.99, 99.63, 105.61, 111.95, 118.67, 125.79, 133.34, 141.34, 149.82],
+			9: [91.33, 96.81, 102.62, 108.78, 115.31, 122.23, 129.56, 137.33, 145.57, 154.3]
+		},
+		parametr_range = 3,
+		name_label = ["ед", "с", "ед", "%", "%"],
+		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE", "KEY_DURATION", "KEY_UP_ATTACK_SPEED"],
+		data = ["damage", "rof", "range", "bonus_damage", "bonus_speed_attack"],
 		img = ["res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex",
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex",  
-		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex",
-		"res://Assets/Icons/tick.png"],
-		strateg = false,
-		queue_free = []
+		"res://Assets/Icons/damage_reduction.png",
+		"res://Assets/Icons/damage_reduction.png"],
+		strateg = true,
+		queue_free = [5]
 	},
 }
 ## Количество турелей в игре
 const NUMBER_TURRET: int = 10
 ## Количество максимального уровня турелей в игре
 const NUMBER_LVL_TURRET: int = 10
+## Количество достиженей
+const NUMBER_PROMOTION: int = 7
+## Количество уровней в достижении
+const NUMBER_MINI_PROMOTION: int = 5
 ## Общее количество уровней
 const NUMBER_LEVEL: int = 3
 ## Начальное количество денег/ресурсов на каждом уровне
 const MONEY_BEGIN: Array = [400000, 10400, 800]
+## Прогресс достижений для каждого уровня достижения
+const NUMBER_LEVEL_PROMOTION: Array = [[1, 10, 50, 100, 1000], [50, 250, 500, 5000, 50000],
+	[1, 3, 5, 10, 50], [2, 3, 5, 7], [10, 50, 100, 250, 500], [2, 3, 5, 10, 15], [1, 5, 10, 25, 50]]
+## Количество опыта-достижения для каждого уровня достижения
+const NUMBER_EXPERIENCE_PROMOTION: Array = [[10, 50, 100, 500, 1000], [20, 50, 100, 500, 1000],
+	[10, 50, 150, 300, 800], [10, 25, 50, 200], [10, 50, 100, 250, 500], [10, 25, 50, 100, 500], 
+	[10, 50, 100, 250, 500]]
 ## Модификатор наград (например для подарков)
 const MODIFIER_VALUE: float = 1.0
 ## Количество максимального уровня турелей путём улучшения карт
@@ -8980,6 +9725,8 @@ const TURRET_7_ABILITY_1: int = 5
 const TURRET_8_ABILITY_0: Array = [10, 50, 1]
 const TURRET_8_ABILITY_1: int = 30
 const TURRET_9_ABILITY_0: int = 3
+const TURRET_10_ABILITY_0: Array = [5, 1000]
+const TURRET_10_ABILITY_1: Array = [10, 8]
 
 
 # Systems\GameManager.gd
@@ -9072,8 +9819,8 @@ var current_money_in_game_session: float
 ## Очки за сессию
 var current_game_score: int = 0
 
-## Здоровье базы
-var base_health: int = 10
+## Максимальное здоровье базы в игре
+var base_health: int = 100
 
 ## Увеличивает очки игрока
 func add_game_score(value: int) -> void:

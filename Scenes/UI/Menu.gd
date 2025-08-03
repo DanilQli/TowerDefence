@@ -1,6 +1,11 @@
 extends Control
 
 @onready var crit_label = get_node("Panel/HBoxContainer/Label2")
+@onready var but_1 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_1")
+@onready var but_2 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_2")
+@onready var but_3 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_3")
+@onready var but_4 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4")
+@onready var but_5 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5")
 
 func _ready():
 	# Загрузка языковых настроек
@@ -15,6 +20,11 @@ func _ready():
 	# Обновление отображения денег
 	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
+	but_1.pressed.connect(on_new_game_pressed)
+	but_2.pressed.connect(shop)
+	but_3.pressed.connect(settings)
+	but_4.pressed.connect(promotion)
+	but_5.pressed.connect(on_quit_pressed)
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
@@ -23,6 +33,11 @@ func on_new_game_pressed():
 
 func shop():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
+	get_node("MarginContainer2").visible = false
+	get_node(".").add_child(UiManager.menu_object)
+
+func promotion():
+	UiManager.menu_object = load("res://Scenes/SupportScenes/promotion.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 

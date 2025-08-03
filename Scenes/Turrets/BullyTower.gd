@@ -51,11 +51,11 @@ func rage_interval():
 	rof_new = rof / (1 + bonus_speed_attack / 100.0)
 	damage_new = damage * (1 + bonus_damage / 100.0)
 	self.get_node("Turret").modulate = Color(0.7, 0.7, 0.7)
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(10).timeout
 	self.get_node("Turret").modulate = Color(0.1, 0.1, 0.1)
 	rage = 2
 	rof_new = 3
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(3).timeout
 	self.get_node("Turret").modulate = Color(1, 1, 1)
 	rof_new = rof
 	damage_new = damage

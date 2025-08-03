@@ -5,6 +5,9 @@ var tower_data: Dictionary = {}
 var list_wave_gift: Array = []
 var level_option: Array = []
 var data: Dictionary = {}
+var promotion_progress: Array = []
+var promotion_progress_level: Array = []
+var promotion_progress_level_data_end: Array = []
 
 var strengthening_enemies: float
 var strengthening_enemies_dop: float
@@ -47,6 +50,7 @@ func parse_game_data() -> void:
 	_parse_towers()
 	_parse_settings()
 	_parse_levels()
+	_parse_promotion()
 	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
@@ -96,6 +100,11 @@ func _parse_settings() -> void:
 ## Загружает параметры уровня кампании
 func _parse_levels() -> void:
 	level_option = data.get("LevelOption", {}).get("level", [])
+	
+func _parse_promotion() -> void:
+	promotion_progress = data.get("Promotion", {}).get("progress", [])
+	promotion_progress_level = data.get("Promotion", {}).get("progress_level", [])
+	promotion_progress_level_data_end = data.get("Promotion", {}).get("progress_level_data_end", [])
 
 ## Сохраняет текущее состояние игры в файл
 func write_file() -> void:
