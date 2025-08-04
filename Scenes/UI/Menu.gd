@@ -25,6 +25,8 @@ func _ready():
 	but_3.pressed.connect(settings)
 	but_4.pressed.connect(promotion)
 	but_5.pressed.connect(on_quit_pressed)
+	
+	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4/NinePatchRect").visible = check_promotion()
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
@@ -49,3 +51,10 @@ func on_quit_pressed():
 
 func show_critical_damage():
 	crit_label.text = str(DataManager.critical_damage)
+
+func check_promotion():
+	for i in range(len(DataManager.promotion_progress_level)):
+		if len(str(DataManager.promotion_progress_level_data_end[i][int(DataManager.promotion_progress_level[i])])) < 4:
+			return true
+	return false
+	

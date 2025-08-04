@@ -9,6 +9,9 @@ var promotion_progress: Array = []
 var promotion_progress_level: Array = []
 var promotion_progress_level_data_end: Array = []
 
+var promotion_stars: int
+var promotion_level: int
+
 var strengthening_enemies: float
 var strengthening_enemies_dop: float
 var strengthening_money: float
@@ -105,9 +108,12 @@ func _parse_promotion() -> void:
 	promotion_progress = data.get("Promotion", {}).get("progress", [])
 	promotion_progress_level = data.get("Promotion", {}).get("progress_level", [])
 	promotion_progress_level_data_end = data.get("Promotion", {}).get("progress_level_data_end", [])
+	promotion_stars = int(data.get("Promotion", {}).get("stars", 0))
+	promotion_level = int(data.get("Promotion", {}).get("level", 0))
 
 ## Сохраняет текущее состояние игры в файл
 func write_file() -> void:
+	_update_data_before_save()
 	var file = FileAccess.open("res://Files/resurse.json", FileAccess.WRITE)
 	if file == null:
 		Logger.log(Logger.LogLevel.ERROR, "Failed to open resurse.json for writing")
@@ -122,6 +128,12 @@ func _update_data_before_save() -> void:
 		data["Resources"] = {}
 	data["Resources"]["money"] = data_money
 	data["Resources"]["critical_damage"] = critical_damage
+	
+	data["Promotion"]["progress"] = promotion_progress
+	data["Promotion"]["progress_level"] = promotion_progress_level
+	data["Promotion"]["progress_level_data_end"] = promotion_progress_level_data_end
+	data["Promotion"]["stars"] = promotion_stars
+	data["Promotion"]["level"] = promotion_level
 	
 	if not data.has("Turrets"):
 		data["Turrets"] = {}

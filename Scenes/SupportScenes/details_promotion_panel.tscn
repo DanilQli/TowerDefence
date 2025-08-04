@@ -2,8 +2,10 @@
 
 [ext_resource type="Texture2D" uid="uid://dcenp42xfn4s7" path="res://Assets/Icons/experience.png" id="1_l87yt"]
 
-[node name="DetailsPromotionPanel" type="Panel"]
+[node name="DetailsPromotionPanel" type="Button"]
 custom_minimum_size = Vector2(180, 350)
+offset_right = 180.0
+offset_bottom = 350.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -92,3 +94,14 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.3)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.776471, 0.2, 0.301961)

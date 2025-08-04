@@ -11,8 +11,12 @@ func _ready() -> void:
 	self.z_index = 1
 	
 func setup(id):
+	get_node("V/HStrateg/Strateg").pressed.connect(strateg)
 	get_node("V/HStrateg/Strateg").text = list_strategy[st]
-	get_node("V/HStrateg/Strateg").disabled = GameConstants.DATA_TOWER[id].strateg
+	if GameConstants.DATA_TOWER[id].strateg:
+		get_node("V/HStrateg/Strateg").pressed.connect(strateg)
+	else:
+		get_node("V/HStrateg/Strateg").disabled = true
 	for i in range(len(list_nodes)):
 		if not i + 1 in GameConstants.DATA_TOWER[id].queue_free:
 			list_node.append(list_nodes[i])
