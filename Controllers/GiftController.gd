@@ -88,7 +88,7 @@ func gift_open(index: int, box_gift: Node):
 	if type == 0:
 		for i in range(DataManager.tower_data[turret_id]["damage"].size()):
 			DataManager.tower_data[turret_id]["damage"][i] *= up
-			DataManager.tower_data[turret_id]["damage"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["damage"][i], 3)
+			DataManager.tower_data[turret_id]["damage"][i] = MathUtils.round_to_dec(DataManager.tower_data[turret_id]["damage"][i], 3)
 		for turret in main_scene.map_node.get_node("Turret").get_children():
 			if turret.type == turret_id:
 				turret.damage = DataManager.tower_data[turret.type]["damage"][turret.current_lvl]
@@ -97,7 +97,7 @@ func gift_open(index: int, box_gift: Node):
 		up = 1 - GameConstants.MODIFIER_VALUE / 100
 		for i in range(DataManager.tower_data[turret_id]["rof"].size()):
 			DataManager.tower_data[turret_id]["rof"][i] *= up
-			DataManager.tower_data[turret_id]["rof"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["rof"][i], 3)
+			DataManager.tower_data[turret_id]["rof"][i] = MathUtils.round_to_dec(DataManager.tower_data[turret_id]["rof"][i], 3)
 		for turret in main_scene.map_node.get_node("Turret").get_children():
 			if turret.type == turret_id:
 				turret.rof = DataManager.tower_data[turret.type]["rof"][turret.current_lvl]
@@ -105,7 +105,7 @@ func gift_open(index: int, box_gift: Node):
 	elif type == 2:
 		for i in range(DataManager.tower_data[turret_id]["range"].size()):
 			DataManager.tower_data[turret_id]["range"][i] *= up
-			DataManager.tower_data[turret_id]["range"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["range"][i], 3)
+			DataManager.tower_data[turret_id]["range"][i] = MathUtils.round_to_dec(DataManager.tower_data[turret_id]["range"][i], 3)
 		for turret in main_scene.map_node.get_node("Turret").get_children():
 			if turret.type == turret_id:
 				turret.range = DataManager.tower_data[turret.type]["range"][turret.current_lvl]
@@ -113,7 +113,7 @@ func gift_open(index: int, box_gift: Node):
 	elif type == 3:
 		for i in range(DataManager.tower_data[turret_id]["distance"].size()):
 			DataManager.tower_data[turret_id]["distance"][i] *= up
-			DataManager.tower_data[turret_id]["distance"][i] = DataManager.round_to_dec(DataManager.tower_data[turret_id]["distance"][i], 3)
+			DataManager.tower_data[turret_id]["distance"][i] = MathUtils.round_to_dec(DataManager.tower_data[turret_id]["distance"][i], 3)
 
 	await get_tree().create_timer(1.5).timeout
 

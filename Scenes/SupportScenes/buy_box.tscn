@@ -1,0 +1,163 @@
+[gd_scene load_steps=8 format=3 uid="uid://bpv6snqs2p5vu"]
+
+[ext_resource type="StyleBox" uid="uid://h8efh02wivul" path="res://Scenes/SupportScenes/buy_in_shop.tres" id="1_h2ilu"]
+[ext_resource type="Texture2D" uid="uid://b6vp7pubv4dia" path="res://Assets/Icons/box_1.png" id="2_6bibn"]
+[ext_resource type="PackedScene" uid="uid://jnjis0no02te" path="res://Scenes/SupportScenes/button.tscn" id="2_8g771"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="3_ihldp"]
+[ext_resource type="Texture2D" uid="uid://dncuer20axjhj" path="res://Assets/Icons/card_buy_what_1.png" id="3_m4cyb"]
+[ext_resource type="Texture2D" uid="uid://bghrjjl5j8rw2" path="res://Assets/Icons/card_buy_what_2.png" id="4_80p5f"]
+[ext_resource type="Texture2D" uid="uid://pd0u2jg4t1k7" path="res://Assets/Icons/card_buy_what_3.png" id="5_f3ld0"]
+
+[node name="Buy" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(400, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -50.0
+offset_right = 200.0
+offset_bottom = 110.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("1_h2ilu")
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 0
+offset_left = 125.0
+offset_top = -150.0
+offset_right = 275.0
+texture = ExtResource("2_6bibn")
+expand_mode = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 5.0
+offset_bottom = 5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "KEY_BUY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Color1" type="ColorRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 100)
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color1"]
+custom_minimum_size = Vector2(70, 80)
+layout_mode = 2
+offset_right = 70.0
+offset_bottom = 80.0
+texture = ExtResource("3_m4cyb")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color1"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X 3"
+horizontal_alignment = 1
+
+[node name="Color2" type="ColorRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 100)
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color2"]
+custom_minimum_size = Vector2(70, 80)
+layout_mode = 2
+offset_right = 70.0
+offset_bottom = 80.0
+texture = ExtResource("4_80p5f")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color2"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X 3"
+horizontal_alignment = 1
+
+[node name="Color3" type="ColorRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(70, 100)
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color3"]
+custom_minimum_size = Vector2(70, 80)
+layout_mode = 2
+offset_right = 70.0
+offset_bottom = 80.0
+texture = ExtResource("5_f3ld0")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/VBoxContainer/HBoxContainer/Color3"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "X 3"
+horizontal_alignment = 1
+
+[node name="CardOf" parent="Panel/VBoxContainer" instance=ExtResource("2_8g771")]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+
+[node name="Label" parent="Panel/VBoxContainer/CardOf/Button" index="0"]
+anchor_left = 0.4
+
+[node name="Close" type="TextureButton" parent="Panel"]
+custom_minimum_size = Vector2(45, 45)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -45.0
+offset_bottom = 45.0
+grow_horizontal = 0
+texture_normal = ExtResource("3_ihldp")
+stretch_mode = 1
+
+[editable path="Panel/VBoxContainer/CardOf"]

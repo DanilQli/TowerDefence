@@ -1,8 +1,5 @@
 ## Хранит глобальные значения и перечисления
 extends Node
-
-static func round_to_dec(num, digit):
-	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 	
 ## Тип режима игры
 enum GameMode {
@@ -84,6 +81,13 @@ const PriseUnblockCard = {
 		open_card = 100,
 		upgrade_for_session = [50.0, 75.0, 125.0, 200.0, 325.0, 525.0, 850.0,1375.0, 2225.0, 3600.0]
 	},
+	Rarity.EPIC: {
+		prise_up_money = [500, 800, 500, 800, 500, 800, 500, 800, 500, 800],
+		prise_up_card = [0, 3, 5, 10, 5, 10, 5, 10, 5, 10],
+		abilit_prise = [1000, 500],
+		open_card = 100,
+		upgrade_for_session = [50.0, 75.0, 125.0, 200.0, 325.0, 525.0, 850.0,1375.0, 2225.0, 3600.0]
+	},
 	Rarity.LEGENDARY: {
 		prise_up_money = [500, 800, 500, 800, 500, 800, 500, 800, 500, 800],
 		prise_up_card = [0, 3, 5, 10, 5, 10, 5, 10, 5, 10],
@@ -136,8 +140,7 @@ const DATA_TOWER = {
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = false,
-		queue_free = [4, 5]
-	},
+		queue_free = [4, 5]},
 	1: {
 		type = Rarity.COMMON,
 		type_attack = 1,
@@ -167,8 +170,7 @@ const DATA_TOWER = {
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex",
 		"res://Assets/Icons/target.png"],
 		strateg = false,
-		queue_free = [4, 5]
-	},
+		queue_free = [4, 5]},
 	2: {
 		type = Rarity.COMMON,
 		type_attack = 0,
@@ -224,8 +226,7 @@ const DATA_TOWER = {
 		"res://Assets/Icons/damage_reduction.png",
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = false,
-		queue_free = []
-	},
+		queue_free = []},
 	3: {
 		type = Rarity.COMMON,
 		type_attack = 2,
@@ -266,8 +267,7 @@ const DATA_TOWER = {
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = false,
-		queue_free = [4, 5]
-	},
+		queue_free = [4, 5]},
 	4: {
 		type = Rarity.COMMON,
 		type_attack = 3,
@@ -295,8 +295,7 @@ const DATA_TOWER = {
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = true,
-		queue_free = [3, 4, 5]
-	},
+		queue_free = [3, 4, 5]},
 	5: {
 		type = Rarity.COMMON,
 		type_attack = 4,
@@ -322,10 +321,9 @@ const DATA_TOWER = {
 		img = ["res://Assets/Icons/intensivity.png",
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex"],
 		strateg = true,
-		queue_free = [2, 3, 4, 5]
-	},
+		queue_free = [2, 3, 4, 5]},
 	6: {
-		type = Rarity.COMMON,
+		type = Rarity.RARE,
 		type_attack = 0,
 		type_explosion = 0,
 		cost_in_session = 100,
@@ -366,10 +364,9 @@ const DATA_TOWER = {
 		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex",
 		"res://Assets/Icons/tick.png"],
 		strateg = false,
-		queue_free = [5]
-	},
+		queue_free = [5]},
 	7: {
-		type = Rarity.COMMON,
+		type = Rarity.RARE,
 		type_attack = 0,
 		type_explosion = 0,
 		cost_in_session = 100,
@@ -421,10 +418,9 @@ const DATA_TOWER = {
 		"res://Assets/Icons/damage_reduction.png",
 		"res://.godot/imported/duration.png-74d70b7c6b29a77461a04fd5357fe67f.ctex"],
 		strateg = false,
-		queue_free = [5]
-	},
+		queue_free = [5]},
 	8: {
-		type = Rarity.COMMON,
+		type = Rarity.EPIC,
 		type_attack = 0,
 		type_explosion = 0,
 		cost_in_session = 100,
@@ -463,10 +459,9 @@ const DATA_TOWER = {
 		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
 		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
 		strateg = false,
-		queue_free = [3, 4, 5]
-	},
+		queue_free = [3, 4, 5]},
 	9: {
-		type = Rarity.COMMON,
+		type = Rarity.LEGENDARY,
 		type_attack = 0,
 		type_explosion = 0,
 		cost_in_session = 100,
@@ -518,8 +513,7 @@ const DATA_TOWER = {
 		"res://Assets/Icons/damage_reduction.png",
 		"res://Assets/Icons/damage_reduction.png"],
 		strateg = true,
-		queue_free = [5]
-	},
+		queue_free = [5]},
 }
 ## Количество турелей в игре
 const NUMBER_TURRET: int = 10
@@ -541,7 +535,11 @@ const NUMBER_EXPERIENCE_PROMOTION: Array = [[10, 50, 100, 500, 1000], [20, 50, 1
 	[10, 50, 150, 300, 800], [10, 25, 50, 200, 500], [10, 50, 100, 250, 500], [10, 25, 50, 100, 500], 
 	[10, 50, 100, 250, 500]]
 ## Количество достиженийопыта необходимого для повышения уровня достижений общего
-const NEED_PROMOTION_STAR_LEVEL: Array = [10, 50, 100, 200, 250, 300, 500, 1000, 5000]
+const NEED_PROMOTION_STAR_LEVEL: Array = [10, 30, 50, 80, 120, 150, 200, 250, 300, 400, 550, 700, 850, 
+	1000, 1250, 1500]
+const PROMOTION_LEVEL: Dictionary = {1: [[0, 50], [2, [2]]], 3: [[0, 10], [2, [4, 5]]], 5: [[0, 10], [1, 20]], 
+	10: [[0, 10], [1, 30]], 15: [[0, 10], [2, 5]], 20: [[0, 10], [1, 40]], 25: [[0, 10], [1, 45]], 
+	30: [[1, 20], [2, 20]], 35: [[1, 30], [2, 20]], 40: [[0, 10], [1, 40]], 50: [[0, 10], [2, 40]]}
 ## Модификатор наград (например для подарков)
 const MODIFIER_VALUE: float = 1.0
 ## Количество максимального уровня турелей путём улучшения карт
@@ -586,3 +584,47 @@ const TURRET_8_ABILITY_1: int = 30
 const TURRET_9_ABILITY_0: int = 3
 const TURRET_10_ABILITY_0: Array = [5, 1000]
 const TURRET_10_ABILITY_1: Array = [10, 8]
+
+var LIST_TYPE_CARD = init_list_type_card()
+
+func init_list_type_card():
+	var list = [0, 0, 0, 0]
+	for i in DATA_TOWER.keys():
+		list[DATA_TOWER[i].type] += 1
+	for i in range(1, len(list)):
+		list[i] += list[i - 1] 
+	return list
+	
+func get_random_card_pairs(list_card_count: Array) -> Array:
+	var result = []
+	for i in range(list_card_count.size()):
+		var count = list_card_count[i]
+		var type_start = 1 if i == 0 else LIST_TYPE_CARD[i - 1] + 1
+		var type_end = LIST_TYPE_CARD[i]
+		var available_indexes = []
+		for idx in range(type_start, type_end + 1):
+			available_indexes.append(idx)
+		
+		if count > 3:
+			var num_card = int(count / 3 + randi() % 5)
+			num_card = clamp(num_card, 2, min(available_indexes.size(), 4))
+			available_indexes.shuffle()
+			var chosen_indexes = available_indexes.slice(0, num_card)
+			
+			# Разделяем count между картами случайно
+			var counts = []
+			var left = count
+			for j in range(num_card - 1):
+				var c = randi_range(1, left - (num_card - j - 1))
+				c = int(c)
+				counts.append(c)
+				left -= c
+			counts.append(left)
+			counts.shuffle()
+			
+			for j in range(num_card):
+				result.append([chosen_indexes[j], counts[j]])
+		else:
+			var idx = available_indexes[randi() % available_indexes.size()]
+			result.append([idx, count])
+	return result

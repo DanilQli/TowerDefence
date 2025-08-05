@@ -71,7 +71,7 @@ func _setup_buyable_turret(panel: Node, data: Dictionary, i: int) -> void:
 		panel.get_node("VBoxContainer/Button").pressed.connect(buy_turret.bind(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[i].type].open_card, i + 1))
 
 func buy_turret(prise: int, num_turret: int) -> void:
-	DataManager.data_money_spend(prise)
+	DataManager.add_data_money(-prise)
 	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
 	get_parent().get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_parent().get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)

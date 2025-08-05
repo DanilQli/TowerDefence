@@ -66,7 +66,7 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityLockAll[i].queue_free()
 
 func buy(prise, number):
-	DataManager.data_money_spend(prise)
+	DataManager.add_data_money(-prise)
 	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
@@ -93,7 +93,7 @@ func open_ability(ind, number):
 	get_tree().get_root().get_node("Menu").add_child(UiManager.menu_object)
 	
 func upgrade_card(number):
-	DataManager.data_money_spend(prise)
+	DataManager.add_data_money(-prise)
 	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_UP_CARD)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
@@ -121,10 +121,10 @@ func _create_card_of_parametr(data, id):
 				text = ""
 			if GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1] is Array:
 				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1][0])
-				text += str(GameConstants.round_to_dec(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1][0] - GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level][0], 2))
+				text += str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1][0] - GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level][0], 2))
 			else:
 				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level])
-				text += str(GameConstants.round_to_dec(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1] - GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level], 2))
+				text += str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level + 1] - GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level], 2))
 		else:
 			if GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level] is Array:
 				obj.get_node("VBoxContainer/HBoxContainer2/Label").text = str(GameConstants.DATA_TOWER[id]["parametr_" + str(i + 1)][level][0])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://2d27x014nmsq"]
+[gd_scene load_steps=9 format=3 uid="uid://2d27x014nmsq"]
 
 [ext_resource type="Script" uid="uid://bhtd08g56e5tw" path="res://Scenes/SupportScenes/promotion.gd" id="1_aubtw"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_oasyw"]
@@ -8,7 +8,6 @@
 [ext_resource type="Texture2D" uid="uid://cnllgulgrxwta" path="res://Assets/Icons/cup.png" id="4_fhot7"]
 [ext_resource type="Texture2D" uid="uid://dcenp42xfn4s7" path="res://Assets/Icons/experience.png" id="5_aubtw"]
 [ext_resource type="Texture2D" uid="uid://cw61bv3pdt55o" path="res://Assets/Icons/magnifier.png" id="5_fhot7"]
-[ext_resource type="PackedScene" uid="uid://vxe83wv0d5b7" path="res://Scenes/SupportScenes/panel_rewards.tscn" id="8_3f03l"]
 
 [node name="Promotion" type="Control"]
 layout_mode = 3
@@ -140,7 +139,7 @@ vertical_alignment = 1
 [node name="TextureProgressBar" type="TextureProgressBar" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 20)
 layout_mode = 2
-value = 5.0
+value = 100.0
 nine_patch_stretch = true
 texture_under = ExtResource("4_3f03l")
 texture_progress = ExtResource("4_3f03l")
@@ -172,12 +171,8 @@ texture = ExtResource("5_fhot7")
 layout_mode = 2
 
 [node name="HBoxContainer3" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 alignment = 1
-
-[node name="Rewards" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainerLevel/TextureButton/VBoxContainer/VBoxContainer/HBoxContainer3" instance=ExtResource("8_3f03l")]
-layout_mode = 2
 
 [node name="HBoxContainerAll" type="HBoxContainer" parent="VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2

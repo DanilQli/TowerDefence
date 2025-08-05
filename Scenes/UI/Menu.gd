@@ -54,7 +54,8 @@ func show_critical_damage():
 
 func check_promotion():
 	for i in range(len(DataManager.promotion_progress_level)):
-		if len(str(DataManager.promotion_progress_level_data_end[i][int(DataManager.promotion_progress_level[i])])) < 4:
-			return true
+		if int(DataManager.promotion_progress_level[i]) != 0:
+			if len(str(DataManager.promotion_progress_level_data_end[i][int(DataManager.promotion_progress_level[i]) - 1])) < 4:
+				return true
 	return false
 	

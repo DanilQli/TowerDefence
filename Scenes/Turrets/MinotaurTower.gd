@@ -21,7 +21,7 @@ func mode() -> void:
 		for i in range(len(ResourceManager.list_turret[7])):
 			up += ResourceManager.list_turret[7][i].current_lvl + 1
 		for i in range(len(ResourceManager.list_turret[7])):
-			ResourceManager.list_turret[7][i].trap_damage_end += GameConstants.round_to_dec(trap_damage / 100.0 * (GameConstants.TURRET_8_ABILITY_0[1] + up * GameConstants.TURRET_8_ABILITY_0[2]), 2)
+			ResourceManager.list_turret[7][i].trap_damage_end += MathUtils.round_to_dec(trap_damage / 100.0 * (GameConstants.TURRET_8_ABILITY_0[1] + up * GameConstants.TURRET_8_ABILITY_0[2]), 2)
 			ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 0.5, 0.5)
 			ResourceManager.list_turret[7][i].get_node("Panel").visible = true
 			ResourceManager.list_turret[7][i].get_node("Panel/Label").text = str(up)

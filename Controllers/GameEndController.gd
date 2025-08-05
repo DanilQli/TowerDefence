@@ -55,7 +55,7 @@ func end_game_company():
 		DataManager.data["settings_game"]["best_score"] = score
 
 		var total_money = int(score / 10) + money_dop
-		DataManager.data_money_add(total_money)
+		DataManager.add_data_money(total_money)
 		DataManager.data["Resources"]["money"] = DataManager.data_money
 
 		if not DataManager.level_option[GameSession.current_level - 1]:
@@ -74,7 +74,7 @@ func end_game():
 	if score > ResourceManager.best_score:
 		ResourceManager.best_score = score
 		DataManager.data["SettingsGame"]["best_score"] = score
-		DataManager.data_money_add(int(score / 10))
+		DataManager.add_data_money(int(score / 10))
 		DataManager.data["Resources"]["money"] = DataManager.data_money
 		DataManager.write_file()
 

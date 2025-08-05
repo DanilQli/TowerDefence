@@ -9,6 +9,7 @@ func setup(id):
 	if int(DataManager.promotion_progress_level[id]) == 0:
 		get_node("HBoxContainer2").queue_free()
 	else:
+		get_node("ColorRect2").visible = check_promotion(id)
 		get_node("ColorRect").queue_free()
 		get_node("HBoxContainer2/Label1").text = str(int(DataManager.promotion_progress_level[id]))
 	get_node("HBoxContainer2/Label3").text = str(GameConstants.NUMBER_MINI_PROMOTION)
@@ -25,6 +26,11 @@ func details(id):
 	obj.setup(id)
 	get_tree().current_scene.add_child(obj)
 
+func check_promotion(i):
+	if len(str(DataManager.promotion_progress_level_data_end[i][int(DataManager.promotion_progress_level[i]) - 1])) < 4:
+		return true
+	return false
+	
 func check_promotion_progress_level(id):
 	while int(DataManager.promotion_progress_level[id]) < GameConstants.NUMBER_MINI_PROMOTION and int(DataManager.promotion_progress[id]) >= int(GameConstants.NUMBER_LEVEL_PROMOTION[id][int(DataManager.promotion_progress_level[id])]):
 		DataManager.promotion_progress_level[id] += 1

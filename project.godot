@@ -21,10 +21,11 @@ GameConstants="*res://Systems/GameConstants.gd"
 GameManager="*res://Systems/GameManager.gd"
 MathUtils="*res://Systems/MathUtils.gd"
 WaveGenerator="*res://Systems/WaveGenerator.gd"
+UiManager="*res://Systems/UIManager.gd"
 GameSession="*res://Systems/GameSession.gd"
 Logger="*res://Systems/Logger.gd"
 ResourceManager="*res://Systems/ResourceManager.gd"
-UiManager="*res://Systems/UIManager.gd"
+TowerCards="*res://Systems/TowerCards.gd"
 
 [display]
 

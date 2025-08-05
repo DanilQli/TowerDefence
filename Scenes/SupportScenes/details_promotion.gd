@@ -43,9 +43,7 @@ func close():
 func open_promotion(id, k):
 	var now = Time.get_datetime_dict_from_system()
 	var date_str = "%04d-%02d-%02d" % [now.year, now.month, now.day]
-	print(GameConstants.NUMBER_EXPERIENCE_PROMOTION[id][k])
 	DataManager.promotion_stars += GameConstants.NUMBER_EXPERIENCE_PROMOTION[id][k]
-	print(DataManager.promotion_stars)
 	DataManager.promotion_progress_level_data_end[id][k] = date_str
 	DataManager.write_file()
 	get_tree().reload_current_scene()

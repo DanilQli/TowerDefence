@@ -62,7 +62,7 @@ func _calculate_spawn_delay(remaining_time: float, min_delay: float) -> float:
 		max_delay = remaining_time
 		
 	# Возвращаем случайное время между min_delay и max_delay
-	return GameConstants.round_to_dec(randf_range(min_delay, max_delay), 1)
+	return MathUtils.round_to_dec(randf_range(min_delay, max_delay), 1)
 	
 ## Метод генерации базового набора волн в DataManager.wave_data[0]
 func generate_default_waves(out_wave_data):

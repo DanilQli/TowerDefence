@@ -47,7 +47,7 @@ theme_override_constants/separation = 20
 [node name="Label" type="Label" parent="VBoxContainer/Panel/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 28
-text = "Детали достижения"
+text = "KEY_PROMOTION_DETAILS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -57,7 +57,7 @@ layout_mode = 2
 [node name="Label1" type="Label" parent="VBoxContainer/Panel/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 26
-text = "Прогресс:"
+text = "KEY_PROGRESS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
