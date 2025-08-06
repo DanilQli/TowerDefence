@@ -1,11 +1,14 @@
-[gd_scene load_steps=12 format=3 uid="uid://b4se4a745v858"]
+[gd_scene load_steps=15 format=3 uid="uid://b4se4a745v858"]
 
 [ext_resource type="Script" uid="uid://twi5usir1kp6" path="res://Scenes/UI/Menu.gd" id="1_01eto"]
 [ext_resource type="PackedScene" uid="uid://bno3pc87e5wpg" path="res://Scenes/Maps/map_0.tscn" id="2_nd48n"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="3_7tt24"]
 [ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="3_ai51v"]
+[ext_resource type="Texture2D" uid="uid://diw4nr3wa8jt6" path="res://Assets/Icons/Tasks/tasks.png" id="3_v3kjt"]
+[ext_resource type="Texture2D" uid="uid://68runyvbf3oi" path="res://Assets/Icons/gift_box.png" id="4_3hayu"]
 [ext_resource type="Texture2D" uid="uid://wcvmoo2k7220" path="res://Assets/Icons/critical_damage.png" id="4_t06ot"]
 [ext_resource type="Texture2D" uid="uid://lk3mm3yf4cgv" path="res://Assets/Icons/circle.png" id="6_s6sq0"]
+[ext_resource type="PackedScene" uid="uid://bro11y742rout" path="res://Scenes/SupportScenes/reward_dragon.tscn" id="11_g37sx"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_t06ot"]
 
@@ -29,24 +32,53 @@ script = ExtResource("1_01eto")
 [node name="Map_1" parent="." instance=ExtResource("2_nd48n")]
 
 [node name="Panel" type="Panel" parent="."]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 
 [node name="HBoxContainer" type="HBoxContainer" parent="Panel"]
-custom_minimum_size = Vector2(0, 30)
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 5
 alignment = 1
 
+[node name="Button1" type="Button" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/Button1"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_3hayu")
+
+[node name="Button2" type="Button" parent="Panel/HBoxContainer"]
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/Button2"]
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_v3kjt")
+
 [node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(60, 50)
 layout_mode = 2
 texture = ExtResource("3_ai51v")
 
@@ -60,7 +92,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="NinePatchRect2" type="NinePatchRect" parent="Panel/HBoxContainer"]
-custom_minimum_size = Vector2(50, 50)
+custom_minimum_size = Vector2(60, 50)
 layout_mode = 2
 texture = ExtResource("4_t06ot")
 
@@ -220,3 +252,8 @@ theme_override_font_sizes/font_size = 36
 text = "KEY_EXIT"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Reward" parent="." instance=ExtResource("11_g37sx")]
+layout_mode = 1
+anchors_preset = 11
+offset_top = 0.0

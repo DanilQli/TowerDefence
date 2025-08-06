@@ -58,6 +58,7 @@ func parse_game_data() -> void:
 	_parse_settings()
 	_parse_levels()
 	_parse_promotion()
+	_parse_tasks()
 	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
@@ -65,8 +66,20 @@ func _parse_resources() -> void:
 	data_money = data.get("Resources", {}).get("money", 0)
 	critical_damage = data.get("Resources", {}).get("critical_damage", 0)
 
+func _parse_tasks() -> void:
+	TasksManager.count_end_game = data.get("Tasks", {}).get("count_end_game", 0)
+	TasksManager.count_spend_money = data.get("Tasks", {}).get("count_spend_money", 0)
+	TasksManager.count_end_game_company = data.get("Tasks", {}).get("count_end_game_company", 0)
+	TasksManager.win_several_times = data.get("Tasks", {}).get("win_several_times", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+	TasksManager.support_damage = data.get("Tasks", {}).get("support_damage", 0)
+	TasksManager.support_win_unique_count = data.get("Tasks", {}).get("support_win_unique_count", 0)
+	TasksManager.win_one_hp_count = data.get("Tasks", {}).get("win_one_hp_count", 0)
+
 ## Добавить монеты
 func add_data_money(value: int) -> void:
+	if value < 0:
+		TasksManager.count_spend_money += value
+		TasksManager.check_tasks_not_in_game_session()
 	data_money += value
 	data["Resources"]["money"] = data_money
 	

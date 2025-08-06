@@ -197,4 +197,4 @@ func on_destroy():
 	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
 	ResourceManager.list_active_enemy.erase(self)
-	self.queue_free()
+	queue_free()

@@ -6,6 +6,8 @@ func initialize(scene: Node2D):
 	main_scene = scene
 
 func end_game_company():
+	TasksManager.count_end_game_company += 1
+	tasks()
 	get_tree().paused = true
 
 	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
@@ -67,6 +69,7 @@ func end_game_company():
 	GameSession.current_game_score = 0
 
 func end_game():
+	tasks()
 	get_tree().paused = true
 	var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
 
@@ -89,6 +92,16 @@ func end_game():
 
 	GameSession.current_game_score = 0
 
+func tasks():
+	TasksManager.win_several_times.pop_at(0)
+	if GameSession.base_health == 0:
+		TasksManager.win_one_hp_count += 1
+		TasksManager.win_several_times.append(0)
+	else:
+		TasksManager.win_several_times.append(1)
+	TasksManager.count_end_game += 1
+	TasksManager.check_tasks_in_game_session()
+	
 func restart():
 	GameSession.current_wave = 0
 	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level]
