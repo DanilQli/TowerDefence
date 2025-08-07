@@ -1,6 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://bro11y742rout"]
+[gd_scene load_steps=6 format=3 uid="uid://bro11y742rout"]
 
 [ext_resource type="Texture2D" uid="uid://65cv3lpi65gy" path="res://Assets/Bg/dragon_reward_menu.png" id="1_bifyw"]
+[ext_resource type="Script" uid="uid://yu1wd577usgp" path="res://Scenes/SupportScenes/reward_dragon.gd" id="1_l5m3t"]
 [ext_resource type="Texture2D" uid="uid://od5adhqib3ai" path="res://Assets/Icons/token.png" id="2_bifyw"]
 [ext_resource type="Texture2D" uid="uid://c81maq4xhu8wb" path="res://Assets/Icons/romb_gold.png" id="3_1uq0i"]
 
@@ -21,6 +22,7 @@ offset_top = 60.0
 offset_bottom = -10.0
 grow_horizontal = 0
 grow_vertical = 2
+script = ExtResource("1_l5m3t")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -37,7 +39,7 @@ texture = ExtResource("1_bifyw")
 expand_mode = 1
 
 [node name="Panel" type="Panel" parent="VBoxContainer/TextureRect"]
-z_index = 2
+z_index = 1
 layout_mode = 0
 offset_top = 150.0
 offset_right = 350.0

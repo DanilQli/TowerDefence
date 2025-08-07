@@ -96,6 +96,17 @@ mouse_filter = 2
 texture = ExtResource("2_whgc1")
 expand_mode = 1
 
+[node name="ColorRect" type="ColorRect" parent="Panel2/Button/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.776471, 0.2, 0.301961)
+
 [node name="Control" type="Control" parent="."]
 custom_minimum_size = Vector2(10, 100)
 layout_mode = 2
@@ -109,8 +120,8 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/fill = SubResource("StyleBoxFlat_quabt")
-value = 36.0
-fill_mode = 2
+value = 50.0
+fill_mode = 3
 show_percentage = false
 
 [node name="Romb" type="TextureRect" parent="Control"]
@@ -204,3 +215,14 @@ offset_bottom = 15.0
 mouse_filter = 2
 texture = ExtResource("2_whgc1")
 expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="Panel1/Button/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.776471, 0.2, 0.301961)

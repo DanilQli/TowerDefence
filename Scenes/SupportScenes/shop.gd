@@ -132,4 +132,5 @@ func open_shop() -> void:
 
 func close() -> void:
 	get_parent().get_node("MarginContainer2").visible = true
+	get_parent().get_node("Reward").visible = true
 	queue_free()

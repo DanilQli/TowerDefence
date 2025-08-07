@@ -16,6 +16,10 @@ var promotion_open_level: int
 var strengthening_enemies: float
 var strengthening_enemies_dop: float
 var strengthening_money: float
+var glory_vip: bool
+var glory_level: int
+var glory_progress: int
+var glory_rewards_level_get: Array = []
 ## Деньги
 var data_money: int = 0
 ## Критический урон
@@ -30,7 +34,15 @@ var data_wave = {
 func _ready() -> void:
 	TYPE_ITEMS = {0: [Callable(DataManager, "add_critical_damage"), "KEY_CRITICAL_DAMAGE", preload("res://Assets/Icons/critical_damage.png"), "res://Scenes/SupportScenes/panel_rewards_violet.tscn"],
 	1: [Callable(DataManager, "add_data_money"), "KEY_MONEY", preload("res://Assets/Button/money.png"), "res://Scenes/SupportScenes/panel_rewards_green.tscn"],
-	2: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_1.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_1_open.png")]}
+	2: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_1.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_1_open.png")],
+	3: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_2.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_2_open.png")],
+	4: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_3.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_3_open.png")],
+	5: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_4.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_4_open.png")],
+	6: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_5.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_5_open.png")],
+	7: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_6.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_6_open.png")],
+	8: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_7.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_7_open.png")],
+	9: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_8.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_8_open.png")],
+	10: [Callable(DataManager, "add_data_token"), "KEY_MONEY", preload("res://Assets/Icons/token.png"), "res://Scenes/SupportScenes/panel_rewards_green.tscn"],}
 	Logger.log(Logger.LogLevel.INFO, "DataManager initializing")
 	load_game_data()
 
@@ -59,6 +71,7 @@ func parse_game_data() -> void:
 	_parse_levels()
 	_parse_promotion()
 	_parse_tasks()
+	_parse_path_of_glory()
 	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
@@ -128,6 +141,12 @@ func _parse_promotion() -> void:
 	promotion_stars = int(data.get("Promotion", {}).get("stars", 0))
 	promotion_level = int(data.get("Promotion", {}).get("level", 0))
 	promotion_open_level = int(data.get("Promotion", {}).get("open_level", 0))
+
+func _parse_path_of_glory() -> void:
+	glory_vip = data.get("PathOfGlory", {}).get("vip", false)
+	glory_level = data.get("PathOfGlory", {}).get("level", 0)
+	glory_progress = data.get("PathOfGlory", {}).get("progress", 0)
+	glory_rewards_level_get = data.get("PathOfGlory", {}).get("rewards_level_get", [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]])
 
 ## Сохраняет текущее состояние игры в файл
 func write_file() -> void:

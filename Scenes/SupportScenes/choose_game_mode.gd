@@ -14,6 +14,7 @@ func _ready():
 
 func _on_close():
 	get_parent().get_node("MarginContainer2").visible = true
+	get_parent().get_node("Reward").visible = true
 	get_node(".").queue_free()
 	
 func _on_mode_selected(index):

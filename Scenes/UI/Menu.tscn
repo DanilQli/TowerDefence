@@ -255,5 +255,5 @@ vertical_alignment = 1
 
 [node name="Reward" parent="." instance=ExtResource("11_g37sx")]
 layout_mode = 1
-anchors_preset = 11
 offset_top = 0.0
+offset_bottom = 0.0

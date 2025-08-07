@@ -31,16 +31,19 @@ func _ready():
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
+	get_node("Reward").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 
 func shop():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
+	get_node("Reward").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 
 func promotion():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/promotion.tscn").instantiate()
 	get_node("MarginContainer2").visible = false
+	get_node("Reward").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 
 func settings():

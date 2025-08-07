@@ -36,6 +36,7 @@ func _connect_signals() -> void:
 	
 func close() -> void:
 	get_parent().get_node("MarginContainer2").visible = true
+	get_parent().get_node("Reward").visible = true
 	queue_free()
 
 func check_promotion_level():

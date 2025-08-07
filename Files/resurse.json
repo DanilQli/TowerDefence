@@ -79,6 +79,12 @@
     ],
     "stars": 530
   },
+  "PathOfGlory": {
+    "level": 1,
+    "progress": 20,
+    "vip": false,
+    "rewards_level_get": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+  },
   "Resources": {
     "critical_damage": 728,
     "money": 63206
