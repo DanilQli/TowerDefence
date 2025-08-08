@@ -39,7 +39,7 @@ texture = ExtResource("1_bifyw")
 expand_mode = 1
 
 [node name="Panel" type="Panel" parent="VBoxContainer/TextureRect"]
-z_index = 1
+z_index = 2
 layout_mode = 0
 offset_top = 150.0
 offset_right = 350.0

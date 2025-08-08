@@ -3,7 +3,7 @@ extends Node
 
 # Добавление карт башни
 func add_cards(tower_id: int, amount: int):
-	DataManager.tower_data[DataManager.tower_data.keys()[tower_id]]["cards"] += amount
+	DataManager.tower_data[DataManager.tower_data.keys()[tower_id - 1]]["cards"] += amount
 
 # Проверка возможности повышения уровня
 func check_level_up(tower_id: int) -> bool:

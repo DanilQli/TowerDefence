@@ -51,7 +51,7 @@ func open_promotion_level(i, list_keys):
 	var box_card = false
 	var box_img = false
 	for j in range(len(GameConstants.PROMOTION_LEVEL[i])):
-		if GameConstants.PROMOTION_LEVEL[i][j][0] in [2, 3, 4, 5]:
+		if GameConstants.PROMOTION_LEVEL[i][j][0] in [2, 3, 4, 5, 6, 7, 8, 9]:
 			box_card = true
 			box_card = GameConstants.get_random_card_pairs(GameConstants.PROMOTION_LEVEL[i][j][1])
 			box_img = GameConstants.PROMOTION_LEVEL[i][j][0]

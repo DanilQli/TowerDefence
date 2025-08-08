@@ -5,17 +5,56 @@
       false
     ]
   },
+  "PathOfGlory": {
+    "level": 7.0,
+    "progress": 20.0,
+    "rewards_level_get": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1.0,
+        0.0
+      ],
+      [
+        1,
+        0.0
+      ],
+      [
+        1,
+        0.0
+      ],
+      [
+        1,
+        0.0
+      ],
+      [
+        1,
+        0.0
+      ]
+    ],
+    "vip": false
+  },
   "Promotion": {
     "level": 12,
     "open_level": 14,
     "progress": [
-      4,
+      4.0,
       10.0,
-      0,
-      0,
-      0,
-      0,
-      4
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      4.0
     ],
     "progress_level": [
       1.0,
@@ -79,15 +118,9 @@
     ],
     "stars": 530
   },
-  "PathOfGlory": {
-    "level": 1,
-    "progress": 20,
-    "vip": false,
-    "rewards_level_get": [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
-  },
   "Resources": {
     "critical_damage": 728,
-    "money": 63206
+    "money": 63236
   },
   "Settings": {
     "list_wave_gift": [
@@ -107,12 +140,12 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 4,
-    "count_end_game_company": 0,
+    "count_end_game": 4.0,
+    "count_end_game_company": 0.0,
     "count_spend_money": 0.0,
-    "support_damage": 0,
-    "support_win_unique_count": 0,
-    "win_one_hp_count": 4,
+    "support_damage": 0.0,
+    "support_win_unique_count": 0.0,
+    "win_one_hp_count": 4.0,
     "win_several_times": [
       0.0,
       0.0,
@@ -123,7 +156,7 @@
       0.0,
       0.0,
       0.0,
-      0
+      0.0
     ]
   },
   "Turrets": {
@@ -133,9 +166,9 @@
         true
       ],
       "activity": true,
-      "cards": 372.0,
+      "cards": 0.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_1T1": {
       "ability": [
@@ -143,9 +176,9 @@
         true
       ],
       "activity": false,
-      "cards": 372.0,
+      "cards": 5.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_2T1": {
       "ability": [
@@ -153,9 +186,9 @@
         true
       ],
       "activity": false,
-      "cards": 437.0,
+      "cards": 2.0,
       "have": true,
-      "level": 1.0
+      "level": 8.0
     },
     "Turret_3T1": {
       "ability": [
@@ -163,9 +196,9 @@
         true
       ],
       "activity": true,
-      "cards": 40.0,
+      "cards": 1.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_4T1": {
       "ability": [
@@ -173,9 +206,9 @@
         true
       ],
       "activity": false,
-      "cards": 0.0,
+      "cards": 7.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_5T1": {
       "ability": [
@@ -183,9 +216,9 @@
         true
       ],
       "activity": false,
-      "cards": 0.0,
+      "cards": 4.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_6T1": {
       "ability": [
@@ -193,9 +226,9 @@
         true
       ],
       "activity": false,
-      "cards": 0.0,
+      "cards": 7.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_7T1": {
       "ability": [
@@ -203,9 +236,9 @@
         true
       ],
       "activity": false,
-      "cards": 400.0,
+      "cards": 7.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_8T1": {
       "ability": [
@@ -213,9 +246,9 @@
         true
       ],
       "activity": true,
-      "cards": 400.0,
+      "cards": 16.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     },
     "Turret_9T1": {
       "ability": [
@@ -223,9 +256,9 @@
         true
       ],
       "activity": true,
-      "cards": 400.0,
+      "cards": 5.0,
       "have": true,
-      "level": 9.0
+      "level": 8.0
     }
   }
 }

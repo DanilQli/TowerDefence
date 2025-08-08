@@ -105,6 +105,7 @@ func add_critical_damage(val: int) -> void:
 func add_box(box_card):
 	for i in range(len(box_card)):
 		TowerCards.add_cards(box_card[i][0], box_card[i][1])
+	write_file()
 	
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:

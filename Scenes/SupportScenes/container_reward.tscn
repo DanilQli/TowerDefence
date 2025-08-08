@@ -35,10 +35,145 @@ offset_right = 350.0
 offset_bottom = 100.0
 theme_override_constants/separation = 0
 
-[node name="Panel2" type="Panel" parent="."]
+[node name="Panel1" type="Panel" parent="."]
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_1xylq")
+
+[node name="Button" type="Button" parent="Panel1"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ej2jg")
+
+[node name="Panel" type="Panel" parent="Panel1/Button"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_84ora")
+
+[node name="TextureRect" type="TextureRect" parent="Panel1/Button/Panel"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -30.0
+offset_top = -30.0
+offset_right = 30.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("1_irrte")
+expand_mode = 1
+
+[node name="Lock" type="TextureRect" parent="Panel1/Button/Panel"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+offset_left = 65.0
+offset_top = -5.0
+offset_right = 85.0
+offset_bottom = 15.0
+mouse_filter = 2
+texture = ExtResource("2_whgc1")
+expand_mode = 1
+
+[node name="ColorRect" type="ColorRect" parent="Panel1/Button/Panel"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0.776471, 0.2, 0.301961)
+
+[node name="Label" type="Label" parent="Panel1/Button/Panel"]
+custom_minimum_size = Vector2(20, 20)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -25.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="."]
+custom_minimum_size = Vector2(10, 100)
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Control"]
+custom_minimum_size = Vector2(10, 100)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_quabt")
+value = 50.0
+fill_mode = 3
+show_percentage = false
+
+[node name="Romb" type="TextureRect" parent="Control"]
+z_index = 1
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_m1pbj")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="Control/Romb"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 16
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Panel2" type="Panel" parent="."]
+custom_minimum_size = Vector2(170, 100)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_q8m8k")
 
 [node name="Button" type="Button" parent="Panel2"]
 custom_minimum_size = Vector2(80, 80)
@@ -107,122 +242,17 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 0.776471, 0.2, 0.301961)
 
-[node name="Control" type="Control" parent="."]
-custom_minimum_size = Vector2(10, 100)
-layout_mode = 2
-
-[node name="ProgressBar" type="ProgressBar" parent="Control"]
-custom_minimum_size = Vector2(10, 100)
+[node name="Label" type="Label" parent="Panel2/Button/Panel"]
+custom_minimum_size = Vector2(20, 20)
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/fill = SubResource("StyleBoxFlat_quabt")
-value = 50.0
-fill_mode = 3
-show_percentage = false
-
-[node name="Romb" type="TextureRect" parent="Control"]
-z_index = 1
-custom_minimum_size = Vector2(40, 40)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -20.0
-offset_top = -20.0
-offset_right = 20.0
-offset_bottom = 20.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("3_m1pbj")
-expand_mode = 1
-
-[node name="Label" type="Label" parent="Control/Romb"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+offset_left = -25.0
+offset_top = -23.0
+grow_horizontal = 0
+grow_vertical = 0
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 16
-text = "1"
-horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Panel1" type="Panel" parent="."]
-custom_minimum_size = Vector2(170, 100)
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_q8m8k")
-
-[node name="Button" type="Button" parent="Panel1"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/normal = SubResource("StyleBoxEmpty_ej2jg")
-
-[node name="Panel" type="Panel" parent="Panel1/Button"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_84ora")
-
-[node name="TextureRect" type="TextureRect" parent="Panel1/Button/Panel"]
-custom_minimum_size = Vector2(60, 60)
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -30.0
-offset_top = -30.0
-offset_right = 30.0
-offset_bottom = 30.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-texture = ExtResource("1_irrte")
-expand_mode = 1
-
-[node name="Lock" type="TextureRect" parent="Panel1/Button/Panel"]
-custom_minimum_size = Vector2(30, 30)
-layout_mode = 1
-offset_left = 65.0
-offset_top = -5.0
-offset_right = 85.0
-offset_bottom = 15.0
-mouse_filter = 2
-texture = ExtResource("2_whgc1")
-expand_mode = 1
-
-[node name="ColorRect" type="ColorRect" parent="Panel1/Button/Panel"]
-visible = false
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-color = Color(1, 0.776471, 0.2, 0.301961)
