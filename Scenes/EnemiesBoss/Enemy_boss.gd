@@ -4,6 +4,8 @@ class_name Enemy_boss
 signal base_damage(damage)
 signal money_in_game_session_changed()
 signal stone(duration)
+signal signal_spawn_enemies(wave, enemy_progress)
+ 
 var damage = 3
 
 var speed
@@ -46,7 +48,7 @@ func _ready():
 	ResourceManager.list_active_enemy.append(self)
 	
 func _physics_process(delta):
-	if self.progress_ratio == 1.0:
+	if self.progress_ratio > 0.98:
 		emit_signal("base_damage", damage) 
 		on_destroy()
 	move(delta)

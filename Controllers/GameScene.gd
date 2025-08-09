@@ -54,6 +54,9 @@ func _create_controller(script_path: String) -> Node:
 func on_base_damage(damage: int):
 	health_controller.on_base_damage(damage)
 
+func on_signal_spawn_enemies(wave: Array, enemy_progress: float):
+	ui_controller.main_scene.wave_controller.spawn_enemies(wave, enemy_progress)
+	
 func on_stone(number_block: int, duration: int):
 	var tur = []
 	var available_turrets = []

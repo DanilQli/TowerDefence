@@ -559,6 +559,8 @@ const ADD_CRITICAL_DAMAGE_BUY_CARD: int = 1
 const ADD_CRITICAL_DAMAGE_UP_CARD: int = 1
 ## Сколько секунд существует препятствия на дороге
 const ROAD_OBSTACLE: int = 3
+## Количество врагов (сцены от 1)
+const NUMBER_ENEMY: int = 8
 ## Насколько % движется враг при существовании препятсвия
 const OBSTACLE_SLOW: float = 0.7
 
@@ -576,6 +578,11 @@ const DATA_ENEMY_BOSS = {
 	2: {
 		hp = 1300,
 		speed = 100,
+		money_death = 20.0
+		},
+	3: {
+		hp = 1500,
+		speed = 105,
 		money_death = 20.0
 		}
 }
