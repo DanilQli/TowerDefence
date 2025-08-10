@@ -1,0 +1,2 @@
+extends Enemy_boss
+class_name Enemy_boss_6

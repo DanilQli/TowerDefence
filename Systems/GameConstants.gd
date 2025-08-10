@@ -584,6 +584,11 @@ const DATA_ENEMY_BOSS = {
 		hp = 1500,
 		speed = 105,
 		money_death = 20.0
+		},
+	4: {
+		hp = 15000,
+		speed = 100,
+		money_death = 20.0
 		}
 }
 const TURRET_1_ABILITY_1: float = 0.03

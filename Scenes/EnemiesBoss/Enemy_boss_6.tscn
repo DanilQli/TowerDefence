@@ -1,11 +1,11 @@
-[gd_scene load_steps=12 format=3 uid="uid://by7hhe0nkk05t"]
+[gd_scene load_steps=12 format=3 uid="uid://d2mt7re75pqyv"]
 
-[ext_resource type="Script" uid="uid://df78q8by1yakk" path="res://Scenes/EnemiesBoss/Enemy_boss_4.gd" id="1_1yciv"]
-[ext_resource type="Texture2D" uid="uid://c4npv07nl28i2" path="res://Assets/Props/enemy_4_sprite.png" id="1_838gb"]
-[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_1yciv"]
-[ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_m2f7e"]
+[ext_resource type="Script" uid="uid://c2uggic1mxy8e" path="res://Scenes/EnemiesBoss/Enemy_boss_6.gd" id="1_1761m"]
+[ext_resource type="Texture2D" uid="uid://bswvj0vmkidjk" path="res://Assets/Props/enemy_5_sprite.png" id="1_yadv5"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_1761m"]
+[ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_11qoe"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wx1wd"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qpsie"]
 size = Vector2(60, 60)
 
 [sub_resource type="Animation" id="Animation_wj8ua"]
@@ -100,18 +100,17 @@ _data = {
 &"walk_up": SubResource("Animation_1p6j8")
 }
 
-[node name="Enemy4Boss" type="PathFollow2D"]
-rotates = false
-script = ExtResource("1_1yciv")
+[node name="Enemy6Boss" type="PathFollow2D"]
+script = ExtResource("1_1761m")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
-shape = SubResource("RectangleShape2D_wx1wd")
+shape = SubResource("RectangleShape2D_qpsie")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("1_838gb")
+texture = ExtResource("1_yadv5")
 hframes = 3
 vframes = 4
 
@@ -122,15 +121,15 @@ offset_right = 30.0
 offset_bottom = -34.0
 value = 10.0
 nine_patch_stretch = true
-texture_under = ExtResource("2_1yciv")
-texture_progress = ExtResource("2_1yciv")
+texture_under = ExtResource("2_1761m")
+texture_progress = ExtResource("2_1761m")
 tint_under = Color(0.207843, 0.207843, 0.207843, 1)
 tint_progress = Color(0, 0.760784, 0.0117647, 1)
 
 [node name="Impact" type="Marker2D" parent="."]
 position = Vector2(-15, -15)
 
-[node name="PoisonEffect" parent="." instance=ExtResource("3_m2f7e")]
+[node name="PoisonEffect" parent="." instance=ExtResource("3_11qoe")]
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
