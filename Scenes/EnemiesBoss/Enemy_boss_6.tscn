@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://d2mt7re75pqyv"]
 
 [ext_resource type="Script" uid="uid://c2uggic1mxy8e" path="res://Scenes/EnemiesBoss/Enemy_boss_6.gd" id="1_1761m"]
-[ext_resource type="Texture2D" uid="uid://bswvj0vmkidjk" path="res://Assets/Props/enemy_5_sprite.png" id="1_yadv5"]
+[ext_resource type="Texture2D" uid="uid://cudv23uo1r2hv" path="res://Assets/Props/enemy_6_sprite.png" id="2_11qoe"]
 [ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_1761m"]
 [ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_11qoe"]
 
@@ -101,6 +101,7 @@ _data = {
 }
 
 [node name="Enemy6Boss" type="PathFollow2D"]
+rotates = false
 script = ExtResource("1_1761m")
 
 [node name="CharacterBody2D" type="CharacterBody2D" parent="."]
@@ -110,9 +111,9 @@ shape = SubResource("RectangleShape2D_qpsie")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.6, 0.6)
-texture = ExtResource("1_yadv5")
+texture = ExtResource("2_11qoe")
 hframes = 3
-vframes = 4
+vframes = 8
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
 offset_left = -30.0

@@ -34,6 +34,8 @@ animations = [{
 scale = Vector2(0.2, 0.2)
 sprite_frames = SubResource("SpriteFrames_nk1ym")
 animation = &"Impact"
+frame = 4
+frame_progress = 1.0
 speed_scale = 4.0
 script = ExtResource("6_6oegd")
 

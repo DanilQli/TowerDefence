@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cgp1v0w7u10fc"]
 
 [ext_resource type="Texture2D" uid="uid://d0bji27k288vg" path="res://Assets/Icons/death.png" id="1_b6oi4"]
-[ext_resource type="Script" uid="uid://b73ccrl6o3j4i" path="res://Scenes/SupportScenes/ProjecttileImpact_3.gd" id="6_a025n"]
+[ext_resource type="Script" uid="uid://b73ccrl6o3j4i" path="res://Scenes/SupportScenes/ProjecttileImpact_4.gd" id="6_a025n"]
 
 [sub_resource type="Animation" id="Animation_5r76k"]
 length = 0.001

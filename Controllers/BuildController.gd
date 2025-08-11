@@ -113,7 +113,6 @@ func update_tower_preview():
 		update_tower_preview_ui(tile_position, "ff0000")
 		build_valid = false
 
-
 func _unhandled_input(event):
 	if event.is_action_released("ui_accept") and build_mode:
 		verify_and_build()

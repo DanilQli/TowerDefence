@@ -586,8 +586,13 @@ const DATA_ENEMY_BOSS = {
 		money_death = 20.0
 		},
 	4: {
-		hp = 15000,
+		hp = 1500,
 		speed = 100,
+		money_death = 20.0
+		},
+	5: {
+		hp = 1000,
+		speed = 140,
 		money_death = 20.0
 		}
 }

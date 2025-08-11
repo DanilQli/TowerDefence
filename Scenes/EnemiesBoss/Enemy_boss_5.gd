@@ -1,7 +1,7 @@
 extends Enemy_boss
 class_name Enemy_boss_5
 
-const rof: int = 2
+const rof: int = 5
 @onready var anim = $AnimationPlayer2
 
 func fire() -> void:

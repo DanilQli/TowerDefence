@@ -116,6 +116,10 @@ KEY_PROMOTION_NAME_7,На грани поражения,On the Edge of Defeat
 KEY_ENEMY_BOSS_1,Каждые [color='blue']3[/color] секунды [color='blue']3[/color] башни окаменеют на [color='blue']5[/color] секунд,Every [color='blue']3[/color] seconds [color='blue']3[/color] towers will petrify for [color='blue']5[/color] seconds
 KEY_ENEMY_BOSS_2,Блокирует [color='blue']10%[/color] получаемого урона,Blocks [color='blue']10%[/color] of damage received
 KEY_ENEMY_BOSS_3,"При появлении на дороге заливает её водой, ускоряя движение всех врагов на [color='blue']20%[/color]","When it appears on the road, it fills it with water, speeding up the movement of all enemies by [color='blue']20%[/color]"
+KEY_ENEMY_BOSS_4,Периодически призывает нескольких врагов,Periodically summons several enemies
+KEY_ENEMY_BOSS_5,Каждые [color='blue']5[/color] секунд восстанавливает себе [color='blue']5%[/color] максимального здоровья,"Every [color='blue']5[/color] seconds, [color='blue'] restores 5%[/color] of maximum health to himself"
+KEY_ENEMY_BOSS_6,При появлении уничтожает случайную башню,Destroys a random tower when it appears.
+KEY_ENEMY_BOSS_7,,
 
 KEY_TURRET1_DESC,Пушка наносит [color='blue']случайный[/color] дополнительный урон цели,The cannon deals random additional damage to the target
 KEY_TURRET1_UP0_DESC,"С шансом[color='blue'] 50%[/color] пушка атакует цели дважды","With chance[color='red'] 50%[/color], the cannon will attack the targets twice"

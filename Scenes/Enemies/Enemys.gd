@@ -105,7 +105,7 @@ func move(delta):
 
 func on_hit(damage, type_explosion, type_attack, parametrs=false):
 	if type_attack in [0, 1]:
-		if type_explosion > 0:
+		if type_explosion >= 0:
 			impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:
 		self.hp -= damage
