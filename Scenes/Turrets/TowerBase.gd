@@ -110,3 +110,6 @@ func select_enemy() -> void:
 		2: target_index = randi_range(0, values.size() - 1)  # Random
 
 	enemy = enemy_array[target_index]
+
+func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
+	excl.erase_cell(cell)

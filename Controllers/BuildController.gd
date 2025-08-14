@@ -91,12 +91,18 @@ func verify_and_build():
 		turret.built = true
 		turret._ready()
 		turret.get_node("Menu").setup(turret.id)
-
+		
 		main_scene.map_node.get_node("TowerExlusion").set_cell(build_tile, 0, Vector2i(0, 4))
+		var excl = main_scene.map_node.get_node("TowerExlusion")
+		excl.set_cell(build_tile, 0, Vector2i(0, 4))
+
+		# Чистим клетку, когда башня удаляется (без лямбд)
+		turret.tree_exited.connect(turret._on_turret_tree_exited.bind(main_scene.map_node.get_node("TowerExlusion"), build_tile))
 		turret.ui_system.update_menu()
 		turret.ui_system.update_menu_upgrade()
 		GameSession.spend_money(GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session)
 		main_scene.ui_controller._on_money_changed()
+		
 
 func update_tower_preview():
 	var mouse_position = main_scene.get_global_mouse_position()
