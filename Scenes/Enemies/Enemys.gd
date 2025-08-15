@@ -89,7 +89,7 @@ func move(delta):
 	if is_in_hole:
 		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
 		if hole_move % 20 == 0:
-			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN)
+			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN, false)
 		hole_move += 1
 	else:
 		if self.duration_speed_mod <= 1:
@@ -103,7 +103,7 @@ func move(delta):
 			self.speed = self.current_speed
 	self.health_bar.set_position(self.position - Vector2(30, 30))
 
-func on_hit(damage, type_explosion, type_attack, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, towers, parametrs=false):
 	if type_attack in [0, 1]:
 		if type_explosion >= 0:
 			impact(type_explosion, type_attack)

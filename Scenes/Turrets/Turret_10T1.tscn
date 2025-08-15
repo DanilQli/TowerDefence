@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://viq20br83ws7"]
+[gd_scene load_steps=12 format=3 uid="uid://viq20br83ws7"]
 
 [ext_resource type="Script" uid="uid://b4ppli6gv4ilo" path="res://Scenes/Turrets/BullyTower.gd" id="1_tsfhh"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_xsu46"]
@@ -49,6 +49,9 @@ _data = {
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e05ir"]
 size = Vector2(60, 60)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tsfhh"]
+size = Vector2(80, 80)
+
 [node name="Turret_10T1" type="Node2D"]
 script = ExtResource("1_tsfhh")
 
@@ -93,3 +96,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_tsfhh")

@@ -13,7 +13,7 @@ func fire() -> void:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(rof).timeout
+		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
 		is_ready = true
 
 func _apply_damage() -> void:
@@ -21,7 +21,7 @@ func _apply_damage() -> void:
 		if self.ability[0] and randi_range(0, 100) < GameConstants.TURRET_5_ABILITY_1:
 			dist_end = enemy.progress_ratio
 		if self.ability[1] and enemy.base_hp / 10 >= enemy.hp:
-			enemy.on_hit(enemy.hp, 0, GameConstants.TowerType.GUN)
+			enemy.on_hit(enemy.hp, 0, GameConstants.TowerType.GUN, self)
 		else:
 			dist_end = distance
-			enemy.on_hit(distance, 0, GameConstants.TowerType.MOVING)
+			enemy.on_hit(distance, 0, GameConstants.TowerType.MOVING, self)

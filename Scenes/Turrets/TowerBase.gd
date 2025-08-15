@@ -21,6 +21,8 @@ var current_lvl: int
 var max_lvl: int
 var ability: Array = []
 var block_damage: bool = false
+var multiplier_damage_enemy: float = 1.0 # множитель урона (использует босс 7)
+var multiplier_rof_enemy: float = 1.0 # множитель урона (использует босс 8)
 
 var strategy: int = 0 # First/Last/Random
 

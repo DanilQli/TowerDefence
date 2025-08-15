@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bejlnpnnebkhv"]
+[gd_scene load_steps=11 format=3 uid="uid://bejlnpnnebkhv"]
 
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_73uuf"]
 [ext_resource type="Script" uid="uid://b1av3aa72c7jq" path="res://Scenes/Turrets/PoisonTower.gd" id="1_jk6pi"]
@@ -32,6 +32,9 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jk6pi"]
 size = Vector2(60, 60)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ndyo4"]
+size = Vector2(80, 80)
 
 [node name="Turret_7T1" type="Node2D"]
 script = ExtResource("1_jk6pi")
@@ -79,3 +82,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_ndyo4")

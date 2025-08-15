@@ -1,7 +1,6 @@
 extends TowerBase
 class_name SlowTower
 
-var damage: float
 var intensivity: float
 var duration: float
 
@@ -15,15 +14,15 @@ func fire() -> void:
 		fire_missile()
 		for e in enemy_array:
 			if is_instance_valid(e):
-				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, duration)
+				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, self, duration)
 		if ability[0]:
 			for e in enemy_array:
 				if is_instance_valid(e):
 					if ability[1] and e is Enemy_boss:
-						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA)
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA, self)
 					else:
-						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA)
-		await get_tree().create_timer(rof).timeout
+						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA, self)
+		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
 		is_ready = true
 
 func _initialize() -> void:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://csxfxkvrimbwn"]
+[gd_scene load_steps=11 format=3 uid="uid://csxfxkvrimbwn"]
 
 [ext_resource type="Script" uid="uid://dlav3xepqs6vl" path="res://Scenes/Turrets/GunTower.gd" id="1_5ehdr"]
 [ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_v13rm"]
@@ -32,6 +32,9 @@ _data = {
 }
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_67nnn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_5ehdr"]
+size = Vector2(80, 80)
 
 [node name="Turret_1T1" type="Node2D"]
 script = ExtResource("1_5ehdr")
@@ -78,6 +81,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_5ehdr")
 
 [connection signal="body_entered" from="Range" to="." method="_oe_body_entered"]
 [connection signal="body_exited" from="Range" to="." method="_on_range_body_exited"]

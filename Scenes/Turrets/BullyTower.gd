@@ -44,21 +44,21 @@ func _apply_damage() -> void:
 
 func rage_attack():
 	inflicted += critical_damage_all
-	enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
+	enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 	emit_signal("damage_inflicted_changed", inflicted)
 	
 func rage_interval():
-	rof_new = rof / (1 + bonus_speed_attack / 100.0)
-	damage_new = damage * (1 + bonus_damage / 100.0)
+	rof_new = rof / (1 + bonus_speed_attack / 100.0)* multiplier_rof_enemy
+	damage_new = (damage * multiplier_damage_enemy) * (1 + bonus_damage / 100.0)
 	self.get_node("Turret").modulate = Color(0.7, 0.7, 0.7)
 	await get_tree().create_timer(10).timeout
 	self.get_node("Turret").modulate = Color(0.1, 0.1, 0.1)
 	rage = 2
-	rof_new = 3
+	rof_new = 3 * multiplier_rof_enemy
 	await get_tree().create_timer(3).timeout
 	self.get_node("Turret").modulate = Color(1, 1, 1)
-	rof_new = rof
-	damage_new = damage
+	rof_new = multiplier_rof_enemy * rof
+	damage_new = (damage * multiplier_damage_enemy)
 	rage = 0
 	
 func critical_damage():

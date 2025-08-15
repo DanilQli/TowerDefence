@@ -13,12 +13,12 @@ func fire() -> void:
 		is_ready = false
 		for e in enemy_array:
 			e.apply_poison({
-				"damage": damage,
+				"damage": (damage * multiplier_damage_enemy),
 				"duration": duration,
 				"tick": tick
 			})
 			if self.ability[0]:
-				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, duration)
+				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, self, duration)
 			if self.ability[1]:
 				if num:
 					break
@@ -27,5 +27,5 @@ func fire() -> void:
 			else:
 				break
 		get_node("AnimationPlayer").play("Fire")
-		await get_tree().create_timer(rof).timeout
+		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
 		is_ready = true

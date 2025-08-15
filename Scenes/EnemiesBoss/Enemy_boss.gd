@@ -96,7 +96,7 @@ func move(delta):
 	if is_in_hole:
 		self.speed = self.current_speed * GameConstants.OBSTACLE_SLOW
 		if hole_move % 20 == 0:
-			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN)
+			on_hit(is_in_hole.damage / 3, -1, GameConstants.TowerType.GUN, self)
 		hole_move += 1
 	else:
 		if self.duration_speed_mod <= 1:
@@ -136,7 +136,7 @@ func determine_direction(move_vector: Vector2):
 		else:
 			anim_player.play("walk_up")
 
-func on_hit(damage, type_explosion, type_attack, parametrs=false):
+func on_hit(damage, type_explosion, type_attack, towers, parametrs=false):
 	if type_attack in [0, 1]:
 		impact(type_explosion, type_attack)
 	if type_attack in [0, 1]:

@@ -4,9 +4,11 @@ class_name TowerUI
 
 ## Ссылка на башню, которой принадлежит UI
 var tower: TowerBase
+var menu
 
 func setup(tower_base: TowerBase) -> void:
 	tower = tower_base
+	menu = tower.get_node("Menu")
 	_connect_signals()
 	
 	# Подписываемся на изменение урона
@@ -15,7 +17,7 @@ func setup(tower_base: TowerBase) -> void:
 
 ## Обновление меню башни
 func update_menu() -> void:
-	_update_combat_menu()
+	_update_info_menu()
 	
 	# Обновляем отображение уровня
 	tower.get_node("Menu/V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(tower.current_lvl + 1) + "/" + str(tower.max_lvl + 1)
@@ -36,7 +38,22 @@ func _on_menu_button_pressed() -> void:
 	_update_inflicted_damage()
 	_add_to_open_menus()
 	_position_menu()
+	_update_info_menu()
 	tower.get_node("Menu").show()
+
+# информация о башне
+func _update_info_menu():
+	for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
+		if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
+			if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
+				menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+			else:
+				menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
+		else:
+			if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
+				menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+			else:
+				menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl])
 
 ## Скрытие кнопок меню других башен
 func _hide_other_menu_buttons() -> void:
@@ -55,12 +72,11 @@ func _update_inflicted_damage() -> void:
 
 ## Добавление меню в список открытых
 func _add_to_open_menus() -> void:
-	UiManager.add_open_menu_turret(tower.get_node("Menu"))
+	UiManager.add_open_menu_turret(menu)
 
 ## Позиционирование меню относительно башни
 func _position_menu() -> void:
 	var hud = tower.get_parent().get_parent().get_parent().get_node("UI/HUD")
-	var menu = tower.get_node("Menu")
 	
 	if hud.size[0] - tower.position[0] < 400 and hud.size[1] - tower.position[1] < 300:
 		menu.position = Vector2(-300, -330)  # Справо снизу
@@ -84,15 +100,6 @@ func hide_menu() -> void:
 		UiManager.list_open_menu_turrets[0].hide()
 		UiManager.list_open_menu_turrets.pop_at(0)
 
-## Обновление меню боевой башни
-func _update_combat_menu() -> void:
-	var menu = tower.get_node("Menu")
-	for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
-		if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
-			menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
-		else:
-			menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl])
-
 ## Обновление информации об улучшении в меню
 func update_menu_upgrade() -> void:
 	if tower.current_lvl >= tower.max_lvl:
@@ -105,7 +112,6 @@ func update_menu_upgrade() -> void:
 
 ## Очистка текстов улучшений при максимальном уровне
 func _clear_upgrade_texts() -> void:
-	var menu = tower.get_node("Menu")
 	
 	# Очищаем все тексты улучшений
 	for i in range(len(menu.list_node)):
@@ -117,7 +123,6 @@ func _clear_upgrade_texts() -> void:
 	
 ## Обновление информации об улучшении для боевой башни
 func _update_combat_menu_upgrade() -> void:
-	var menu = tower.get_node("Menu")
 	var next_level = tower.current_lvl + 1
 	var text
 	for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):

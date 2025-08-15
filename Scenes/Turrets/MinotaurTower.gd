@@ -44,21 +44,21 @@ func fire() -> void:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(rof).timeout
+		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
 		is_ready = true
 	
 func _apply_damage() -> void:
 	if enemy:
 		critical_damage_all = critical_damage()
 		inflicted += critical_damage_all
-		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN)
+		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
 	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return damage + (DataManager.critical_damage * damage) / 100
+		return (damage * multiplier_damage_enemy) + (DataManager.critical_damage * (damage * multiplier_damage_enemy)) / 100
 	else:
-		return damage
+		return (damage * multiplier_damage_enemy)
 
 func _apply_damage_obstacle() -> void:
 	if len(GameManager.list_coords_road_use_index) < len(GameManager.LIST_COORDS_ROAD):

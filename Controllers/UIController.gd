@@ -36,7 +36,6 @@ func initialize(scene: Node2D):
 
 		var button = main_scene.get_node(button_path)
 		button.pressed.connect(Callable(main_scene.build_controller, "initiate_build_mode").bind(turret_name))
-		button.mouse_entered.connect(Callable(self, "title_show").bind(str(index), str(tower_index)))
 		button.mouse_exited.connect(Callable(self, "title_hide"))
 		main_scene.get_node(button_path).mouse_entered.connect(
 			title_show.bind(str(index), str(tower_index))

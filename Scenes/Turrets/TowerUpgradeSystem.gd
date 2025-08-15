@@ -55,7 +55,6 @@ func perform_upgrade() -> bool:
 func apply_upgrade_effects() -> void:
 	_upgrade_combat_tower()
 	
-
 ## Улучшение боевой башни
 func _upgrade_combat_tower() -> void:
 	var tower_data = DataManager.tower_data[tower.type]
