@@ -8,7 +8,7 @@ var list_strategy := [tr("KEY_FIRST"), tr("KEY_LAST"), tr("KEY_RANDOM")]
 var list_node = []
 
 func _ready() -> void:
-	self.z_index = 1
+	self.z_index = 2
 	
 func setup(id):
 	get_node("V/HStrateg/Strateg").pressed.connect(strateg)

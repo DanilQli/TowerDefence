@@ -165,7 +165,7 @@
         true,
         true
       ],
-      "activity": true,
+      "activity": false,
       "cards": 0.0,
       "have": true,
       "level": 8.0
@@ -245,7 +245,7 @@
         true,
         true
       ],
-      "activity": false,
+      "activity": true,
       "cards": 16.0,
       "have": true,
       "level": 8.0

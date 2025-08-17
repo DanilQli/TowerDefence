@@ -57,7 +57,7 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 	if not enemy_progress:
 		# Спавн боссов
 		await get_tree().create_timer(1).timeout
-		type = 9
+		type = 10
 		enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
 		enemy.names = type
 		enemy.id = type - 1

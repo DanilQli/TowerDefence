@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://0n3ouxpxbekv"]
+
+[ext_resource type="Texture2D" uid="uid://dl8yw62v3y042" path="res://Assets/Icons/speed.png" id="1_865s0"]
+[ext_resource type="Script" uid="uid://ch8i7o1cqt88b" path="res://Scenes/SupportScenes/road_speed.gd" id="2_pncvb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_w16oj"]
+size = Vector2(40, 30)
+
+[node name="RoadSpeed" type="Sprite2D"]
+texture = ExtResource("1_865s0")
+script = ExtResource("2_pncvb")
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("RectangleShape2D_w16oj")

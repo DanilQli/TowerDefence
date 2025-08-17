@@ -17,6 +17,7 @@ var new_impact
 var duration_speed_mod
 var poison_data = null
 var poison_tick_timer = 0.0
+var speed_modifer = 1.0
 # Так как урон от препятствия проверяется в _physics_process, то урон должен наносится лишь 3 раза в секунду
 var hole_move = 19
 var id
@@ -102,8 +103,13 @@ func move(delta):
 		if self.duration_speed_mod <= 1:
 			self.speed = self.current_speed
 		hole_move = 19
-		
-	self.progress += self.speed * ResourceManager.speed_modifer * delta
+	for speed in get_tree().get_nodes_in_group("speed"):
+		if position.distance_to(speed.position) <= speed.radius and self.speed_modifer < 1.6:
+			self.speed_modifer += speed.speed
+			speed.queue_free()
+			break
+	
+	self.progress += self.speed * ResourceManager.speed_modifer * self.speed_modifer * delta
 	if self.duration_speed_mod > 0:
 		self.duration_speed_mod -= 1
 		if self.duration_speed_mod == 1:

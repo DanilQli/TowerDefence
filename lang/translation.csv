@@ -121,7 +121,10 @@ KEY_ENEMY_BOSS_5,Каждые [color='blue']5[/color] секунд восста�
 KEY_ENEMY_BOSS_6,При появлении уничтожает случайную башню,Destroys a random tower when it appears.
 KEY_ENEMY_BOSS_7,"Пожиратель мощности. За каждый нанесённый башней урон по боссу эта башня теряет [color='blue']0.01%[/color] своей атаки навсегда","The power eater. For every damage inflicted by a tower on a boss, this tower loses [color='blue']0.01%[/color] of its attack forever"
 KEY_ENEMY_BOSS_8,"Споровый культиватор. Заражает спорами башни мимо которых проходит, заражённые башни атакуют на [color='blue']20%[/color] медленнее, при смерти босса споры тоже погибают","A spore cultivator. Infects towers with spores that it passes by, infected towers attack by [color='blue']20%[/color] slower, spores also die when the boss dies"
-KEY_ENEMY_BOSS_9,,
+KEY_ENEMY_BOSS_9,Каждые [color='blue']3[/color] секунды становится неуязвимым. Длительность неуязвимости [color='blue']3[/color] секунды,Every [color='blue']3[/color] seconds it becomes non-vulnerable. Invulnerability duration [color='blue']3[/color] seconds
+KEY_ENEMY_BOSS_10,"Гонец. При смерти появляются [color='blue']3 скорости[/color] на дороге в случайных позициях. Любой враг, взявший скорость, получает [color='blue']+20%[/color] скорости навсегда (максимум [color='blue']60%[/color])","The messenger. At death, [color='blue']3 speeds[/color] appear on the road in random positions. Any enemy who takes speed gains [color='blue']+20%[/color] speed forever (maximum [color='blue']60%[/color])"
+KEY_ENEMY_BOSS_11,,
+
 
 KEY_TURRET1_DESC,Пушка наносит [color='blue']случайный[/color] дополнительный урон цели,The cannon deals random additional damage to the target
 KEY_TURRET1_UP0_DESC,"С шансом[color='blue'] 50%[/color] пушка атакует цели дважды","With chance[color='red'] 50%[/color], the cannon will attack the targets twice"

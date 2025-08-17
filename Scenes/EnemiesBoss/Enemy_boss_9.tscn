@@ -8,7 +8,24 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mny0a"]
 size = Vector2(60, 60)
 
-[sub_resource type="Animation" id="Animation_wj8ua"]
+[sub_resource type="Animation" id="Animation_mvhri"]
+resource_name = "walk_down"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3]
+}
+
+[sub_resource type="Animation" id="Animation_c7x8u"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -23,26 +40,9 @@ tracks/0/keys = {
 "values": [0]
 }
 
-[sub_resource type="Animation" id="Animation_g68di"]
-resource_name = "walk_down"
-length = 0.3
-loop_mode = 1
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [0, 1, 2]
-}
-
-[sub_resource type="Animation" id="Animation_i245h"]
+[sub_resource type="Animation" id="Animation_mny0a"]
 resource_name = "walk_left"
-length = 0.3
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -51,15 +51,15 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [3, 4, 5]
+"values": [4, 5, 6, 7]
 }
 
-[sub_resource type="Animation" id="Animation_5cu76"]
+[sub_resource type="Animation" id="Animation_jdq5h"]
 resource_name = "walk_right"
-length = 0.3
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -68,15 +68,15 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [6, 7, 8]
+"values": [8, 9, 10, 11]
 }
 
-[sub_resource type="Animation" id="Animation_1p6j8"]
+[sub_resource type="Animation" id="Animation_l1udo"]
 resource_name = "walk_up"
-length = 0.3
+length = 0.4
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -85,22 +85,22 @@ tracks/0/path = NodePath("Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [9, 10, 11]
+"values": [12, 13, 14, 15]
 }
 
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_lo3k8"]
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8arat"]
 _data = {
-&"RESET": SubResource("Animation_wj8ua"),
-&"walk_down": SubResource("Animation_g68di"),
-&"walk_left": SubResource("Animation_i245h"),
-&"walk_right": SubResource("Animation_5cu76"),
-&"walk_up": SubResource("Animation_1p6j8")
+&"RESET": SubResource("Animation_c7x8u"),
+&"walk_down": SubResource("Animation_mvhri"),
+&"walk_left": SubResource("Animation_mny0a"),
+&"walk_right": SubResource("Animation_jdq5h"),
+&"walk_up": SubResource("Animation_l1udo")
 }
 
-[node name="Enemy8Boss" type="PathFollow2D"]
+[node name="Enemy9Boss" type="PathFollow2D"]
 rotates = false
 script = ExtResource("1_mvhri")
 
@@ -110,8 +110,9 @@ script = ExtResource("1_mvhri")
 shape = SubResource("RectangleShape2D_mny0a")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.7, 0.7)
 texture = ExtResource("2_c7x8u")
-hframes = 3
+hframes = 4
 vframes = 4
 
 [node name="HealthBar" type="TextureProgressBar" parent="."]
@@ -133,5 +134,5 @@ position = Vector2(-15, -15)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
-&"": SubResource("AnimationLibrary_lo3k8")
+&"": SubResource("AnimationLibrary_8arat")
 }
