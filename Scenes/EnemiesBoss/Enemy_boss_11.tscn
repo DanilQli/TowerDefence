@@ -1,0 +1,137 @@
+[gd_scene load_steps=12 format=3 uid="uid://by53fgkbhi4p8"]
+
+[ext_resource type="Script" uid="uid://cj6uhi6fgmhog" path="res://Scenes/EnemiesBoss/Enemy_boss_11.gd" id="1_pld30"]
+[ext_resource type="Texture2D" uid="uid://fnwj27778sgs" path="res://Assets/Props/enemy_11.png" id="2_3tvpb"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_pld30"]
+[ext_resource type="PackedScene" uid="uid://3thkdy5tr2o2" path="res://Scenes/UI/poison_effect_in_turret.tscn" id="3_3tvpb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_02a6p"]
+size = Vector2(60, 60)
+
+[sub_resource type="Animation" id="Animation_wj8ua"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+
+[sub_resource type="Animation" id="Animation_g68di"]
+resource_name = "walk_down"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [0, 1, 2]
+}
+
+[sub_resource type="Animation" id="Animation_i245h"]
+resource_name = "walk_left"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [3, 4, 5]
+}
+
+[sub_resource type="Animation" id="Animation_5cu76"]
+resource_name = "walk_right"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [6, 7, 8]
+}
+
+[sub_resource type="Animation" id="Animation_1p6j8"]
+resource_name = "walk_up"
+length = 0.3
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [9, 10, 11]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lo3k8"]
+_data = {
+&"RESET": SubResource("Animation_wj8ua"),
+&"walk_down": SubResource("Animation_g68di"),
+&"walk_left": SubResource("Animation_i245h"),
+&"walk_right": SubResource("Animation_5cu76"),
+&"walk_up": SubResource("Animation_1p6j8")
+}
+
+[node name="Enemy11Boss" type="PathFollow2D"]
+rotates = false
+script = ExtResource("1_pld30")
+
+[node name="CharacterBody2D" type="CharacterBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D"]
+shape = SubResource("RectangleShape2D_02a6p")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3tvpb")
+hframes = 3
+vframes = 4
+
+[node name="HealthBar" type="TextureProgressBar" parent="."]
+offset_left = -30.0
+offset_top = -40.0
+offset_right = 30.0
+offset_bottom = -34.0
+value = 10.0
+nine_patch_stretch = true
+texture_under = ExtResource("2_pld30")
+texture_progress = ExtResource("2_pld30")
+tint_under = Color(0.207843, 0.207843, 0.207843, 1)
+tint_progress = Color(0, 0.760784, 0.0117647, 1)
+
+[node name="Impact" type="Marker2D" parent="."]
+position = Vector2(-15, -15)
+
+[node name="PoisonEffect" parent="." instance=ExtResource("3_3tvpb")]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_lo3k8")
+}
