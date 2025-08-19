@@ -121,7 +121,7 @@ func on_hit(damage, type_explosion, type_attack, towers, parametrs=false):
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY[id].money_death) + int(float(GameConstants.DATA_ENEMY[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			on_destroy()
-	elif type_attack == 2:
+	elif type_attack == GameConstants.TowerType.SLOW:
 		self.speed *= (100 - damage) / 100.0
 		if self.speed < 50:
 			self.speed = 50

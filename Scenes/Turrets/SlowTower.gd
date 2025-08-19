@@ -6,7 +6,6 @@ var duration: float
 
 func _ready() -> void:
 	super._ready()
-	duration *= 60
 	
 func fire() -> void:
 	if not block_damage and is_ready:
@@ -14,7 +13,7 @@ func fire() -> void:
 		fire_missile()
 		for e in enemy_array:
 			if is_instance_valid(e):
-				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, self, duration)
+				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, self, duration * 60)
 		if ability[0]:
 			for e in enemy_array:
 				if is_instance_valid(e):
