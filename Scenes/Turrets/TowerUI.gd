@@ -121,7 +121,7 @@ func _clear_upgrade_texts() -> void:
 	# Очищаем стоимость улучшения
 	menu.get_node("V/HButton/Up/LabelValue").text = ""
 	
-## Обновление информации об улучшении для боевой башни
+## Обновление информации для боевой башни
 func _update_combat_menu_upgrade() -> void:
 	var next_level = tower.current_lvl + 1
 	var text
