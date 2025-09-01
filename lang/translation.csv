@@ -97,6 +97,13 @@ KEY_AWARDS_DETAILS,Детали награды,Award Details
 KEY_PROMOTION_LEVEL,Уровень достижения,Achievement level
 KEY_BOX,Сундук,Chest
 KEY_OPEN,Открыть,Open
+KEY_TASKS_INFO,Новые еженедельные задания появляются один раз в 24 часа. Задания предыдущей недели не сохраняются,New weekly tasks appear once every 24 hours. The tasks of the previous week are not saved
+KEY_TASKS_DAILY,Ежедневные,Daily
+KEY_TASKS_WEEKLY,Еженедельные,Weekly
+KEY_TASKS_CAREER,Карьерные,Career goals
+KEY_TIME_FOR_NEW_TASKS,До новых заданий: ,Until new tasks:
+KEY_TASKS_COMPLETE_ALL,"Выполните все задания, чтобы получить награду",Complete all the tasks to get the reward
+KEY_STAGE,Этап: ,Stage:
 
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player
@@ -112,6 +119,18 @@ KEY_PROMOTION_DESC_6,Победите с использованием неско
 KEY_PROMOTION_NAME_6,Разнообразная поддержка,Diverse Support
 KEY_PROMOTION_DESC_7,Одержите победу в матчах имея 1 ОЗ:,Win matches with 1 HP left:
 KEY_PROMOTION_NAME_7,На грани поражения,On the Edge of Defeat
+
+KEY_TASK_1,Нанесите единиц урона: ,Deal damage units
+KEY_TASK_2,Уничтожите врагов: ,Destroy enemies
+KEY_TASK_3,Получите карточек обычных башен: ,Get common turret cards
+KEY_TASK_4,Получите карточек редких башен: ,Get rare turret cards
+KEY_TASK_5,Получите карточек эпических башен: ,Get epic turret cards
+KEY_TASK_6,Улучшите башен: ,Upgrade turrets
+KEY_TASK_7,Получите монет: ,Get coins
+KEY_TASK_8,Получите алмазов: ,Get diamonds
+KEY_TASK_9,Получите карточек обычного героя: ,Get common hero cards
+KEY_TASK_10,Получите карточек редкого героя: ,Get rare hero cards
+KEY_TASK_11,Получите карточек эпического героя: ,Get epic hero cards
 
 KEY_ENEMY_BOSS_1,Каждые [color='blue']3[/color] секунды [color='blue']3[/color] башни окаменеют на [color='blue']5[/color] секунд,Every [color='blue']3[/color] seconds [color='blue']3[/color] towers will petrify for [color='blue']5[/color] seconds
 KEY_ENEMY_BOSS_2,Блокирует [color='blue']10%[/color] получаемого урона,Blocks [color='blue']10%[/color] of damage received

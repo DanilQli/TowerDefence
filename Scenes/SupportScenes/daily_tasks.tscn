@@ -1,6 +1,7 @@
-[gd_scene load_steps=12 format=3 uid="uid://d2cj4cq5lmnhg"]
+[gd_scene load_steps=13 format=3 uid="uid://d2cj4cq5lmnhg"]
 
 [ext_resource type="Texture2D" uid="uid://coyadr2d23wr3" path="res://Assets/Icons/Tasks/daily.png" id="1_gpe5x"]
+[ext_resource type="Script" uid="uid://cpx5mk1rk1e75" path="res://Scenes/SupportScenes/daily_tasks.gd" id="1_r5jr0"]
 [ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="2_6kisy"]
 [ext_resource type="Texture2D" uid="uid://bih4l4ueyiybk" path="res://Assets/Icons/Tasks/weekly.png" id="2_iquud"]
 [ext_resource type="Texture2D" uid="uid://bm4g6nlmc7ywj" path="res://Assets/Icons/Tasks/career.png" id="3_hgm4g"]
@@ -28,6 +29,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_r5jr0")
 
 [node name="Panel" type="Panel" parent="."]
 custom_minimum_size = Vector2(600, 600)

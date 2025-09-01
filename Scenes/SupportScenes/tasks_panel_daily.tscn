@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dpi70uocqmqy3"]
 
+[ext_resource type="Script" uid="uid://bd2btparmjgvj" path="res://Scenes/SupportScenes/tasks_panel_daily.gd" id="1_v0etr"]
 [ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="2_x6j73"]
-[ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="3_v3aoc"]
 [ext_resource type="Texture2D" uid="uid://bnkl6k1rho3gg" path="res://Assets/Icons/lock.png" id="4_6xucw"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sa4lf"]
@@ -16,6 +16,7 @@ offset_right = 400.0
 offset_bottom = 90.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_sa4lf")
+script = ExtResource("1_v0etr")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
 layout_mode = 1
@@ -77,8 +78,6 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 12
-text = "58"
-icon = ExtResource("3_v3aoc")
 expand_icon = true
 
 [node name="None" type="Control" parent="HBoxContainer/VBoxContainer"]

@@ -8,6 +8,14 @@ var support_damage: int #5
 var support_win_unique_count: int #6
 var win_one_hp_count: int #7
 
+var daily_task_update_day: int
+var daily_task_update_week: int
+var list_tasks_you: Array
+# id этапа,id задачи,Нужно,Награда этапа id сундука,внутри сундука
+var daily_task_career: Array = [[1, 1, 2], [1, 2, 3, 4, [5, 3, 1]]]
+# id этапа,id задачи,Прогресс,Пройдено,Сундук получен
+var daily_task_career_you: Array = []
+
 func check_tasks_in_game_session():
 	check_promotion_in_game_session()
 	DataManager.data["Tasks"]["count_end_game"] = count_end_game
@@ -16,6 +24,10 @@ func check_tasks_in_game_session():
 	DataManager.data["Tasks"]["win_one_hp_count"] = win_one_hp_count
 	DataManager.data["Tasks"]["support_damage"] = support_damage
 	DataManager.data["Tasks"]["support_win_unique_count"] = support_win_unique_count
+	DataManager.data["Tasks"]["daily_task_update_day"] = daily_task_update_day
+	DataManager.data["Tasks"]["daily_task_update_week"] = daily_task_update_week
+	DataManager.data["Tasks"]["list_tasks_you"] = list_tasks_you
+	DataManager.data["Tasks"]["daily_task_career_you"] = daily_task_career_you
 	DataManager.write_file()
 
 func check_promotion_in_game_session():

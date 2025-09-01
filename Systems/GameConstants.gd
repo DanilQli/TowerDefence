@@ -646,6 +646,21 @@ const TURRET_9_ABILITY_0: int = 3
 const TURRET_10_ABILITY_0: Array = [5, 1000]
 const TURRET_10_ABILITY_1: Array = [10, 8]
 
+# Иконка,Сделать от,до,до в неделях,Награда от-до за единицу
+# Награда в токенах только для еженедельных заданий
+const TASKS_INFO = [
+	[preload("res://Assets/Icons/damage_reduction.png"), 10000, 25000, 100000, 5],
+	[preload("res://Assets/Icons/death.png"), 30, 100, 500, 3],
+	[preload("res://Assets/Icons/card_buy_what_1.png"), 2, 5, 30, 4],
+	[preload("res://Assets/Icons/card_buy_what_2.png"), 2, 5, 30, 5],
+	[preload("res://Assets/Icons/card_buy_what_3.png"), 1, 2, 5, 8],
+	[preload("res://Assets/Icons/lvl_up.png"), 1, 2, 4, 2],
+	[preload("res://Assets/Button/money.png"), 10, 30, 150, 2],
+	[preload("res://Assets/Icons/gem.png"), 1, 2, 4, 5],
+	[preload("res://Assets/Icons/type_mentor_1.png"), 1, 2, 4, 4],
+	[preload("res://Assets/Icons/type_mentor_2.png"), 1, 2, 4, 5],
+	[preload("res://Assets/Icons/type_mentor_3.png"), 1, 2, 4, 7]
+]
 var LIST_TYPE_CARD = init_list_type_card()
 
 func init_list_type_card():

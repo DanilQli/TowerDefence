@@ -7,6 +7,8 @@ extends Control
 @onready var but_4 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4")
 @onready var but_5 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5")
 
+@onready var but_task = get_node("Panel/HBoxContainer/Button2")
+
 func _ready():
 	# Загрузка языковых настроек
 	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
@@ -25,6 +27,7 @@ func _ready():
 	but_3.pressed.connect(settings)
 	but_4.pressed.connect(promotion)
 	but_5.pressed.connect(on_quit_pressed)
+	but_task.pressed.connect(task)
 	
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4/NinePatchRect").visible = check_promotion()
 
@@ -34,6 +37,12 @@ func on_new_game_pressed():
 	get_node("Reward").visible = false
 	get_node(".").add_child(UiManager.menu_object)
 
+func task():
+	UiManager.menu_object = load("res://Scenes/SupportScenes/daily_tasks.tscn").instantiate()
+	get_node("MarginContainer2").visible = false
+	get_node("Reward").visible = false
+	get_node(".").add_child(UiManager.menu_object)
+	
 func shop():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
 	get_node("MarginContainer2").visible = false

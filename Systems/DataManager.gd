@@ -8,6 +8,7 @@ var data: Dictionary = {}
 var promotion_progress: Array = []
 var promotion_progress_level: Array = []
 var promotion_progress_level_data_end: Array = []
+var tasks_day_you_progress: Array = []
 
 var promotion_stars: int
 var promotion_level: int
@@ -87,6 +88,11 @@ func _parse_tasks() -> void:
 	TasksManager.support_damage = data.get("Tasks", {}).get("support_damage", 0)
 	TasksManager.support_win_unique_count = data.get("Tasks", {}).get("support_win_unique_count", 0)
 	TasksManager.win_one_hp_count = data.get("Tasks", {}).get("win_one_hp_count", 0)
+	
+	TasksManager.daily_task_update_day = int(data.get("Tasks", {}).get("daily_task_update_day", 0))
+	TasksManager.daily_task_update_week = int(data.get("Tasks", {}).get("daily_task_update_week", 0))
+	TasksManager.list_tasks_you = data.get("Tasks", {}).get("list_tasks_you", 0)
+	TasksManager.daily_task_career_you = data.get("Tasks", {}).get("daily_task_career_you", 0)
 
 ## Добавить монеты
 func add_data_money(value: int) -> void:
