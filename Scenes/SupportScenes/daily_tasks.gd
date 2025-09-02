@@ -17,9 +17,15 @@ func _ready():
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Forward").pressed.connect(func_stage_preview.bind(1))
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control1/VBoxContainer/HBoxContainer/Button").pressed.connect(info_tasks)
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control2/VBoxContainer/HBoxContainer/Button").pressed.connect(info_tasks)
+	get_node("Panel/Close").pressed.connect(close_menu)
 	check_daily_tasks()
 	check_weekly_tasks()
 	check_career_tasks()
+
+func close_menu():
+	get_parent().get_node("MarginContainer2").visible = true
+	get_parent().get_node("Reward").visible = true
+	queue_free()
 	
 func visible_tasks(index):
 	for child in get_node("Panel/MarginContainer/VBoxContainer/ControlAll").get_children():
@@ -31,16 +37,16 @@ func check_daily_tasks():
 	if days > TasksManager.daily_task_update_day + 1:
 		TasksManager.daily_task_update_day = days
 		TasksManager.check_tasks_in_game_session()
-		var LIST_RANDOM_TASKS = [[1, 2], [2, 3], [3, 5], [5, 7]]
+		var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7]]
 		var id_tasks
 		for i in range(len(LIST_RANDOM_TASKS)):
 			rng.randomize()
 			id_tasks = rng.randi_range(LIST_RANDOM_TASKS[i][0], LIST_RANDOM_TASKS[i][1])
 			TasksManager.list_tasks_you[i][0] = id_tasks
 			rng.randomize()
-			TasksManager.list_tasks_you[i][1] = rng.randi_range(GameConstants.LIST_TASKS[id_tasks][1], GameConstants.LIST_TASKS[id_tasks][2])
+			TasksManager.list_tasks_you[i][1] = rng.randi_range(GameConstants.TASKS_INFO[id_tasks][1], GameConstants.TASKS_INFO[id_tasks][2])
 			TasksManager.list_tasks_you[i][2] = 0
-			TasksManager.list_tasks_you[i][3] = int( (int(TasksManager.list_tasks_you[i][1]) / float(GameConstants.LIST_TASKS[id_tasks][1])) * randi_range(int(GameConstants.LIST_TASKS[id_tasks][4] * 0.9), int(GameConstants.LIST_TASKS[id_tasks][4] * 1.1)))
+			TasksManager.list_tasks_you[i][3] = int( (int(TasksManager.list_tasks_you[i][1]) / float(GameConstants.TASKS_INFO[id_tasks][1])) * randi_range(int(GameConstants.TASKS_INFO[id_tasks][4] * 0.9), int(GameConstants.TASKS_INFO[id_tasks][4] * 1.1)))
 			TasksManager.list_tasks_you[i][4] = 0
 	var node
 	for i in range(4):
@@ -55,7 +61,7 @@ func check_weekly_tasks():
 	if int(days) > int(TasksManager.daily_task_update_week) + 7:
 		TasksManager.daily_task_update_week = days
 		TasksManager.check_tasks_in_game_session()
-		var LIST_RANDOM_TASKS = [[1, 2], [2, 3], [3, 5], [5, 7], [7, 8], [8, 9], [10, 11]]
+		var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7], [7, 8], [8, 9], [10, 11]]
 		var id_tasks
 		var list_number_do
 		for i in range(len(LIST_RANDOM_TASKS)):
@@ -63,9 +69,9 @@ func check_weekly_tasks():
 			id_tasks = rng.randi_range(LIST_RANDOM_TASKS[i][0], LIST_RANDOM_TASKS[i][1])
 			TasksManager.list_tasks_you[i + 4][0] = id_tasks
 			rng.randomize()
-			TasksManager.list_tasks_you[i + 4][1] = rng.randi_range(GameConstants.LIST_TASKS[id_tasks][1], GameConstants.LIST_TASKS[id_tasks][2])
+			TasksManager.list_tasks_you[i + 4][1] = rng.randi_range(GameConstants.TASKS_INFO[id_tasks][1], GameConstants.TASKS_INFO[id_tasks][2])
 			TasksManager.list_tasks_you[i + 4][2] = 0
-			TasksManager.list_tasks_you[i + 4][3] = int( (int(TasksManager.list_tasks_you[i + 4][1]) / float(GameConstants.LIST_TASKS[id_tasks][1])) * randi_range(int(GameConstants.LIST_TASKS[id_tasks][4] * 0.9), int(GameConstants.LIST_TASKS[id_tasks][4] * 1.1)))
+			TasksManager.list_tasks_you[i + 4][3] = int( (int(TasksManager.list_tasks_you[i + 4][1]) / float(GameConstants.TASKS_INFO[id_tasks][1])) * randi_range(int(GameConstants.TASKS_INFO[id_tasks][4] * 0.9), int(GameConstants.TASKS_INFO[id_tasks][4] * 1.1)))
 			TasksManager.list_tasks_you[i + 4][4] = 0
 	var node
 	for i in range(0, 7):
@@ -131,7 +137,9 @@ func func_stage_preview(direction):
 func info_tasks():
 	var info = load("res://Scenes/SupportScenes/info_buy_card.tscn").instantiate()
 	info.get_node("Panel/VBoxContainer/HBoxContainer/Panel/RichTextLabel").text = tr("KEY_TASKS_INFO")
+	add_child(info)
 	info.get_node("Panel/Close").pressed.connect(close.bind(info))
+	info.get_node("Panel/VBoxContainer/CardOf/Button").pressed.connect(close.bind(info))
 
 func box_open(ind):
 	var box_card = GameConstants.get_random_card_pairs(TasksManager.daily_task_career[ind][4])

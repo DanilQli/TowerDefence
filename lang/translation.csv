@@ -104,6 +104,8 @@ KEY_TASKS_CAREER,Карьерные,Career goals
 KEY_TIME_FOR_NEW_TASKS,До новых заданий: ,Until new tasks:
 KEY_TASKS_COMPLETE_ALL,"Выполните все задания, чтобы получить награду",Complete all the tasks to get the reward
 KEY_STAGE,Этап: ,Stage:
+KEY_INFO,Инфо,Info
+KEY_CLEARLY,Понятно,Clearly
 
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player

@@ -176,12 +176,12 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 alignment = 1
 
-[node name="Button" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control1/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control1/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
-texture_normal = ExtResource("5_j04w2")
-ignore_texture_size = true
-stretch_mode = 0
+icon = ExtResource("5_j04w2")
+flat = true
+expand_icon = true
 
 [node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control1/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -228,12 +228,12 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 alignment = 1
 
-[node name="Button" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control2/VBoxContainer/HBoxContainer"]
+[node name="Button" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control2/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
-texture_normal = ExtResource("5_j04w2")
-ignore_texture_size = true
-stretch_mode = 0
+icon = ExtResource("5_j04w2")
+flat = true
+expand_icon = true
 
 [node name="Label" type="Label" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control2/VBoxContainer/HBoxContainer"]
 layout_mode = 2
@@ -271,10 +271,11 @@ grow_vertical = 2
 custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 
-[node name="Back" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
+[node name="Back" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("7_nhshg")
-flip_h = true
+icon = ExtResource("7_nhshg")
+flat = true
+expand_icon = true
 
 [node name="Panel" type="Panel" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
 custom_minimum_size = Vector2(0, 90)
@@ -341,8 +342,8 @@ layout_mode = 2
 visible = false
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 0
-offset_right = 8.0
-offset_bottom = 8.0
+offset_right = 30.0
+offset_bottom = 30.0
 
 [node name="NinePatchRect" type="NinePatchRect" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer/NinePatchRect/Button2"]
 custom_minimum_size = Vector2(20, 20)
@@ -403,9 +404,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
-[node name="Forward" type="TextureButton" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
+[node name="Forward" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
 layout_mode = 2
-texture_normal = ExtResource("7_nhshg")
+icon = ExtResource("7_nhshg")
+flat = true
+clip_text = true
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer"]
 layout_mode = 2
@@ -415,13 +418,15 @@ size_flags_vertical = 3
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Close" type="TextureButton" parent="Panel"]
+[node name="Close" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(40, 40)
 layout_mode = 1
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -45.0
-offset_bottom = 45.0
+offset_left = -40.0
+offset_bottom = 40.0
 grow_horizontal = 0
-texture_normal = ExtResource("2_6kisy")
-stretch_mode = 1
+icon = ExtResource("2_6kisy")
+flat = true
+expand_icon = true
