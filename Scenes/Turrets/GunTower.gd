@@ -20,11 +20,13 @@ func _apply_damage() -> void:
 		current_damage_up += randi_range(0, 40)
 	if enemy:
 		critical_damage_all = critical_damage()
+		func_add_deal_damage(critical_damage_all)
 		inflicted += critical_damage_all
 		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 		emit_signal("damage_inflicted_changed", inflicted)
 	if self.ability[0] and randi_range(0, 100) <= GameConstants.CHANCE_AGAIN_DAMAGE:
 		critical_damage_all = critical_damage()
+		func_add_deal_damage(critical_damage_all)
 		inflicted += critical_damage_all
 		enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 		emit_signal("damage_inflicted_changed", inflicted)

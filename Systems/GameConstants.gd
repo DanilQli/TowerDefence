@@ -563,6 +563,8 @@ const ROAD_OBSTACLE: int = 3
 const NUMBER_ENEMY: int = 8
 ## Насколько % движется враг при существовании препятсвия
 const OBSTACLE_SLOW: float = 0.7
+## Количество заданий в каждом этапе карьерных заданий
+const NUMBER_TASKS_IN_CAREER: int  = 2
 
 const DATA_ENEMY_BOSS = {
 	0: {

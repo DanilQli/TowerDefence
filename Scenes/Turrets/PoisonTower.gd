@@ -17,6 +17,7 @@ func fire() -> void:
 				"duration": duration,
 				"tick": tick
 			})
+			func_add_deal_damage((damage * multiplier_damage_enemy) * (duration / 1.0 / tick))
 			if self.ability[0]:
 				e.on_hit(GameConstants.TURRET_7_ABILITY_0, 0, GameConstants.TowerType.SLOW, self, duration)
 			if self.ability[1]:

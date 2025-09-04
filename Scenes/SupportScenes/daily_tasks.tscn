@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://d2cj4cq5lmnhg"]
+[gd_scene load_steps=14 format=3 uid="uid://d2cj4cq5lmnhg"]
 
 [ext_resource type="Texture2D" uid="uid://coyadr2d23wr3" path="res://Assets/Icons/Tasks/daily.png" id="1_gpe5x"]
 [ext_resource type="Script" uid="uid://cpx5mk1rk1e75" path="res://Scenes/SupportScenes/daily_tasks.gd" id="1_r5jr0"]
@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://bih4l4ueyiybk" path="res://Assets/Icons/Tasks/weekly.png" id="2_iquud"]
 [ext_resource type="Texture2D" uid="uid://bm4g6nlmc7ywj" path="res://Assets/Icons/Tasks/career.png" id="3_hgm4g"]
 [ext_resource type="Texture2D" uid="uid://8ob3km8ttdeh" path="res://Assets/Icons/info.png" id="5_j04w2"]
+[ext_resource type="Texture2D" uid="uid://boctueehplxjx" path="res://Assets/Icons/arrow_2.png" id="6_gf0fh"]
 [ext_resource type="Texture2D" uid="uid://bqgqwl5vxvkb1" path="res://Assets/Icons/arrow_3.png" id="7_nhshg"]
 [ext_resource type="Texture2D" uid="uid://t88pvu3rcim6" path="res://Assets/Icons/check.png" id="8_77jub"]
 [ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="9_7huqo"]
@@ -272,8 +273,9 @@ custom_minimum_size = Vector2(0, 90)
 layout_mode = 2
 
 [node name="Back" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
-icon = ExtResource("7_nhshg")
+icon = ExtResource("6_gf0fh")
 flat = true
 expand_icon = true
 
@@ -405,6 +407,7 @@ custom_minimum_size = Vector2(0, 2)
 layout_mode = 2
 
 [node name="Forward" type="Button" parent="Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(40, 0)
 layout_mode = 2
 icon = ExtResource("7_nhshg")
 flat = true

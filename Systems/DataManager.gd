@@ -23,6 +23,8 @@ var glory_progress: int
 var glory_rewards_level_get: Array = []
 ## Деньги
 var data_money: int = 0
+## Алмазы
+var data_diamond: int = 0
 ## Критический урон
 var critical_damage: int
 var TYPE_ITEMS: Dictionary
@@ -78,6 +80,7 @@ func parse_game_data() -> void:
 ## Извлекает значения ресурсов
 func _parse_resources() -> void:
 	data_money = data.get("Resources", {}).get("money", 0)
+	data_diamond = data.get("Resources", {}).get("diamond", 0)
 	critical_damage = data.get("Resources", {}).get("critical_damage", 0)
 
 func _parse_tasks() -> void:
@@ -93,14 +96,35 @@ func _parse_tasks() -> void:
 	TasksManager.daily_task_update_week = int(data.get("Tasks", {}).get("daily_task_update_week", 0))
 	TasksManager.list_tasks_you = data.get("Tasks", {}).get("list_tasks_you", 0)
 	TasksManager.daily_task_career_you = data.get("Tasks", {}).get("daily_task_career_you", 0)
+	
+	TasksManager.deal_damage = int(data.get("Tasks", {}).get("deal_damage", 0))
+	TasksManager.destroy_enemies = int(data.get("Tasks", {}).get("destroy_enemies", 0))
+	TasksManager.get_common_turret_cards = data.get("Tasks", {}).get("get_common_turret_cards", 0)
+	TasksManager.get_rare_turret_cards = data.get("Tasks", {}).get("get_rare_turret_cards", 0)
+	TasksManager.get_epic_turret_cards = int(data.get("Tasks", {}).get("get_epic_turret_cards", 0))
+	TasksManager.upgrade_turrets = int(data.get("Tasks", {}).get("upgrade_turrets", 0))
+	TasksManager.get_coins = data.get("Tasks", {}).get("get_coins", 0)
+	TasksManager.get_diamonds = data.get("Tasks", {}).get("get_diamonds", 0)
+	TasksManager.get_common_hero_cards = int(data.get("Tasks", {}).get("get_common_hero_cards", 0))
+	TasksManager.get_rare_hero_cards = data.get("Tasks", {}).get("get_rare_hero_cards", 0)
+	TasksManager.get_epic_hero_cards = data.get("Tasks", {}).get("get_epic_hero_cards", 0)
 
 ## Добавить монеты
 func add_data_money(value: int) -> void:
 	if value < 0:
 		TasksManager.count_spend_money += value
 		TasksManager.check_tasks_not_in_game_session()
+	else:
+		TasksManager.get_coins += value
 	data_money += value
 	data["Resources"]["money"] = data_money
+
+## Добавить алмазы
+func add_data_diamond(value: int) -> void:
+	if value > 0:
+		TasksManager.get_diamonds += value
+	data_diamond += value
+	data["Resources"]["diamond"] = data_diamond
 	
 ## Добавить критический урон(в случаи улучшении карт)
 func add_critical_damage(val: int) -> void:

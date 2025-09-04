@@ -153,6 +153,7 @@ func on_hit(damage, type_explosion, type_attack, towers, parametrs=false):
 			destroy = true
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
+			enemy_destroy_task()
 			on_destroy()
 	elif type_attack == GameConstants.TowerType.SLOW:
 		self.speed *= (100 - damage) / 100.0
@@ -208,3 +209,6 @@ func on_destroy():
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
 	ResourceManager.list_active_enemy.erase(self)
 	queue_free()
+
+func enemy_destroy_task():
+	TasksManager.destroy_enemies += 1

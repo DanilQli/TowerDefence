@@ -34,10 +34,10 @@ func visible_tasks(index):
 
 func check_daily_tasks():
 	var days = int(Time.get_unix_time_from_system() / 86400)  # 86400 секунд в дне
+	var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7]]
 	if days > TasksManager.daily_task_update_day + 1:
 		TasksManager.daily_task_update_day = days
 		TasksManager.check_tasks_in_game_session()
-		var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7]]
 		var id_tasks
 		for i in range(len(LIST_RANDOM_TASKS)):
 			rng.randomize()
@@ -48,6 +48,10 @@ func check_daily_tasks():
 			TasksManager.list_tasks_you[i][2] = 0
 			TasksManager.list_tasks_you[i][3] = int( (int(TasksManager.list_tasks_you[i][1]) / float(GameConstants.TASKS_INFO[id_tasks][1])) * randi_range(int(GameConstants.TASKS_INFO[id_tasks][4] * 0.9), int(GameConstants.TASKS_INFO[id_tasks][4] * 1.1)))
 			TasksManager.list_tasks_you[i][4] = 0
+	else:
+		for i in range(len(LIST_RANDOM_TASKS)):
+			TasksManager.list_tasks_you[i][2] += TasksManager.get(TasksManager.task.find_key(int(TasksManager.list_tasks_you[i][0])))
+	TasksManager.update_daily_task()
 	var node
 	for i in range(4):
 		if TasksManager.list_tasks_you[i][4] == 0:
@@ -58,10 +62,10 @@ func check_daily_tasks():
 
 func check_weekly_tasks():
 	var days = str(int(Time.get_unix_time_from_system() / 86400))  # 86400 секунд в дне
+	var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7], [7, 8], [8, 9], [9, 10]]
 	if int(days) > int(TasksManager.daily_task_update_week) + 7:
 		TasksManager.daily_task_update_week = days
 		TasksManager.check_tasks_in_game_session()
-		var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7], [7, 8], [8, 9], [10, 11]]
 		var id_tasks
 		var list_number_do
 		for i in range(len(LIST_RANDOM_TASKS)):
@@ -71,8 +75,12 @@ func check_weekly_tasks():
 			rng.randomize()
 			TasksManager.list_tasks_you[i + 4][1] = rng.randi_range(GameConstants.TASKS_INFO[id_tasks][1], GameConstants.TASKS_INFO[id_tasks][2])
 			TasksManager.list_tasks_you[i + 4][2] = 0
-			TasksManager.list_tasks_you[i + 4][3] = int( (int(TasksManager.list_tasks_you[i + 4][1]) / float(GameConstants.TASKS_INFO[id_tasks][1])) * randi_range(int(GameConstants.TASKS_INFO[id_tasks][4] * 0.9), int(GameConstants.TASKS_INFO[id_tasks][4] * 1.1)))
+			TasksManager.list_tasks_you[i + 4][3] = int( (int(TasksManager.list_tasks_you[i + 3][1]) / float(GameConstants.TASKS_INFO[id_tasks][1])) * randi_range(int(GameConstants.TASKS_INFO[id_tasks][4] * 0.9), int(GameConstants.TASKS_INFO[id_tasks][4] * 1.1)))
 			TasksManager.list_tasks_you[i + 4][4] = 0
+	else:
+		for i in range(len(LIST_RANDOM_TASKS)):
+			TasksManager.list_tasks_you[i + 4][2] += TasksManager.get(TasksManager.task.find_key(int(TasksManager.list_tasks_you[i + 4][0])))
+	TasksManager.update_daily_task()
 	var node
 	for i in range(0, 7):
 		if TasksManager.list_tasks_you[i + 4][4] == 0:
@@ -85,17 +93,22 @@ func check_career_tasks():
 	var list_tasks_id
 	var node
 	var number_tasks = [0, 0]
-	for i in range(1, len(TasksManager.daily_task_career_you)):
-		if TasksManager.daily_task_career_you[i][2] == 0:
+	for i in range(0, len(TasksManager.daily_task_career_you)):
+		if TasksManager.daily_task_career_you[i][3] == 0:
 			curent_stage = TasksManager.daily_task_career_you[i][0]
 			stage_preview = curent_stage
 			break
-	for i in range(1, len(TasksManager.daily_task_career)):
+	for i in range(len(TasksManager.daily_task_career)):
+		TasksManager.daily_task_career_you[i][2] += TasksManager.get(TasksManager.task.find_key(int(TasksManager.daily_task_career[i][1])))
+	
+	TasksManager.update_task_count()
+	
+	for i in range(0, len(TasksManager.daily_task_career)):
 		if TasksManager.daily_task_career[i][0] == curent_stage:
-			if TasksManager.daily_task_career_you[i][2] == 0:
+			if TasksManager.daily_task_career_you[i][3] == 0:
 				number_tasks[1] += 1
 				node = load("res://Scenes/SupportScenes/tasks_panel_daily.tscn").instantiate()
-				node.setup(i + 1, 2)
+				node.setup(i, 2)
 				get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/ScrollContainer/VBoxContainer").add_child(node)
 			else:
 				number_tasks[0] += 1
@@ -121,10 +134,10 @@ func func_stage_preview(direction):
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/TextureProgressBar/Label").text = ""
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/TextureProgressBar").max_value = 1
 	get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer2/TextureProgressBar").value = 0
-	for i in range(1, len(TasksManager.daily_task_career_you)):
-		if TasksManager.daily_task_career_you[i][0] == stage_preview:
+	for i in range(0, len(TasksManager.daily_task_career_you)):
+		if TasksManager.daily_task_career_you[i][0] == stage_preview and TasksManager.daily_task_career_you[i][1] == GameConstants.NUMBER_TASKS_IN_CAREER:
 			get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer/NinePatchRect").texture = load("res://Assets/Icons/box_" + str(TasksManager.daily_task_career[i][3]) + ".png")
-			if int(TasksManager.daily_task_career_you[i][3]) == 0 and int(TasksManager.daily_task_career_you[i + 9][2]) == 1:
+			if int(TasksManager.daily_task_career_you[i][4]) == 1:
 				get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer/NinePatchRect/Button").pressed.connect(box_open.bind(i))
 			elif int(TasksManager.daily_task_career_you[i][3]) == 1:
 				get_node("Panel/MarginContainer/VBoxContainer/ControlAll/Control3/VBoxContainer/HBoxContainer/Panel/VBoxContainer/HBoxContainer/NinePatchRect/Button2").visible = true

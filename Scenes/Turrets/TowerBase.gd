@@ -86,6 +86,8 @@ func fire() -> void: pass
 
 func _apply_damage() -> void: pass  # Virtual methods
 
+func func_add_deal_damage(damage):
+	TasksManager.deal_damage += damage
 func _on_range_body_entered(body: Node) -> void:
 	var parent = body.get_parent()
 	if parent and parent.has_method("on_hit"):

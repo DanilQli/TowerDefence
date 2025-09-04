@@ -44,6 +44,7 @@ func _apply_damage() -> void:
 
 func rage_attack():
 	inflicted += critical_damage_all
+	func_add_deal_damage(critical_damage_all)
 	enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 	emit_signal("damage_inflicted_changed", inflicted)
 	

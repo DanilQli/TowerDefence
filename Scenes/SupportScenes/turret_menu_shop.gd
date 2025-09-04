@@ -95,6 +95,7 @@ func open_ability(ind, number):
 func upgrade_card(number):
 	DataManager.add_data_money(-prise)
 	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_UP_CARD)
+	TasksManager.upgrade_turrets += 1
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
 	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
 	var turret_key = "Turret_" + str(number + 1) + "T1"

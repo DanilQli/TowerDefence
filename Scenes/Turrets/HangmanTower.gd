@@ -24,7 +24,9 @@ func _apply_damage() -> void:
 			critical_damage_all = critical_damage()
 			if flag_dib and self.ability[0]:
 				critical_damage_all *= GameConstants.TURRET_9_ABILITY_0
+				func_add_deal_damage(critical_damage_all)
 			else:
+				func_add_deal_damage(critical_damage_all)
 				enemy.on_hit(critical_damage_all, 0, GameConstants.TowerType.GUN, self)
 			flag_dib = false
 		inflicted += critical_damage_all

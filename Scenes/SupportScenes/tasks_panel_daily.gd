@@ -1,7 +1,7 @@
 extends Panel
 
 func setup(i, type):
-	if type < 3:
+	if type < 2:
 		get_node("HBoxContainer/VBoxContainer/RichTextLabel").text = tr("KEY_TASK_" + str(int(TasksManager.list_tasks_you[i][0]) + 1)) + str(int(TasksManager.list_tasks_you[i][1]))
 		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar/Label").text = str(int(TasksManager.list_tasks_you[i][2])) + "/" + str(int(TasksManager.list_tasks_you[i][1]))
 		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar").max_value = TasksManager.list_tasks_you[i][1]
@@ -15,11 +15,11 @@ func setup(i, type):
 		if int(TasksManager.list_tasks_you[i][2]) >= int(TasksManager.list_tasks_you[i][1]):
 			get_node("HBoxContainer/VBoxContainer/HBoxContainer/Button").pressed.connect(write_done_tasks.bind(i, type))
 	else:
-		get_node("HBoxContainer/VBoxContainer/RichTextLabel").text = tr("KEY_TASK_" + str(int(TasksManager.daily_task_career[i][2]) + 1)) + str(int(TasksManager.daily_task_career_you[i][2]))
-		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar/Label").text = str(int(TasksManager.daily_task_career[i][2])) + "/" + str(int(TasksManager.daily_task_career_you[i][2]))
+		get_node("HBoxContainer/VBoxContainer/RichTextLabel").text = tr("KEY_TASK_" + str(int(TasksManager.daily_task_career[i][1]) + 1)) + str(int(TasksManager.daily_task_career[i][2]))
+		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar/Label").text = str(int(TasksManager.daily_task_career_you[i][2])) + "/" + str(int(TasksManager.daily_task_career[i][2]))
 		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar").max_value = TasksManager.daily_task_career[i][2]
 		get_node("HBoxContainer/VBoxContainer/HBoxContainer/TextureProgressBar").value = TasksManager.daily_task_career_you[i][2]
-		get_node("HBoxContainer/VboxIcon/NinePatchRect").texture = GameConstants.TASKS_INFO[int(TasksManager.daily_task_career[i][2])][0]
+		get_node("HBoxContainer/VboxIcon/NinePatchRect").texture = GameConstants.TASKS_INFO[int(TasksManager.daily_task_career[i][1])][0]
 
 func write_done_tasks(task, type):
 	if type < 2:

@@ -22,6 +22,7 @@ func _apply_damage() -> void:
 		if is_instance_valid(e):
 			dam = critical_damage()
 			inflicted += dam
+			func_add_deal_damage(dam)
 			e.on_hit(dam, 0, GameConstants.TowerType.AREA, self)
 			alredy += 1
 			emit_signal("damage_inflicted_changed", inflicted)
