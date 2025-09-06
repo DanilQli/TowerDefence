@@ -52,7 +52,6 @@ func open_rewards_glory(keysa, index, vip_index):
 	DataManager.data["PathOfGlory"]["rewards_level_get"] = DataManager.glory_rewards_level_get
 	var box_card = false
 	if keys in [2, 3, 4, 5, 6, 7, 8, 9]:
-		box_card = true
 		box_card = GameConstants.get_random_card_pairs(GameConstants.ID_GIFT_GLORY[index][keys])
 		DataManager.TYPE_ITEMS[keys][0].call(box_card)
 	else:

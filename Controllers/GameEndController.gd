@@ -94,10 +94,13 @@ func end_game():
 
 func tasks():
 	TasksManager.win_several_times.pop_at(0)
-	if GameSession.base_health == 0:
+	if GameSession.base_health == 1:
 		TasksManager.win_one_hp_count += 1
+		TasksManager.win_several_times.append(1)
+	elif GameSession.base_health == 0:
 		TasksManager.win_several_times.append(0)
 	else:
+		TasksManager.win_matches += 1
 		TasksManager.win_several_times.append(1)
 	TasksManager.count_end_game += 1
 	TasksManager.check_tasks_in_game_session()

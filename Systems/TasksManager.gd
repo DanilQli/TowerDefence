@@ -11,8 +11,8 @@ var win_one_hp_count: int #7
 var daily_task_update_day: int
 var daily_task_update_week: int
 var list_tasks_you: Array
-# id этапа,id задачи,Нужно,id сундука,внутри сундука
-var daily_task_career: Array = [[1, 1, 12], [1, 2, 13, 4, [5, 3, 1]], [2, 3, 12], [2, 4, 13, 4, [5, 3, 1]]]
+# id этапа,id задачи,Нужно,id сундука(или награда в монетах),внутри сундука
+var daily_task_career: Array = [[1, 1, 12, 5], [1, 2, 13, 4, [5, 3, 1]], [2, 3, 12, 6], [2, 4, 13, 4, [5, 3, 1]]]
 # id этапа,id задачи,Прогресс,Пройдено,Сундук получен
 var daily_task_career_you: Array = []
 # счётчики заданий
@@ -27,6 +27,7 @@ var get_diamonds
 var get_common_hero_cards
 var get_rare_hero_cards
 var get_epic_hero_cards
+var win_matches
 enum task {
 	deal_damage = 0,
 	destroy_enemies = 1,   
@@ -38,7 +39,8 @@ enum task {
 	get_diamonds = 7,  
 	get_common_hero_cards = 8,
 	get_rare_hero_cards = 9,
-	get_epic_hero_cards = 10
+	get_epic_hero_cards = 10,
+	win_matches = 11
 }
 
 func check_tasks_in_game_session():
@@ -68,6 +70,7 @@ func check_tasks_in_game_session_count():
 	DataManager.data["Tasks"]["get_common_hero_cards"] = get_common_hero_cards
 	DataManager.data["Tasks"]["get_rare_hero_cards"] = get_rare_hero_cards
 	DataManager.data["Tasks"]["get_epic_hero_cards"] = get_epic_hero_cards
+	DataManager.data["Tasks"]["win_matches"] = win_matches
 	
 	DataManager.write_file()
 
@@ -107,6 +110,7 @@ func update_task_count():
 	get_common_hero_cards = 0
 	get_rare_hero_cards = 0
 	get_epic_hero_cards = 0
+	win_matches = 0
 	check_tasks_in_game_session_count()
 	
 func check_promotion_not_in_game_session():

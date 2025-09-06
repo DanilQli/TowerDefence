@@ -34,7 +34,7 @@ func visible_tasks(index):
 
 func check_daily_tasks():
 	var days = int(Time.get_unix_time_from_system() / 86400)  # 86400 секунд в дне
-	var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7]]
+	var LIST_RANDOM_TASKS = [[0, 1], [2, 4], [5, 7], [8, 11]]
 	if days > TasksManager.daily_task_update_day + 1:
 		TasksManager.daily_task_update_day = days
 		TasksManager.check_tasks_in_game_session()
@@ -62,7 +62,7 @@ func check_daily_tasks():
 
 func check_weekly_tasks():
 	var days = str(int(Time.get_unix_time_from_system() / 86400))  # 86400 секунд в дне
-	var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [3, 5], [5, 7], [7, 8], [8, 9], [9, 10]]
+	var LIST_RANDOM_TASKS = [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9], [9, 10], [10, 11]]
 	if int(days) > int(TasksManager.daily_task_update_week) + 7:
 		TasksManager.daily_task_update_week = days
 		TasksManager.check_tasks_in_game_session()

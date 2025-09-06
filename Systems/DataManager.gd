@@ -108,6 +108,7 @@ func _parse_tasks() -> void:
 	TasksManager.get_common_hero_cards = int(data.get("Tasks", {}).get("get_common_hero_cards", 0))
 	TasksManager.get_rare_hero_cards = data.get("Tasks", {}).get("get_rare_hero_cards", 0)
 	TasksManager.get_epic_hero_cards = data.get("Tasks", {}).get("get_epic_hero_cards", 0)
+	TasksManager.get_epic_hero_cards = data.get("Tasks", {}).get("win_matches", 0)
 
 ## Добавить монеты
 func add_data_money(value: int) -> void:

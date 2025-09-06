@@ -133,6 +133,7 @@ KEY_TASK_8,Получите алмазов: ,Get diamonds
 KEY_TASK_9,Получите карточек обычного героя: ,Get common hero cards
 KEY_TASK_10,Получите карточек редкого героя: ,Get rare hero cards
 KEY_TASK_11,Получите карточек эпического героя: ,Get epic hero cards
+KEY_TASK_12,Выиграйте матчей: ,Win matches:
 
 KEY_ENEMY_BOSS_1,Каждые [color='blue']3[/color] секунды [color='blue']3[/color] башни окаменеют на [color='blue']5[/color] секунд,Every [color='blue']3[/color] seconds [color='blue']3[/color] towers will petrify for [color='blue']5[/color] seconds
 KEY_ENEMY_BOSS_2,Блокирует [color='blue']10%[/color] получаемого урона,Blocks [color='blue']10%[/color] of damage received

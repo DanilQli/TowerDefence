@@ -661,7 +661,8 @@ const TASKS_INFO = [
 	[preload("res://Assets/Icons/gem.png"), 1, 2, 4, 5],
 	[preload("res://Assets/Icons/type_mentor_1.png"), 1, 2, 4, 4],
 	[preload("res://Assets/Icons/type_mentor_2.png"), 1, 2, 4, 5],
-	[preload("res://Assets/Icons/type_mentor_3.png"), 1, 2, 4, 7]
+	[preload("res://Assets/Icons/type_mentor_3.png"), 1, 2, 4, 7],
+	[preload("res://Assets/Icons/damage_reduction.png"), 3, 5, 20, 2]
 ]
 var LIST_TYPE_CARD = init_list_type_card()
 
