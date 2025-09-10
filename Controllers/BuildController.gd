@@ -1,13 +1,13 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 var build_mode := false
 var build_valid := false
 var build_location
 var build_type
 var build_tile
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
 
 func initiate_build_mode(tower_type: String):

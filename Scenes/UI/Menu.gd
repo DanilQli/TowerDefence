@@ -71,3 +71,4 @@ func check_promotion():
 				return true
 	return false
 	
+	

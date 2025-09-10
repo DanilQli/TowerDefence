@@ -48,13 +48,13 @@
     "level": 12,
     "open_level": 14,
     "progress": [
-      9.0,
+      10,
       10.0,
-      0.0,
-      1.0,
-      0.0,
-      0.0,
-      8.0
+      0,
+      1,
+      0,
+      0,
+      8
     ],
     "progress_level": [
       1.0,
@@ -141,8 +141,8 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 9.0,
-    "count_end_game_company": 0.0,
+    "count_end_game": 10,
+    "count_end_game_company": 0,
     "count_spend_money": 0.0,
     "daily_task_career_you": [
       [
@@ -174,18 +174,18 @@
         0.0
       ]
     ],
-    "daily_task_update_day": 20336.0,
-    "daily_task_update_week": 20334.0,
+    "daily_task_update_day": 20336,
+    "daily_task_update_week": 20334,
     "deal_damage": 0,
     "destroy_enemies": 0,
-    "get_coins": 0,
+    "get_coins": 0.0,
     "get_common_hero_cards": 0,
-    "get_common_turret_cards": 0,
-    "get_diamonds": 0,
-    "get_epic_hero_cards": 0,
+    "get_common_turret_cards": 0.0,
+    "get_diamonds": 0.0,
+    "get_epic_hero_cards": 0.0,
     "get_epic_turret_cards": 0,
-    "get_rare_hero_cards": 0,
-    "get_rare_turret_cards": 0,
+    "get_rare_hero_cards": 0.0,
+    "get_rare_turret_cards": 0.0,
     "list_tasks_you": [
       [
         1.0,
@@ -265,14 +265,13 @@
         1.0
       ]
     ],
-    "support_damage": 0.0,
-    "support_win_unique_count": 0.0,
+    "support_damage": 0,
+    "support_win_unique_count": 0,
     "upgrade_turrets": 0,
     "weekly_task_update_day": 2034.0,
-    "win_matches": 0,
-    "win_one_hp_count": 8.0,
+    "win_matches": null,
+    "win_one_hp_count": 8,
     "win_several_times": [
-      0.0,
       0.0,
       0.0,
       0.0,
@@ -281,7 +280,8 @@
       0.0,
       1.0,
       0.0,
-      0.0
+      0.0,
+      0
     ]
   },
   "Turrets": {

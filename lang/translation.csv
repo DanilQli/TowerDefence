@@ -106,6 +106,8 @@ KEY_TASKS_COMPLETE_ALL,"Выполните все задания, чтобы п�
 KEY_STAGE,Этап: ,Stage:
 KEY_INFO,Инфо,Info
 KEY_CLEARLY,Понятно,Clearly
+KEY_SEARCH_PVP,Поиск соперника,Finding an opponent
+KEY_SEARCH_PVP_NO,Не удалось найти соперника. Попробуйте позже.,Couldn't find an opponent. Try again later.
 
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player

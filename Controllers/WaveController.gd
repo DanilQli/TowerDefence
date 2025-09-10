@@ -1,6 +1,6 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 var wave_data_all: Array
 var wave_data: Array
 var enemies_in_wave: int
@@ -8,7 +8,7 @@ var gift_controller
 var game_end_controller
 var rng = RandomNumberGenerator.new()
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
 	wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
 	gift_controller = main_scene.gift_controller

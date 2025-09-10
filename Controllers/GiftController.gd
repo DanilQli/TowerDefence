@@ -1,12 +1,12 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 var list_gift: Array = []
 var list_random: Array = []
 var list_sprite_box: Array = []
 var have_open_present: bool = false
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
 
 func launch_gift_box():

@@ -1,9 +1,9 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 @onready var hp_label: Label = null
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
 	hp_label = main_scene.get_node("UI/HUD/InfoBar/H2/HP")
 

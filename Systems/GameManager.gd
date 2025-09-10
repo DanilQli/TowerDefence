@@ -10,7 +10,7 @@ var water_scene = preload("res://Scenes/SupportScenes/water_overlay.tscn")
 var water_scene_t = preload("res://Scenes/SupportScenes/water_overlay_t.tscn")
 var water_scene_p = preload("res://Scenes/SupportScenes/water_overlay_p.tscn")
 
-func get_road_coords(scene: Node2D):
+func get_road_coords(scene):
 	main_scene = scene
 	LIST_COORDS_ROAD = get_matching_tile_coords(main_scene.get_node("Map/TowerExlusion"))
 	

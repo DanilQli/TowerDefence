@@ -5,6 +5,7 @@ extends Control
 @onready var button_3 = $Panel/MarginContainer/VBoxContainer/TextureButton_3
 @onready var close_button = $Panel/Close
 @onready var main_ui = get_parent().get_node("MarginContainer2")
+var search
 
 func _ready():
 	button_1.pressed.connect(_on_mode_selected.bind(1))
@@ -26,3 +27,21 @@ func _on_mode_selected(index):
 			GameSession.current_wave = 0
 			GameSession.game_mode = GameConstants.GameMode.SANDBOX
 			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
+		3:
+			search = preload("res://Scenes/SupportScenes/search_pvp.tscn").instantiate()
+			add_child(search)
+			var pvp_matchmaker = preload("res://Scenes/SupportScenes/pvp_manager.gd").new()
+			add_child(pvp_matchmaker)
+			
+			pvp_matchmaker.match_found.connect(_on_match_found)
+			pvp_matchmaker.search_failed.connect(_on_search_failed)
+			
+			pvp_matchmaker.start_search()
+
+func _on_match_found(new_room_id: String, index: int):
+	get_tree().change_scene_to_file("res://Scenes/UI/pvp_game_scene.tscn")
+
+func _on_search_failed():
+	search.get_node("Panel/VBoxContainer/Label").text = tr("KEY_SEARCH_PVP_NO")
+	await get_tree().create_timer(1).timeout
+	search.queue_free()

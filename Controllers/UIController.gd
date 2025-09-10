@@ -1,11 +1,10 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 var list_activity_turret: Array = []
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
-
 	var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
 	var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
 

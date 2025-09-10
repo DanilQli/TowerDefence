@@ -1,8 +1,8 @@
 extends Node
 
-var main_scene: Node2D
+var main_scene
 
-func initialize(scene: Node2D):
+func initialize(scene):
 	main_scene = scene
 
 func end_game_company():
