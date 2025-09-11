@@ -70,6 +70,7 @@ func _apply_damage_obstacle() -> void:
 		GameManager.list_coords_road_use_index.append(pos)
 		road_obstacle.damage = trap_damage_end
 		road_obstacle.position = pos
-		get_tree().current_scene.get_node("Map").add_child(road_obstacle)
+		var map_node = get_tree().current_scene.find_child("Map", true, false)
+		map_node.add_child(road_obstacle)
 	await get_tree().create_timer(interval).timeout
 	_apply_damage_obstacle()

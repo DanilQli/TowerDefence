@@ -1,18 +1,15 @@
+# pvp_game_scene.gd — исправленная версия
 extends Node2D
 
-@onready var map_node = load("res://Scenes/Maps/map_battle_%d.tscn" % randi_range(0, 0)).instantiate()
+@onready var player2_container = $CanvasLayer/HBoxContainer/Player2Container
+@onready var map_node_2 = load("res://Scenes/Maps/map_battle_0.tscn").instantiate()
 
-
-# Ссылки на контроллеры
-var build_controller
-var wave_controller
-var gift_controller
-var ui_controller
-var game_end_controller
-var health_controller
+var pvp_manager: Node
 
 func _ready():
-	for i in range(len(ResourceManager.list_turret)):
-		ResourceManager.list_turret[i] = []
-	get_node("CanvasLayer/HBoxContainer/Player2Container").add_child(map_node)
-	get_node("CanvasLayer/HBoxContainer/Player2Container").move_child(map_node, 0)
+	map_node_2.name = "Map"
+	player2_container.add_child(map_node_2)
+	player2_container.move_child(map_node_2, 0)
+	# Инициализация PvP
+	pvp_manager = preload("res://Scenes/SupportScenes/pvp_manager.gd").new()
+	add_child(pvp_manager)

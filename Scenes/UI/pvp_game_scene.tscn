@@ -1,12 +1,9 @@
-[gd_scene load_steps=10 format=3 uid="uid://dsob5dgws1suu"]
+[gd_scene load_steps=7 format=3 uid="uid://dsob5dgws1suu"]
 
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="1_ahlwb"]
 [ext_resource type="Script" uid="uid://b5ihocxbhywk6" path="res://Scenes/UI/pvp_game_scene.gd" id="1_e1k40"]
 [ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="2_2ufnk"]
-[ext_resource type="Script" uid="uid://5te3gphp2vjc" path="res://Scenes/UI/player_1_container.gd" id="2_e1k40"]
-[ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="5_gg22p"]
-[ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="6_vwoep"]
-[ext_resource type="Texture2D" uid="uid://bhdypowo2q6tx" path="res://Assets/Icons/fastForward.png" id="7_ojl3r"]
+[ext_resource type="Script" uid="uid://5te3gphp2vjc" path="res://Scenes/UI/player_container.gd" id="2_e1k40"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8e88j"]
 
@@ -23,11 +20,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="Player1Container" type="Control" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 script = ExtResource("2_e1k40")
 
 [node name="UI" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container"]
@@ -37,6 +36,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="HUD" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container/UI"]
 layout_mode = 1
@@ -296,34 +296,6 @@ theme_override_font_sizes/font_size = 40
 text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="GameControl" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -164.0
-offset_top = -90.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="PausePlay" type="TextureButton" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/GameControl"]
-process_mode = 3
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-toggle_mode = true
-button_pressed = true
-texture_normal = ExtResource("5_gg22p")
-texture_pressed = ExtResource("6_vwoep")
-
-[node name="SpeedUp" type="TextureButton" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/GameControl"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-texture_normal = ExtResource("7_ojl3r")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container"]
 custom_minimum_size = Vector2(32, 0)

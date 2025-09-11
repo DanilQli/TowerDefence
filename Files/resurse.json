@@ -48,7 +48,7 @@
     "level": 12,
     "open_level": 14,
     "progress": [
-      10,
+      12,
       10.0,
       0,
       1,
@@ -57,7 +57,7 @@
       8
     ],
     "progress_level": [
-      1.0,
+      2.0,
       4.0,
       5.0,
       5.0,
@@ -68,7 +68,7 @@
     "progress_level_data_end": [
       [
         "2025-08-06",
-        0.0,
+        "2025-09-11",
         0.0,
         0.0,
         0.0
@@ -116,7 +116,7 @@
         0.0
       ]
     ],
-    "stars": 530
+    "stars": 580
   },
   "Resources": {
     "critical_damage": 728,
@@ -141,7 +141,7 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 10,
+    "count_end_game": 12,
     "count_end_game_company": 0,
     "count_spend_money": 0.0,
     "daily_task_career_you": [
@@ -176,13 +176,13 @@
     ],
     "daily_task_update_day": 20336,
     "daily_task_update_week": 20334,
-    "deal_damage": 0,
-    "destroy_enemies": 0,
+    "deal_damage": 972318,
+    "destroy_enemies": 587,
     "get_coins": 0.0,
     "get_common_hero_cards": 0,
     "get_common_turret_cards": 0.0,
     "get_diamonds": 0.0,
-    "get_epic_hero_cards": 0.0,
+    "get_epic_hero_cards": null,
     "get_epic_turret_cards": 0,
     "get_rare_hero_cards": 0.0,
     "get_rare_turret_cards": 0.0,
@@ -276,9 +276,9 @@
       0.0,
       0.0,
       0.0,
-      0.0,
-      0.0,
       1.0,
+      0.0,
+      0.0,
       0.0,
       0.0,
       0

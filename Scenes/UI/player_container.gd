@@ -1,6 +1,6 @@
 extends Control
 
-@onready var map_node = load("res://Scenes/Maps/map_battle_%d.tscn" % randi_range(0, 0)).instantiate()
+@onready var map_node = load("res://Scenes/Maps/map_battle_0.tscn").instantiate()
 
 # Ссылки на контроллеры
 var build_controller
@@ -11,11 +11,10 @@ var game_end_controller
 var health_controller
 
 func _ready():
-	for i in range(len(ResourceManager.list_turret)):
-		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
 	add_child(map_node)
 	move_child(map_node, 0)
+
 	# Динамически создаем контроллеры
 	build_controller = _create_controller("res://Controllers/BuildController.gd")
 	wave_controller = _create_controller("res://Controllers/WaveController.gd")
@@ -27,13 +26,21 @@ func _ready():
 	build_controller.initialize(self)
 	wave_controller.initialize(self)
 	gift_controller.initialize(self)
-	ui_controller.initialize(self)
+	ui_controller.initialize(self, false)
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
 	GameManager.get_road_coords(self)
+	
+	GameSession.current_money_in_game_session = 500.0
+	GameSession.base_health = 100
+	GameSession.current_wave = 0
 
 	get_tree().paused = false
 
+func set_wave_data(wave_data: Array):
+	wave_controller.set_wave_data(wave_data)
+	wave_controller.start_next_wave()
+	
 func _process(delta):
 	if build_controller.build_mode:
 		build_controller.update_tower_preview()

@@ -117,3 +117,13 @@ func select_enemy() -> void:
 
 func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
 	excl.erase_cell(cell)
+
+var is_opponent := false
+
+func set_opponent_tower(value: bool):
+	is_opponent = value
+	if has_node("MenuButton"):
+		get_node("MenuButton").disabled = true  # нельзя управлять
+
+func is_opponent_tower() -> bool:
+	return is_opponent

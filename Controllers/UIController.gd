@@ -2,14 +2,18 @@ extends Node
 
 var main_scene
 var list_activity_turret: Array = []
+var is_player := true    # По умолчанию — это игрок
 
-func initialize(scene):
+
+func initialize(scene, flag=true):
 	main_scene = scene
-	var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
-	var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
+	if flag:
+		var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
+		var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
 
-	pause_button.pressed.connect(_on_pause_play_pressed)
-	speed_button.pressed.connect(_on_speed_up_pressed)
+		pause_button.pressed.connect(_on_pause_play_pressed)
+		speed_button.pressed.connect(_on_speed_up_pressed)
+	_on_pause_play_pressed()
 
 	GameSession.money_in_game_session_changed.connect(_on_money_changed)
 
@@ -21,7 +25,6 @@ func initialize(scene):
 		var turret_id = "Turret_" + str(i + 1) + "T1"
 		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
 			list_activity_turret.append(i + 1)
-
 	# Подключаем кнопки постройки и наведения
 	for i in range(list_activity_turret.size()):
 		var index = i + 1
@@ -41,7 +44,7 @@ func initialize(scene):
 		)
 		main_scene.get_node(button_path).mouse_exited.connect(title_hide)
 
-	# Обновим стоимостные элементы в UI
+# Обновим стоимостные элементы в UI
 	_on_money_changed()
 
 func _on_pause_play_pressed():

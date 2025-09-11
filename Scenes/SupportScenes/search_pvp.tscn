@@ -1,4 +1,7 @@
-[gd_scene format=3 uid="uid://trh1rtd5q4qx"]
+[gd_scene load_steps=2 format=3 uid="uid://trh1rtd5q4qx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4nts"]
+bg_color = Color(0, 0, 0, 1)
 
 [node name="SearchPVP" type="Control"]
 layout_mode = 3
@@ -22,6 +25,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_x4nts")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
 layout_mode = 1

@@ -6,18 +6,8 @@ var wave_data: Array
 var enemies_in_wave: int
 var gift_controller
 var game_end_controller
+var current_wave_index: int = -1
 var rng = RandomNumberGenerator.new()
-
-func initialize(scene):
-	main_scene = scene
-	wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
-	gift_controller = main_scene.gift_controller
-	game_end_controller = main_scene.game_end_controller
-
-func start_next_wave():
-	wave_data = retrieve_wave_data()
-	await get_tree().create_timer(0.2).timeout
-	spawn_enemies(wave_data)
 
 func retrieve_wave_data() -> Array:
 	wave_data = wave_data_all[GameSession.current_wave]
@@ -75,3 +65,38 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 		if GameSession.current_wave < wave_data_all.size():
 			await get_tree().create_timer(5).timeout
 			start_next_wave()
+
+func initialize(scene: Node, waves_data = null):
+	main_scene = scene
+	if waves_data:
+		wave_data_all = waves_data
+	else:
+		wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
+	
+	gift_controller = main_scene.gift_controller
+	game_end_controller = main_scene.game_end_controller
+
+# Новый метод для PvP
+func set_wave_data(waves: Array):
+	wave_data_all = waves
+
+# Новый метод для PvP
+func force_start_wave(index: int):
+	if current_wave_index >= index:
+		return
+	
+	current_wave_index = index
+	GameSession.current_wave = index
+	
+	var wave_to_spawn = wave_data_all[index]
+	spawn_enemies(wave_to_spawn)
+
+func start_next_wave():
+	current_wave_index = GameSession.current_wave
+	wave_data = retrieve_wave_data()
+	await get_tree().create_timer(0.2).timeout
+	spawn_enemies(wave_data)
+
+# Новый метод
+func get_current_wave_index() -> int:
+	return current_wave_index
