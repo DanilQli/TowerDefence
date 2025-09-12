@@ -39,6 +39,7 @@ var previous_global_pos: Vector2 = Vector2.ZERO  # Предыдущая пози
 var move_threshold: float = 0.1                  # Минимальное движение для переключения анимации
 
 func _ready():
+	add_to_group("enemies")
 	self.z_index = 1
 	previous_global_pos = global_position  # Инициализируем начальную позицию
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))

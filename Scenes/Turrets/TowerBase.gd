@@ -22,7 +22,7 @@ var max_lvl: int
 var ability: Array = []
 var block_damage: bool = false
 var multiplier_damage_enemy: float = 1.0 # множитель урона (использует босс 7)
-var multiplier_rof_enemy: float = 1.0 # множитель урона (использует босс 8)
+var multiplier_rof_enemy: float = 1.0 # множитель скорости урона (использует босс 8)
 
 var strategy: int = 0 # First/Last/Random
 
@@ -88,6 +88,7 @@ func _apply_damage() -> void: pass  # Virtual methods
 
 func func_add_deal_damage(damage):
 	TasksManager.deal_damage += damage
+	
 func _on_range_body_entered(body: Node) -> void:
 	var parent = body.get_parent()
 	if parent and parent.has_method("on_hit"):

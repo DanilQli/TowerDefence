@@ -1,6 +1,6 @@
 extends Node2D
 
-@onready var map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
+@onready var map_node
 
 # Ссылки на контроллеры
 var build_controller
@@ -11,6 +11,10 @@ var game_end_controller
 var health_controller
 
 func _ready():
+	if GameSession.current_level == 0:
+		map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
+	else:
+		map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"

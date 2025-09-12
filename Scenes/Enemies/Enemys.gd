@@ -27,6 +27,7 @@ var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 var projectile_impact_4 = preload("res://Scenes/SupportScenes/ProjecttileImpact_4.tscn")
 
 func _ready():
+	add_to_group("enemies")
 	self.z_index = 1
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.base_hp = self.hp

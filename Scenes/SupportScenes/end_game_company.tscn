@@ -5,6 +5,7 @@
 
 [node name="EndGameCompany" type="Control"]
 process_mode = 3
+z_index = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

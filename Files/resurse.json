@@ -48,7 +48,7 @@
     "level": 12,
     "open_level": 14,
     "progress": [
-      12,
+      16,
       10.0,
       0,
       1,
@@ -141,7 +141,7 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 12,
+    "count_end_game": 16,
     "count_end_game_company": 0,
     "count_spend_money": 0.0,
     "daily_task_career_you": [
@@ -176,8 +176,8 @@
     ],
     "daily_task_update_day": 20336,
     "daily_task_update_week": 20334,
-    "deal_damage": 972318,
-    "destroy_enemies": 587,
+    "deal_damage": 1077552.63160001,
+    "destroy_enemies": 862,
     "get_coins": 0.0,
     "get_common_hero_cards": 0,
     "get_common_turret_cards": 0.0,
@@ -272,11 +272,11 @@
     "win_matches": null,
     "win_one_hp_count": 8,
     "win_several_times": [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
       1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
       0.0,
       0.0,
       0.0,
@@ -294,6 +294,16 @@
       "cards": 0.0,
       "have": true,
       "level": 8.0
+    },
+    "Turret_11T1": {
+      "ability": [
+        true,
+        true
+      ],
+      "activity": true,
+      "cards": 0.0,
+      "have": true,
+      "level": 1.0
     },
     "Turret_1T1": {
       "ability": [
@@ -380,7 +390,7 @@
         true,
         true
       ],
-      "activity": true,
+      "activity": false,
       "cards": 5.0,
       "have": true,
       "level": 8.0
