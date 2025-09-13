@@ -21,7 +21,7 @@ func initialize(scene, flag=true):
 	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level]
 
 	# Получение доступных турелей
-	for i in range(GameConstants.NUMBER_TURRET):
+	for i in range(len(GameConstants.DATA_TOWER)):
 		var turret_id = "Turret_" + str(i + 1) + "T1"
 		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
 			list_activity_turret.append(i + 1)

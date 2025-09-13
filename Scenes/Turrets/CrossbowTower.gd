@@ -43,20 +43,21 @@ func _start_phase_2():
 	phase_num += 1
 	if phase_num == 3:
 		phase_num = 0
-		phase_damage = (damage * multiplier_damage_enemy) * GameConstants.TURRET_3_ABILITY_1
+		phase_damage = (damage * multiplier_damage_all) * GameConstants.TURRET_3_ABILITY_1
 	else:
-		phase_damage = (damage * multiplier_damage_enemy)
+		phase_damage = (damage * multiplier_damage_all)
 	phase = true
 	rof = base_rof / (up_attack_speed / 100)
 	current_phase_duration = duration_2
 	polygon.visible = true
 
 func fire() -> void:
+	super.fire()
 	if not block_damage and is_ready:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
 		is_ready = true
 	
 func _apply_damage() -> void:
@@ -68,7 +69,9 @@ func _apply_damage() -> void:
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
 		return phase_damage + (DataManager.critical_damage * phase_damage) / 100
 	else:
 		return phase_damage

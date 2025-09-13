@@ -17,6 +17,7 @@ var drone_base_damage := 100.0
 var drone_speed := 300.0
 var drone_lifetime := 15.0
 var spawn_interval := 20.0
+var attack_interval: = 1.00
 
 func _initialize():
 	super._initialize()
@@ -39,7 +40,7 @@ func _on_spawn_timer_timeout():
 		_spawn_drone_with_strategy(GameConstants.TowerDroneStrategy.RANDOM)
 	accumulated_tokens = 0
 	token_label_p.visible = false
-	await get_tree().create_timer(multiplier_rof_enemy * spawn_interval).timeout
+	await get_tree().create_timer(multiplier_rof_all * spawn_interval).timeout
 	_on_spawn_timer_timeout()
 
 func _spawn_drone_with_strategy(strategy: GameConstants.TowerDroneStrategy):
@@ -50,7 +51,7 @@ func _spawn_drone_with_strategy(strategy: GameConstants.TowerDroneStrategy):
 	var final_damage = drone_base_damage * (1.0 + (accumulated_tokens * drone_damage_bonus / 100.0))
 	
 	# Дрон сам найдёт свою первую цель
-	drone.launch(self, strategy, final_damage, drone_speed, drone_lifetime)
+	drone.launch(self, strategy, final_damage, drone_speed, drone_lifetime, attack_interval)
 	drone.find_new_target() # Запускаем поиск сразу после запуска
 	
 func report_drone_return(tokens_earned: int):
@@ -64,11 +65,12 @@ func report_drone_return(tokens_earned: int):
 
 # --- Атака самой башни (как в GunTower) ---
 func fire():
+	super.fire()
 	if not block_damage and is_ready and is_instance_valid(enemy):
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(multiplier_rof_enemy * rof).timeout
+		await get_tree().create_timer(multiplier_rof_all * rof).timeout
 		is_ready = true
 	
 func _apply_damage():
@@ -80,7 +82,9 @@ func _apply_damage():
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return (damage * multiplier_damage_enemy) + (DataManager.critical_damage * (damage * multiplier_damage_enemy)) / 100
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
+		return (damage * multiplier_damage_all) + (DataManager.critical_damage * (damage * multiplier_damage_all)) / 100
 	else:
-		return (damage * multiplier_damage_enemy)
+		return (damage * multiplier_damage_all)

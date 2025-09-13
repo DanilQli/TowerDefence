@@ -1,6 +1,8 @@
 extends Node
 
 var main_scene
+var stars_earned := 0
+var end
 
 func initialize(scene):
 	main_scene = scene
@@ -10,7 +12,7 @@ func end_game_company():
 	tasks()
 	get_tree().paused = true
 
-	var end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
+	end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
 	var money_dop = 0
 
 	var panel_root = "Panel/MarginContainer/VBoxContainer"
@@ -18,17 +20,20 @@ func end_game_company():
 	var health = GameSession.base_health
 
 	if health >= 9:
+		stars_earned = 3
 		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
 		if not DataManager.level_option[GameSession.current_level - 1]:
 			money_dop = int(int(score / 10) / 3.0)
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	elif health > 7:
+		stars_earned = 2
 		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
 		if not DataManager.level_option[GameSession.current_level - 1]:
 			money_dop = int(int(score / 10) / 3.1)
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	elif health > 5:
+		stars_earned = 1
 		end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect2").queue_free()
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
@@ -36,6 +41,7 @@ func end_game_company():
 			money_dop = int(int(score / 10) / 3.2)
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	else:
+		stars_earned = 0
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect1").queue_free()
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect2").queue_free()
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
@@ -71,7 +77,7 @@ func end_game_company():
 func end_game():
 	tasks()
 	get_tree().paused = true
-	var end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
+	end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
 
 	var score = GameSession.current_game_score
 	if score > ResourceManager.best_score:
@@ -80,7 +86,7 @@ func end_game():
 		DataManager.add_data_money(int(score / 10))
 		DataManager.data["Resources"]["money"] = DataManager.data_money
 		DataManager.write_file()
-
+	stars_earned = randi_range(0, 3)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(score)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(score / 10))
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
@@ -113,5 +119,22 @@ func restart():
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
 func exit_menu():
-	get_tree().paused = false
-	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	open_chest_pressed()
+	#get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+
+func open_chest_pressed():
+	end.queue_free()
+	# Генерируем карточки на основе звёзд
+	var card_counts = GameConstants.POST_BATTLE_REWARDS.get(stars_earned)
+	var box_card = GameConstants.get_random_card_pairs(card_counts)
+	
+	# ID предмета "Боевой сундук"
+	var chest_item_id = GameConstants.BATTLE_CHEST_ITEM_ID
+	
+	# Добавляем карты в инвентарь игрока
+	DataManager.TYPE_ITEMS[chest_item_id][0].call(box_card)
+	DataManager.write_file()
+	var choose_buy = load("res://Scenes/SupportScenes/buy_box_open.tscn").instantiate()
+	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4])
+	get_tree().current_scene.get_node("UI").add_child(choose_buy)
+	#get_tree().paused = false

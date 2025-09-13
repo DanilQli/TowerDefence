@@ -1,7 +1,7 @@
 // flicker_shader.gdshader
 shader_type canvas_item;
 
-uniform vec4 glow_color : source_color = vec4(1.0, 0.84, 0.0, 1.0); // основной цвет свечения
+uniform vec4 glow_color : source_color = vec4(1.0, 0.84, 1.0, 0.0); // основной цвет свечения
 uniform float flicker_speed : hint_range(0.1, 10.0) = 4.5;
 uniform float brightness_intensity : hint_range(0.0, 1.0) = 0.5;   // интенсивность пульсации яркости
 uniform float alpha_intensity : hint_range(0.0, 1.0) = 0.3;         // интенсивность мерцания прозрачности

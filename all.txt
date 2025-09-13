@@ -121,12 +121,15 @@ func update_tower_preview():
 		build_valid = false
 
 func _unhandled_input(event):
-	if event.is_action_released("ui_accept") and build_mode:
-		verify_and_build()
-		cancel_build_mode()
-
-	if event.is_action_released("ui_cancel") and build_mode:
-		cancel_build_mode()
+	if build_mode:
+		if event.is_action_pressed("rotate_tower"): # Добавь новую кнопку в Input Map
+			if main_scene.get_node("UI/TowerPreview/DragTower") is LinkTower:
+				main_scene.get_node("UI/TowerPreview/DragTower").rotate_link_direction()
+		if event.is_action_released("ui_accept"):
+			verify_and_build()
+			cancel_build_mode()
+		if event.is_action_released("ui_cancel"):
+			cancel_build_mode()
 
 
 # Controllers\GameEndController.gd
@@ -252,7 +255,7 @@ func exit_menu():
 # Controllers\GameScene.gd
 extends Node2D
 
-@onready var map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
+@onready var map_node
 
 # Ссылки на контроллеры
 var build_controller
@@ -263,6 +266,10 @@ var game_end_controller
 var health_controller
 
 func _ready():
+	if GameSession.current_level == 0:
+		map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
+	else:
+		map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
@@ -501,14 +508,18 @@ extends Node
 
 var main_scene
 var list_activity_turret: Array = []
+var is_player := true    # По умолчанию — это игрок
 
-func initialize(scene):
+
+func initialize(scene, flag=true):
 	main_scene = scene
-	var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
-	var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
+	if flag:
+		var pause_button = main_scene.get_node("UI/HUD/GameControl/PausePlay")
+		var speed_button = main_scene.get_node("UI/HUD/GameControl/SpeedUp")
 
-	pause_button.pressed.connect(_on_pause_play_pressed)
-	speed_button.pressed.connect(_on_speed_up_pressed)
+		pause_button.pressed.connect(_on_pause_play_pressed)
+		speed_button.pressed.connect(_on_speed_up_pressed)
+	_on_pause_play_pressed()
 
 	GameSession.money_in_game_session_changed.connect(_on_money_changed)
 
@@ -520,7 +531,6 @@ func initialize(scene):
 		var turret_id = "Turret_" + str(i + 1) + "T1"
 		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
 			list_activity_turret.append(i + 1)
-
 	# Подключаем кнопки постройки и наведения
 	for i in range(list_activity_turret.size()):
 		var index = i + 1
@@ -540,7 +550,7 @@ func initialize(scene):
 		)
 		main_scene.get_node(button_path).mouse_exited.connect(title_hide)
 
-	# Обновим стоимостные элементы в UI
+# Обновим стоимостные элементы в UI
 	_on_money_changed()
 
 func _on_pause_play_pressed():
@@ -615,18 +625,8 @@ var wave_data: Array
 var enemies_in_wave: int
 var gift_controller
 var game_end_controller
+var current_wave_index: int = -1
 var rng = RandomNumberGenerator.new()
-
-func initialize(scene):
-	main_scene = scene
-	wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
-	gift_controller = main_scene.gift_controller
-	game_end_controller = main_scene.game_end_controller
-
-func start_next_wave():
-	wave_data = retrieve_wave_data()
-	await get_tree().create_timer(0.2).timeout
-	spawn_enemies(wave_data)
 
 func retrieve_wave_data() -> Array:
 	wave_data = wave_data_all[GameSession.current_wave]
@@ -685,6 +685,41 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 			await get_tree().create_timer(5).timeout
 			start_next_wave()
 
+func initialize(scene: Node, waves_data = null):
+	main_scene = scene
+	if waves_data:
+		wave_data_all = waves_data
+	else:
+		wave_data_all = DataManager.data_wave["level_" + str(GameSession.current_level)]
+	
+	gift_controller = main_scene.gift_controller
+	game_end_controller = main_scene.game_end_controller
+
+# Новый метод для PvP
+func set_wave_data(waves: Array):
+	wave_data_all = waves
+
+# Новый метод для PvP
+func force_start_wave(index: int):
+	if current_wave_index >= index:
+		return
+	
+	current_wave_index = index
+	GameSession.current_wave = index
+	
+	var wave_to_spawn = wave_data_all[index]
+	spawn_enemies(wave_to_spawn)
+
+func start_next_wave():
+	current_wave_index = GameSession.current_wave
+	wave_data = retrieve_wave_data()
+	await get_tree().create_timer(0.2).timeout
+	spawn_enemies(wave_data)
+
+# Новый метод
+func get_current_wave_index() -> int:
+	return current_wave_index
+
 
 # Scenes\Enemies\Enemys.gd
 extends PathFollow2D
@@ -716,6 +751,7 @@ var projectile_impact_3 = preload("res://Scenes/SupportScenes/ProjecttileImpact_
 var projectile_impact_4 = preload("res://Scenes/SupportScenes/ProjecttileImpact_4.tscn")
 
 func _ready():
+	add_to_group("enemies")
 	self.z_index = 1
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
 	self.base_hp = self.hp
@@ -1229,6 +1265,7 @@ var previous_global_pos: Vector2 = Vector2.ZERO  # Предыдущая пози
 var move_threshold: float = 0.1                  # Минимальное движение для переключения анимации
 
 func _ready():
+	add_to_group("enemies")
 	self.z_index = 1
 	previous_global_pos = global_position  # Инициализируем начальную позицию
 	self.hp += self.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave))
@@ -4276,6 +4313,10 @@ curve = SubResource("Curve2D_4uyyv")
 [ext_resource type="TileSet" uid="uid://ctxpsd8lx2bf2" path="res://Scenes/Maps/TileSet.tres" id="2_2i0v4"]
 
 [sub_resource type="Curve2D" id="Curve2D_x40hh"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 1, 161, 0, 0, 0, 0, 732, 165, 0, 0, 0, 0, 735, 350, 0, 0, 0, 0, 294, 354, 0, 0, 0, 0, 289, 604, 0, 0, 0, 0, 1117, 607, 0, 0, 0, 0, 1119, 163, 0, 0, 0, 0, 1597, 160)
+}
+point_count = 8
 
 [node name="Map0" type="Node2D"]
 
@@ -5102,6 +5143,7 @@ extends Control
 @onready var button_3 = $Panel/MarginContainer/VBoxContainer/TextureButton_3
 @onready var close_button = $Panel/Close
 @onready var main_ui = get_parent().get_node("MarginContainer2")
+@onready var search_screen
 
 func _ready():
 	button_1.pressed.connect(_on_mode_selected.bind(1))
@@ -5123,6 +5165,37 @@ func _on_mode_selected(index):
 			GameSession.current_wave = 0
 			GameSession.game_mode = GameConstants.GameMode.SANDBOX
 			get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
+		3:
+			search_screen = preload("res://Scenes/SupportScenes/search_pvp.tscn").instantiate()
+			add_child(search_screen)
+			
+			var pvp_manager = preload("res://Scenes/SupportScenes/pvp_manager.gd").new()
+			pvp_manager.name = "PvPManager" # Даём имя
+			pvp_manager.add_to_group("pvp_manager") # Добавляем в группу
+			add_child(pvp_manager)
+			
+			pvp_manager.match_found.connect(_on_match_found)
+			pvp_manager.search_failed.connect(_on_search_failed)
+			
+			pvp_manager.start_search()
+
+func _on_match_found(new_room_id: String, index: int, opp_id: String):
+	# Сохраняем данные в глобальный PvPSession
+	PvPSession.room_id = new_room_id
+	PvPSession.player_index = index
+	PvPSession.opponent_id = opp_id
+	
+	# Получаем player_id из самого менеджера, который его создал
+	var pvp_manager = get_node("PvPManager")
+	if pvp_manager:
+		PvPSession.player_id = pvp_manager.player_id
+	
+	get_tree().change_scene_to_file("res://Scenes/UI/pvp_game_scene.tscn")
+
+func _on_search_failed():
+	search_screen.get_node("Panel/VBoxContainer/Label").text = tr("KEY_SEARCH_PVP_NO")
+	await get_tree().create_timer(1).timeout
+	search_screen.queue_free()
 
 
 # Scenes\SupportScenes\choose_game_mode.tscn
@@ -6403,7 +6476,7 @@ color = Color(1, 0.776471, 0.2, 0.301961)
 
 [node name="EndGame" type="Control"]
 process_mode = 3
-z_index = 1
+z_index = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -6564,6 +6637,7 @@ vertical_alignment = 1
 
 [node name="EndGameCompany" type="Control"]
 process_mode = 3
+z_index = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -6961,6 +7035,24 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(1, 0.776471, 0.2, 0.301961)
+
+
+# Scenes\SupportScenes\LinkLine.tscn
+[gd_scene load_steps=3 format=3 uid="uid://cbs3tx57lyoyc"]
+
+[ext_resource type="Shader" uid="uid://cyflcluexa2nr" path="res://Scenes/SupportScenes/flicker_shader.gdshader" id="1_8onn4"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kni1m"]
+shader = ExtResource("1_8onn4")
+shader_parameter/glow_color = Color(1, 1, 1, 1)
+shader_parameter/flicker_speed = 2.0
+shader_parameter/brightness_intensity = 0.5
+shader_parameter/alpha_intensity = 0.3
+
+[node name="LinkLine" type="Line2D"]
+material = SubResource("ShaderMaterial_kni1m")
+points = PackedVector2Array(12, 0, 61, 0)
+width = 5.0
 
 
 # Scenes\SupportScenes\modifer.tscn
@@ -8043,96 +8135,142 @@ icon = ExtResource("2_pbq4c")
 
 
 # Scenes\SupportScenes\pvp_manager.gd
-# PvPManager.gd — исправленная версия для Godot 4.3+
+# pvp_manager.gd — исправленная версия для PythonAnywhere Free
 extends Node
 
-signal joined_room(room_id: String, player_id: String, player_index: int)
+signal match_found(room_id: String, player_index: int, opponent_id: String)
+signal search_failed()
+signal game_state_updated(state: Dictionary)
 signal game_started(wave_data: Array)
-signal state_updated(state: Dictionary)
-signal game_finished(winner_id: String)
 
-const SERVER_URL = "https://<твой_логин>.pythonanywhere.com"
+const SERVER_URL = "https://lobste.pythonanywhere.com"
 
-var room_id: String = ""
-var player_id: String = ""
+const METHOD_GET = 0
+const METHOD_POST = 3
+
 var http: HTTPRequest
+var searching := false
+var room_id := ""
+var player_id := ""
+var player_index := 0
+var opponent_id := ""
 var last_sync := 0.0
 var last_path := ""
+var search_start_time := 0.0
+var max_search_time := 10.0
+var retry_timer := 1.5
 
 func _ready():
 	http = HTTPRequest.new()
 	add_child(http)
 	http.request_completed.connect(_on_request_completed)
+	
+	player_id = str(randi()) + "_" + str(Time.get_ticks_msec())
 
-func create_room():
-	var body = JSON.stringify({})
-	_send_request("/create_room", body, "POST")
+func start_search():
+	if searching: return
+	
+	searching = true
+	search_start_time = Time.get_ticks_msec() / 1000.0
+	print("🔍 Данил ищет соперника...")
+	
+	_send_find_match_request()
 
-func join_room(target_room_id: String):
-	var body = JSON.stringify({"room_id": target_room_id})
-	_send_request("/join_room", body, "POST")
+func _send_find_match_request():
+	var path = "/find_match?player_id=" + player_id
+	_send_request(path, "", METHOD_GET)
 
-func set_ready():
-	var body = JSON.stringify({"room_id": room_id, "player_id": player_id})
-	_send_request("/set_ready", body, "POST")
-
-func update_state(hp: int, money: float, towers: Array):
-	if room_id == "":
-		return
-	var body = JSON.stringify({
-		"room_id": room_id,
-		"player_id": player_id,
-		"hp": hp,
-		"money": money,
-		"towers": towers
-	})
-	_send_request("/update_state", body, "POST")
-
-func poll_state():
-	if room_id == "":
-		return
-	_send_request("/get_state/" + room_id, "", "GET")
-
-func _send_request(path: String, body: String, method: String):
+func _send_request(path: String, body: String, method: int):
 	last_path = path
-	var headers = PackedStringArray()
-	var error = http.request(SERVER_URL + path, headers, false, method, body)
+	var headers = PackedStringArray(["Content-Type: application/json"])
+	
+	var error
+	if method == METHOD_GET:
+		error = http.request(SERVER_URL + path, headers, method)
+	else:
+		error = http.request(SERVER_URL + path, headers, method, body)
+	
 	if error != OK:
 		push_error("HTTP Request failed: " + str(error))
 
 func _on_request_completed(result, response_code, headers, body):
 	if result != HTTPRequest.RESULT_SUCCESS:
-		push_error("Request failed with code: " + str(response_code))
+		print("❌ Ошибка запроса: ", result, response_code)
+		_schedule_retry()
 		return
 
 	var json_str = body.get_string_from_utf8()
-	var json = JSON.parse_string(json_str)
-	if json == null:
-		push_error("Invalid JSON: " + json_str)
+	print("📡 Ответ сервера: ", json_str)
+
+	if json_str.begins_with("<!doctype"):
+		print("⚠️ Сервер вернул HTML, а не JSON.")
+		_schedule_retry()
 		return
 
-	match last_path:
-		"/create_room", "/join_room":
+	var json = JSON.parse_string(json_str)
+	if not json:
+		push_error("Invalid JSON")
+		_schedule_retry()
+		return
+
+	if "/find_match" in last_path:
+		if json.has("room_id") and json.has("player_index"):
 			room_id = str(json.room_id)
-			player_id = str(json.player_id)
-			var index = int(json.player_index)
-			emit_signal("joined_room", room_id, player_id, index)
+			player_index = int(json.player_index)
+			opponent_id = str(json.opponent_id)
+			searching = false
+			print("✅ Данил найден! Комната: %s, Индекс: %d, Ты: %s, Соперник: %s" % [room_id, player_index, player_id, opponent_id])
+			emit_signal("match_found", room_id, player_index, opponent_id)
+		else:
+			_check_search_timeout()
+			if searching:
+				_schedule_retry()
 
-		"/set_ready":
-			if json.has("started") and json.started:
-				poll_state()  # get initial state
-				await get_tree().process_frame  # маленькая пауза
-				emit_signal("game_started", json.wave_data)
+	elif "/get_room_state" in last_path:
+		emit_signal("game_state_updated", json)
+		if json.has("started") and json.started:
+			emit_signal("game_started", json.wave_data)
 
-		"/get_state/<room_id>":
-			emit_signal("state_updated", json)
-			if json.has("winner") and json.winner != null:
-				emit_signal("game_finished", json.winner)
+	elif "/set_ready" in last_path:
+		if json.has("started") and json.started:
+			emit_signal("game_started", json.wave_data)
+
+func _schedule_retry():
+	if not searching: return
+	await get_tree().create_timer(retry_timer).timeout
+	_send_find_match_request()
+
+func _check_search_timeout():
+	if not searching: return
+	var elapsed = (Time.get_ticks_msec() / 1000.0) - search_start_time
+	if elapsed >= max_search_time:
+		print("⏰ Данил устал ждать. Поиск остановлен.")
+		searching = false
+		emit_signal("search_failed")
+
+func start_sync():
+	if room_id == "": return
+	set_process(true)
+
+func stop_sync():
+	set_process(false)
 
 func _process(delta):
-	if room_id != "" and Time.get_ticks_msec() - last_sync > 1000:  # sync every 1 sec
+	if room_id != "" and Time.get_ticks_msec() - last_sync > 1000:
 		last_sync = Time.get_ticks_msec()
-		poll_state()
+		_send_request("/get_room_state?room_id=" + room_id, "", METHOD_GET)
+
+func send_game_state(hp: int, money: float, wave_index: int, towers: Array):
+	if room_id == "": return
+	var body = JSON.stringify({
+		"room_id": room_id, "player_id": player_id, "hp": hp,
+		"money": money, "wave": wave_index, "towers": towers
+	})
+	_send_request("/update_game_state", body, METHOD_POST)
+
+func set_ready():
+	if room_id == "": return
+	_send_request("/set_ready?room_id=" + room_id + "&player_id=" + player_id, "", METHOD_GET)
 
 
 # Scenes\SupportScenes\reward_dragon.gd
@@ -8379,6 +8517,59 @@ script = ExtResource("2_pncvb")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
 shape = SubResource("RectangleShape2D_w16oj")
+
+
+# Scenes\SupportScenes\search_pvp.tscn
+[gd_scene load_steps=2 format=3 uid="uid://trh1rtd5q4qx"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_x4nts"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="SearchPVP" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(200, 200)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_x4nts")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer"]
+layout_mode = 2
+text = "KEY_SEARCH_PVP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BoxContainer" type="BoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel/VBoxContainer/BoxContainer"]
+custom_minimum_size = Vector2(100, 100)
+layout_mode = 2
 
 
 # Scenes\SupportScenes\shop.gd
@@ -10511,6 +10702,265 @@ func _initialize() -> void:
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
 
 
+# Scenes\Turrets\Drone.gd
+# Drone.gd — улучшенная версия с умным поиском целей
+extends Node2D
+
+var strategy: GameConstants.TowerDroneStrategy
+
+var target: Node2D
+var damage := 10.0
+var speed := 300.0
+var tokens_earned := 0
+var is_returning := false
+var home_tower: Node2D
+
+var lifetime_left: float
+var attack_cooldown: float
+var attack_interval := 1.0
+
+var off_num: int = 60
+
+var offset := Vector2(-off_num, -off_num)
+
+func launch(home: Node2D, drone_strategy: GameConstants.TowerDroneStrategy, drone_damage: float, drone_speed: float, lifetime: float):
+	home_tower = home
+	strategy = drone_strategy
+	damage = drone_damage
+	speed = drone_speed
+	lifetime_left = lifetime
+	attack_cooldown = attack_interval
+	find_new_target()
+	_on_attack_timer_timeout()
+	await get_tree().create_timer(lifetime_left).timeout
+	_return_to_base()
+
+func _physics_process(delta):
+	if is_returning:
+		global_position = global_position.move_toward(home_tower.global_position, speed * delta)
+		if global_position.distance_to(home_tower.global_position) < 10:
+			home_tower.report_drone_return(tokens_earned)
+			queue_free()
+	elif is_instance_valid(target):
+		var target_pos = calculate_target_position(target.global_position)
+		global_position = global_position.move_toward(target_pos, speed * delta)
+		var angle = get_node("Turret").global_position.direction_to(target.global_position).angle()
+		get_node("Turret").rotation = angle
+	else:
+		find_new_target()
+		if not is_instance_valid(target):
+			_return_to_base()
+
+func find_new_target():
+	var all_enemies = get_tree().get_nodes_in_group("enemies")
+	if all_enemies.is_empty():
+		target = null
+		return
+	
+	match strategy:
+		GameConstants.TowerDroneStrategy.SCOUT:
+			target = _find_first_enemy_global(all_enemies)
+		GameConstants.TowerDroneStrategy.INTERCEPTOR:
+			target = _find_last_enemy_global(all_enemies)
+		GameConstants.TowerDroneStrategy.RANDOM:
+			target = all_enemies.pick_random()
+
+func _on_attack_timer_timeout():
+	if is_instance_valid(target) and global_position.distance_to(target.global_position) < 100:
+		# ИСПРАВЛЕНО: target теперь и есть враг
+		if target.has_method("on_hit"):
+			get_node("AnimationPlayer").play("Fire")
+			target.on_hit(damage, 0, GameConstants.TowerType.GUN, self)
+			if target.hp <= 0:
+				tokens_earned += 1
+				target = null
+	await get_tree().create_timer(home_tower.multiplier_rof_enemy * attack_cooldown).timeout
+	_on_attack_timer_timeout()
+
+func _return_to_base():
+	if is_returning: return
+	is_returning = true
+	target = null
+	
+# --- Функции поиска (скопированы из DroneHiveTower) ---
+func _find_first_enemy_global(enemies: Array) -> Node2D:
+	if enemies.is_empty(): return null
+	var best_target: Node2D = null
+	var max_progress: float = -1.0
+	for enemy in enemies:
+		if is_instance_valid(enemy) and enemy.progress > max_progress:
+			max_progress = enemy.progress
+			best_target = enemy
+	return best_target
+
+func _find_last_enemy_global(enemies: Array) -> Node2D:
+	if enemies.is_empty(): return null
+	var best_target: Node2D = null
+	var min_progress: float = INF
+	for enemy in enemies:
+		if is_instance_valid(enemy) and enemy.progress < min_progress:
+			min_progress = enemy.progress
+			best_target = enemy
+	return best_target
+
+func calculate_target_position(enemy_pos: Vector2) -> Vector2:
+	var desired_pos = enemy_pos + offset
+	
+	# Обработка краёв экрана
+	var screen_size = get_viewport_rect().size
+	if desired_pos.x < off_num: # Левый край
+		desired_pos.x = enemy_pos.x + abs(offset.x)
+	if desired_pos.y < off_num: # Верхний край
+		desired_pos.y = enemy_pos.y + abs(offset.y)
+	if desired_pos.x > screen_size.x - off_num: # Правый край
+		desired_pos.x = enemy_pos.x - abs(offset.x)
+	if desired_pos.y > screen_size.y - off_num: # Нижний край
+		desired_pos.y = enemy_pos.y - abs(offset.y)
+	
+	return desired_pos
+
+
+# Scenes\Turrets\Drone.tscn
+[gd_scene load_steps=6 format=3 uid="uid://d2j843wymgp7o"]
+
+[ext_resource type="Script" uid="uid://dybd3evjcc71i" path="res://Scenes/Turrets/Drone.gd" id="1_6hijw"]
+[ext_resource type="Texture2D" uid="uid://bxv80swj7355j" path="res://Assets/Effect/towerDefense_tile297.png" id="2_6hijw"]
+[ext_resource type="Texture2D" uid="uid://bdgnwqu3lcog1" path="res://Assets/Props/drone.png" id="2_hh5lk"]
+
+[sub_resource type="Animation" id="Animation_qljwc"]
+resource_name = "Fire"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
+_data = {
+&"Fire": SubResource("Animation_qljwc")
+}
+
+[node name="Drone" type="Node2D"]
+z_index = 2
+script = ExtResource("1_6hijw")
+
+[node name="Turret" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_hh5lk")
+
+[node name="Muzzle" type="Marker2D" parent="Turret"]
+visible = false
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("2_6hijw")
+offset = Vector2(0, -75)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yclq1")
+}
+
+
+# Scenes\Turrets\DroneHiveTower.gd
+# DroneHiveTower.gd — исправленная версия с атакой и дронами
+extends TowerBase
+class_name DroneHiveTower
+
+@onready var token_label_p = $TokenLabel
+@onready var token_label = $TokenLabel/Label
+var drone_scene = preload("res://Scenes/Turrets/Drone.tscn")
+
+var accumulated_tokens := 0
+var drone_damage_bonus := 1.0
+
+# Параметры башни
+var damage: float
+
+# Параметры дронов
+var drone_base_damage := 100.0
+var drone_speed := 300.0
+var drone_lifetime := 15.0
+var spawn_interval := 20.0
+
+func _initialize():
+	super._initialize()
+	if ability[1]:
+		drone_damage_bonus = 2
+	await get_tree().create_timer(3).timeout
+	_on_spawn_timer_timeout()
+
+func _on_spawn_timer_timeout():
+	# Дроны ищут цели по всей карте, а не только в радиусе башни
+	var all_enemies = get_tree().get_nodes_in_group("enemies")
+	if all_enemies.is_empty():
+		return
+
+	# Спавним дронов со стратегиями
+	_spawn_drone_with_strategy(GameConstants.TowerDroneStrategy.SCOUT)
+	_spawn_drone_with_strategy(GameConstants.TowerDroneStrategy.INTERCEPTOR)
+		
+	if ability[0] and randf() < 0.5:
+		_spawn_drone_with_strategy(GameConstants.TowerDroneStrategy.RANDOM)
+	accumulated_tokens = 0
+	token_label_p.visible = false
+	await get_tree().create_timer(multiplier_rof_enemy * spawn_interval).timeout
+	_on_spawn_timer_timeout()
+
+func _spawn_drone_with_strategy(strategy: GameConstants.TowerDroneStrategy):
+	var drone = drone_scene.instantiate()
+	get_tree().current_scene.add_child(drone)
+	drone.global_position = global_position
+	
+	var final_damage = drone_base_damage * (1.0 + (accumulated_tokens * drone_damage_bonus / 100.0))
+	
+	# Дрон сам найдёт свою первую цель
+	drone.launch(self, strategy, final_damage, drone_speed, drone_lifetime)
+	drone.find_new_target() # Запускаем поиск сразу после запуска
+	
+func report_drone_return(tokens_earned: int):
+	accumulated_tokens += tokens_earned
+
+	if accumulated_tokens > 0:
+		token_label_p.visible = true
+		token_label.text = str(accumulated_tokens)
+	else:
+		token_label_p.visible = false
+
+# --- Атака самой башни (как в GunTower) ---
+func fire():
+	if not block_damage and is_ready and is_instance_valid(enemy):
+		is_ready = false
+		get_node("AnimationPlayer").play("Fire")
+		_apply_damage()
+		await get_tree().create_timer(multiplier_rof_enemy * rof).timeout
+		is_ready = true
+	
+func _apply_damage():
+	if is_instance_valid(enemy):
+		var crit_dmg = critical_damage()
+		func_add_deal_damage(crit_dmg)
+		inflicted += crit_dmg
+		enemy.on_hit(crit_dmg, 0, GameConstants.TowerType.GUN, self)
+		emit_signal("damage_inflicted_changed", inflicted)
+
+func critical_damage():
+	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		return (damage * multiplier_damage_enemy) + (DataManager.critical_damage * (damage * multiplier_damage_enemy)) / 100
+	else:
+		return (damage * multiplier_damage_enemy)
+
+
 # Scenes\Turrets\GunTower.gd
 extends TowerBase
 class_name GunTower
@@ -10602,6 +11052,168 @@ func _initialize() -> void:
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
 
 
+# Scenes\Turrets\LinkTower.gd
+# LinkTower.gd — полная, переработанная версия
+extends TowerBase
+class_name LinkTower
+
+enum LinkDirection { HORIZONTAL, VERTICAL }
+
+var link_direction := LinkDirection.HORIZONTAL # По умолчанию - горизонтально
+var linked_towers: Array[TowerBase]
+var link_line_scene = preload("res://Scenes/SupportScenes/LinkLine.tscn")
+var link_lines: Array[Line2D]
+
+var damage_buff := 0.10
+
+func _initialize():
+	super._initialize()
+	type_attack = -1 # Эта башня не атакует
+	
+	if current_lvl >= 10:
+		damage_buff = 0.15
+	
+	# Обновляем связи при изменении в дереве
+	get_tree().node_added.connect(_on_node_changed)
+	get_tree().node_removed.connect(_on_node_changed)
+	
+	# Запускаем первоначальное обновление
+	call_deferred("_update_links")
+
+# --- Новая функция для поворота связи ---
+func rotate_link_direction():
+	if link_direction == LinkDirection.HORIZONTAL:
+		link_direction = LinkDirection.VERTICAL
+	else:
+		link_direction = LinkDirection.HORIZONTAL
+	
+	# Визуально поворачиваем спрайт башни (если нужно)
+	get_node("Turret").rotation_degrees = 90 if link_direction == LinkDirection.VERTICAL else 0
+	
+	# Обновляем связи
+	_update_links()
+
+func _update_links():
+	_clear_old_links()
+	
+	var neighbors = _find_neighbors()
+	for neighbor in neighbors:
+		linked_towers.append(neighbor)
+		_apply_buffs(neighbor)
+		_create_link_line(neighbor)
+		
+	# Проверяем синергию всей цепочки
+	_check_chain_synergy()
+
+func _clear_old_links():
+	for line in link_lines:
+		if is_instance_valid(line): line.queue_free()
+	link_lines.clear()
+	
+	for tower in linked_towers:
+		if is_instance_valid(tower): _remove_buffs(tower)
+	linked_towers.clear()
+
+func _find_neighbors() -> Array[TowerBase]:
+	var turret_layer = get_parent()
+	if not is_instance_valid(turret_layer): return []
+	
+	var neighbors = []
+	
+	for tower in turret_layer.get_children():
+		if tower == self or not tower is TowerBase: continue
+		
+		var pos_diff = tower.global_position - global_position
+		
+		if link_direction == LinkDirection.HORIZONTAL:
+			# Ищем соседей слева и справа
+			if abs(pos_diff.y) < 10 and abs(pos_diff.x) > 10 and abs(pos_diff.x) < 70:
+				neighbors.append(tower)
+		else: # VERTICAL
+			# Ищем соседей сверху и снизу
+			if abs(pos_diff.x) < 10 and abs(pos_diff.y) > 10 and abs(pos_diff.y) < 70:
+				neighbors.append(tower)
+				
+	return neighbors
+
+func _apply_buffs(tower: TowerBase):
+	tower.multiplier_damage_enemy += damage_buff
+	tower.is_protected_by_link = true
+	tower.tower_crit.connect(_on_linked_tower_crit)
+
+func _remove_buffs(tower: TowerBase):
+	tower.multiplier_damage_enemy -= damage_buff
+	tower.is_protected_by_link = false
+	if tower.tower_crit.is_connected(_on_linked_tower_crit):
+		tower.tower_crit.disconnect(_on_linked_tower_crit)
+
+# --- Проверка синергии цепочки (Способность 7 уровня) ---
+func _check_chain_synergy():
+	if current_lvl < 7 or linked_towers.is_empty(): return
+	
+	var chain = _get_full_chain()
+	var type_counts = {}
+	
+	for tower in chain:
+		if not tower is LinkTower:
+			type_counts[tower.type] = type_counts.get(tower.type, 0) + 1
+			
+	for type in type_counts:
+		if type_counts[type] >= 4:
+			print("СИНЕРГИЯ АКТИВИРОВАНА для типа ", type)
+			for tower in chain:
+				if tower.type == type:
+					tower.rof /= 2.0 # Увеличиваем скорость атаки в 2 раза
+
+func _get_full_chain() -> Array[TowerBase]:
+	var chain = [self]
+	var queue = linked_towers.duplicate()
+	var visited = {self: true}
+	
+	while not queue.is_empty():
+		var current = queue.pop_front()
+		if visited.has(current): continue
+		
+		visited[current] = true
+		chain.append(current)
+		
+		if current is LinkTower:
+			for neighbor in current.linked_towers:
+				if not visited.has(neighbor):
+					queue.append(neighbor)
+	return chain
+func _create_link_line(target: Node2D):
+	var line = link_line_scene.instantiate()
+	add_child(line)
+	link_lines.append(line)
+	# Начальная точка - центр самой LinkTower
+	line.add_point(Vector2.ZERO)
+	# Конечная точка - позиция соседа в локальных координатах
+	line.add_point(to_local(target.global_position))
+
+func _physics_process(delta):
+	super._physics_process(delta) # Вызываем родительский метод
+	
+	# Обновляем позиции линий в каждом кадре
+	for i in range(linked_towers.size()):
+		if is_instance_valid(linked_towers[i]) and i < link_lines.size():
+			var target_pos_local = to_local(linked_towers[i].global_position)
+			link_lines[i].set_point_position(1, target_pos_local)
+		else:
+			# Если соседняя башня была удалена, обновляем все связи
+			_update_links()
+			return # Выходим, чтобы избежать ошибок в этом кадре
+
+func _on_node_changed(node):
+	if node is TowerBase:
+		call_deferred("_update_links")
+
+func _on_linked_tower_crit(tower: TowerBase):
+	for linked in linked_towers:
+		if linked != tower and is_instance_valid(linked):
+			linked.force_next_attack_crit = true
+
+
 # Scenes\Turrets\MinotaurTower.gd
 extends TowerBase
 class_name MinotaurTower
@@ -10675,7 +11287,8 @@ func _apply_damage_obstacle() -> void:
 		GameManager.list_coords_road_use_index.append(pos)
 		road_obstacle.damage = trap_damage_end
 		road_obstacle.position = pos
-		get_tree().current_scene.get_node("Map").add_child(road_obstacle)
+		var map_node = get_tree().current_scene.find_child("Map", true, false)
+		map_node.add_child(road_obstacle)
 	await get_tree().create_timer(interval).timeout
 	_apply_damage_obstacle()
 
@@ -10819,47 +11432,54 @@ func fire_missile() -> void:
 
 
 # Scenes\Turrets\TowerBase.gd
+# TowerBase.gd — полная, исправленная и готовая версия
 extends Node2D
 class_name TowerBase
 
+# --- СИГНАЛЫ ---
 signal money_in_game_session_changed()
 signal damage_inflicted_changed(value: float)
+signal tower_fired(tower: TowerBase)
+signal tower_crit(tower: TowerBase)
 
+# --- ОСНОВНЫЕ ПАРАМЕТРЫ ---
 var type: String
 var id: int
 var type_attack: int
 var type_explosion: int
 
-var enemy_array: Array = []
+var enemy_array: Array[Node] = []
 var enemy: Node = null
 var built: bool = false
 var is_ready: bool = true
 var inflicted: float = 0
 
+# --- БОЕВЫЕ ХАРАКТЕРИСТИКИ ---
 var range: float
 var rof: float
 var current_lvl: int
 var max_lvl: int
 var ability: Array = []
 var block_damage: bool = false
-var multiplier_damage_enemy: float = 1.0 # множитель урона (использует босс 7)
-var multiplier_rof_enemy: float = 1.0 # множитель урона (использует босс 8)
+var multiplier_damage_enemy: float = 1.0
+var multiplier_rof_enemy: float = 1.0
 
+# --- СТРАТЕГИЯ И PvP ---
 var strategy: int = 0 # First/Last/Random
+var is_opponent := false
 
+# --- ПАРАМЕТРЫ ДЛЯ LINKTOWER ---
+var is_protected_by_link := false
+var force_next_attack_crit := false
+var hp := 100.0 # Здоровье башни (для способности LinkTower)
+
+# --- ССЫЛКИ НА УЗЛЫ ---
 @onready var ui_system: TowerUI
 @onready var upgrade_system: TowerUpgradeSystem
 @onready var stone_texture = preload("res://Assets/Effect/stone.png")
-
 @onready var range_area: Area2D = $Range
 
-func _initialize() -> void:
-	range_area.connect("body_entered", Callable(self, "_on_range_body_entered"))
-	range_area.connect("body_exited", Callable(self, "_on_range_body_exited"))
-	var shape = range_area.get_node("CollisionShape2D")
-	if shape and shape.shape is CircleShape2D:
-		shape.shape.radius = 0.5 * range
-		
+# --- ИНИЦИАЛИЗАЦИЯ ---
 func _ready() -> void:
 	if built:
 		ui_system = TowerUI.new()
@@ -10869,15 +11489,22 @@ func _ready() -> void:
 		upgrade_system = TowerUpgradeSystem.new()
 		add_child(upgrade_system)
 		upgrade_system.setup(self)
-
-		var range_node := get_node_or_null("Range")
-		if range_node:
-			range_node.body_entered.connect(_on_range_body_entered)
-			range_node.body_exited.connect(_on_range_body_exited)
+		
 		_initialize()
 
-# Применение эффекта босса
+func _initialize() -> void:
+	range_area.body_entered.connect(_on_range_body_entered)
+	range_area.body_exited.connect(_on_range_body_exited)
+	var shape = range_area.get_node("CollisionShape2D")
+	if shape and shape.shape is CircleShape2D:
+		shape.shape.radius = 0.5 * range
+
+# --- ЭФФЕКТЫ И ДЕБАФФЫ ---
 func stone_effect_start(duration):
+	if is_protected_by_link:
+		print(name + " защищена от камня!")
+		return
+		
 	block_damage = true
 	get_node("NinePatchRect").texture = stone_texture
 	get_node("NinePatchRect").visible = true
@@ -10887,36 +11514,45 @@ func stone_effect_start(duration):
 func stone_effect_stop():
 	block_damage = false
 	get_node("NinePatchRect").visible = false
-	
+
+# --- ИГРОВОЙ ЦИКЛ ---
 func _physics_process(_delta: float) -> void:
-	if not built or enemy_array.is_empty():
+	if not built or type_attack == -1: return # LinkTower не должна ничего делать здесь
+	
+	if enemy_array.is_empty():
 		enemy = null
 		return
 
-	if enemy == null or not is_instance_valid(enemy):
+	if not is_instance_valid(enemy):
 		select_enemy()
 
-	if enemy != null:
-		var angle = get_node("Turret").global_position.direction_to(enemy.global_position).angle()
-		get_node("Turret").rotation = angle
+	if is_instance_valid(enemy):
+		var turret_sprite = get_node_or_null("Turret")
+		if is_instance_valid(turret_sprite):
+			var angle = turret_sprite.global_position.direction_to(enemy.global_position).angle()
+			turret_sprite.rotation = angle
 		
 		if is_ready:
 			fire()
 
-func fire() -> void: pass
+# --- ВИРТУАЛЬНЫЕ МЕТОДЫ ---
+func fire() -> void:
+	pass
 
-func _apply_damage() -> void: pass  # Virtual methods
+func _apply_damage() -> void:
+	pass
 
-func func_add_deal_damage(damage):
-	TasksManager.deal_damage += damage
+# --- УПРАВЛЕНИЕ ВРАГАМИ ---
 func _on_range_body_entered(body: Node) -> void:
 	var parent = body.get_parent()
-	if parent and parent.has_method("on_hit"):
+	if parent and parent.has_method("on_hit") and not enemy_array.has(parent):
 		enemy_array.append(parent)
 
 func _on_range_body_exited(body: Node) -> void:
-	enemy_array.erase(body.get_parent())
-	if enemy == body.get_parent():
+	var parent = body.get_parent()
+	if enemy_array.has(parent):
+		enemy_array.erase(parent)
+	if enemy == parent:
 		enemy = null
 		select_enemy()
 
@@ -10926,15 +11562,38 @@ func select_enemy() -> void:
 		enemy = null
 		return
 
-	var values = enemy_array.map(func(e): return e.progress)
-	var target_index = 0
-
+	# ИСПРАВЛЕНО: Ручной поиск вместо max_by/min_by
+	var best_target: Node = null
 	match strategy:
-		0: target_index = values.find(values.max()) # First
-		1: target_index = values.find(values.min()) # Last
-		2: target_index = randi_range(0, values.size() - 1)  # Random
+		0: # First (самый дальний по пути)
+			var max_progress = -1.0
+			for e in enemy_array:
+				if e.progress > max_progress:
+					max_progress = e.progress
+					best_target = e
+		1: # Last (самый близкий к базе)
+			var min_progress = INF
+			for e in enemy_array:
+				if e.progress < min_progress:
+					min_progress = e.progress
+					best_target = e
+		2: # Random
+			if not enemy_array.is_empty():
+				best_target = enemy_array.pick_random()
 
-	enemy = enemy_array[target_index]
+	enemy = best_target
+
+# --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
+func func_add_deal_damage(damage):
+	TasksManager.deal_damage += damage
+
+func set_opponent_tower(value: bool):
+	is_opponent = value
+	if has_node("MenuButton"):
+		get_node("MenuButton").disabled = true
+
+func is_opponent_tower() -> bool:
+	return is_opponent
 
 func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
 	excl.erase_cell(cell)
@@ -11308,6 +11967,214 @@ collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
 shape = SubResource("RectangleShape2D_tsfhh")
+
+
+# Scenes\Turrets\Turret_11T1.tscn
+[gd_scene load_steps=12 format=3 uid="uid://04hoom3bmi4v"]
+
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="1_glruk"]
+[ext_resource type="Script" uid="uid://coupnt8m5stgu" path="res://Scenes/Turrets/DroneHiveTower.gd" id="1_n6o56"]
+[ext_resource type="Texture2D" uid="uid://bqv8dyl6nqjod" path="res://Assets/Effect/towerDefense_tile29.png" id="3_j50ek"]
+[ext_resource type="Texture2D" uid="uid://bcywb3xk06eh3" path="res://Assets/Props/towerDefense_tile_turret_11.png" id="3_n6o56"]
+[ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_wmu48"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dknxc"]
+radius = 175.0
+
+[sub_resource type="Animation" id="Animation_qljwc"]
+resource_name = "Fire"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
+_data = {
+&"Fire": SubResource("Animation_qljwc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7e72f"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_241fp"]
+size = Vector2(80, 80)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_n6o56"]
+bg_color = Color(0.43089, 0.00162518, 0.660458, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+
+[node name="Turret_11T1" type="Node2D"]
+script = ExtResource("1_n6o56")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("1_glruk")
+
+[node name="Turret" type="Sprite2D" parent="."]
+rotation = 6.28319
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_n6o56")
+
+[node name="Muzzle" type="Marker2D" parent="Turret"]
+visible = false
+
+[node name="MuzzleFlash" type="Sprite2D" parent="Turret/Muzzle"]
+rotation = 1.5708
+scale = Vector2(0.7, 0.7)
+texture = ExtResource("3_j50ek")
+offset = Vector2(0, -85)
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_dknxc")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yclq1")
+}
+
+[node name="MenuButton" type="TouchScreenButton" parent="."]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_7e72f")
+
+[node name="Menu" parent="." instance=ExtResource("4_wmu48")]
+visible = false
+z_index = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_241fp")
+
+[node name="TokenLabel" type="Panel" parent="."]
+visible = false
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_n6o56")
+
+[node name="Label" type="Label" parent="TokenLabel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 16
+horizontal_alignment = 1
+vertical_alignment = 1
+
+
+# Scenes\Turrets\Turret_12T1.tscn
+[gd_scene load_steps=10 format=3 uid="uid://6rrbctibuk73"]
+
+[ext_resource type="Script" uid="uid://80pcfc43ysiw" path="res://Scenes/Turrets/LinkTower.gd" id="1_utq5e"]
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_uhyne"]
+[ext_resource type="Texture2D" uid="uid://d0adtn58dbv1k" path="res://Assets/Props/towerDefense_tile_turret_12.png" id="3_v821b"]
+[ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_ekgii"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_appy3"]
+radius = 175.0
+
+[sub_resource type="Animation" id="Animation_qljwc"]
+resource_name = "Fire"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
+_data = {
+&"Fire": SubResource("Animation_qljwc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_baaig"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otl87"]
+size = Vector2(80, 80)
+
+[node name="Turret_12T1" type="Node2D"]
+script = ExtResource("1_utq5e")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("2_uhyne")
+
+[node name="Turret" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_v821b")
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_appy3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yclq1")
+}
+
+[node name="MenuButton" type="TouchScreenButton" parent="."]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_baaig")
+
+[node name="Menu" parent="." instance=ExtResource("4_ekgii")]
+visible = false
+z_index = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_otl87")
 
 
 # Scenes\Turrets\Turret_1T1.tscn
@@ -13055,6 +13922,7 @@ func check_promotion():
 				return true
 	return false
 	
+	
 
 
 # Scenes\UI\Menu.tscn
@@ -13506,10 +14374,10 @@ size_flags_stretch_ratio = 0.0
 [connection signal="pressed" from="MarginContainer/Panel/MarginContainer/ButtonBack" to="." method="_on_button_back_pressed"]
 
 
-# Scenes\UI\player_1_container.gd
+# Scenes\UI\player_container.gd
 extends Control
 
-@onready var map_node = load("res://Scenes/Maps/map_battle_%d.tscn" % randi_range(0, 0)).instantiate()
+@onready var map_node = load("res://Scenes/Maps/map_battle_0.tscn").instantiate()
 
 # Ссылки на контроллеры
 var build_controller
@@ -13520,11 +14388,10 @@ var game_end_controller
 var health_controller
 
 func _ready():
-	for i in range(len(ResourceManager.list_turret)):
-		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
 	add_child(map_node)
 	move_child(map_node, 0)
+
 	# Динамически создаем контроллеры
 	build_controller = _create_controller("res://Controllers/BuildController.gd")
 	wave_controller = _create_controller("res://Controllers/WaveController.gd")
@@ -13536,13 +14403,21 @@ func _ready():
 	build_controller.initialize(self)
 	wave_controller.initialize(self)
 	gift_controller.initialize(self)
-	ui_controller.initialize(self)
+	ui_controller.initialize(self, false)
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
 	GameManager.get_road_coords(self)
+	
+	GameSession.current_money_in_game_session = 500.0
+	GameSession.base_health = 100
+	GameSession.current_wave = 0
 
 	get_tree().paused = false
 
+func set_wave_data(wave_data: Array):
+	wave_controller.set_wave_data(wave_data)
+	wave_controller.start_next_wave()
+	
 func _process(delta):
 	if build_controller.build_mode:
 		build_controller.update_tower_preview()
@@ -13650,36 +14525,30 @@ libraries = {
 
 
 # Scenes\UI\pvp_game_scene.gd
+# pvp_game_scene.gd — исправленная версия
 extends Node2D
 
-@onready var map_node = load("res://Scenes/Maps/map_battle_%d.tscn" % randi_range(0, 0)).instantiate()
+@onready var player2_container = $CanvasLayer/HBoxContainer/Player2Container
+@onready var map_node_2 = load("res://Scenes/Maps/map_battle_0.tscn").instantiate()
 
-
-# Ссылки на контроллеры
-var build_controller
-var wave_controller
-var gift_controller
-var ui_controller
-var game_end_controller
-var health_controller
+var pvp_manager: Node
 
 func _ready():
-	for i in range(len(ResourceManager.list_turret)):
-		ResourceManager.list_turret[i] = []
-	get_node("CanvasLayer/HBoxContainer/Player2Container").add_child(map_node)
-	get_node("CanvasLayer/HBoxContainer/Player2Container").move_child(map_node, 0)
+	map_node_2.name = "Map"
+	player2_container.add_child(map_node_2)
+	player2_container.move_child(map_node_2, 0)
+	# Инициализация PvP
+	pvp_manager = preload("res://Scenes/SupportScenes/pvp_manager.gd").new()
+	add_child(pvp_manager)
 
 
 # Scenes\UI\pvp_game_scene.tscn
-[gd_scene load_steps=10 format=3 uid="uid://dsob5dgws1suu"]
+[gd_scene load_steps=7 format=3 uid="uid://dsob5dgws1suu"]
 
 [ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="1_ahlwb"]
 [ext_resource type="Script" uid="uid://b5ihocxbhywk6" path="res://Scenes/UI/pvp_game_scene.gd" id="1_e1k40"]
 [ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="2_2ufnk"]
-[ext_resource type="Script" uid="uid://5te3gphp2vjc" path="res://Scenes/UI/player_1_container.gd" id="2_e1k40"]
-[ext_resource type="Texture2D" uid="uid://bl0mdjbpt8qq6" path="res://Assets/Icons/right.png" id="5_gg22p"]
-[ext_resource type="Texture2D" uid="uid://drxc0o2l0g5u7" path="res://Assets/Icons/pause.png" id="6_vwoep"]
-[ext_resource type="Texture2D" uid="uid://bhdypowo2q6tx" path="res://Assets/Icons/fastForward.png" id="7_ojl3r"]
+[ext_resource type="Script" uid="uid://5te3gphp2vjc" path="res://Scenes/UI/player_container.gd" id="2_e1k40"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8e88j"]
 
@@ -13696,11 +14565,13 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 theme_override_constants/separation = 0
 
 [node name="Player1Container" type="Control" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+mouse_filter = 2
 script = ExtResource("2_e1k40")
 
 [node name="UI" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container"]
@@ -13710,6 +14581,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="HUD" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container/UI"]
 layout_mode = 1
@@ -13969,34 +14841,6 @@ theme_override_font_sizes/font_size = 40
 text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="GameControl" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD"]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -164.0
-offset_top = -90.0
-offset_right = -20.0
-offset_bottom = -20.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="PausePlay" type="TextureButton" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/GameControl"]
-process_mode = 3
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-toggle_mode = true
-button_pressed = true
-texture_normal = ExtResource("5_gg22p")
-texture_pressed = ExtResource("6_vwoep")
-
-[node name="SpeedUp" type="TextureButton" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/GameControl"]
-custom_minimum_size = Vector2(70, 70)
-layout_mode = 2
-texture_normal = ExtResource("7_ojl3r")
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container"]
 custom_minimum_size = Vector2(32, 0)
@@ -14376,6 +15220,12 @@ enum Rarity {
 	RARE,      # Редкая
 	EPIC,      # Эпическая
 	LEGENDARY  # Легендарная
+}
+
+enum TowerDroneStrategy {
+	SCOUT,      # Атакует самого дальнего
+	INTERCEPTOR, # Атакует самого близкого к базе
+	RANDOM      # Атакует случайного
 }
 const LEVEL_OPEN_ABILITY = [7, 10]
 const CHANCE_AGAIN_DAMAGE = 20
@@ -14827,9 +15677,37 @@ const DATA_TOWER = {
 		"res://Assets/Icons/damage_reduction.png"],
 		strateg = true,
 		queue_free = [5]},
+	10: {
+		type = Rarity.LEGENDARY,
+		type_attack = 0,
+		type_explosion = 0,
+		cost_in_session = 500,
+		parametr_1 = {
+			0: [50.0, 58.0, 67.28, 78.04, 90.53, 105.01, 121.81, 141.3, 163.91, 190.14],
+			1: [55.5, 64.38, 74.68, 86.63, 100.49, 116.57, 135.22, 156.86, 181.96, 211.07],
+			2: [61.61, 71.47, 82.91, 96.18, 111.57, 129.42, 150.13, 174.15, 202.01, 234.33],
+			3: [68.38, 79.32, 92.01, 106.73, 123.81, 143.62, 166.6, 193.26, 224.18, 260.05],
+			4: [75.9, 88.04, 102.13, 118.47, 137.43, 159.42, 184.93, 214.52, 248.84, 288.65],
+			5: [84.25, 97.73, 113.37, 131.51, 152.55, 176.96, 205.27, 238.11, 276.21, 320.4],
+			6: [93.52, 108.48, 125.84, 145.97, 169.33, 196.42, 227.85, 264.31, 306.6, 355.66],
+			7: [103.81, 120.42, 139.69, 162.04, 187.97, 218.05, 252.94, 293.41, 340.36, 394.82],
+			8: [115.23, 133.67, 155.06, 179.87, 208.65, 242.03, 280.75, 325.67, 377.78, 438.22],
+			9: [127.9, 148.36, 172.1, 199.64, 231.58, 268.63, 311.61, 361.47, 419.31, 486.4]
+		},
+		parametr_2 = [1.0, 0.97, 0.94, 0.91, 0.88, 0.85, 0.82, 0.79, 0.75, 0.7],
+		parametr_3 = [245.0, 248.0, 251.0, 254.0, 257.0, 262.0, 268.0, 275.0, 282.0, 290.0],
+		parametr_range = 3,
+		name_label = ["ед", "с", "ед"],
+		text = ["KEY_DAMAGE", "KEY_RELOAD", "KEY_RANGE"],
+		data = ["damage", "rof", "range"],
+		img = ["res://.godot/imported/damage.png-872b5ccd784ae534d29ff2b790dfc3b4.ctex",
+		"res://.godot/imported/reload.png-640ae2fae7d793eb56d026ec5a460b96.ctex", 
+		"res://.godot/imported/range.png-d3745379c73ab4ee989b44544ccbbc0e.ctex"],
+		strateg = true,
+		queue_free = [3, 4, 5]},
 }
 ## Количество турелей в игре
-const NUMBER_TURRET: int = 10
+const NUMBER_TURRET: int = 11
 ## Количество максимального уровня турелей в игре
 const NUMBER_LVL_TURRET: int = 10
 ## Количество достиженей
@@ -15172,6 +16050,18 @@ static func round_to_dec(num: float, digit: int) -> float:
 	return round(num * pow(10.0, digit)) / pow(10.0, digit)
 
 
+# Systems\PvPSession.gd
+# PvPSession.gd — глобальное хранилище данных для PvP
+extends Node
+
+var room_id: String = ""
+var player_id: String = ""
+var opponent_id: String = ""
+var player_index: int = 0
+var wave_data: Array = []
+var game_started: bool = false
+
+
 # Systems\ResourceManager.gd
 ## Управляет текущими ресурсами игрока (золото, очки, лучший результат)
 extends Node
@@ -15187,7 +16077,7 @@ var best_score: int = 0
 ## Текущий результат (очки) в сессии
 var current_score: int = 0
 ## Построенные башни по id башни
-var list_turret: Array = [[], [], [], [], [], [], [], [], [], []]
+var list_turret: Array = [[], [], [], [], [], [], [], [], [], [], []]
 ## Модификация скорости от 3 боса
 var speed_modifer: int = 1
 ## Список активных 

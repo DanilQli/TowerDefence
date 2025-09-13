@@ -4,21 +4,20 @@ extends Node2D
 var strategy: GameConstants.TowerDroneStrategy
 
 var target: Node2D
-var damage := 10.0
-var speed := 300.0
+var damage: float
+var speed: float
 var tokens_earned := 0
 var is_returning := false
 var home_tower: Node2D
 
 var lifetime_left: float
 var attack_cooldown: float
-var attack_interval := 1.0
 
 var off_num: int = 60
 
 var offset := Vector2(-off_num, -off_num)
 
-func launch(home: Node2D, drone_strategy: GameConstants.TowerDroneStrategy, drone_damage: float, drone_speed: float, lifetime: float):
+func launch(home: Node2D, drone_strategy: GameConstants.TowerDroneStrategy, drone_damage: float, drone_speed: float, lifetime: float, attack_interval: float):
 	home_tower = home
 	strategy = drone_strategy
 	damage = drone_damage
@@ -62,14 +61,13 @@ func find_new_target():
 
 func _on_attack_timer_timeout():
 	if is_instance_valid(target) and global_position.distance_to(target.global_position) < 100:
-		# ИСПРАВЛЕНО: target теперь и есть враг
 		if target.has_method("on_hit"):
 			get_node("AnimationPlayer").play("Fire")
 			target.on_hit(damage, 0, GameConstants.TowerType.GUN, self)
 			if target.hp <= 0:
 				tokens_earned += 1
 				target = null
-	await get_tree().create_timer(home_tower.multiplier_rof_enemy * attack_cooldown).timeout
+	await get_tree().create_timer(home_tower.multiplier_rof_all * attack_cooldown).timeout
 	_on_attack_timer_timeout()
 
 func _return_to_base():
@@ -100,7 +98,6 @@ func _find_last_enemy_global(enemies: Array) -> Node2D:
 
 func calculate_target_position(enemy_pos: Vector2) -> Vector2:
 	var desired_pos = enemy_pos + offset
-	
 	# Обработка краёв экрана
 	var screen_size = get_viewport_rect().size
 	if desired_pos.x < off_num: # Левый край

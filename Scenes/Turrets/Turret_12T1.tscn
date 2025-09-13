@@ -1,0 +1,80 @@
+[gd_scene load_steps=10 format=3 uid="uid://6rrbctibuk73"]
+
+[ext_resource type="Script" uid="uid://80pcfc43ysiw" path="res://Scenes/Turrets/LinkTower.gd" id="1_utq5e"]
+[ext_resource type="Texture2D" uid="uid://cn0sbgka7o65e" path="res://Assets/Props/towerDefense_tile_1.png" id="2_uhyne"]
+[ext_resource type="Texture2D" uid="uid://d0adtn58dbv1k" path="res://Assets/Props/towerDefense_tile_turret_12.png" id="3_v821b"]
+[ext_resource type="PackedScene" uid="uid://cs6cybobt3jr0" path="res://Scenes/SupportScenes/TurretMenu.tscn" id="4_ekgii"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_appy3"]
+radius = 175.0
+
+[sub_resource type="Animation" id="Animation_qljwc"]
+resource_name = "Fire"
+length = 0.15
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Turret/Muzzle:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.05),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_yclq1"]
+_data = {
+&"Fire": SubResource("Animation_qljwc")
+}
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_baaig"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_otl87"]
+size = Vector2(80, 80)
+
+[node name="Turret_12T1" type="Node2D"]
+script = ExtResource("1_utq5e")
+
+[node name="Base" type="Sprite2D" parent="."]
+texture = ExtResource("2_uhyne")
+
+[node name="Turret" type="Sprite2D" parent="."]
+scale = Vector2(0.6, 0.6)
+texture = ExtResource("3_v821b")
+
+[node name="Range" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Range"]
+shape = SubResource("CircleShape2D_appy3")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_yclq1")
+}
+
+[node name="MenuButton" type="TouchScreenButton" parent="."]
+scale = Vector2(3, 3)
+shape = SubResource("RectangleShape2D_baaig")
+
+[node name="Menu" parent="." instance=ExtResource("4_ekgii")]
+visible = false
+z_index = 1
+
+[node name="NinePatchRect" type="NinePatchRect" parent="."]
+visible = false
+custom_minimum_size = Vector2(60, 60)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Hull" type="Area2D" parent="."]
+collision_layer = 4
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hull"]
+shape = SubResource("RectangleShape2D_otl87")

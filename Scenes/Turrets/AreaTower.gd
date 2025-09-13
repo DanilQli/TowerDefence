@@ -8,11 +8,12 @@ var dam
 var chance_dop: int = 0
 	
 func fire() -> void:
+	super.fire()
 	if not block_damage:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(multiplier_rof_enemy * rof).timeout
+		await get_tree().create_timer(multiplier_rof_all * rof).timeout
 		is_ready = true
 
 func _apply_damage() -> void:
@@ -30,8 +31,10 @@ func _apply_damage() -> void:
 			break
 
 func critical_damage():
-	var damage_all = (damage * multiplier_damage_enemy) + ability_0 * GameConstants.TURRET_1_ABILITY_1
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE + chance_dop:
+	var damage_all = (damage * multiplier_damage_all) + ability_0 * GameConstants.TURRET_1_ABILITY_1
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE + chance_dop:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
 		return damage_all + (DataManager.critical_damage * damage_all) / 100
 	else:
 		return damage_all

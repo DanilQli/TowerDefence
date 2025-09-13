@@ -4,12 +4,11 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kni1m"]
 shader = ExtResource("1_8onn4")
-shader_parameter/glow_color = Color(1, 1, 1, 1)
+shader_parameter/glow_color = Color(0.478431, 0.478431, 0, 1)
 shader_parameter/flicker_speed = 2.0
 shader_parameter/brightness_intensity = 0.5
 shader_parameter/alpha_intensity = 0.3
 
 [node name="LinkLine" type="Line2D"]
 material = SubResource("ShaderMaterial_kni1m")
-points = PackedVector2Array(12, 0, 61, 0)
 width = 5.0

@@ -55,6 +55,7 @@ KEY_RESTART,Попробовать снова,Try again
 KEY_CHOOSE_REWARD,Выбери свою награду,Choose your reward
 KEY_AVAILABLE,Доступные вам,Available to you
 KEY_CHOOSE,Выбрать,Choose
+
 KEY_NAME_TURRET_1,Пушка,Gun
 KEY_NAME_TURRET_2,Ракета,Rocket
 KEY_NAME_TURRET_3,Арбалет,Crossbow
@@ -66,6 +67,8 @@ KEY_NAME_TURRET_8,Минотавр,Minotaur
 KEY_NAME_TURRET_9,Палач,Hangman
 KEY_NAME_TURRET_10,Задира,Bully
 KEY_NAME_TURRET_11,Дроновод,Drone driver
+KEY_NAME_TURRET_12,Связующая башня,Connecting Tower
+
 KEY_HEALTH_LEVEL_FINISHING,Процент здоровья для добивания,The percentage of health to finish off
 KEY_BONUS_ATTACK,Увеличение урона,Increased damage
 KEY_BUY_FOR,Купить за,Buy for
@@ -185,3 +188,6 @@ KEY_TURRET10_UP1_DESC,Урон Задиры увеличивается на [col
 KEY_TURRET11_DESC,"Каждые [color='blue']20[/color] секунд выпускает двух автономных дронов: 'Разведчика', атакующего самого [color='blue']дальнего[/color] врага, и 'Перехватчика', атакующего самого [color='blue']близкого[/color] к базе. Дроны живут [color='blue']15[/color] секунд. За каждого убитого врага дрон получает жетон. По возвращении жетоны увеличивают урон [color='blue']следующего поколения[/color] дронов на [color='blue']1%[/color] за каждый жетон.","Every [color='blue']20[/color] seconds, launches two autonomous drones: a 'Scout' that attacks the [color='blue']farthest[/color] enemy, and an 'Interceptor' that attacks the [color='blue']closest[/color] to the base. Drones live for [color='blue']15[/color] seconds. For each enemy killed, a drone earns a token. Upon return, tokens increase the damage of the [color='blue']next generation[/color] of drones by [color='blue']1%[/color] per token."
 KEY_TURRET11_UP0_DESC,"При запуске дронов есть [color='blue']50%[/color] шанс создать третьего, 'Случайного' дрона, который будет атаковать произвольную цель на карте.","When launching drones, there is a [color='blue']50%[/color] chance to create a third, 'Random' drone that will attack a random target on the map."
 KEY_TURRET11_UP1_DESC,"Усиление жетонов: теперь каждый жетон, принесённый дронами, увеличивает урон следующего поколения на [color='blue']2%[/color] вместо 1%.","Token Enhancement: each token brought back by drones now increases the damage of the next generation by [color='blue']2%[/color] instead of 1%."
+KEY_TURRET12_DESC,"Связующая башня. Автоматически соединяется со всеми соседними башнями (кроме других Связующих), давая им [color='blue']+10%[/color] к урону, [color='blue']синхронизацию критов[/color] и [color='blue']защиту от дебаффов[/color]. Несколько Связующих башен могут быть объединены в [color='purple']сеть[/color] через общие башни-посредники.","Link Tower. Automatically links with all adjacent towers (except other Link Towers), granting them [color='blue']+10%[/color] damage, [color='blue']critical hit synchronization[/color], and [color='blue']protection from boss debuffs[/color]. Multiple Link Towers can be combined into a [color='purple']network[/color] through shared intermediary towers."
+KEY_TURRET12_UP0_DESC,"Сетевая синергия. Если в [color='purple']связанной сети[/color] есть [color='blue']6 или более[/color] связей с башнями одного типа, то все башни этого типа в сети получают [color='green']удвоенную скорость атаки[/color].","Network Synergy. If a [color='purple']linked network[/color] has [color='blue']6 or more[/color] links to towers of the same type, all towers of that type in the network gain [color='green']double attack speed[/color]."
+KEY_TURRET12_UP1_DESC,"Усиленная связь. Бонус к урону для всех связанных башен увеличивается до [color='blue']+15%[/color].","Enhanced Link. The damage bonus for all linked towers increases to [color='blue']+15%[/color]."

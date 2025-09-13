@@ -1,44 +1,54 @@
+# TowerBase.gd — полная, исправленная и готовая версия
 extends Node2D
 class_name TowerBase
 
+# --- СИГНАЛЫ ---
 signal money_in_game_session_changed()
 signal damage_inflicted_changed(value: float)
+signal tower_fired(tower: TowerBase)
+signal tower_crit(tower: TowerBase)
 
+# --- ОСНОВНЫЕ ПАРАМЕТРЫ ---
 var type: String
 var id: int
 var type_attack: int
 var type_explosion: int
 
-var enemy_array: Array = []
+var enemy_array: Array[Node] = []
 var enemy: Node = null
 var built: bool = false
 var is_ready: bool = true
 var inflicted: float = 0
 
+# --- БОЕВЫЕ ХАРАКТЕРИСТИКИ ---
 var range: float
 var rof: float
 var current_lvl: int
 var max_lvl: int
 var ability: Array = []
 var block_damage: bool = false
-var multiplier_damage_enemy: float = 1.0 # множитель урона (использует босс 7)
-var multiplier_rof_enemy: float = 1.0 # множитель скорости урона (использует босс 8)
+var multiplier_damage_enemy: float = 0.0
+var multiplier_damage_link: float = 0.0
+var multiplier_damage_all: float = 1.0
+var multiplier_rof_enemy: float = 0.0
+var multiplier_rof_link: float = 1.0
+var multiplier_rof_all: float = 1.0
 
+# --- СТРАТЕГИЯ И PvP ---
 var strategy: int = 0 # First/Last/Random
+var is_opponent := false
 
+# --- ПАРАМЕТРЫ ДЛЯ LINKTOWER ---
+var is_protected_by_link := false
+var force_next_attack_crit := false
+
+# --- ССЫЛКИ НА УЗЛЫ ---
 @onready var ui_system: TowerUI
 @onready var upgrade_system: TowerUpgradeSystem
 @onready var stone_texture = preload("res://Assets/Effect/stone.png")
-
 @onready var range_area: Area2D = $Range
 
-func _initialize() -> void:
-	range_area.connect("body_entered", Callable(self, "_on_range_body_entered"))
-	range_area.connect("body_exited", Callable(self, "_on_range_body_exited"))
-	var shape = range_area.get_node("CollisionShape2D")
-	if shape and shape.shape is CircleShape2D:
-		shape.shape.radius = 0.5 * range
-		
+# --- ИНИЦИАЛИЗАЦИЯ ---
 func _ready() -> void:
 	if built:
 		ui_system = TowerUI.new()
@@ -48,15 +58,22 @@ func _ready() -> void:
 		upgrade_system = TowerUpgradeSystem.new()
 		add_child(upgrade_system)
 		upgrade_system.setup(self)
-
-		var range_node := get_node_or_null("Range")
-		if range_node:
-			range_node.body_entered.connect(_on_range_body_entered)
-			range_node.body_exited.connect(_on_range_body_exited)
+		
 		_initialize()
 
-# Применение эффекта босса
+func _initialize() -> void:
+	range_area.body_entered.connect(_on_range_body_entered)
+	range_area.body_exited.connect(_on_range_body_exited)
+	var shape = range_area.get_node("CollisionShape2D")
+	if shape and shape.shape is CircleShape2D:
+		shape.shape.radius = 0.5 * range
+
+# --- ЭФФЕКТЫ И ДЕБАФФЫ ---
 func stone_effect_start(duration):
+	if is_protected_by_link:
+		print(name + " защищена от камня!")
+		return
+		
 	block_damage = true
 	get_node("NinePatchRect").texture = stone_texture
 	get_node("NinePatchRect").visible = true
@@ -66,37 +83,46 @@ func stone_effect_start(duration):
 func stone_effect_stop():
 	block_damage = false
 	get_node("NinePatchRect").visible = false
-	
+
+# --- ИГРОВОЙ ЦИКЛ ---
 func _physics_process(_delta: float) -> void:
-	if not built or enemy_array.is_empty():
+	if not built or type_attack == -1: return # LinkTower не должна ничего делать здесь
+	
+	if enemy_array.is_empty():
 		enemy = null
 		return
 
-	if enemy == null or not is_instance_valid(enemy):
+	if not is_instance_valid(enemy):
 		select_enemy()
 
-	if enemy != null:
-		var angle = get_node("Turret").global_position.direction_to(enemy.global_position).angle()
-		get_node("Turret").rotation = angle
+	if is_instance_valid(enemy):
+		var turret_sprite = get_node_or_null("Turret")
+		if is_instance_valid(turret_sprite):
+			var angle = turret_sprite.global_position.direction_to(enemy.global_position).angle()
+			turret_sprite.rotation = angle
 		
 		if is_ready:
 			fire()
 
-func fire() -> void: pass
+# --- ВИРТУАЛЬНЫЕ МЕТОДЫ ---
+func fire() -> void:
+	multiplier_damage_all = 1 + multiplier_damage_enemy + multiplier_damage_link
+	multiplier_rof_all = (1.0 + multiplier_rof_enemy) / multiplier_rof_link
 
-func _apply_damage() -> void: pass  # Virtual methods
+func _apply_damage() -> void:
+	pass
 
-func func_add_deal_damage(damage):
-	TasksManager.deal_damage += damage
-	
+# --- УПРАВЛЕНИЕ ВРАГАМИ ---
 func _on_range_body_entered(body: Node) -> void:
 	var parent = body.get_parent()
-	if parent and parent.has_method("on_hit"):
+	if parent and parent.has_method("on_hit") and not enemy_array.has(parent):
 		enemy_array.append(parent)
 
 func _on_range_body_exited(body: Node) -> void:
-	enemy_array.erase(body.get_parent())
-	if enemy == body.get_parent():
+	var parent = body.get_parent()
+	if enemy_array.has(parent):
+		enemy_array.erase(parent)
+	if enemy == parent:
 		enemy = null
 		select_enemy()
 
@@ -106,25 +132,38 @@ func select_enemy() -> void:
 		enemy = null
 		return
 
-	var values = enemy_array.map(func(e): return e.progress)
-	var target_index = 0
-
+	# ИСПРАВЛЕНО: Ручной поиск вместо max_by/min_by
+	var best_target: Node = null
 	match strategy:
-		0: target_index = values.find(values.max()) # First
-		1: target_index = values.find(values.min()) # Last
-		2: target_index = randi_range(0, values.size() - 1)  # Random
+		0: # First (самый дальний по пути)
+			var max_progress = -1.0
+			for e in enemy_array:
+				if e.progress > max_progress:
+					max_progress = e.progress
+					best_target = e
+		1: # Last (самый близкий к базе)
+			var min_progress = INF
+			for e in enemy_array:
+				if e.progress < min_progress:
+					min_progress = e.progress
+					best_target = e
+		2: # Random
+			if not enemy_array.is_empty():
+				best_target = enemy_array.pick_random()
 
-	enemy = enemy_array[target_index]
+	enemy = best_target
 
-func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
-	excl.erase_cell(cell)
-
-var is_opponent := false
+# --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
+func func_add_deal_damage(damage):
+	TasksManager.deal_damage += damage
 
 func set_opponent_tower(value: bool):
 	is_opponent = value
 	if has_node("MenuButton"):
-		get_node("MenuButton").disabled = true  # нельзя управлять
+		get_node("MenuButton").disabled = true
 
 func is_opponent_tower() -> bool:
 	return is_opponent
+
+func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
+	excl.erase_cell(cell)

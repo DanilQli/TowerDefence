@@ -120,9 +120,9 @@ func update_tower_preview():
 		build_valid = false
 
 func _unhandled_input(event):
-	if event.is_action_released("ui_accept") and build_mode:
-		verify_and_build()
-		cancel_build_mode()
-
-	if event.is_action_released("ui_cancel") and build_mode:
-		cancel_build_mode()
+	if build_mode:
+		if event.is_action_released("ui_accept"):
+			verify_and_build()
+			cancel_build_mode()
+		if event.is_action_released("ui_cancel"):
+			cancel_build_mode()

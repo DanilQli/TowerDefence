@@ -17,6 +17,7 @@ func _initialize() -> void:
 	rof_new = rof
 	
 func fire() -> void:
+	super.fire()
 	if not block_damage:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
@@ -49,21 +50,23 @@ func rage_attack():
 	emit_signal("damage_inflicted_changed", inflicted)
 	
 func rage_interval():
-	rof_new = rof / (1 + bonus_speed_attack / 100.0)* multiplier_rof_enemy
-	damage_new = (damage * multiplier_damage_enemy) * (1 + bonus_damage / 100.0)
+	rof_new = rof / (1 + bonus_speed_attack / 100.0)* multiplier_rof_all
+	damage_new = (damage * multiplier_damage_all) * (1 + bonus_damage / 100.0)
 	self.get_node("Turret").modulate = Color(0.7, 0.7, 0.7)
 	await get_tree().create_timer(10).timeout
 	self.get_node("Turret").modulate = Color(0.1, 0.1, 0.1)
 	rage = 2
-	rof_new = 3 * multiplier_rof_enemy
+	rof_new = 3 * multiplier_rof_all
 	await get_tree().create_timer(3).timeout
 	self.get_node("Turret").modulate = Color(1, 1, 1)
-	rof_new = multiplier_rof_enemy * rof
-	damage_new = (damage * multiplier_damage_enemy)
+	rof_new = multiplier_rof_all * rof
+	damage_new = (damage * multiplier_damage_all)
 	rage = 0
 	
 func critical_damage():
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
 		if self.ability[1]:
 			return (damage_new + (DataManager.critical_damage * damage_new) / 100) * dop_mn
 		else:

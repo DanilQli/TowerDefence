@@ -14,11 +14,11 @@ func _on_range_area_entered(area: Node) -> void:
 	if parent and parent.has_method("select_enemy"):
 		parent.get_node('NinePatchRect').visible = true
 		parent.get_node('NinePatchRect').texture = plants_texture
-		parent.multiplier_rof_enemy = 1.2
+		parent.multiplier_rof_enemy = 0.2
 		list_tower_enemy_8.append(parent)
 
 func on_destroy():
 	for i in range(len(list_tower_enemy_8)):
 		list_tower_enemy_8[i].get_node('NinePatchRect').visible = false
-		list_tower_enemy_8[i].multiplier_rof_enemy = 1.0
+		list_tower_enemy_8[i].multiplier_rof_enemy = 0.0
 	super.on_destroy()

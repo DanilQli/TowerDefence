@@ -21,7 +21,7 @@ func fire() -> void:
 						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA, self)
 					else:
 						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA, self)
-		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
 		is_ready = true
 
 func _initialize() -> void:

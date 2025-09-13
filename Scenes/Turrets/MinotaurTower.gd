@@ -37,6 +37,7 @@ func mode() -> void:
 			ResourceManager.list_turret[7][i].get_node("Panel").visible = false
 	
 func fire() -> void:
+	super.fire()
 	if not block_damage:
 		if not one_attack:
 			one_attack = true
@@ -44,7 +45,7 @@ func fire() -> void:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
 		is_ready = true
 	
 func _apply_damage() -> void:
@@ -56,10 +57,12 @@ func _apply_damage() -> void:
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return (damage * multiplier_damage_enemy) + (DataManager.critical_damage * (damage * multiplier_damage_enemy)) / 100
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
+		return (damage * multiplier_damage_all) + (DataManager.critical_damage * (damage * multiplier_damage_all)) / 100
 	else:
-		return (damage * multiplier_damage_enemy)
+		return (damage * multiplier_damage_all)
 
 func _apply_damage_obstacle() -> void:
 	if len(GameManager.list_coords_road_use_index) < len(GameManager.LIST_COORDS_ROAD):

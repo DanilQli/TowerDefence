@@ -13,7 +13,7 @@ func fire() -> void:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
 		is_ready = true
 
 func _apply_damage() -> void:

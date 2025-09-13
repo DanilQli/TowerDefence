@@ -12,7 +12,7 @@ var best_score: int = 0
 ## Текущий результат (очки) в сессии
 var current_score: int = 0
 ## Построенные башни по id башни
-var list_turret: Array = [[], [], [], [], [], [], [], [], [], [], []]
+var list_turret: Array = [[], [], [], [], [], [], [], [], [], [], [], []]
 ## Модификация скорости от 3 боса
 var speed_modifer: int = 1
 ## Список активных 

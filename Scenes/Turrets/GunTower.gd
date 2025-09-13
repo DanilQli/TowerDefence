@@ -7,11 +7,12 @@ var current_damage_up
 var critical_damage_all
 
 func fire() -> void:
+	super.fire()
 	if not block_damage:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer((multiplier_rof_enemy * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
 		is_ready = true
 	
 func _apply_damage() -> void:
@@ -32,10 +33,12 @@ func _apply_damage() -> void:
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
-		return (damage * multiplier_damage_enemy) + (current_damage_up * (damage * multiplier_damage_enemy)) / 100 + randi_range(0, damage_reduction)
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+		emit_signal("tower_crit", self)
+		force_next_attack_crit = false
+		return (damage * multiplier_damage_all) + (current_damage_up * (damage * multiplier_damage_all)) / 100 + randi_range(0, damage_reduction)
 	else:
-		return (damage * multiplier_damage_enemy) + randi_range(0, damage_reduction)
+		return (damage * multiplier_damage_all) + randi_range(0, damage_reduction)
 		
 func _initialize() -> void:
 	super._initialize()
