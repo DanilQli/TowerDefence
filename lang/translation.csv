@@ -112,6 +112,8 @@ KEY_INFO,Инфо,Info
 KEY_CLEARLY,Понятно,Clearly
 KEY_SEARCH_PVP,Поиск соперника,Finding an opponent
 KEY_SEARCH_PVP_NO,Не удалось найти соперника. Попробуйте позже.,Couldn't find an opponent. Try again later.
+KEY_DRONE_DAMAGE,Урон дрона,Drone Damage
+KEY_RELOAD_DRONE,Скорость атаки дрона,Drone's attack speed
 
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player

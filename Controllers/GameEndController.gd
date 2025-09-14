@@ -120,14 +120,18 @@ func restart():
 
 func exit_menu():
 	open_chest_pressed()
-	#get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 func open_chest_pressed():
 	end.queue_free()
 	# Генерируем карточки на основе звёзд
 	var card_counts = GameConstants.POST_BATTLE_REWARDS.get(stars_earned)
 	var box_card = GameConstants.get_random_card_pairs(card_counts)
-	
+	var i = 0
+	while i < box_card.size():
+		if box_card[i][1] == 0:
+			box_card.remove_at(i)
+		else:
+			i += 1
 	# ID предмета "Боевой сундук"
 	var chest_item_id = GameConstants.BATTLE_CHEST_ITEM_ID
 	
@@ -135,6 +139,5 @@ func open_chest_pressed():
 	DataManager.TYPE_ITEMS[chest_item_id][0].call(box_card)
 	DataManager.write_file()
 	var choose_buy = load("res://Scenes/SupportScenes/buy_box_open.tscn").instantiate()
-	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4])
+	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4], true)
 	get_tree().current_scene.get_node("UI").add_child(choose_buy)
-	#get_tree().paused = false

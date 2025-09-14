@@ -48,10 +48,10 @@
     "level": 12,
     "open_level": 14,
     "progress": [
-      32,
+      36,
       10.0,
       0,
-      2,
+      1,
       0,
       0,
       8
@@ -141,14 +141,14 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 32,
+    "count_end_game": 36,
     "count_end_game_company": 0,
     "count_spend_money": 0.0,
     "daily_task_career_you": [
       [
         1.0,
         1.0,
-        400.0,
+        1827.0,
         1.0,
         0.0
       ],
@@ -174,114 +174,114 @@
         0.0
       ]
     ],
-    "daily_task_update_day": 20336,
-    "daily_task_update_week": 20334,
-    "deal_damage": 1518654,
-    "destroy_enemies": 1418,
-    "get_coins": 0.0,
+    "daily_task_update_day": 20344,
+    "daily_task_update_week": 20344,
+    "deal_damage": 0,
+    "destroy_enemies": 0,
+    "get_coins": 0,
     "get_common_hero_cards": 0,
-    "get_common_turret_cards": 0.0,
-    "get_diamonds": 0.0,
-    "get_epic_hero_cards": null,
+    "get_common_turret_cards": 0,
+    "get_diamonds": 0,
+    "get_epic_hero_cards": 0,
     "get_epic_turret_cards": 0,
-    "get_rare_hero_cards": 0.0,
-    "get_rare_turret_cards": 0.0,
+    "get_rare_hero_cards": 0,
+    "get_rare_turret_cards": 0,
     "list_tasks_you": [
       [
-        1.0,
-        62.0,
-        215.0,
-        4.0,
-        0.0
+        1,
+        67,
+        0,
+        6,
+        0
       ],
       [
-        2.0,
-        4.0,
-        0.0,
-        6.0,
-        0.0
+        4,
+        2,
+        0,
+        14,
+        0
       ],
       [
-        4.0,
-        1.0,
-        0.0,
-        7.0,
-        0.0
+        7,
+        1,
+        0,
+        4,
+        0
       ],
       [
-        6.0,
-        28.0,
-        435.0,
-        2.0,
-        0.0
+        8,
+        2,
+        0,
+        8,
+        0
       ],
       [
-        5.0,
-        500.0,
-        0.0,
-        50.0,
-        0.0
+        1,
+        42,
+        0,
+        0,
+        0
       ],
       [
-        6.0,
-        500.0,
-        435.0,
-        50.0,
-        0.0
+        3,
+        5,
+        0,
+        84,
+        0
       ],
       [
-        7.0,
-        500.0,
-        0.0,
-        50.0,
-        0.0
+        5,
+        2,
+        0,
+        5,
+        0
       ],
       [
-        8.0,
-        500.0,
-        0.0,
-        50.0,
-        0.0
+        6,
+        21,
+        0,
+        0,
+        0
       ],
       [
-        9.0,
-        500.0,
-        0.0,
-        50.0,
-        0.0
+        8,
+        2,
+        0,
+        84,
+        0
       ],
       [
-        10.0,
-        500.0,
-        0.0,
-        50.0,
-        0.0
+        9,
+        1,
+        0,
+        8,
+        0
       ],
       [
-        0.0,
-        1000.0,
-        190688.501999999,
-        50.0,
-        1.0
+        10,
+        1,
+        0,
+        7,
+        0
       ]
     ],
     "support_damage": 0,
     "support_win_unique_count": 0,
     "upgrade_turrets": 0,
     "weekly_task_update_day": 2034.0,
-    "win_matches": 7.0,
+    "win_matches": 0,
     "win_one_hp_count": 8,
     "win_several_times": [
       1.0,
-      1.0,
-      0.0,
-      1.0,
-      1.0,
       0.0,
       1.0,
       0.0,
       0.0,
-      1
+      1.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
     ]
   },
   "Turrets": {
@@ -330,7 +330,7 @@
         true,
         true
       ],
-      "activity": false,
+      "activity": true,
       "cards": 14.0,
       "have": true,
       "level": 8.0
@@ -340,8 +340,8 @@
         true,
         true
       ],
-      "activity": true,
-      "cards": 5.0,
+      "activity": false,
+      "cards": 6.0,
       "have": true,
       "level": 8.0
     },
@@ -351,7 +351,7 @@
         true
       ],
       "activity": false,
-      "cards": 16.0,
+      "cards": 20.0,
       "have": true,
       "level": 8.0
     },
@@ -361,7 +361,7 @@
         true
       ],
       "activity": false,
-      "cards": 16.0,
+      "cards": 17.0,
       "have": true,
       "level": 8.0
     },
@@ -371,7 +371,7 @@
         true
       ],
       "activity": false,
-      "cards": 13.0,
+      "cards": 14.0,
       "have": true,
       "level": 8.0
     },
@@ -381,7 +381,7 @@
         true
       ],
       "activity": false,
-      "cards": 14.0,
+      "cards": 16.0,
       "have": true,
       "level": 8.0
     },

@@ -3,16 +3,20 @@ extends Control
 @onready var tile = get_node("Panel/VBoxContainer/VBoxContainer")
 var index_buy
 
-func setup(list_card, img, img_open):
+func setup(list_card, img, img_open, flag=false):
 	get_node("Panel/VBoxContainer/HBoxContainer/TextureRect").texture = img
 	get_node("Panel/VBoxContainer/CardOf/Button/Label").text = tr("KEY_OPEN")
 	index_buy = 0
-	get_node("Panel/VBoxContainer/CardOf/Button").pressed.connect(buy_box_action_show_card_one.bind(list_card, img_open))
+	get_node("Panel/VBoxContainer/CardOf/Button").pressed.connect(buy_box_action_show_card_one.bind(list_card, img_open, flag))
 
-func buy_box_action_show_card_one(list_card, img_open):
+func buy_box_action_show_card_one(list_card, img_open, flag):
 	if len(list_card) <= index_buy:
-		get_tree().reload_current_scene()
-		self.queue_free()
+		if flag:
+			get_tree().paused = false
+			get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+		else:
+			get_tree().reload_current_scene()
+			self.queue_free()
 	else:
 		get_node("Panel/VBoxContainer/HBoxContainer/TextureRect").texture = img_open
 		tile.get_node("HBoxContainer").visible = true

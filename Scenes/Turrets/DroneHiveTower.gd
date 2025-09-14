@@ -10,7 +10,7 @@ var accumulated_tokens := 0
 var drone_damage_bonus := 1.0
 
 # Параметры башни
-var damage: float
+var damage: float = 0.0
 
 # Параметры дронов
 var drone_base_damage := 100.0
