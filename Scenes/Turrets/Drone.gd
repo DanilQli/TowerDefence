@@ -60,15 +60,19 @@ func find_new_target():
 			target = all_enemies.pick_random()
 
 func _on_attack_timer_timeout():
-	if is_instance_valid(target) and global_position.distance_to(target.global_position) < 100:
-		if target.has_method("on_hit"):
-			get_node("AnimationPlayer").play("Fire")
-			target.on_hit(damage, 0, GameConstants.TowerType.GUN, self)
-			if target.hp <= 0:
-				tokens_earned += 1
-				target = null
-	await get_tree().create_timer(home_tower.multiplier_rof_all * attack_cooldown).timeout
-	_on_attack_timer_timeout()
+	if home_tower:
+		if is_instance_valid(target) and global_position.distance_to(target.global_position) < 100:
+			if target.has_method("on_hit"):
+				get_node("AnimationPlayer").play("Fire")
+				target.on_hit(damage, 0, GameConstants.TowerType.GUN, home_tower)
+				home_tower.func_add_deal_damage(damage)
+				if target.hp <= 0:
+					tokens_earned += 1
+					target = null
+		await get_tree().create_timer(home_tower.multiplier_rof_all * attack_cooldown).timeout
+		_on_attack_timer_timeout()
+	else:
+		queue_free()
 
 func _return_to_base():
 	if is_returning: return

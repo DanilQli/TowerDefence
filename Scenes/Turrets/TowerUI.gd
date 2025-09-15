@@ -18,13 +18,13 @@ func setup(tower_base: TowerBase) -> void:
 ## Обновление меню башни
 func update_menu() -> void:
 	_update_info_menu()
-	
-	# Обновляем отображение уровня
-	tower.get_node("Menu/V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(tower.current_lvl + 1) + "/" + str(tower.max_lvl + 1)
-	
-	# Если достигнут максимальный уровень
-	if tower.current_lvl >= tower.max_lvl:
-		set_max_level_ui()
+	if menu:
+		# Обновляем отображение уровня
+		menu.get_node("V/NameAndLvl/Lvl").text = tr("KEY_LVL") + " " + str(tower.current_lvl + 1) + "/" + str(tower.max_lvl + 1)
+		
+		# Если достигнут максимальный уровень
+		if tower.current_lvl >= tower.max_lvl:
+			set_max_level_ui()
 
 ## Подключение сигналов UI элементов
 func _connect_signals() -> void:
@@ -43,17 +43,18 @@ func _on_menu_button_pressed() -> void:
 
 # информация о башне
 func _update_info_menu():
-	for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
-		if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
-			if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
-				menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+	if menu:
+		for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
+			if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
+				if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
+					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+				else:
+					menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
 			else:
-				menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
-		else:
-			if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
-				menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
-			else:
-				menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl])
+				if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
+					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+				else:
+					menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl])
 
 ## Скрытие кнопок меню других башен
 func _hide_other_menu_buttons() -> void:

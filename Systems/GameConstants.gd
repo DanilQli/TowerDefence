@@ -80,8 +80,11 @@ const POST_BATTLE_REWARDS = {
 	2: [6, 2, 0, 0],   # 2 звезды: 8 обычных, 2 редкие
 	3: [8, 3, 1, 0]   # 3 звезды: 10 обычных, 3 редкие, 1 эпическая
 }
+const SPEED_UP_GAME_SESSION: float = 8.0
+const SPEED_NORMAL_GAME_SESSION: float = 1.0
+const SPEED_0_GAME_SESSION: float = 0.0
 
-const LEVEL_OPEN_ABILITY = [7, 10]
+const LEVEL_OPEN_ABILITY = [700, 1000]
 const CHANCE_AGAIN_DAMAGE = 20
 const PriseUnblockCard = {
 	Rarity.COMMON: {

@@ -47,11 +47,14 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 	if not enemy_progress:
 		# Спавн боссов
 		await get_tree().create_timer(1).timeout
-		type = 13
+		type = randi_range(1, 13)
 		enemy = load("res://Scenes/EnemiesBoss/Enemy_boss_" + str(type) + ".tscn").instantiate()
 		enemy.names = type
 		enemy.id = type - 1
 		enemy.hp = GameConstants.DATA_ENEMY_BOSS[type - 1].hp
+		print(enemy.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave)))
+		print(DataManager.mastery_tower_sesssion)
+		print("""----------""")
 		enemy.current_speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed
 		enemy.speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed
 		enemy.duration_speed_mod = 0

@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://cvsero48jyy2w"]
+[gd_scene load_steps=11 format=3 uid="uid://cvsero48jyy2w"]
 
 [ext_resource type="Script" uid="uid://dp4wuft8g6e2w" path="res://Scenes/SupportScenes/turret_menu_shop.gd" id="1_ijjic"]
 [ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="1_me64n"]
@@ -14,6 +14,10 @@ corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_pu4ph"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_1m3tb"]
 
 [node name="TurretMenuShop" type="ColorRect"]
 anchors_preset = 15
@@ -160,6 +164,21 @@ text = "KEY_BUY_FOR"
 icon = ExtResource("6_pu4ph")
 autowrap_mode = 3
 expand_icon = true
+
+[node name="HBoxBut" type="HBoxContainer" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="ButCharacteristics" type="Button" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxBut"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_pu4ph")
+text = "KEY_CHARACTERISTICS"
+
+[node name="ButMastery" type="Button" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxBut"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/normal = SubResource("StyleBoxEmpty_1m3tb")
+text = "KEY_MASTERY"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Panel/MarginContainer/ScrollContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 70)

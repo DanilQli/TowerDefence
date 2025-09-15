@@ -10,6 +10,8 @@ var promotion_progress_level: Array = []
 var promotion_progress_level_data_end: Array = []
 var tasks_day_you_progress: Array = []
 
+var mastery_tower_sesssion: Array = []
+
 var promotion_stars: int
 var promotion_level: int
 var promotion_open_level: int
@@ -35,6 +37,8 @@ var data_wave = {
 }
 ## Вызывается при запуске. Загружает и парсит данные
 func _ready() -> void:
+	for i in range(len(GameConstants.DATA_TOWER)):
+		mastery_tower_sesssion.append(0)
 	TYPE_ITEMS = {0: [Callable(DataManager, "add_critical_damage"), "KEY_CRITICAL_DAMAGE", preload("res://Assets/Icons/critical_damage.png"), "res://Scenes/SupportScenes/panel_rewards_violet.tscn"],
 	1: [Callable(DataManager, "add_data_money"), "KEY_MONEY", preload("res://Assets/Button/money.png"), "res://Scenes/SupportScenes/panel_rewards_green.tscn"],
 	2: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_1.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_1_open.png")],

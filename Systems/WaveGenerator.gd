@@ -67,7 +67,7 @@ func _calculate_spawn_delay(remaining_time: float, min_delay: float) -> float:
 ## Метод генерации базового набора волн в DataManager.wave_data[0]
 func generate_default_waves(out_wave_data):
 	var result = []
-	for i in range(200):
+	for i in range(500):
 		result.append(generate_wave(i + 1))
 	out_wave_data.level_0 = result
 	return out_wave_data

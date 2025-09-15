@@ -156,6 +156,7 @@ func select_enemy() -> void:
 # --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 func func_add_deal_damage(damage):
 	TasksManager.deal_damage += damage
+	DataManager.mastery_tower_sesssion[id] += damage
 
 func set_opponent_tower(value: bool):
 	is_opponent = value

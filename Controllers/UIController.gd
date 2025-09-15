@@ -57,19 +57,19 @@ func _on_pause_play_pressed():
 		var paused = get_tree().paused
 		get_tree().paused = not paused
 		if paused:
-			GameSession.speed_game = 1.0
+			GameSession.speed_game = GameConstants.SPEED_NORMAL_GAME_SESSION
 		else:
-			GameSession.speed_game = 0.0
+			GameSession.speed_game = GameConstants.SPEED_0_GAME_SESSION
 
 func _on_speed_up_pressed():
 	if GameSession.current_wave == 0:
 		main_scene.wave_controller.start_next_wave()
 		return
 
-	if GameSession.speed_game == 4.0:
-		GameSession.speed_game = 1.0
+	if GameSession.speed_game == GameConstants.SPEED_UP_GAME_SESSION:
+		GameSession.speed_game = GameConstants.SPEED_NORMAL_GAME_SESSION
 	else:
-		GameSession.speed_game = 4.0
+		GameSession.speed_game = GameConstants.SPEED_UP_GAME_SESSION
 
 	Engine.set_time_scale(GameSession.speed_game)
 
