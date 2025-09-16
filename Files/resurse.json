@@ -293,7 +293,9 @@
       "activity": true,
       "cards": 0.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_11T1": {
       "ability": [
@@ -303,7 +305,9 @@
       "activity": true,
       "cards": 0.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_12T1": {
       "ability": [
@@ -313,7 +317,9 @@
       "activity": false,
       "cards": 0.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_1T1": {
       "ability": [
@@ -323,7 +329,9 @@
       "activity": false,
       "cards": 15.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 3
     },
     "Turret_2T1": {
       "ability": [
@@ -333,7 +341,9 @@
       "activity": true,
       "cards": 14.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_3T1": {
       "ability": [
@@ -343,7 +353,9 @@
       "activity": false,
       "cards": 6.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_4T1": {
       "ability": [
@@ -353,7 +365,9 @@
       "activity": true,
       "cards": 20.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_5T1": {
       "ability": [
@@ -363,7 +377,9 @@
       "activity": false,
       "cards": 17.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_6T1": {
       "ability": [
@@ -373,7 +389,9 @@
       "activity": false,
       "cards": 14.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_7T1": {
       "ability": [
@@ -383,7 +401,9 @@
       "activity": false,
       "cards": 16.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_8T1": {
       "ability": [
@@ -393,7 +413,9 @@
       "activity": false,
       "cards": 21.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     },
     "Turret_9T1": {
       "ability": [
@@ -403,7 +425,9 @@
       "activity": false,
       "cards": 7.0,
       "have": true,
-      "level": 9.0
+      "level": 9.0,
+      "mastery_xp": 0,
+      "mastery_lvl": 0
     }
   }
 }

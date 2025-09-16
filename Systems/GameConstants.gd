@@ -654,6 +654,10 @@ const NUMBER_ENEMY: int = 8
 const OBSTACLE_SLOW: float = 0.7
 ## Количество заданий в каждом этапе карьерных заданий
 const NUMBER_TASKS_IN_CAREER: int  = 2
+## Сколкьо нужно опыта для уровня мастерства карточки
+const CARDS_MASTERY_NEED_XP_LVL = [1000, 2500, 5000, 10000, 20000, 35000, 50000, 75000, 100000, 150000]
+## Максималный уровень мастерства карточки
+const CARDS_MASTERY_MAX_LVL = 9
 
 const DATA_ENEMY_BOSS = {
 	0: {

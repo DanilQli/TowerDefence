@@ -115,6 +115,18 @@ KEY_SEARCH_PVP_NO,Не удалось найти соперника. Попро�
 KEY_DRONE_DAMAGE,Урон дрона,Drone Damage
 KEY_RELOAD_DRONE,Скорость атаки дрона,Drone's attack speed
 
+KEY_MASTERY_LVL_1,+1% к базовому урону,+1% to base damage
+KEY_MASTERY_LVL_2,+1% к скорости атаки,+1% attack speed
+KEY_MASTERY_LVL_3,-1% от стоимости постройки,-1% of the cost of construction
+KEY_MASTERY_LVL_4,+2% к шансу критического урона,+2% chance of critical damage
+KEY_MASTERY_LVL_5,Открывает уникальный скин,Opens a unique skin
+KEY_MASTERY_LVL_6,+2% к базовому урону,+2% to base damage
+KEY_MASTERY_LVL_7,-2% от стоимости улучшений,-2% of the cost of improvements
+KEY_MASTERY_LVL_8,+2% к скорости атаки,+2% attack speed
+KEY_MASTERY_LVL_9,Башни этого типа получают +5% урона по боссам,Towers of this type take +5% damage on bosses.
+KEY_MASTERY_LVL_10,Открывает уникальный скин,Opens a unique skin
+KEY_MASTERY_DESC,"Накопление опыта: Каждая башня на поле боя накапливает XP за определённые действия. \nНанесённый урон: +1 XP за каждые 1 000 000 единиц урона.\nУбийство врага: +1 XP за каждого 10 000 убитого врага. \nЗаработанные деньги (для MoneyTower): +1 XP за каждые 1 000 монет. \nЗамедленные/остановленные враги (для башен контроля): +1 XP за каждого 100 000 врага под эффектом.","Experience accumulation: Each tower on the battlefield accumulates XP for certain actions. Damage Done: +1 XP for every 1,000,000 damage units.Enemy Kill: +1 XP for every 10,000 enemy killed. Earned money (for MoneyTower): +1 XP for every 1,000 coins. Slowed/Stopped enemies (for control towers): +1 XP for every 100,000 enemies under effect."
+
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player
 KEY_PROMOTION_DESC_2,Потратьте монет более:,Spend more coins:

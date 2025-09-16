@@ -9,6 +9,8 @@ var level: int
 @onready var CardOfCardOf = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/CardOf
 @onready var CardOfText = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/CardOf/CardOf/Label
 @onready var CardOfDesc = $Panel/MarginContainer/ScrollContainer/VBoxContainer/RichTextLabel
+@onready var MasteryOf = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Master/ProgressBar
+@onready var MasteryTextOf = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Master/ProgressBar/Label
 @onready var PanelParametr = $Panel/MarginContainer/ScrollContainer/VBoxContainer/Parametr/ScrollContainer/HBoxContainer
 @onready var openLvlBut = $Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Button
 @onready var abilityText = [$Panel/MarginContainer/ScrollContainer/VBoxContainer/Control1/RichTextLabel, $Panel/MarginContainer/ScrollContainer/VBoxContainer/Control2/RichTextLabel]
@@ -23,6 +25,14 @@ func setup(data: Dictionary, number: int) -> void:
 	turretMaxName.text = tr("KEY_NAME_TURRET_" + str(number + 1))
 	level = int(data["level"])
 	CardOfDesc.text = tr("KEY_TURRET" + str(number + 1) + "_DESC")
+	if GameConstants.CARDS_MASTERY_MAX_LVL == int(data["mastery_lvl"]):
+		MasteryOf.value = 0
+		MasteryOf.max_value = 0
+		MasteryTextOf.text = tr("MAX_LVL")
+	else:
+		MasteryOf.value = int(data["mastery_xp"])
+		MasteryOf.max_value = GameConstants.CARDS_MASTERY_NEED_XP_LVL[int(data["mastery_lvl"])]
+		MasteryTextOf.text = str(int(data["mastery_lvl"])) + " LVL " + str(int(data["mastery_xp"])) + "/" + str(int(MasteryOf.max_value))
 	if not data["have"]:
 		turretMaxLvl.text = tr("KEY_NOT_FOUND")
 		prise = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[number].type].open_card
@@ -64,7 +74,13 @@ func setup(data: Dictionary, number: int) -> void:
 			abilityBut[i].pressed.connect(open_ability.bind(i, number))
 		elif data["ability"][i]:
 			abilityLockAll[i].queue_free()
+	get_node("Panel/MarginContainer/ScrollContainer/VBoxContainer/HBoxContainer/VBoxContainer/Master/ColorRect/Button").pressed.connect(info_mastery.bind(data))
 
+func info_mastery(data):
+	var o_info_mastery = load("res://Scenes/SupportScenes/info_mastery.tscn").instantiate()
+	o_info_mastery.setup(data)
+	get_tree().get_root().add_child(o_info_mastery)
+	
 func buy(prise, number):
 	DataManager.add_data_money(-prise)
 	DataManager.add_critical_damage(GameConstants.ADD_CRITICAL_DAMAGE_BUY_CARD)
