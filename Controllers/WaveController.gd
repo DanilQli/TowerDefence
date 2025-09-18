@@ -53,7 +53,8 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 		enemy.id = type - 1
 		enemy.hp = GameConstants.DATA_ENEMY_BOSS[type - 1].hp
 		print(enemy.hp * GameSession.current_wave * (DataManager.strengthening_enemies + (DataManager.strengthening_enemies_dop * GameSession.current_wave)))
-		print(DataManager.mastery_tower_sesssion)
+		print(DataManager.mastery_damage_tower_session)
+		print(DataManager.mastery_deal_tower_session)
 		print("""----------""")
 		enemy.current_speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed
 		enemy.speed = GameConstants.DATA_ENEMY_BOSS[type - 1].speed

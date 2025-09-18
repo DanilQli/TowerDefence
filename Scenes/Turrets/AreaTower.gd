@@ -6,14 +6,20 @@ var target: int = 1
 var ability_0: int = 0
 var dam
 var chance_dop: int = 0
-	
+
+var mastery_damage: float = 1.0
+var mastery_speed: float = 1.0
+var mastery_chanse_crit: float = 1.0
+var mastery_cost_upgrade: float = 1.0
+var mastery_damage_boss: float = 1.0
+
 func fire() -> void:
 	super.fire()
 	if not block_damage:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(multiplier_rof_all * rof).timeout
+		await get_tree().create_timer(multiplier_rof_all * rof * mastery_speed).timeout
 		is_ready = true
 
 func _apply_damage() -> void:
@@ -31,12 +37,16 @@ func _apply_damage() -> void:
 			break
 
 func critical_damage():
-	var damage_all = (damage * multiplier_damage_all) + ability_0 * GameConstants.TURRET_1_ABILITY_1
-	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE + chance_dop:
+	var damage_all = (damage * multiplier_damage_all * mastery_damage) + ability_0 * GameConstants.TURRET_1_ABILITY_1
+	if force_next_attack_crit or randi_range(0, 100) <= (GameConstants.CHANCE_CRITICAL_DAMAGE + chance_dop) * mastery_chanse_crit:
 		emit_signal("tower_crit", self)
 		force_next_attack_crit = false
+		if enemy is Enemy_boss:
+			return (damage_all * mastery_damage_boss) + (DataManager.critical_damage * (damage_all * mastery_damage_boss)) / 100
 		return damage_all + (DataManager.critical_damage * damage_all) / 100
 	else:
+		if enemy is Enemy_boss:
+			return damage_all * mastery_damage_boss
 		return damage_all
 		
 func _initialize() -> void:

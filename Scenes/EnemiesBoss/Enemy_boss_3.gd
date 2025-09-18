@@ -8,10 +8,10 @@ func _ready() -> void:
 	super._ready()
 	generate_water_over_road(GameManager.main_scene, GameManager.LIST_COORDS_ROAD, GameManager.water_scene, GameManager.water_scene_t, GameManager.water_scene_p)
 
-func on_destroy() -> void:
+func on_destroy(tower_id=-1) -> void:
 	remove_with_delay(water_nodes)
 	ResourceManager.speed_modifer = 1
-	super.on_destroy()
+	super.on_destroy(tower_id)
 
 func generate_water_over_road(parent: Node, coords: Array, water_scene: PackedScene, water_scene_t: PackedScene, water_scene_p: PackedScene):
 	var cell_set = coords_to_set(coords) # Для быстрого поиска

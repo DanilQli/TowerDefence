@@ -10,7 +10,10 @@ var promotion_progress_level: Array = []
 var promotion_progress_level_data_end: Array = []
 var tasks_day_you_progress: Array = []
 
-var mastery_tower_sesssion: Array = []
+var mastery_damage_tower_session: Array = []
+var mastery_deal_tower_session: Array = []
+var mastery_moneytower_session: float = 0
+var mastery_slowtower_session: float = 0
 
 var promotion_stars: int
 var promotion_level: int
@@ -38,7 +41,8 @@ var data_wave = {
 ## Вызывается при запуске. Загружает и парсит данные
 func _ready() -> void:
 	for i in range(len(GameConstants.DATA_TOWER)):
-		mastery_tower_sesssion.append(0)
+		mastery_damage_tower_session.append(0)
+		mastery_deal_tower_session.append(0)
 	TYPE_ITEMS = {0: [Callable(DataManager, "add_critical_damage"), "KEY_CRITICAL_DAMAGE", preload("res://Assets/Icons/critical_damage.png"), "res://Scenes/SupportScenes/panel_rewards_violet.tscn"],
 	1: [Callable(DataManager, "add_data_money"), "KEY_MONEY", preload("res://Assets/Button/money.png"), "res://Scenes/SupportScenes/panel_rewards_green.tscn"],
 	2: [Callable(DataManager, "add_box"), "KEY_BOX", preload("res://Assets/Icons/box_1.png"), "res://Scenes/SupportScenes/panel_rewards_orange.tscn", preload("res://Assets/Icons/box_1_open.png")],
@@ -79,6 +83,7 @@ func parse_game_data() -> void:
 	_parse_promotion()
 	_parse_tasks()
 	_parse_path_of_glory()
+	_parse_mastery()
 	data_wave = WaveGenerator.generate_default_waves(data_wave)
 
 ## Извлекает значения ресурсов
@@ -114,6 +119,12 @@ func _parse_tasks() -> void:
 	TasksManager.get_epic_hero_cards = data.get("Tasks", {}).get("get_epic_hero_cards", 0)
 	TasksManager.win_matches = data.get("Tasks", {}).get("win_matches", 0)
 
+func _parse_mastery():
+	mastery_damage_tower_session = data.get("Mastery", {}).get("mastery_damage_tower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+	mastery_deal_tower_session = data.get("Mastery", {}).get("mastery_deal_tower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+	mastery_moneytower_session = data.get("Mastery", {}).get("mastery_moneytower_session", 0)
+	mastery_slowtower_session = data.get("Mastery", {}).get("mastery_slowtower_session", 0)
+	
 ## Добавить монеты
 func add_data_money(value: int) -> void:
 	if value < 0:
@@ -228,3 +239,9 @@ func _update_data_before_save() -> void:
 	if not data.has("LevelOption"):
 		data["LevelOption"] = {}
 	data["LevelOption"]["level"] = level_option
+	
+func write_mastery():
+	data["Mastery"]["mastery_damage_tower_session"] = mastery_damage_tower_session
+	data["Mastery"]["mastery_deal_tower_session"] = mastery_deal_tower_session
+	data["Mastery"]["mastery_moneytower_session"] = mastery_moneytower_session
+	data["Mastery"]["mastery_slowtower_session"] = mastery_slowtower_session

@@ -155,7 +155,7 @@ func on_hit(damage, type_explosion, type_attack, towers, parametrs=false):
 			GameSession.add_game_score(int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) / 2 * (GameSession.current_wave / 3.0)))
 			GameSession.add_money(int(GameConstants.DATA_ENEMY_BOSS[id].money_death) + int(float(GameConstants.DATA_ENEMY_BOSS[id].money_death) * GameSession.current_wave * DataManager.strengthening_money))
 			enemy_destroy_task()
-			on_destroy()
+			on_destroy(towers.id)
 	elif type_attack == GameConstants.TowerType.SLOW:
 		self.speed *= (100 - damage) / 100.0
 		if self.speed < 50:
@@ -199,7 +199,7 @@ func impact(type_explosion, type_attack):
 		new_impact.position = impact_location
 		impact_area.add_child(new_impact)
 
-func on_destroy():
+func on_destroy(tower_id=-1):
 	if len(ResourceManager.list_turret[1]) > 0:
 		if ResourceManager.list_turret[1][0].ability[0]:
 			var ind = randi_range(0, len(ResourceManager.list_turret[1]) - 1)
@@ -208,6 +208,8 @@ func on_destroy():
 			ResourceManager.list_turret[1][ind].get_node("Panel/Label").text = str(ResourceManager.list_turret[1][ind].ability_0)
 	if len(ResourceManager.list_turret[5]) > 0 and ResourceManager.list_turret[5][0].ability[0]:
 		GameSession.add_money(len(ResourceManager.list_turret[5]))
+	if tower_id >= 0:
+		DataManager.mastery_deal_tower_session[tower_id] += 1
 	ResourceManager.list_active_enemy.erase(self)
 	queue_free()
 

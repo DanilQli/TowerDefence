@@ -1,4 +1,4 @@
-# TowerBase.gd — полная, исправленная и готовая версия
+# TowerBase.gd
 extends Node2D
 class_name TowerBase
 
@@ -156,7 +156,7 @@ func select_enemy() -> void:
 # --- ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ ---
 func func_add_deal_damage(damage):
 	TasksManager.deal_damage += damage
-	DataManager.mastery_tower_sesssion[id] += damage
+	DataManager.mastery_damage_tower_session[id] += damage
 
 func set_opponent_tower(value: bool):
 	is_opponent = value

@@ -1,3 +1,4 @@
+## GameEndController
 extends Node
 
 var main_scene
@@ -109,6 +110,7 @@ func tasks():
 		TasksManager.win_matches += 1
 		TasksManager.win_several_times.append(1)
 	TasksManager.count_end_game += 1
+	DataManager.write_mastery()
 	TasksManager.check_tasks_in_game_session()
 	
 func restart():

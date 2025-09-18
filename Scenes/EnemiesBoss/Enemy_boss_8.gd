@@ -17,8 +17,8 @@ func _on_range_area_entered(area: Node) -> void:
 		parent.multiplier_rof_enemy = 0.2
 		list_tower_enemy_8.append(parent)
 
-func on_destroy():
+func on_destroy(tower_id=-1):
 	for i in range(len(list_tower_enemy_8)):
 		list_tower_enemy_8[i].get_node('NinePatchRect').visible = false
 		list_tower_enemy_8[i].multiplier_rof_enemy = 0.0
-	super.on_destroy()
+	super.on_destroy(tower_id)

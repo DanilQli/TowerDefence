@@ -13,6 +13,7 @@ func fire() -> void:
 		fire_missile()
 		for e in enemy_array:
 			if is_instance_valid(e):
+				DataManager.mastery_slowtower_session += 1
 				e.on_hit(intensivity, 0, GameConstants.TowerType.SLOW, self, duration * 60)
 		if ability[0]:
 			for e in enemy_array:
