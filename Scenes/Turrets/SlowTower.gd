@@ -4,6 +4,12 @@ class_name SlowTower
 var intensivity: float
 var duration: float
 
+var mastery_damage: float = 1.0
+var mastery_speed: float = 1.0
+var mastery_chanse_crit: float = 1.0
+var mastery_cost_upgrade: float = 1.0
+var mastery_damage_boss: float = 1.0
+
 func _ready() -> void:
 	super._ready()
 	
@@ -22,7 +28,7 @@ func fire() -> void:
 						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_1, 0, GameConstants.TowerType.AREA, self)
 					else:
 						e.on_hit(e.hp / GameConstants.TURRET_4_ABILITY_0, 0, GameConstants.TowerType.AREA, self)
-		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof * mastery_speed)).timeout
 		is_ready = true
 
 func _initialize() -> void:

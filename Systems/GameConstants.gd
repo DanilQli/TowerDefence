@@ -657,7 +657,7 @@ const NUMBER_TASKS_IN_CAREER: int  = 2
 ## Сколкьо нужно опыта для уровня мастерства карточки
 const CARDS_MASTERY_NEED_XP_LVL = [1000, 2500, 5000, 10000, 20000, 35000, 50000, 75000, 100000, 150000]
 ## Модификатор в % сколько добавлять к параметрам и каким 
-const CARDS_MASTERY_MODIFICATOR_LVL = [[0.01, "damage"], [0.01, "speed"], [0.01], [0.01, "chanse_crit"], [], [0.02, "damage"], [0.02, "upgrade_cost"], [0.02, "speed"], [0.05, "damage_boss"], []]
+const CARDS_MASTERY_MODIFICATOR_LVL = [[0.01, "mastery_damage"], [0.01, "mastery_speed"], [0.01], [0.01, "mastery_chanse_crit"], [], [0.02, "mastery_damage"], [0.02, "mastery_cost_upgrade"], [0.02, "mastery_speed"], [0.05, "mastery_damage_boss"], []]
 ## Максималный уровень мастерства карточки
 const CARDS_MASTERY_MAX_LVL = 9
 

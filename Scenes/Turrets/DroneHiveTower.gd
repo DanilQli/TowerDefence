@@ -19,6 +19,12 @@ var drone_lifetime := 15.0
 var spawn_interval := 20.0
 var attack_interval: = 1.00
 
+var mastery_damage: float = 1.0
+var mastery_speed: float = 1.0
+var mastery_chanse_crit: float = 1.0
+var mastery_cost_upgrade: float = 1.0
+var mastery_damage_boss: float = 1.0
+
 func _initialize():
 	super._initialize()
 	if ability[1]:
@@ -70,7 +76,7 @@ func fire():
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer(multiplier_rof_all * rof).timeout
+		await get_tree().create_timer(multiplier_rof_all * rof * mastery_speed).timeout
 		is_ready = true
 	
 func _apply_damage():
@@ -82,9 +88,13 @@ func _apply_damage():
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE * mastery_chanse_crit:
 		emit_signal("tower_crit", self)
 		force_next_attack_crit = false
-		return (damage * multiplier_damage_all) + (DataManager.critical_damage * (damage * multiplier_damage_all)) / 100
+		if enemy is Enemy_boss:
+			return (damage * multiplier_damage_all * mastery_damage * mastery_damage_boss) + (DataManager.critical_damage * (damage * multiplier_damage_all * mastery_damage * mastery_damage_boss)) / 100
+		return (damage * multiplier_damage_all * mastery_damage) + (DataManager.critical_damage * (damage * multiplier_damage_all * mastery_damage)) / 100
 	else:
-		return (damage * multiplier_damage_all)
+		if enemy is Enemy_boss:
+			return damage * multiplier_damage_all * mastery_damage * mastery_damage_boss
+		return damage * multiplier_damage_all * mastery_damage

@@ -30,5 +30,5 @@ static func create_turret(tower_id: String, position: Vector2) -> TowerBase:
 			turret[data.data[i]] = data["parametr_" + str(i + 1)][0]
 	for i in range(len(GameConstants.CARDS_MASTERY_MODIFICATOR_LVL)):
 		if len(GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[i]) > 1:
-			turret[GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[i][1]] = GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[i][0]
+			turret[GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[i][1]] += GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[i][0]
 	return turret

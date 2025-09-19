@@ -6,13 +6,19 @@ var damage_reduction: int = 0
 var current_damage_up
 var critical_damage_all
 
+var mastery_damage: float = 1.0
+var mastery_speed: float = 1.0
+var mastery_chanse_crit: float = 1.0
+var mastery_cost_upgrade: float = 1.0
+var mastery_damage_boss: float = 1.0
+
 func fire() -> void:
 	super.fire()
 	if not block_damage:
 		is_ready = false
 		get_node("AnimationPlayer").play("Fire")
 		_apply_damage()
-		await get_tree().create_timer((multiplier_rof_all * rof)).timeout
+		await get_tree().create_timer((multiplier_rof_all * rof * mastery_speed)).timeout
 		is_ready = true
 	
 func _apply_damage() -> void:
@@ -33,12 +39,16 @@ func _apply_damage() -> void:
 		emit_signal("damage_inflicted_changed", inflicted)
 
 func critical_damage():
-	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE:
+	if force_next_attack_crit or randi_range(0, 100) <= GameConstants.CHANCE_CRITICAL_DAMAGE * mastery_chanse_crit:
 		emit_signal("tower_crit", self)
 		force_next_attack_crit = false
-		return (damage * multiplier_damage_all) + (current_damage_up * (damage * multiplier_damage_all)) / 100 + randi_range(0, damage_reduction)
+		if enemy is Enemy_boss:
+			return (damage * multiplier_damage_all * mastery_damage * mastery_damage_boss) + (current_damage_up * (damage * multiplier_damage_all * mastery_damage * mastery_damage_boss)) / 100 + randi_range(0, damage_reduction)
+		return (damage * multiplier_damage_all * mastery_damage) + (current_damage_up * (damage * multiplier_damage_all * mastery_damage)) / 100 + randi_range(0, damage_reduction)
 	else:
-		return (damage * multiplier_damage_all) + randi_range(0, damage_reduction)
+		if enemy is Enemy_boss:
+			return (damage * multiplier_damage_all * mastery_damage * mastery_damage_boss) + randi_range(0, damage_reduction)
+		return (damage * multiplier_damage_all * mastery_damage) + randi_range(0, damage_reduction)
 		
 func _initialize() -> void:
 	super._initialize()

@@ -5,7 +5,7 @@ var damage: float = 0.0
 var target: int = 1
 var ability_0: int = 0
 var dam
-var chance_dop: int = 0
+var chance_dop: float = 0
 
 var mastery_damage: float = 1.0
 var mastery_speed: float = 1.0
@@ -24,7 +24,7 @@ func fire() -> void:
 
 func _apply_damage() -> void:
 	var alredy = 0
-	chance_dop = int(GameConstants.CHANCE_CRITICAL_DAMAGE * (100.0 / len(ResourceManager.list_turret[1]) * 5))
+	chance_dop = (len(ResourceManager.list_turret[1]) * 5.0) / 100.0
 	for e in enemy_array:
 		if is_instance_valid(e):
 			dam = critical_damage()

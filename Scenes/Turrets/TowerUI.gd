@@ -47,7 +47,7 @@ func _update_info_menu():
 		for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
 			if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
 				if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
-					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec((GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl]) * tower.multiplier_damage_all, 2))
 				else:
 					menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
 			else:
