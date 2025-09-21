@@ -31,12 +31,16 @@ func can_upgrade() -> bool:
 	if tower.current_lvl >= tower.max_lvl:
 		tower.ui_system.set_max_level_ui()
 		return false
-		
-	return GameSession.current_money_in_game_session >= GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
+	var upd_cost = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
+	if DataManager.data["Turrets"][tower.turret_id].mastery_lvl >= 6:
+		upd_cost = MathUtils.round_to_dec(upd_cost * tower.mastery_cost_upgrade, 1)
+	return GameSession.current_money_in_game_session >= upd_cost
 
 ## Выполнение улучшения башни
 func perform_upgrade() -> bool:
 	var upgrade_cost = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
+	if DataManager.data["Turrets"][tower.turret_id].mastery_lvl >= 6:
+		upgrade_cost = MathUtils.round_to_dec(upgrade_cost * tower.mastery_cost_upgrade, 1)
 	if GameSession.current_money_in_game_session - upgrade_cost > 0:
 		GameSession.spend_money(upgrade_cost)
 		tower.current_lvl += 1

@@ -37,7 +37,7 @@ func initialize(scene, flag=true):
 		main_scene.get_node(icon_path).texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(tower_index) + ".png")
 
 		var button = main_scene.get_node(button_path)
-		button.pressed.connect(Callable(main_scene.build_controller, "initiate_build_mode").bind(turret_name))
+		button.pressed.connect(Callable(main_scene.build_controller, "initiate_build_mode").bind(turret_name, tower_index))
 		button.mouse_exited.connect(Callable(self, "title_hide"))
 		main_scene.get_node(button_path).mouse_entered.connect(
 			title_show.bind(str(index), str(tower_index))
@@ -80,11 +80,14 @@ func _on_money_changed():
 		var index = i + 1
 		var turret_id = "Turret_" + str(list_activity_turret[i]) + "T1"
 
+		var cost = GameConstants.DATA_TOWER[list_activity_turret[i] - 1].cost_in_session
+		if DataManager.data["Turrets"][DataManager.keys[list_activity_turret[i] - 1]].mastery_lvl >= 2:
+			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		var cost_label = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color/Cost")
-		cost_label.text = str(GameConstants.DATA_TOWER[list_activity_turret[i] - 1].cost_in_session)
+		cost_label.text = str(cost)
 
 		var color_rect = main_scene.get_node("UI/HUD/BuldBar/Tower_" + str(index) + "/Color")
-		if GameSession.current_money_in_game_session < GameConstants.DATA_TOWER[list_activity_turret[i] - 1].cost_in_session:
+		if GameSession.current_money_in_game_session < cost:
 			color_rect.color = Color("ff0000")
 		else:
 			color_rect.color = Color("008000")

@@ -24,7 +24,7 @@ func _ready():
 func _on_timer_timeout():
 	if not block_damage:
 		var profit = income_end * GameSession.speed_game
-		DataManager.mastery_moneytower_session += profit
+		DataManager.mastery_moneytower_session[id] += profit
 		GameSession.add_money(profit)
 		
 func fire() -> void:

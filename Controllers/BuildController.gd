@@ -10,7 +10,7 @@ var build_tile
 func initialize(scene):
 	main_scene = scene
 
-func initiate_build_mode(tower_type: String):
+func initiate_build_mode(tower_type: String, tower_index: int):
 	while UiManager.list_open_menu_turrets.size() > 0:
 		var menu = UiManager.list_open_menu_turrets.pop_at(0)
 		menu.queue_free()
@@ -20,6 +20,8 @@ func initiate_build_mode(tower_type: String):
 
 	var build_name = tower_type + "T1"
 	var cost = GameConstants.DATA_TOWER[int(tower_type.split("_")[1]) - 1].cost_in_session
+	if DataManager.data["Turrets"][DataManager.keys[tower_index - 1]].mastery_lvl >= 2:
+		cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 	if GameSession.current_money_in_game_session >= cost:
 		# 4. Установка режима постройки
@@ -100,9 +102,11 @@ func verify_and_build():
 		turret.tree_exited.connect(turret._on_turret_tree_exited.bind(main_scene.map_node.get_node("TowerExlusion"), build_tile))
 		turret.ui_system.update_menu()
 		turret.ui_system.update_menu_upgrade()
-		GameSession.spend_money(GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session)
+		var cost = GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session
+		if DataManager.data["Turrets"][DataManager.keys[int(build_type.left(build_type.length() - 2).split("_")[1])  - 1]].mastery_lvl >= 2:
+			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
+		GameSession.spend_money(cost)
 		main_scene.ui_controller._on_money_changed()
-		
 
 func update_tower_preview():
 	var mouse_position = main_scene.get_global_mouse_position()

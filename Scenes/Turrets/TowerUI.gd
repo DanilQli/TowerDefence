@@ -47,12 +47,12 @@ func _update_info_menu():
 		for i in range(len(GameConstants.DATA_TOWER[tower.id].text)):
 			if GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)] is Dictionary:
 				if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
-					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec((GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl]) * tower.multiplier_damage_all, 2))
+					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec((GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl]) * tower.multiplier_damage_all * tower.mastery_damage, 2))
 				else:
 					menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][int(DataManager.tower_data[tower.type]["level"])][tower.current_lvl])
 			else:
 				if GameConstants.DATA_TOWER[tower.id]["text"][i] == "KEY_DAMAGE":
-					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl] * tower.multiplier_damage_enemy, 2))
+					menu.list_node[i].get_node("HValue/Value").text = str(MathUtils.round_to_dec((GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl]) * tower.multiplier_damage_all * tower.mastery_damage, 2))
 				else:
 					menu.list_node[i].get_node("HValue/Value").text = str(GameConstants.DATA_TOWER[tower.id]["parametr_" + str(i + 1)][tower.current_lvl])
 
@@ -63,7 +63,10 @@ func _hide_other_menu_buttons() -> void:
 
 ## Проверка возможности улучшения башни
 func _check_upgrade_possibility() -> void:
-	if GameSession.current_money_in_game_session >= GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]:
+	var upgrade_cost = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
+	if DataManager.data["Turrets"][tower.turret_id].mastery_lvl >= 6:
+		upgrade_cost = MathUtils.round_to_dec(upgrade_cost * tower.mastery_cost_upgrade, 1)
+	if GameSession.current_money_in_game_session >= upgrade_cost:
 		tower.get_node("Menu/V/HButton/Up").disabled = false
 
 ## Обновление отображения нанесенного урона
@@ -108,8 +111,10 @@ func update_menu_upgrade() -> void:
 		return
 		
 	_update_combat_menu_upgrade()
-	
-	tower.get_node("Menu/V/HButton/Up/LabelValue").text = str(GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl])
+	var upgrade_cost = GameConstants.PriseUnblockCard[GameConstants.DATA_TOWER[tower.id].type].upgrade_for_session[tower.current_lvl]
+	if DataManager.data["Turrets"][tower.turret_id].mastery_lvl >= 6:
+		upgrade_cost = MathUtils.round_to_dec(upgrade_cost * tower.mastery_cost_upgrade, 1)
+	tower.get_node("Menu/V/HButton/Up/LabelValue").text = str(upgrade_cost)
 
 ## Очистка текстов улучшений при максимальном уровне
 func _clear_upgrade_texts() -> void:

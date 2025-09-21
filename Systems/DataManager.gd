@@ -9,11 +9,12 @@ var promotion_progress: Array = []
 var promotion_progress_level: Array = []
 var promotion_progress_level_data_end: Array = []
 var tasks_day_you_progress: Array = []
+var keys
 
 var mastery_damage_tower_session: Array = []
 var mastery_deal_tower_session: Array = []
-var mastery_moneytower_session: float = 0
-var mastery_slowtower_session: float = 0
+var mastery_moneytower_session: Array = []
+var mastery_slowtower_session: Array = []
 
 var promotion_stars: int
 var promotion_level: int
@@ -122,8 +123,8 @@ func _parse_tasks() -> void:
 func _parse_mastery():
 	mastery_damage_tower_session = data.get("Mastery", {}).get("mastery_damage_tower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 	mastery_deal_tower_session = data.get("Mastery", {}).get("mastery_deal_tower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
-	mastery_moneytower_session = data.get("Mastery", {}).get("mastery_moneytower_session", 0)
-	mastery_slowtower_session = data.get("Mastery", {}).get("mastery_slowtower_session", 0)
+	mastery_moneytower_session = data.get("Mastery", {}).get("mastery_moneytower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+	mastery_slowtower_session = data.get("Mastery", {}).get("mastery_slowtower_session", [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
 	
 ## Добавить монеты
 func add_data_money(value: int) -> void:
@@ -152,10 +153,23 @@ func add_box(box_card):
 	for i in range(len(box_card)):
 		TowerCards.add_cards(box_card[i][0], box_card[i][1])
 	write_file()
+
+func get_sorted_turret_keys(turrets: Dictionary):
+	keys = turrets.keys()
+	keys.sort_custom(Callable(self, "_compare_turret_keys"))
 	
+func _compare_turret_keys(a: String, b: String) -> bool:
+	# Извлекаем числа из строк, например, "Turret_10T1" -> 10
+	var num_a = int(a.get_slice("_", 1).get_slice("T", 0))
+	var num_b = int(b.get_slice("_", 1).get_slice("T", 0))
+	
+	# Возвращаем true, если 'a' должно идти раньше 'b'
+	return num_a < num_b
+		
 ## Загружает данные всех башен в словарь
 func _parse_towers() -> void:
 	var turrets = data.get("Turrets", {})
+	get_sorted_turret_keys(turrets)
 	var towers_data: Dictionary = {}
 	for name in turrets.keys():
 		towers_data[name] = turrets[name]
@@ -241,6 +255,22 @@ func _update_data_before_save() -> void:
 	data["LevelOption"]["level"] = level_option
 	
 func write_mastery():
+	var xp: int
+	var lvl: int
+	for i in range(len(mastery_damage_tower_session)):
+		xp = 0
+		xp += int(mastery_damage_tower_session[i] / 1000000)
+		xp += int(mastery_deal_tower_session[i] / 1000)
+		xp += int(mastery_moneytower_session[i] / 100)
+		xp += int(mastery_slowtower_session[i] / 100000)
+		data["Turrets"][tower_data.keys()[i]]["mastery_xp"] = xp
+		lvl = 0
+		for k in range(GameConstants.CARDS_MASTERY_NEED_XP_LVL.size()):
+			if xp >= GameConstants.CARDS_MASTERY_NEED_XP_LVL[k]:
+				lvl = k
+			else:
+				break
+		data["Turrets"][tower_data.keys()[i]]["mastery_lvl"] = int(lvl)
 	data["Mastery"]["mastery_damage_tower_session"] = mastery_damage_tower_session
 	data["Mastery"]["mastery_deal_tower_session"] = mastery_deal_tower_session
 	data["Mastery"]["mastery_moneytower_session"] = mastery_moneytower_session

@@ -2,12 +2,14 @@ extends Control
 
 func setup(data: Dictionary) -> void:
 	if GameConstants.CARDS_MASTERY_MAX_LVL == int(data["mastery_lvl"]):
-		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label2").text = "0"
-		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label3").text = "0"
+		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label2").text = ""
+		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label3").text = ""
 		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label2").text = tr("MAX_LVL")
 	else:
 		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label2").text = str(int(data["mastery_xp"]))
 		get_node("Panel/VBoxContainer/Shop/HBoxContainer/Label4").text = str(GameConstants.CARDS_MASTERY_NEED_XP_LVL[int(data["mastery_lvl"])])
+		get_node("Panel/VBoxContainer/Shop/TextureProgressBar").value = int(data["mastery_xp"])
+		get_node("Panel/VBoxContainer/Shop/TextureProgressBar").max_value = int(GameConstants.CARDS_MASTERY_NEED_XP_LVL[int(data["mastery_lvl"])])
 	var panel
 	for i in range(len(GameConstants.CARDS_MASTERY_NEED_XP_LVL)):
 		if int(data["mastery_lvl"]) > i:

@@ -13,6 +13,7 @@ var type: String
 var id: int
 var type_attack: int
 var type_explosion: int
+var turret_id: String
 
 var enemy_array: Array[Node] = []
 var enemy: Node = null
