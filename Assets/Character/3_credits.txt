@@ -1,0 +1,81 @@
+* Shadow (shadow)
+
+  Textures
+
+  Author(s) : Dr. Jamgo
+  License(s): CC0
+  Url(s)    : https://opengameart.org/content/shadow-for-lpc-sprite
+
+  Fixed colors
+
+  Author(s) : Dr. Jamgo
+  License(s): CC0
+  Url(s)    : https://opengameart.org/content/shadow-for-lpc-sprite
+
+* Sheep (body)
+
+  Textures
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+* Pants (pants)
+
+  Textures
+
+  Author(s) : Nila122
+              Johannes Sjölund (wulax)
+              Stephen Challener (Redshrike)
+  License(s): CC-BY-SA 3.0
+              GPL 2.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/more-lpc-clothes-and-hair
+
+  Primary colors
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              Joe White
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-pregnancy-bases-maternity-wear
+
+* Sheep (head)
+
+  Textures
+
+  Author(s) : bluecarrot16
+              Daniel Eddeland (daneeklu)
+  License(s): CC-BY 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-style-farm-animals
+              http://opengameart.org/content/lpc-folk
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+

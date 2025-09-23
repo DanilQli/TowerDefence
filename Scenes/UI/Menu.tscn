@@ -77,6 +77,17 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_v3kjt")
 
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/Button2/NinePatchRect"]
+custom_minimum_size = Vector2(30, 30)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -20.0
+offset_bottom = 20.0
+grow_horizontal = 0
+texture = ExtResource("6_s6sq0")
+
 [node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer"]
 custom_minimum_size = Vector2(60, 50)
 layout_mode = 2

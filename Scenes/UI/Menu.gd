@@ -30,6 +30,7 @@ func _ready():
 	but_task.pressed.connect(task)
 	
 	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4/NinePatchRect").visible = check_promotion()
+	get_node("Panel/HBoxContainer/Button2/NinePatchRect/NinePatchRect").visible = check_task()
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
@@ -71,4 +72,8 @@ func check_promotion():
 				return true
 	return false
 	
-	
+func check_task():
+	for i in range(len(TasksManager.list_tasks_you)):
+		if int(TasksManager.list_tasks_you[i][2]) >= int(TasksManager.list_tasks_you[i][1]):
+			return true
+	return false

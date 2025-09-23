@@ -1,0 +1,394 @@
+* Shadow (shadow)
+
+  Textures
+
+  Author(s) : Dr. Jamgo
+  License(s): CC0
+  Url(s)    : https://opengameart.org/content/shadow-for-lpc-sprite
+
+  Fixed colors
+
+  Author(s) : Dr. Jamgo
+  License(s): CC0
+  Url(s)    : https://opengameart.org/content/shadow-for-lpc-sprite
+
+* Rabbit (body)
+
+  Textures
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+              https://opengameart.org/content/lpc-ladies
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+  Secondary colors
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+              Evert
+              Daniel Eddeland (daneeklu)
+              Nila122
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+              https://opengameart.org/content/lpc-style-farm-animals
+              https://opengameart.org/content/lpc-faun-and-minotaur
+
+  Fixed colors
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Pants (pants)
+
+  Textures
+
+  Author(s) : bluecarrot16
+              David Conway Jr. (JaidynReiman)
+              Joe White
+              Matthew Krohn (makrohn)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+  Primary colors
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              Joe White
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-pregnancy-bases-maternity-wear
+
+* Shirt (shirt)
+
+  Textures
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              David Conway Jr. (JaidynReiman)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-curly-hair-elven-ears-white-cape-with-blue-trim-and-more
+              https://opengameart.org/content/lpc-7-womens-shirts
+
+  Primary colors
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              Joe White
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-pregnancy-bases-maternity-wear
+
+* Half-Beast (head)
+
+  Textures
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+              https://opengameart.org/content/lpc-ladies
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+  Secondary colors
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+              Evert
+              Daniel Eddeland (daneeklu)
+              Nila122
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+              https://opengameart.org/content/lpc-style-farm-animals
+              https://opengameart.org/content/lpc-faun-and-minotaur
+
+  Fixed colors
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Human (eyes)
+
+  Textures
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+              https://opengameart.org/content/lpc-ladies
+
+  Primary colors
+
+  Author(s) : Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+
+* Cat (ears)
+
+  Textures
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              pflat
+              David Conway Jr. (JaidynReiman)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+              OGA-BY 3.0
+              OGA-BY 4.0
+              CC-BY 3.0
+              CC-BY 4.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+              https://opengameart.org/content/lpc-ladies
+              https://opengameart.org/content/lpc-furry-ears-tails-for-rpg-sprites
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+  Secondary colors
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+              Evert
+              Daniel Eddeland (daneeklu)
+              Nila122
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+              https://opengameart.org/content/lpc-style-farm-animals
+              https://opengameart.org/content/lpc-faun-and-minotaur
+
+  Fixed colors
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Button (nose)
+
+  Textures
+
+  Author(s) : Thane Brimhall (pennomi)
+              Matthew Krohn (makrohn)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-base-character-expressions
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+  Secondary colors
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+              Evert
+              Daniel Eddeland (daneeklu)
+              Nila122
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+              https://opengameart.org/content/lpc-style-farm-animals
+              https://opengameart.org/content/lpc-faun-and-minotaur
+
+  Fixed colors
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Cat (tail)
+
+  Textures
+
+  Author(s) : David Conway Jr. (JaidynReiman)
+  License(s): OGA-BY 3.0
+              OGA-BY 4.0
+              CC-BY 3.0
+              CC-BY 4.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-furry-ears-tails-for-rpg-sprites
+
+  Primary colors
+
+  Author(s) : Benjamin K. Smith (BenCreating)
+              Johannes Sjölund (wulax)
+              Matthew Krohn (makrohn)
+              Stephen Challener (Redshrike)
+              William.Thompsonj
+              Sander Frenken (castelonia)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-wolfman
+
+  Secondary colors
+
+  Author(s) : dalonedrau
+              Stephen Challener (Redshrike)
+              Eliza Wyatt (ElizaWy)
+              Evert
+              Daniel Eddeland (daneeklu)
+              Nila122
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-barbarian-sprite-base
+              https://opengameart.org/content/lpc-muscular-swing-animation
+              https://opengameart.org/content/lpc-muscular-hurt-animation
+              https://opengameart.org/content/lpc-style-farm-animals
+              https://opengameart.org/content/lpc-faun-and-minotaur
+
+  Fixed colors
+
+  Author(s) : Stephen Challener (Redshrike)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/liberated-pixel-cup-lpc-base-assets-sprites-map-tiles
+              https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Great Bow (mainhand)
+
+  Textures
+
+  Author(s) : Daniel Eddeland (daneeklu)
+              gr3yh47
+              Johannes Sjölund (wulax)
+              pflat
+  License(s): CC-BY-SA 3.0
+  Url(s)    : https://opengameart.org/content/lpc-weapons-two-bows-a-spear-and-a-trident
+
+  Primary colors
+
+  Author(s) : Somebody did this recolor but I can't find it
+
+  Secondary colors
+
+  Author(s) : DarkwallLKE
+              Tuomo Untinen (reemax)
+              pflat
+  License(s): CC-BY-SA 3.0
+              GPL 2.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-items-and-game-effects
+              https://opengameart.org/content/lpc-axe
+
+  Fixed colors
+
+  Author(s) : Johannes Sjölund (wulax)
+              pflat
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+* Arrow (ammo)
+
+  Textures
+
+  Author(s) : Johannes Sjölund (wulax)
+              pflat
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+
+  Primary colors
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              Joe White
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-pregnancy-bases-maternity-wear
+
+  Secondary colors
+
+  Author(s) : Eliza Wyatt (ElizaWy)
+              Joe White
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-pregnancy-bases-maternity-wear
+
+  Fixed colors
+
+  Author(s) : Michael Whitlock (bigbeargames)
+              Matthew Krohn (makrohn)
+              Johannes Sjölund (wulax)
+  License(s): CC-BY-SA 3.0
+              GPL 3.0
+  Url(s)    : https://opengameart.org/content/lpc-medieval-fantasy-character-sprites
+              https://opengameart.org/content/lpc-combat-armor-for-women
+
