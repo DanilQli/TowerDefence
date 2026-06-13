@@ -36,7 +36,10 @@ func _on_option_button_2_item_selected(index: int) -> void:
 	DataManager.write_file()
 
 func _on_button_back_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		get_tree().change_scene_to_file("res://Scenes/Mobile/Menu_mobile.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 
 func _on_button_reset_pressed() -> void:
 	
@@ -55,4 +58,7 @@ func _on_button_reset_pressed() -> void:
 	TranslationServer.set_locale(language[default_language_index])
 	
 	DataManager.write_file()
-	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		get_tree().change_scene_to_file("res://Scenes/Mobile/Menu_mobile.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")

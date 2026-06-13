@@ -1,15 +1,22 @@
+# Controllers/HealthController.gd
 ## HealthController
 extends Node
 
 var main_scene
-@onready var hp_label: Label = null
+var hp_label: Label = null
 
 func initialize(scene):
 	main_scene = scene
-	hp_label = main_scene.get_node("UI/HUD/InfoBar/H2/HP")
+	# Используем безопасный поиск узла
+	if main_scene.has_node("UI/HUD/InfoBar/H2/HP"):
+		hp_label = main_scene.get_node("UI/HUD/InfoBar/H2/HP")
+	else:
+		# Пытаемся найти внутри контейнера, если путь отличается
+		hp_label = main_scene.find_child("HP", true, false)
 
 func update_health(base_health: int):
-	hp_label.text = str(base_health)
+	if is_instance_valid(hp_label):
+		hp_label.text = str(base_health)
 	
 func on_base_damage(damage: int):
 	GameSession.spend_base_health(damage)

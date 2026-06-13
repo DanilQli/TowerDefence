@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Games"
-run/main_scene="res://Scenes/UI/Menu.tscn"
+run/main_scene="uid://bm6yyxyf628tf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 
 [autoload]
@@ -28,13 +28,15 @@ ResourceManager="*res://Systems/ResourceManager.gd"
 TowerCards="*res://Systems/TowerCards.gd"
 TasksManager="*res://Systems/TasksManager.gd"
 PvPSession="*res://Systems/PvPSession.gd"
+NetworkManager="*res://Systems/NetworkManager.gd"
 
 [display]
 
 window/size/viewport_width=1600
 window/size/viewport_height=900
-window/stretch/mode="viewport"
-window/stretch/aspect="ignore"
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
 mouse_cursor/custom_image="res://Assets/Button/cursor.png"
 
 [input]

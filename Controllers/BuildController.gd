@@ -13,7 +13,8 @@ func initialize(scene):
 func initiate_build_mode(tower_type: String, tower_index: int):
 	while UiManager.list_open_menu_turrets.size() > 0:
 		var menu = UiManager.list_open_menu_turrets.pop_at(0)
-		menu.queue_free()
+		if has_node(menu):
+			menu.queue_free()
 
 	if build_mode:
 		cancel_build_mode()
@@ -108,24 +109,43 @@ func verify_and_build():
 		GameSession.spend_money(cost)
 		main_scene.ui_controller._on_money_changed()
 
+
 func update_tower_preview():
+	# Получаем позицию мыши в глобальных координатах экрана/мира
 	var mouse_position = main_scene.get_global_mouse_position()
+	
+	# Нам нужно перевести это в локальные координаты тайловой карты, 
+	# чтобы понять, над какой клеткой мы находимся.
 	var tilemap = main_scene.map_node.get_node("TowerExlusion")
-	var current_tile = tilemap.local_to_map(mouse_position)
-	var tile_position = tilemap.map_to_local(current_tile)
+	
+	# Переводим глобальную позицию мыши в локальную позицию тайлмапа
+	var local_mouse_pos = tilemap.to_local(mouse_position)
+	
+	var current_tile = tilemap.local_to_map(local_mouse_pos)
+	
+	# Получаем центр тайла в локальных координатах
+	var tile_position_local = tilemap.map_to_local(current_tile)
+	
+	# Переводим обратно в глобальные, чтобы отрисовать превью в правильном месте на экране
+	var tile_position_global = tilemap.to_global(tile_position_local)
 
 	if tilemap.get_cell_source_id(current_tile) == -1:
-		update_tower_preview_ui(tile_position, "008000")
+		update_tower_preview_ui(tile_position_global, "008000") # Используем глобальную
 		build_valid = true
-		build_location = tile_position
+		build_location = tile_position_local # Строим в локальных (так как add_child к карте)
 		build_tile = current_tile
 	else:
-		update_tower_preview_ui(tile_position, "ff0000")
+		update_tower_preview_ui(tile_position_global, "ff0000")
 		build_valid = false
 
-func _unhandled_input(event):
+func _input(event):
 	if build_mode:
-		if event.is_action_released("ui_accept"):
+		# На телефоне и ПК: движение мыши/пальца обновляет превью
+		if event is InputEventMouseMotion:
+			update_tower_preview()
+			
+		# На ПК: Клик ЛКМ подтверждает (если не через Drag&Drop)
+		if event.is_action_released("ui_accept"): 
 			verify_and_build()
 			cancel_build_mode()
 		if event.is_action_released("ui_cancel"):

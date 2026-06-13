@@ -1,0 +1,74 @@
+[gd_scene load_steps=4 format=3 uid="uid://tp75n5tuhqqc"]
+
+[ext_resource type="Texture2D" uid="uid://c3as74g4wv3jb" path="res://Assets/Props/towerDefense_tile_turret_1.png" id="1_0ukgc"]
+[ext_resource type="Script" uid="uid://ch5e7uw2g80jk" path="res://Scenes/Mobile/turret_max_choose.gd" id="1_ai7vt"]
+[ext_resource type="PackedScene" uid="uid://cgtaotdvlniv5" path="res://Scenes/SupportScenes/card_of.tscn" id="2_ai7vt"]
+
+[node name="TurretMaxChoose" type="Button"]
+custom_minimum_size = Vector2(300, 520)
+offset_right = 300.0
+offset_bottom = 520.0
+script = ExtResource("1_ai7vt")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+expand_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/TextureRect"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = -15.0
+offset_bottom = -15.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("1_0ukgc")
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Пушка"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Lvl" type="Label" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 70)
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "KEY_LVL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CardOf" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+
+[node name="CardOf" parent="VBoxContainer/CardOf" instance=ExtResource("2_ai7vt")]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+
+[node name="Label" parent="VBoxContainer/CardOf/CardOf" index="0"]
+theme_override_font_sizes/font_size = 30
+text = ""
+
+[editable path="VBoxContainer/CardOf/CardOf"]

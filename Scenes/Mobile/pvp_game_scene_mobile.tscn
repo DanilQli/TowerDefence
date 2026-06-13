@@ -1,0 +1,408 @@
+[gd_scene load_steps=7 format=3 uid="uid://s5xfm1yp3me6"]
+
+[ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="1_ahlwb"]
+[ext_resource type="Script" uid="uid://b5ihocxbhywk6" path="res://Scenes/UI/pvp_game_scene.gd" id="1_e1k40"]
+[ext_resource type="Texture2D" uid="uid://ckbdmgvyl0hfc" path="res://Assets/Icons/home.png" id="2_2ufnk"]
+[ext_resource type="Script" uid="uid://5te3gphp2vjc" path="res://Scenes/UI/player_container.gd" id="2_e1k40"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8e88j"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1q7y"]
+
+[node name="PvPGameSceneMobile" type="Node2D"]
+script = ExtResource("1_e1k40")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="HBoxContainer" type="VBoxContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Player2Container" type="Control" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 449)
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.8
+mouse_filter = 2
+script = ExtResource("2_e1k40")
+
+[node name="HUD" type="Control" parent="CanvasLayer/HBoxContainer/Player2Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="InfoBar" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player2Container/HUD"]
+self_modulate = Color(0, 0, 0, 0.470588)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 50.0
+grow_horizontal = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player2Container/HUD/InfoBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="H2" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player2Container/HUD/InfoBar/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player2Container/HUD/InfoBar/HBoxContainer/H2"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("2_2ufnk")
+expand_mode = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/HBoxContainer/Player2Container/HUD/InfoBar/HBoxContainer/H2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "100"
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player2Container"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.01, 0, 0, 1)
+
+[node name="HSeparator" type="HSeparator" parent="CanvasLayer/HBoxContainer"]
+layout_mode = 2
+
+[node name="Player1Container" type="Control" parent="CanvasLayer/HBoxContainer"]
+custom_minimum_size = Vector2(0, 449)
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+script = ExtResource("2_e1k40")
+
+[node name="UI" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HUD" type="Control" parent="CanvasLayer/HBoxContainer/Player1Container/UI"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="InfoBar" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD"]
+self_modulate = Color(0, 0, 0, 0.470588)
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 60.0
+grow_horizontal = 2
+
+[node name="H" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="MoneyInfo" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H"]
+layout_mode = 2
+
+[node name="Sumbol" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/MoneyInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "$"
+vertical_alignment = 1
+
+[node name="Money" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/MoneyInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "100"
+vertical_alignment = 1
+
+[node name="HPInfo" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H"]
+layout_mode = 2
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/HPInfo"]
+custom_minimum_size = Vector2(40, 40)
+layout_mode = 2
+texture = ExtResource("2_2ufnk")
+expand_mode = 1
+
+[node name="HP" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/HPInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "100"
+vertical_alignment = 1
+
+[node name="WaveInfo" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H"]
+layout_mode = 2
+
+[node name="Wave" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/WaveInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "W:"
+vertical_alignment = 1
+
+[node name="WaveValue" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/InfoBar/H/WaveInfo"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "1"
+vertical_alignment = 1
+
+[node name="BuldBar" type="HBoxContainer" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD"]
+z_index = 1
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -200.0
+offset_bottom = -25.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="Tower_1" type="Button" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_8e88j")
+icon = ExtResource("1_ahlwb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_1"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_1"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_1/Color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_2" type="Button" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("1_ahlwb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_2"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_2"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_2/Color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_3" type="Button" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("1_ahlwb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_3"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_3"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_3/Color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Tower_4" type="Button" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar"]
+custom_minimum_size = Vector2(160, 160)
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_e1q7y")
+icon = ExtResource("1_ahlwb")
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_4"]
+custom_minimum_size = Vector2(120, 120)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -25.0
+offset_top = -25.0
+offset_right = 25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+expand_mode = 1
+
+[node name="Color" type="ColorRect" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_4"]
+custom_minimum_size = Vector2(80, 20)
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 1, 0, 1)
+
+[node name="Cost" type="Label" parent="CanvasLayer/HBoxContainer/Player1Container/UI/HUD/BuldBar/Tower_4/Color"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1

@@ -11,12 +11,6 @@ var rage: int = 0
 var rof_new: float = rof
 var dop_mn: float = 0.0
 
-var mastery_damage: float = 1.0
-var mastery_speed: float = 1.0
-var mastery_chanse_crit: float = 1.0
-var mastery_cost_upgrade: float = 1.0
-var mastery_damage_boss: float = 1.0
-
 func _initialize() -> void:
 	super._initialize()
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range

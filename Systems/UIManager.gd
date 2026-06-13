@@ -9,7 +9,7 @@ var list_open_menu_turrets: Array[Node] = []
 
 ## Добавить в список открытую башню (если ещё не добавлена)
 func add_open_menu_turret(turret: Node) -> void:
-	if not turret in list_open_menu_turrets:
+	if is_instance_valid(turret) and not turret in list_open_menu_turrets:
 		list_open_menu_turrets.append(turret)
 
 ## Убрать башню из списка открытых

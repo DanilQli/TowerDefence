@@ -158,7 +158,7 @@ func _reset_all_synergy_buffs():
 	var all_towers = get_parent().get_children()
 	for tower in all_towers:
 		if tower is TowerBase and tower.has_meta("synergy_buff"):
-			tower.rof *= 2.0 # Возвращаем скорость атаки
+			tower.multiplier_rof_link = 1.0
 			tower.remove_meta("synergy_buff")
 			
 func _get_full_chain():

@@ -34,7 +34,7 @@ func write_done_tasks(task, type):
 		TasksManager.daily_task_career_you[task][3] = 1
 		DataManager.TYPE_ITEMS[int(TasksManager.daily_task_career[task][1])][0].call(int(TasksManager.daily_task_career[task][3]))
 	DataManager.write_file()
-	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/Label").text = str(DataManager.data_money)
+	get_tree().get_root().get_node("Menu/Panel/HBoxContainer/MoneyLabel").text = str(DataManager.data_money)
 	UiManager.menu_object = load("res://Scenes/SupportScenes/daily_tasks.tscn").instantiate()
 	get_node(".").add_child(UiManager.menu_object)
 	self.queue_free()

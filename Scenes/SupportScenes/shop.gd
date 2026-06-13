@@ -4,12 +4,15 @@ var number_card_choose_characters_choose_item = 90
 var list_button = []
 var list_button_activity = []
 var ind
+static var current_tab: int = 0  # 0 = Магазин, 1 = Снаряжение
 
 func _ready() -> void:
 	ind = 0
 	list_button_activity = []
 	_connect_signals()
 	_setup_turrets()
+	if current_tab == 1:
+		open_armanent()
 
 func _connect_signals() -> void:
 	get_node("VBoxContainer/Panel/VBoxContainer/HBoxContainer/ButArmanent").pressed.connect(open_armanent)
@@ -121,12 +124,38 @@ func choose_characters_choose_item(id: int) -> void:
 	get_parent().get_node(".").add_child(UiManager.menu_object)
 	
 	DataManager.write_file()
+	_refresh_towers()
+	number_card_choose_characters_choose_item = 90
+	
+	
+# Новый метод обновления списка башен
+func _refresh_towers() -> void:
+	# Очищаем старые элементы
+	for child in get_node("VBoxContainer/Panel/VBoxContainer/Shop/ScrollContainer/HBoxContainer").get_children():
+		child.queue_free()
+	for child in get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/MarginContainer/ScrollContainer/GridContainer").get_children():
+		child.queue_free()
+	for child in get_node("VBoxContainer/Panel/VBoxContainer/Armanent/Vbox/Panel/HBoxContainer").get_children():
+		if child.name.begins_with("Title"):
+			for subchild in child.get_children():
+				if subchild.name != "AnimationPlayer":
+					subchild.queue_free()
+	
+	# Сбрасываем переменные
+	list_button.clear()
+	list_button_activity.clear()
+	ind = 0
+	
+	# Пересоздаём UI башен
+	_setup_turrets()
 
 func open_armanent() -> void:
+	current_tab = 1
 	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = true
 	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = false
 
 func open_shop() -> void:
+	current_tab = 0 
 	get_node("VBoxContainer/Panel/VBoxContainer/Armanent").visible = false
 	get_node("VBoxContainer/Panel/VBoxContainer/Shop").visible = true
 

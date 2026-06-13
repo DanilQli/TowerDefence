@@ -9,7 +9,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_e1q7y"]
 
-[node name="PvPGameScene" type="Node2D"]
+[node name="PvpGameScene" type="Node2D"]
 script = ExtResource("1_e1k40")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -312,6 +312,7 @@ color = Color(0.01, 0, 0, 1)
 [node name="Player2Container" type="Control" parent="CanvasLayer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+script = ExtResource("2_e1k40")
 
 [node name="HUD" type="Control" parent="CanvasLayer/HBoxContainer/Player2Container"]
 layout_mode = 1
@@ -378,3 +379,19 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 color = Color(0.01, 0, 0, 1)
+
+[node name="StatusLabel" type="Label" parent="CanvasLayer"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1

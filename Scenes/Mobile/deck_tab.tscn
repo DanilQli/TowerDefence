@@ -1,0 +1,89 @@
+[gd_scene load_steps=4 format=3 uid="uid://decktabmobile"]
+
+[ext_resource type="Script" uid="uid://cqq1p72uhu2cg" path="res://Scenes/Mobile/deck_tab.gd" id="1_weiy6"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bg"]
+bg_color = Color(0.1, 0.1, 0.15, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_sep"]
+bg_color = Color(0.3, 0.3, 0.4, 1)
+corner_radius_top_left = 5
+corner_radius_top_right = 5
+corner_radius_bottom_right = 5
+corner_radius_bottom_left = 5
+
+[node name="DeckTab" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_weiy6")
+
+[node name="Background" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bg")
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="ActiveDeckLabel" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "БОЕВАЯ КОЛОДА"
+horizontal_alignment = 1
+
+[node name="ActiveDeckGrid" type="HBoxContainer" parent="ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="FoundLabel" type="Label" parent="ScrollContainer/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "НАЙДЕННЫЕ КАРТЫ"
+horizontal_alignment = 1
+
+[node name="FoundContainer" type="HFlowContainer" parent="ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+alignment = 1
+
+[node name="NotFoundSeparator" type="PanelContainer" parent="ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_sep")
+
+[node name="Label" type="Label" parent="ScrollContainer/VBox/NotFoundSeparator"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 28
+text = "НЕ НАЙДЕНО: 0/12"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="NotFoundContainer" type="HFlowContainer" parent="ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 20
+theme_override_constants/v_separation = 20
+alignment = 1

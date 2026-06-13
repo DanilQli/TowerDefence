@@ -37,11 +37,6 @@ offset_bottom = 270.0
 grow_vertical = 2
 theme_override_constants/separation = 50
 
-[node name="Panel" type="Button" parent="UI/HUD/BuldBar"]
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-expand_icon = true
-
 [node name="Tower_1" type="Button" parent="UI/HUD/BuldBar"]
 custom_minimum_size = Vector2(80, 80)
 layout_mode = 2

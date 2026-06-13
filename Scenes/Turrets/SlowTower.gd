@@ -4,12 +4,6 @@ class_name SlowTower
 var intensivity: float
 var duration: float
 
-var mastery_damage: float = 1.0
-var mastery_speed: float = 1.0
-var mastery_chanse_crit: float = 1.0
-var mastery_cost_upgrade: float = 1.0
-var mastery_damage_boss: float = 1.0
-
 func _ready() -> void:
 	super._ready()
 	

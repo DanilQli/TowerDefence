@@ -1,0 +1,124 @@
+[gd_scene load_steps=5 format=3 uid="uid://dqx7rh6u6k5h7"]
+
+[ext_resource type="Script" uid="uid://bgj5mkco3p7lm" path="res://Scenes/SupportScenes/details_promotion_mobile.gd" id="1_y4wrf"]
+[ext_resource type="StyleBox" uid="uid://djt3u0647p40g" path="res://Scenes/UI/Menu.tres" id="2_panel"]
+[ext_resource type="Texture2D" uid="uid://dnovctygdgmpf" path="res://Assets/Icons/close.png" id="3_close"]
+[ext_resource type="Texture2D" uid="uid://dyuei6s3c3tdl" path="res://Assets/Icons/HPbar.jpg" id="4_bar"]
+
+[node name="DetailsPromotionMobile" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y4wrf")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.8)
+
+[node name="Panel" type="Panel" parent="."]
+custom_minimum_size = Vector2(700, 1400)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -350.0
+offset_top = -700.0
+offset_right = 350.0
+offset_bottom = 700.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = ExtResource("2_panel")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 40.0
+offset_top = 40.0
+offset_right = -40.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+
+[node name="Header" type="VBoxContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Label" type="Label" parent="Panel/VBoxContainer/Header"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "KEY_PROMOTION_DETAILS"
+horizontal_alignment = 1
+autowrap_mode = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Panel/VBoxContainer/Header"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label1" type="Label" parent="Panel/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "KEY_PROGRESS"
+
+[node name="Label2" type="Label" parent="Panel/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.82, 0.88, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "22"
+
+[node name="Label3" type="Label" parent="Panel/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "/"
+
+[node name="Label4" type="Label" parent="Panel/VBoxContainer/Header/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "50"
+
+[node name="TextureProgressBar" type="TextureProgressBar" parent="Panel/VBoxContainer/Header"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+value = 50.0
+nine_patch_stretch = true
+texture_under = ExtResource("4_bar")
+texture_progress = ExtResource("4_bar")
+tint_under = Color(0.2, 0.2, 0.2, 1)
+tint_progress = Color(1, 0.95, 0.25, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Panel/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="ItemsContainer" type="VBoxContainer" parent="Panel/VBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 20
+
+[node name="Close" type="Button" parent="Panel"]
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -100.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = 100.0
+grow_horizontal = 0
+icon = ExtResource("3_close")
+flat = true
+expand_icon = true

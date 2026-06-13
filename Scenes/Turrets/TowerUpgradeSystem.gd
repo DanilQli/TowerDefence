@@ -49,10 +49,11 @@ func perform_upgrade() -> bool:
 		# Если достигнут максимальный уровень, обновляем UI
 		if tower.current_lvl >= tower.max_lvl:
 			tower.ui_system.set_max_level_ui()
+		else:
+			# принудительно обновляем кнопку после апгрейда
+			tower.ui_system._check_upgrade_possibility()
 			
 		return true
-	
-	tower.get_node("Menu/V/HButton/Up").disabled = true
 	return false
 
 ## Применение эффектов улучшения

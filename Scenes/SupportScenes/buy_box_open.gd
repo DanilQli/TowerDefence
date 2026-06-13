@@ -13,7 +13,10 @@ func buy_box_action_show_card_one(list_card, img_open, flag):
 	if len(list_card) <= index_buy:
 		if flag:
 			get_tree().paused = false
-			get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+			if OS.get_name() == "Android" or OS.get_name() == "iOS":
+				get_tree().change_scene_to_file("res://Scenes/Mobile/Menu_mobile.tscn")
+			else:
+				get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
 		else:
 			get_tree().reload_current_scene()
 			self.queue_free()

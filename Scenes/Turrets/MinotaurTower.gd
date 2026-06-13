@@ -8,18 +8,12 @@ var trap_damage_end: float = 0.0
 var critical_damage_all
 var one_attack: bool = false
 
-var mastery_damage: float = 1.0
-var mastery_speed: float = 1.0
-var mastery_chanse_crit: float = 1.0
-var mastery_cost_upgrade: float = 1.0
-var mastery_damage_boss: float = 1.0
-
 func _initialize() -> void:
 	super._initialize()
 	get_node("Range/CollisionShape2D").shape.radius = 0.5 * range
 	upgrade_system.upgrades.connect(mode)
 	mode()
-
+	
 func mode() -> void:
 	trap_damage_end = trap_damage
 	if self.ability[0]:
@@ -31,16 +25,23 @@ func mode() -> void:
 			ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 0.5, 0.5)
 			ResourceManager.list_turret[7][i].get_node("Panel").visible = true
 			ResourceManager.list_turret[7][i].get_node("Panel/Label").text = str(up)
+		
 		var awaiting = GameConstants.TURRET_8_ABILITY_0[0]
 		if self.ability[1]:
 			awaiting += up
 			if awaiting > GameConstants.TURRET_8_ABILITY_1:
 				awaiting = GameConstants.TURRET_8_ABILITY_1
+		
 		await get_tree().create_timer(awaiting).timeout
+		
+		if not is_instance_valid(self):
+			return
+		
 		for i in range(len(ResourceManager.list_turret[7])):
-			ResourceManager.list_turret[7][i].trap_damage_end = trap_damage
-			ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 1, 1)
-			ResourceManager.list_turret[7][i].get_node("Panel").visible = false
+			if is_instance_valid(ResourceManager.list_turret[7][i]):
+				ResourceManager.list_turret[7][i].trap_damage_end = trap_damage
+				ResourceManager.list_turret[7][i].get_node("Turret").modulate = Color(1, 1, 1)
+				ResourceManager.list_turret[7][i].get_node("Panel").visible = false
 	
 func fire() -> void:
 	super.fire()

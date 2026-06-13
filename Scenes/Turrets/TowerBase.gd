@@ -1,4 +1,4 @@
-# TowerBase.gd
+# Scenes/Turrets/TowerBase.gd
 extends Node2D
 class_name TowerBase
 
@@ -43,6 +43,12 @@ var is_opponent := false
 var is_protected_by_link := false
 var force_next_attack_crit := false
 
+var mastery_damage: float = 1.0
+var mastery_speed: float = 1.0
+var mastery_chanse_crit: float = 1.0
+var mastery_cost_upgrade: float = 1.0
+var mastery_damage_boss: float = 1.0
+
 # --- ССЫЛКИ НА УЗЛЫ ---
 @onready var ui_system: TowerUI
 @onready var upgrade_system: TowerUpgradeSystem
@@ -61,10 +67,17 @@ func _ready() -> void:
 		upgrade_system.setup(self)
 		
 		_initialize()
+		
+		if is_opponent:
+			set_opponent_tower(true)
 
 func _initialize() -> void:
-	range_area.body_entered.connect(_on_range_body_entered)
-	range_area.body_exited.connect(_on_range_body_exited)
+	if not range_area.body_entered.is_connected(_on_range_body_entered):
+		range_area.body_entered.connect(_on_range_body_entered)
+	
+	if not range_area.body_exited.is_connected(_on_range_body_exited):
+		range_area.body_exited.connect(_on_range_body_exited)
+		
 	var shape = range_area.get_node("CollisionShape2D")
 	if shape and shape.shape is CircleShape2D:
 		shape.shape.radius = 0.5 * range
@@ -72,7 +85,6 @@ func _initialize() -> void:
 # --- ЭФФЕКТЫ И ДЕБАФФЫ ---
 func stone_effect_start(duration):
 	if is_protected_by_link:
-		print(name + " защищена от камня!")
 		return
 		
 	block_damage = true
@@ -87,7 +99,7 @@ func stone_effect_stop():
 
 # --- ИГРОВОЙ ЦИКЛ ---
 func _physics_process(_delta: float) -> void:
-	if not built or type_attack == -1: return # LinkTower не должна ничего делать здесь
+	if not built or type_attack == -1: return 
 	
 	if enemy_array.is_empty():
 		enemy = null
@@ -133,16 +145,15 @@ func select_enemy() -> void:
 		enemy = null
 		return
 
-	# ИСПРАВЛЕНО: Ручной поиск вместо max_by/min_by
 	var best_target: Node = null
 	match strategy:
-		0: # First (самый дальний по пути)
+		0: # First
 			var max_progress = -1.0
 			for e in enemy_array:
 				if e.progress > max_progress:
 					max_progress = e.progress
 					best_target = e
-		1: # Last (самый близкий к базе)
+		1: # Last
 			var min_progress = INF
 			for e in enemy_array:
 				if e.progress < min_progress:
@@ -158,14 +169,23 @@ func select_enemy() -> void:
 func func_add_deal_damage(damage):
 	TasksManager.deal_damage += damage
 	DataManager.mastery_damage_tower_session[id] += damage
+	
+	# Обновление статистики для PvP (ищем контейнер игрока)
+	var container = find_parent("Player1Container")
+	if not container:
+		container = find_parent("Player2Container")
+	
+	if container and container.has_method("record_tower_damage"):
+		container.record_tower_damage(self.type, damage)
 
 func set_opponent_tower(value: bool):
 	is_opponent = value
 	if has_node("MenuButton"):
-		get_node("MenuButton").disabled = true
+		get_node("MenuButton").visible = not value
 
 func is_opponent_tower() -> bool:
 	return is_opponent
 
 func _on_turret_tree_exited(excl, cell: Vector2i) -> void:
-	excl.erase_cell(cell)
+	if is_instance_valid(excl):
+		excl.erase_cell(cell)

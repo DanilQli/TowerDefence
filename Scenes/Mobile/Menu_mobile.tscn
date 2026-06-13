@@ -1,0 +1,365 @@
+[gd_scene load_steps=19 format=3 uid="uid://cx8hoe0xjkwni"]
+
+[ext_resource type="Script" uid="uid://bkxdrlbe73agt" path="res://Scenes/Mobile/menu_mobile.gd" id="1_lx8xs"]
+[ext_resource type="Texture2D" uid="uid://jaiufk80m0oy" path="res://Assets/Button/money.png" id="2_money"]
+[ext_resource type="Texture2D" uid="uid://wcvmoo2k7220" path="res://Assets/Icons/critical_damage.png" id="3_crit"]
+[ext_resource type="PackedScene" uid="uid://bvlengma3d6fj" path="res://Scenes/Maps/map_card.tscn" id="4_7llau"]
+[ext_resource type="Texture2D" uid="uid://diw4nr3wa8jt6" path="res://Assets/Icons/Tasks/tasks.png" id="4_task"]
+[ext_resource type="Texture2D" uid="uid://h3yiuxnut40i" path="res://Assets/Button/Button_Blue_2.png" id="6_btn"]
+[ext_resource type="Texture2D" uid="uid://68runyvbf3oi" path="res://Assets/Icons/gift_box.png" id="10_gift"]
+[ext_resource type="Texture2D" uid="uid://dgpd7fgycxed7" path="res://Assets/Icons/Menu/nav_shop.png" id="10_slywh"]
+[ext_resource type="Texture2D" uid="uid://chx0ssdc83g6c" path="res://Assets/Icons/Menu/nav_deck.png" id="11_k12mn"]
+[ext_resource type="Texture2D" uid="uid://b6858x7h7i5k3" path="res://Assets/Icons/Menu/nav_battle.png" id="12_v31q7"]
+[ext_resource type="Texture2D" uid="uid://xo1exguuxbc0" path="res://Assets/Icons/Menu/nav_promo.png" id="13_sskou"]
+[ext_resource type="PackedScene" uid="uid://decktabmobile" path="res://Scenes/Mobile/deck_tab.tscn" id="13_v31q7"]
+[ext_resource type="PackedScene" uid="uid://c018g1mmfh0kc" path="res://Scenes/Mobile/shop_tab.tscn" id="14_sskou"]
+[ext_resource type="Texture2D" uid="uid://qjuowcpmorr" path="res://Assets/Icons/Menu/nav_glory.png" id="14_t2k24"]
+[ext_resource type="PackedScene" uid="uid://bd5akpuxskmxu" path="res://Scenes/Mobile/glory_tab.tscn" id="15_t2k24"]
+[ext_resource type="PackedScene" uid="uid://caoml8hkgk66i" path="res://Scenes/Mobile/promo_tab.tscn" id="16_4lr8v"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_top"]
+bg_color = Color(0.15, 0.15, 0.2, 1)
+border_width_bottom = 4
+border_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bot"]
+bg_color = Color(0.1, 0.1, 0.15, 1)
+border_width_top = 4
+border_color = Color(0.25, 0.25, 0.3, 1)
+
+[node name="MenuMobile" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_lx8xs")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.05, 0.05, 0.08, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.03
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopBar" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_top")
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer/TopBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 30
+alignment = 1
+
+[node name="MoneyInfo" type="HBoxContainer" parent="VBoxContainer/TopBar/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/TopBar/HBox/MoneyInfo"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("2_money")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MoneyLabel" type="Label" parent="VBoxContainer/TopBar/HBox/MoneyInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "99999"
+
+[node name="CritInfo" type="HBoxContainer" parent="VBoxContainer/TopBar/HBox"]
+layout_mode = 2
+alignment = 1
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/TopBar/HBox/CritInfo"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+texture = ExtResource("3_crit")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="CritLabel" type="Label" parent="VBoxContainer/TopBar/HBox/CritInfo"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "200%"
+
+[node name="BtnSettings" type="Button" parent="VBoxContainer/TopBar"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -40.0
+offset_right = -20.0
+offset_bottom = 40.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_font_sizes/font_size = 40
+text = "⚙️"
+
+[node name="ContentArea" type="Control" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+mouse_filter = 2
+
+[node name="MapCard" parent="VBoxContainer/ContentArea" instance=ExtResource("4_7llau")]
+unique_name_in_owner = true
+position = Vector2(255, -632.5)
+
+[node name="TabBattle" type="Control" parent="VBoxContainer/ContentArea"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="CenterContainer" type="VBoxContainer" parent="VBoxContainer/ContentArea/TabBattle"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -800.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 40
+
+[node name="BtnMode" type="Button" parent="VBoxContainer/ContentArea/TabBattle/CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 120)
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "РЕЖИМ: PvP"
+
+[node name="BtnFight" type="Button" parent="VBoxContainer/ContentArea/TabBattle/CenterContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 180)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.9, 0.4, 1)
+theme_override_font_sizes/font_size = 80
+text = "В БОЙ!"
+icon = ExtResource("6_btn")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="SideButtons" type="Control" parent="VBoxContainer/ContentArea/TabBattle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BtnTasks" type="TextureButton" parent="VBoxContainer/ContentArea/TabBattle/SideButtons"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 30.0
+offset_top = -150.0
+offset_right = 330.0
+offset_bottom = 150.0
+grow_vertical = 2
+texture_normal = ExtResource("4_task")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="BtnGift" type="TextureButton" parent="VBoxContainer/ContentArea/TabBattle/SideButtons"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -300.0
+offset_top = -150.0
+offset_bottom = 150.0
+grow_horizontal = 0
+grow_vertical = 2
+texture_normal = ExtResource("10_gift")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="TabShop" parent="VBoxContainer/ContentArea" instance=ExtResource("14_sskou")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+anchors_preset = 0
+
+[node name="TabDeck" parent="VBoxContainer/ContentArea" instance=ExtResource("13_v31q7")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+anchors_preset = 0
+
+[node name="TabGlory" parent="VBoxContainer/ContentArea" instance=ExtResource("15_t2k24")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+anchors_preset = 0
+
+[node name="TabPromo" parent="VBoxContainer/ContentArea" instance=ExtResource("16_4lr8v")]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+anchors_preset = 0
+
+[node name="BottomBar" type="Panel" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 420)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_bot")
+
+[node name="HBox" type="HBoxContainer" parent="VBoxContainer/BottomBar"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
+
+[node name="BtnNavShop" type="Button" parent="VBoxContainer/BottomBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/BottomBar/HBox/BtnNavShop"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("10_slywh")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnNavDeck" type="Button" parent="VBoxContainer/BottomBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/BottomBar/HBox/BtnNavDeck"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_k12mn")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnNavBattle" type="Button" parent="VBoxContainer/BottomBar/HBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 180)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+size_flags_stretch_ratio = 1.2
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/BottomBar/HBox/BtnNavBattle"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("12_v31q7")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnNavGlory" type="Button" parent="VBoxContainer/BottomBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/BottomBar/HBox/BtnNavGlory"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("14_t2k24")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="BtnNavPromo" type="Button" parent="VBoxContainer/BottomBar/HBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+icon_alignment = 1
+expand_icon = true
+
+[node name="Icon" type="TextureRect" parent="VBoxContainer/BottomBar/HBox/BtnNavPromo"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("13_sskou")
+expand_mode = 1
+stretch_mode = 5

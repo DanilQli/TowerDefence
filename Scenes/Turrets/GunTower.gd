@@ -6,12 +6,6 @@ var damage_reduction: int = 0
 var current_damage_up
 var critical_damage_all
 
-var mastery_damage: float = 1.0
-var mastery_speed: float = 1.0
-var mastery_chanse_crit: float = 1.0
-var mastery_cost_upgrade: float = 1.0
-var mastery_damage_boss: float = 1.0
-
 func fire() -> void:
 	super.fire()
 	if not block_damage:

@@ -3,6 +3,7 @@ extends Node
 
 signal money_in_game_session_changed()
 
+var selected_mode: int = 3 # По умолчанию PvP (или 1 - Кампания)
 ## Волна и уровень
 var current_wave: int = 0
 var current_level: int = 0
@@ -20,7 +21,7 @@ var current_money_in_game_session: float
 var current_game_score: int = 0
 
 ## Максимальное здоровье базы в игре
-var base_health: int = 100
+var base_health: int = 10
 
 ## Увеличивает очки игрока
 func add_game_score(value: int) -> void:

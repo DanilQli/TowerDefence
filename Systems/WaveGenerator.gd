@@ -1,7 +1,8 @@
+# Systems/WaveGenerator.gd
 ## Генерирует стартовые/тестовые волны при инициализации
 extends Node
 const WAVE_DURATION = 20.0  # длительность волны в секундах
-
+var rng = RandomNumberGenerator.new()
 func calculate_wave_max_hp(wave_number: int) -> float:
 	# Базовое здоровье первой волны (нужно подобрать)
 	var base_wave_hp = 10000.0
@@ -16,6 +17,11 @@ func generate_wave(wave_number: int) -> Array:
 	var total_hp = calculate_wave_max_hp(wave_number)
 	var remaining_time = WAVE_DURATION
 	var min_spawn_delay = 0.1  # минимальное время между врагами
+	
+	# --- ДОБАВЛЕНИЕ БОССА В ПЕСОЧНИЦЕ ---
+	var boss_to_spawn = -1
+	boss_to_spawn = rng.randi_range(1, 13)
+	# ------------------------------------
 	
 	while remaining_time > 0:
 		# Выбираем случайного врага
@@ -32,6 +38,12 @@ func generate_wave(wave_number: int) -> Array:
 		
 		total_hp -= enemy_hp
 		remaining_time -= spawn_delay
+		
+	# Если нужно заспавнить босса, добавляем его В КОНЕЦ волны
+	if boss_to_spawn != -1:
+		# Задержка 2 секунды перед боссом, чтобы дать игроку передышку
+		wave.append(["BOSS_" + str(boss_to_spawn), 2.0])
+		
 	return wave
 
 func _select_enemy_for_wave(wave_number: int) -> int:

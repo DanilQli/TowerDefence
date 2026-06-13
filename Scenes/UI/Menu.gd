@@ -1,59 +1,67 @@
 extends Control
 
-@onready var crit_label = get_node("Panel/HBoxContainer/Label2")
-@onready var but_1 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_1")
-@onready var but_2 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_2")
-@onready var but_3 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_3")
-@onready var but_4 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4")
-@onready var but_5 = get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5")
+# Используем %UniqueName, чтобы не зависеть от структуры сцены (Mobile/PC)
+@onready var money_label = %MoneyLabel
+@onready var crit_label = %CritLabel
 
-@onready var but_task = get_node("Panel/HBoxContainer/Button2")
+@onready var but_new_game = %ButtonNewGame
+@onready var but_shop = %ButtonShop
+@onready var but_settings = %ButtonSettings
+@onready var but_promotion = %ButtonPromotion
+@onready var but_exit = %ButtonExit
+@onready var but_task = %ButtonTask
+
+# Дополнительные элементы (убедись, что они есть в обеих сценах или проверяй на null)
+@onready var promotion_badge = but_promotion.get_node_or_null("NinePatchRect")
+@onready var task_badge = but_task.get_node_or_null("NinePatchRect/NinePatchRect")
 
 func _ready():
 	# Загрузка языковых настроек
 	TranslationServer.set_locale(DataManager.data.get("SettingsGame", {}).get("language", "en"))
-	# Установка размера окна
-	DisplayServer.window_set_size(
-		Vector2i(
-			DataManager.data.get("SettingsGame", {}).get("width", 1600),
-			DataManager.data.get("SettingsGame", {}).get("height", 900)
-		)
-	)
-	# Обновление отображения денег
-	get_node("Panel/HBoxContainer/Label").text = str(DataManager.data_money)
-	get_node("Panel/HBoxContainer/Label2").text = str(DataManager.critical_damage)
-	but_1.pressed.connect(on_new_game_pressed)
-	but_2.pressed.connect(shop)
-	but_3.pressed.connect(settings)
-	but_4.pressed.connect(promotion)
-	but_5.pressed.connect(on_quit_pressed)
-	but_task.pressed.connect(task)
 	
-	get_node("MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4/NinePatchRect").visible = check_promotion()
-	get_node("Panel/HBoxContainer/Button2/NinePatchRect/NinePatchRect").visible = check_task()
+	# Установка размера окна (только для ПК)
+	if OS.get_name() != "Android" and OS.get_name() != "iOS":
+		DisplayServer.window_set_size(
+			Vector2i(
+				DataManager.data.get("SettingsGame", {}).get("width", 1600),
+				DataManager.data.get("SettingsGame", {}).get("height", 900)
+			)
+		)
+	
+	# Обновление отображения денег
+	if money_label: money_label.text = str(DataManager.data_money)
+	if crit_label: crit_label.text = str(DataManager.critical_damage)
+	
+	# Подключение сигналов
+	if but_new_game: but_new_game.pressed.connect(on_new_game_pressed)
+	if but_shop: but_shop.pressed.connect(shop)
+	if but_settings: but_settings.pressed.connect(settings)
+	if but_promotion: but_promotion.pressed.connect(promotion)
+	if but_exit: but_exit.pressed.connect(on_quit_pressed)
+	if but_task: but_task.pressed.connect(task)
+	
+	# Бейджи (красные точки)
+	if promotion_badge: promotion_badge.visible = check_promotion()
+	if task_badge: task_badge.visible = check_task()
 
 func on_new_game_pressed():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/choose_game_mode.tscn").instantiate()
-	get_node("MarginContainer2").visible = false
-	get_node("Reward").visible = false
+	_hide_main_ui()
 	get_node(".").add_child(UiManager.menu_object)
 
 func task():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/daily_tasks.tscn").instantiate()
-	get_node("MarginContainer2").visible = false
-	get_node("Reward").visible = false
+	_hide_main_ui()
 	get_node(".").add_child(UiManager.menu_object)
 	
 func shop():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/shop.tscn").instantiate()
-	get_node("MarginContainer2").visible = false
-	get_node("Reward").visible = false
+	_hide_main_ui()
 	get_node(".").add_child(UiManager.menu_object)
 
 func promotion():
 	UiManager.menu_object = load("res://Scenes/SupportScenes/promotion.tscn").instantiate()
-	get_node("MarginContainer2").visible = false
-	get_node("Reward").visible = false
+	_hide_main_ui()
 	get_node(".").add_child(UiManager.menu_object)
 
 func settings():
@@ -63,7 +71,7 @@ func on_quit_pressed():
 	get_tree().quit()
 
 func show_critical_damage():
-	crit_label.text = str(DataManager.critical_damage)
+	if crit_label: crit_label.text = str(DataManager.critical_damage)
 
 func check_promotion():
 	for i in range(len(DataManager.promotion_progress_level)):
@@ -77,3 +85,9 @@ func check_task():
 		if int(TasksManager.list_tasks_you[i][2]) >= int(TasksManager.list_tasks_you[i][1]):
 			return true
 	return false
+
+# Хелпер для скрытия UI (разная структура сцен)
+func _hide_main_ui():
+	# Ищем контейнеры, которые нужно скрыть при открытии окна
+	if has_node("MarginContainer2"): get_node("MarginContainer2").visible = false
+	if has_node("Reward"): get_node("Reward").visible = false

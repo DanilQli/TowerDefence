@@ -76,6 +76,9 @@ func end_game_company():
 	GameSession.current_game_score = 0
 
 func end_game():
+	if GameSession.game_mode == GameConstants.GameMode.PVP: # Нужно добавить такой режим в GameConstants
+		return # Ничего не делаем, ждем сигнала от сервера
+		
 	tasks()
 	get_tree().paused = true
 	end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()

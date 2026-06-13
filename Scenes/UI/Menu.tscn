@@ -63,11 +63,12 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("4_3hayu")
 
-[node name="Button2" type="Button" parent="Panel/HBoxContainer"]
+[node name="ButtonTask" type="Button" parent="Panel/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/Button2"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/ButtonTask"]
 custom_minimum_size = Vector2(30, 0)
 layout_mode = 1
 anchors_preset = 15
@@ -77,7 +78,7 @@ grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_v3kjt")
 
-[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/Button2/NinePatchRect"]
+[node name="NinePatchRect" type="NinePatchRect" parent="Panel/HBoxContainer/ButtonTask/NinePatchRect"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 1
 anchors_preset = 1
@@ -93,7 +94,8 @@ custom_minimum_size = Vector2(60, 50)
 layout_mode = 2
 texture = ExtResource("3_ai51v")
 
-[node name="Label" type="Label" parent="Panel/HBoxContainer"]
+[node name="MoneyLabel" type="Label" parent="Panel/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(100, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -107,7 +109,8 @@ custom_minimum_size = Vector2(60, 50)
 layout_mode = 2
 texture = ExtResource("4_t06ot")
 
-[node name="Label2" type="Label" parent="Panel/HBoxContainer"]
+[node name="CritLabel" type="Label" parent="Panel/HBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(60, 0)
 layout_mode = 2
 size_flags_vertical = 1
@@ -163,12 +166,13 @@ layout_mode = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Button_1" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="ButtonNewGame" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_t06ot")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_1"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonNewGame"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -181,12 +185,13 @@ text = "KEY_NEW_GAME"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button_2" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="ButtonShop" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_s6sq0")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_2"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonShop"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -199,12 +204,13 @@ text = "KEY_SHOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button_3" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="ButtonSettings" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_6487p")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_3"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonSettings"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -217,12 +223,13 @@ text = "KEY_SETTINGS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button_4" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="ButtonPromotion" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_v3kjt")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonPromotion"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -235,7 +242,7 @@ text = "KEY_PROMOTION"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_4"]
+[node name="NinePatchRect" type="NinePatchRect" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonPromotion"]
 custom_minimum_size = Vector2(30, 30)
 layout_mode = 1
 anchors_preset = 1
@@ -246,12 +253,13 @@ offset_bottom = 20.0
 grow_horizontal = 0
 texture = ExtResource("6_s6sq0")
 
-[node name="Button_5" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+[node name="ButtonExit" type="Button" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(350, 70)
 layout_mode = 2
 theme_override_styles/normal = SubResource("StyleBoxEmpty_3hayu")
 
-[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/Button_5"]
+[node name="Label" type="Label" parent="MarginContainer2/Panel/MarginContainer/VBoxContainer/ButtonExit"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0

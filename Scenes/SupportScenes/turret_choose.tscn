@@ -10,7 +10,6 @@ custom_minimum_size = Vector2(120, 225)
 
 [node name="Label" parent="VBoxContainer" index="1"]
 custom_minimum_size = Vector2(0, 20)
-autowrap_mode = 3
 
 [node name="Button" type="Button" parent="VBoxContainer" index="2"]
 custom_minimum_size = Vector2(0, 30)

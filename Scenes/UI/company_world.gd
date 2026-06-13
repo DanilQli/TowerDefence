@@ -13,4 +13,7 @@ func game_start(level):
 
 
 func back() -> void:
-	get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")
+	if OS.get_name() == "Android" or OS.get_name() == "iOS":
+		get_tree().change_scene_to_file("res://Scenes/Mobile/Menu_mobile.tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/UI/Menu.tscn")

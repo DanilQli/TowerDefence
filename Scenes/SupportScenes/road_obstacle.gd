@@ -6,6 +6,7 @@ var radius: int = 40
 func _ready() -> void:
 	add_to_group("holes")
 	self.z_index = 0
+	self.name = "RoadObstacle_" + str(get_instance_id()) 
 	await get_tree().create_timer(GameConstants.ROAD_OBSTACLE).timeout
 	GameManager.list_coords_road_use_index.erase(position)
 	self.queue_free()

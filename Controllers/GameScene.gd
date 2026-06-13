@@ -11,15 +11,16 @@ var game_end_controller
 var health_controller
 
 func _ready():
-	if GameSession.current_level == 0:
-		map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
-	else:
-		map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
+	#if GameSession.current_level == 0:
+		#map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
+	#else:
+		#map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
+	map_node = load("res://Scenes/Maps/map_7.tscn" % randi_range(9, 9)).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
 	add_child(map_node)
-
+	
 	# Динамически создаем контроллеры
 	build_controller = _create_controller("res://Controllers/BuildController.gd")
 	wave_controller = _create_controller("res://Controllers/WaveController.gd")
