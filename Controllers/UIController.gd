@@ -40,13 +40,13 @@ func initialize(scene, flag=true):
 		var turret_id = "Turret_" + str(i + 1) + "T1"
 		# Проверяем, есть ли башня в DataManager и активна ли она (выбрана в инвентаре)
 		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
-			list_activity_turret.append(i + 1)
+			list_activity_turret.append(i)
 	
 	# Настройка кнопок постройки
 	if is_player: 
 		for i in range(list_activity_turret.size()):
 			var index = i + 1 # Индекс кнопки UI (1, 2, 3, 4)
-			var tower_index = list_activity_turret[i] # ID башни (реальный)
+			var tower_index = list_activity_turret[i] + 1 # ID башни (реальный)
 			var turret_name = "Turret_" + str(tower_index)
 
 			var icon_path = "UI/HUD/BuldBar/Tower_" + str(index) + "/Icon"
@@ -123,9 +123,9 @@ func _on_money_changed():
 	if is_player:
 		for i in range(list_activity_turret.size()):
 			var index = i + 1
-			var tower_idx = list_activity_turret[i]
+			var tower_idx = list_activity_turret[i] + 1
 			
-			var cost = GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session
+			var cost = GameConstants.DATA_TOWER[tower_idx].cost_in_session
 			# Учет мастерства
 			if DataManager.data["Turrets"].has(DataManager.keys[tower_idx - 1]):
 				if DataManager.data["Turrets"][DataManager.keys[tower_idx - 1]].mastery_lvl >= 2:

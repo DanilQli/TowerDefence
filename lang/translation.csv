@@ -9,7 +9,7 @@ KEY_EXIT_MENU,Выход в меню,Exit menu
 KEY_EXPANSION,Расширение,Expansion
 KEY_LANGUAGE,Язык,Language
 KEY_SOUND,Звук,Sound
-KEY_RESET SETTINGS,Сбросить настройки,Reset settings
+KEY_RESET_SETTINGS,Сбросить настройки,Reset settings
 KEY_ACHIEVEMENTS_COMPLETED,Достижений выполнены:,Achievements completed:
 KEY_LEVEL_REWARDS,Награды за уровень:,Level rewards:
 KEY_PROMOTION,Достижения,Achievement
@@ -114,6 +114,36 @@ KEY_SEARCH_PVP,Поиск соперника,Finding an opponent
 KEY_SEARCH_PVP_NO,Не удалось найти соперника. Попробуйте позже.,Couldn't find an opponent. Try again later.
 KEY_DRONE_DAMAGE,Урон дрона,Drone Damage
 KEY_RELOAD_DRONE,Скорость атаки дрона,Drone's attack speed
+
+KEY_STAT_GAME_SESSION,Статистика матча,MATCH STATISTICS
+KEY_STATS_GAME_TIME, Время игры: ,Game Time:
+KEY_STATS_WAVE, Волна: ,Wave:
+KEY_STATS_BASE_HEALTH, Базовое здоровье: ,Base Health:
+KEY_STATS_GOLD,Золото: ,Gold:
+KEY_STATS_DAMAGE_BY_TOWERS, Урон башен: ,DAMAGE BY TOWERS:
+KEY_STATS_CLOSE, Закрыть,Close
+KEY_SETTINGS_FPS_LIMIT,FPS лимит:,FPS Limit:
+KEY_FPS_30,30 FPS,30 FPS
+KEY_FPS_60,60 FPS,60 FPS
+KEY_FPS_120,120 FPS,120 FPS
+KEY_FPS_UNLIMITED, Неограниченно,Unlimited
+KEY_SETTINGS_CONTROLS,Управление,Controls
+KEY_ACTION_BUILD_TOWER_1,Построить башню 1,Build Tower 1
+KEY_ACTION_BUILD_TOWER_2,Построить башню 2,Build Tower 2
+KEY_ACTION_BUILD_TOWER_3,Построить башню 3,Build Tower 3
+KEY_ACTION_BUILD_TOWER_4,Построить башню 4,Build Tower 4
+KEY_ACTION_CANCEL,Отмена,Cancel
+KEY_ACTION_PAUSE,Пауза,Pause
+KEY_ACTION_SPEED_UP,Ускорение,Speed Up
+KEY_ACTION_SHOW_STATS,Статистика,Show Statistics
+KEY_ACTION_SHOW_RANGES,Радиусы башен,Show Tower Ranges
+KEY_PRESS_KEY,Нажмите любую клавишу...,Press any key...
+KEY_CONFLICT,Конфликт! Выберите другую клавишу,Conflict! Choose another key
+KEY_RESET_KEYS,Сбросить на стандартные,Reset to Defaults
+KEY_STATS_TIME,Время в бою,Battle Time
+KEY_STATS_KILLS,Уничтожено врагов,Enemies Killed
+KEY_STATS_TOTAL_DAMAGE,Общий урон,Total Damage
+KEY_STATS_DECK_EFFICIENCY,Эффективность колоды,Deck Efficiency
 
 KEY_MASTERY_LVL_1,+1% к базовому урону,+1% to base damage
 KEY_MASTERY_LVL_2,+1% к скорости атаки,+1% attack speed

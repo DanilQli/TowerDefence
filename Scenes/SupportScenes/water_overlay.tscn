@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://y37qwyr33v1f"]
-
-[ext_resource type="Texture2D" uid="uid://cvn4y7fxdrps8" path="res://Assets/Tilesheet/ME_Singles_Terrains_and_Fences_48x48_Props_Water_2.png" id="1_34hhk"]
-
-[node name="WaterOverlay" type="Sprite2D"]
-scale = Vector2(1.25, 1.25)
-texture = ExtResource("1_34hhk")

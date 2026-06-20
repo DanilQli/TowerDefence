@@ -52,7 +52,7 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 		elif unit_type.begins_with("Enemy_"):
 			is_boss = false
 			var parts = unit_type.split("_")
-			if parts.size() > 1: 
+			if parts.size() > 1:
 				enemy_id = int(parts[1]) - 1
 			enemy_scene_path = "res://Scenes/Enemies/" + unit_type + ".tscn"
 		else:
@@ -84,8 +84,10 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 				enemy.hp = 1000
 				enemy.speed = 100
 			enemy.current_speed = enemy.speed
-			if enemy.has_signal("stone"): enemy.stone.connect(main_scene.on_stone)
-			if enemy.has_signal("signal_spawn_enemies"): enemy.signal_spawn_enemies.connect(main_scene.on_signal_spawn_enemies)
+			if enemy.has_signal("stone"): 
+				enemy.stone.connect(main_scene.on_stone)
+			if enemy.has_signal("signal_spawn_enemies"): 
+				enemy.signal_spawn_enemies.connect(main_scene.on_signal_spawn_enemies)
 		else:
 			if GameConstants.DATA_ENEMY.has(enemy.id):
 				enemy.hp = GameConstants.DATA_ENEMY[enemy.id].hp
@@ -94,19 +96,19 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 				enemy.hp = 100
 				enemy.speed = 100
 			enemy.current_speed = enemy.speed
-
-		if main_scene.has_method("on_base_damage") and not enemy.base_damage.is_connected(main_scene.on_base_damage):
-			enemy.base_damage.connect(main_scene.on_base_damage)
 		
-		# --- ЛОГИКА ОПРЕДЕЛЕНИЯ ЗРИТЕЛЯ ---
-		# В одиночной игре (GameScene) нет флага is_player, поэтому enemy.is_spectator_enemy всегда false
-		# В PvP (player_container) флаг есть.
-		if "is_spectator_enemy" in enemy: 
-			if "is_player" in main_scene:
-				enemy.is_spectator_enemy = (not main_scene.is_player)
+		# === ИСПРАВЛЕНО: Логика is_spectator_enemy ===
+		if "is_spectator_enemy" in enemy:
+			var is_pvp_ai = GameSession.game_mode == GameConstants.GameMode.PVP_AI
+			if is_pvp_ai:
+				# В PvP AI все враги реальные, двигаются сами
+				enemy.is_spectator_enemy = false
+			elif "is_player" in main_scene:
+				# В обычном PvP: зрительский контейнер = spectator враги
+				enemy.is_spectator_enemy = not main_scene.is_player
 			else:
 				enemy.is_spectator_enemy = false
-		# ----------------------------------
+		# =============================================
 
 		if not is_instance_valid(main_scene.map_node):
 			enemy.queue_free()
@@ -134,7 +136,7 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 	if not enemy_progress and GameSession.current_wave < wave_data_all.size():
 		await get_tree().create_timer(5).timeout
 		start_next_wave()
-
+		
 func set_wave_data(waves: Array): wave_data_all = waves
 
 func force_start_wave(index: int):

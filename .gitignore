@@ -1,2 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
+addons/
+Systems/
+Scenes/
+.import/
+.idea/
+android/
+*.exe

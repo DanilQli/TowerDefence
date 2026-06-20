@@ -1,0 +1,16 @@
+{
+  "graphics": {
+    "fps_limit": 0
+  },
+  "keybindings": {
+    "build_tower_1": 49,
+    "build_tower_2": 50.0,
+    "build_tower_3": 51.0,
+    "build_tower_4": 52.0,
+    "cancel": 4194305.0,
+    "pause": 32.0,
+    "show_ranges": 68.0,
+    "show_stats": 4194306.0,
+    "speed_up": 69.0
+  }
+}

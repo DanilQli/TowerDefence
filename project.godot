@@ -29,6 +29,9 @@ TowerCards="*res://Systems/TowerCards.gd"
 TasksManager="*res://Systems/TasksManager.gd"
 PvPSession="*res://Systems/PvPSession.gd"
 NetworkManager="*res://Systems/NetworkManager.gd"
+SettingsManager="*res://Systems/SettingsManager.gd"
+InputManager="*res://Systems/InputManager.gd"
+AIManager="*res://Systems/AIManager.gd"
 
 [display]
 

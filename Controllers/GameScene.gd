@@ -38,6 +38,10 @@ func _ready():
 	GameManager.get_road_coords(self)
 
 	get_tree().paused = false
+	
+	InputManager.game_scene = self
+	var stats = get_node("UI/StatsPanel")
+	stats.game_scene = self
 
 func _process(delta):
 	if build_controller.build_mode:
@@ -48,6 +52,9 @@ func _process(delta):
 
 		if is_last_wave and (enemies_remaining == 0 or GameSession.base_health == 0):
 			game_end_controller.end_game_company()
+	var stats = get_node("UI/StatsPanel")
+	if stats.visible:
+		stats.update_stats()
 
 func _create_controller(script_path: String) -> Node:
 	var script = load(script_path)
