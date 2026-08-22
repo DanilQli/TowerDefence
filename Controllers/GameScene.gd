@@ -27,6 +27,7 @@ func _ready():
 	gift_controller = _create_controller("res://Controllers/GiftController.gd")
 	ui_controller = _create_controller("res://Controllers/UIController.gd")
 	game_end_controller = _create_controller("res://Controllers/GameEndController.gd")
+	game_end_controller.name = "GameEndController"
 	health_controller = _create_controller("res://Controllers/HealthController.gd")
 
 	build_controller.initialize(self)

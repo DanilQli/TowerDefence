@@ -32,6 +32,13 @@ NetworkManager="*res://Systems/NetworkManager.gd"
 SettingsManager="*res://Systems/SettingsManager.gd"
 InputManager="*res://Systems/InputManager.gd"
 AIManager="*res://Systems/AIManager.gd"
+TitleManager="*res://Systems/TitleManager.gd"
+OfflineManager="*res://Systems/OfflineManager.gd"
+AuthService="*res://Systems/AuthService.gd"
+FirebaseHelper="*res://Systems/FirebaseHelper.gd"
+ProfileManager="*res://Systems/ProfileManager.gd"
+FriendsService="*res://Systems/FriendsService.gd"
+Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 
 [display]
 
@@ -41,6 +48,10 @@ window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 window/handheld/orientation=1
 mouse_cursor/custom_image="res://Assets/Button/cursor.png"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot-firebase/plugin.cfg", "res://addons/http-sse-client/plugin.cfg")
 
 [input]
 

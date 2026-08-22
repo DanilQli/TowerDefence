@@ -140,9 +140,15 @@ if __name__ == "__main__":
     # Выходной файл
     OUTPUT_FILE = 'all.txt'
 
+    IGNORE_DIR = 'addons'
+
     with open(OUTPUT_FILE, 'w', encoding='utf-8') as output_file:
         # Рекурсивный обход всех файлов в проекте
         for root, dirs, files in os.walk(PROJECT_DIR):
+            # Модифицируем dirs на месте, чтобы os.walk не заходил в 'addons'
+            if IGNORE_DIR in dirs:
+                dirs.remove(IGNORE_DIR)
+
             for file in files:
                 if any(file.endswith(ext) for ext in TARGET_EXTENSIONS):
                     file_path = os.path.join(root, file)
@@ -158,7 +164,7 @@ if __name__ == "__main__":
                         output_file.write(content)
                         output_file.write("\n\n")  # Разделитель между файлами
                     except Exception as e:
-                        print(f"⚠️ Не удалось прочитать файл: {normalized_path} ({e})")                 
+                        print(f"⚠️ Не удалось прочитать файл: {normalized_path} ({e})")
     cons = 120
     mn_lvl = 1.07
     mn = 1.07
@@ -184,4 +190,4 @@ if __name__ == "__main__":
         print(f"({repr(item[0])}, 5),")
     import random
 
-    generate_choices(2100, 2100, random_percent=5)
+    generate_choices(2100, 2101, random_percent=5)

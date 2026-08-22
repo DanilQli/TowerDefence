@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "639470178867",
+    "project_id": "towerdefense-epic",
+    "storage_bucket": "towerdefense-epic.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:639470178867:android:a6c08439e4163df2f20946",
+        "android_client_info": {
+          "package_name": "com.TowerDefence"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "639470178867-bto4odrmagcp314sstsasb94jibvq1s9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAK-3DAJcU5SRjoovDtZQY-cX-8p9d5JBo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "639470178867-bto4odrmagcp314sstsasb94jibvq1s9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

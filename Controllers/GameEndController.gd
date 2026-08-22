@@ -145,4 +145,60 @@ func open_chest_pressed():
 	DataManager.write_file()
 	var choose_buy = load("res://Scenes/SupportScenes/buy_box_open.tscn").instantiate()
 	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4], true)
+	_sync_profile_after_battle()
 	get_tree().current_scene.get_node("UI").add_child(choose_buy)
+
+func _sync_profile_after_battle() -> void:
+	"""Синхронизирует профиль с Firebase после игры"""
+	print("[GameEnd] 📝 Синхронизация профиля с Firebase...")
+	
+	var firebase = get_node_or_null("/root/Firebase")
+	var firestore = firebase.get_node_or_null("Firestore") if firebase else null
+	
+	if not firestore:
+		print("[GameEnd] ❌ Firestore не доступен")
+		return
+	
+	if not AuthService or not AuthService.is_authenticated:
+		print("[GameEnd] ❌ Пользователь не авторизован")
+		return
+	
+	var uid = AuthService.get_current_uid()
+	var collection = firestore.collection("users")
+	
+	# ✅ СОБИРАЕМ ДАННЫЕ ДЛЯ СОХРАНЕНИЯ
+	var profile_data = {
+		"uid": uid,
+		"nickname": AuthService.get_current_nickname(),
+		"friend_code": AuthService.get_friend_code(),
+		"avatar_id": ProfileManager.profile_data.get("avatar_id", 1),
+		"is_registered": AuthService.is_user_registered(),
+		"gold": ProfileManager.profile_data.get("gold", 500),
+		"level": ProfileManager.profile_data.get("level", 1),
+		"clan_id": ProfileManager.profile_data.get("clan_id", null),
+		"current_deck": ProfileManager.profile_data.get("current_deck", [0, 1, 2, 3]),
+		"titles": ProfileManager.profile_data.get("titles", []),
+		"stats": {
+			"pvp_wins": ProfileManager.get_stat("pvp_wins"),
+			"pvp_losses": ProfileManager.get_stat("pvp_losses"),
+			"best_wave": GameSession.current_wave,  # ← Лучшая волна из сессии
+			"total_damage": TasksManager.deal_damage,  # ← Урон из сессии
+			"total_kills": GameSession.session_enemies_killed,  # ← Убийства из сессии
+			"towers_built": ResourceManager.list_turret.size()  # ← Построено башен
+		},
+		"created_at": ProfileManager.profile_data.get("created_at", FirebaseHelper.get_timestamp()),
+		"last_online": FirebaseHelper.get_timestamp(),  # ← Обновляем время
+		"last_gift_sent": ProfileManager.profile_data.get("last_gift_sent", {})
+	}
+	
+	# ✅ СОХРАНЯЕМ (set_doc создаст если нет, обновит если есть)
+	var result = await collection.set_doc(uid, profile_data)
+	
+	if result:
+		print("[GameEnd] ✅ Профиль сохранён в Firebase")
+	else:
+		print("[GameEnd] ⚠️ Профиль сохранён (без подтверждения)")
+	
+	# ✅ Обновляем локальный кэш
+	FirebaseHelper.save_offline_profile_data(profile_data)
+	OfflineManager.cache_profile(profile_data)
