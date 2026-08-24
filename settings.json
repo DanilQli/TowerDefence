@@ -1,10 +1,10 @@
 {
   "graphics": {
-    "fps_limit": 0
+    "fps_limit": 60.0
   },
   "keybindings": {
     "build_tower_1": 49,
-    "build_tower_2": 50.0,
+    "build_tower_2": 50,
     "build_tower_3": 51.0,
     "build_tower_4": 52.0,
     "cancel": 4194305.0,

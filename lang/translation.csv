@@ -16,7 +16,7 @@ KEY_PROMOTION,Достижения,Achievement
 KEY_PROMOTION_DETAILS,Детали достижения,Achievement Details
 KEY_RUSSIAN,Русский,Russian
 KEY_ENGLISH,Английский,English
-KEY_BACK,Назад,Back
+KEY_BACK,← Назад,← Back
 KEY_FORWARD,Вперёд,Forward
 KEY_ARMAMENT,Вооружение,Armament
 KEY_SHOP,Магазин,Shop
@@ -33,6 +33,15 @@ KEY_UP_ATTACK_SPEED,Увеличение скорости атаки,Increased a
 KEY_DURATION_PHASE_1,Длительность первой фазы,Duration of the first phase
 KEY_DURATION_PHASE_2,Длительность второй фазы,Duration of the second phase
 KEY_MONEY,Монеты,Money
+KEY_RATING,🏆 Рейтинг: ,🏆 Rating:
+KEY_VICTORY_1,⚔️ Победы: ,⚔️ Victory:
+KEY_DEFEAT,💀 Поражения: ,💀 Defeat: :
+KEY_BEST_WAVE,🌊 Лучшая волна: ,🌊 The best wave
+KEY_GOLD,💰 Золото: ,💰 Gold:
+KEY_TOWERS,🏰 Башен: ,🏰 Towers:
+KEY_CHANGE,Изменить,Change
+KEY_PVP_AI,PvP vs AI,PvP vs AI
+
 
 KEY_LVL_UP,Улучшить,Lvl Up
 KEY_LVL_MAX,Макс уровень,Lvl Max
@@ -55,6 +64,29 @@ KEY_RESTART,Попробовать снова,Try again
 KEY_CHOOSE_REWARD,Выбери свою награду,Choose your reward
 KEY_AVAILABLE,Доступные вам,Available to you
 KEY_CHOOSE,Выбрать,Choose
+KEY_ENTRANCE,Вход,Entrance
+KEY_PROFILE,Профиль,Profile
+KEY_FRIENDS,Друзья,Friends
+KEY_LOG_OUT_OF_PROFILE,Выйти из профиля,Log out of profile
+KEY_SEND_GIFT,🎁 Отправить подарок,🎁 Send a gift
+KEY_COPY_DECK,📋 Копировать колоду,📋 Copy the deck
+KEY_PROFILE_1,👤 Профиль,👤 Profile
+KEY_DELETE_FRIENDS,❌ Удалить из друзей,❌ Delete from friends
+KEY_ADD_FRIEND,+ Добавить друга,+ Add a friend
+KEY_COPY,Копировать,Copy
+KEY_REWARD,Ежедневный бонус,Reward
+KEY_TASKS,Ежедневные задачи,Tasks
+KEY_GAME_MODE,Режим боя,Game mode
+KEY_PLOT,Сюжет,Plot
+KEY_ETERNAL_BATTLE,Вечная битва,Eternal Battle
+KEY_PVP_AI,AI,AI
+KEY_PVP,PVP,PVP
+KEY_AGAINST_BOT,Против бота,Against the bot
+KEY_ONLINE,Онлайн,Online
+KEY_LOADING,Загрузка...,Loading...
+KEY_EQUIPPED,Экипировано,Equipped
+KEY_TURRET_NAME,Название башни,Turret Name
+KEY_IN_DECK,Выбрано,Selected
 
 KEY_NAME_TURRET_1,Пушка,Gun
 KEY_NAME_TURRET_2,Ракета,Rocket
@@ -121,7 +153,7 @@ KEY_STATS_WAVE, Волна: ,Wave:
 KEY_STATS_BASE_HEALTH, Базовое здоровье: ,Base Health:
 KEY_STATS_GOLD,Золото: ,Gold:
 KEY_STATS_DAMAGE_BY_TOWERS, Урон башен: ,DAMAGE BY TOWERS:
-KEY_STATS_CLOSE, Закрыть,Close
+KEY_STATS_CLOSE,Закрыть,Close
 KEY_SETTINGS_FPS_LIMIT,FPS лимит:,FPS Limit:
 KEY_FPS_30,30 FPS,30 FPS
 KEY_FPS_60,60 FPS,60 FPS

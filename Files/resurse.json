@@ -7,9 +7,9 @@
   },
   "Mastery": {
     "mastery_damage_tower_session": [
-      598121.485508152,
+      602486.271036151,
       2000024069171.49,
-      2151437.24121783,
+      2156034.16693383,
       0.0,
       0.0,
       0.0,
@@ -21,9 +21,9 @@
       0.0
     ],
     "mastery_deal_tower_session": [
-      883.0,
+      898.0,
       5914.0,
-      1258.0,
+      1273.0,
       52.0,
       72.0,
       0.0,
@@ -106,13 +106,13 @@
     "level": 12,
     "open_level": 14,
     "progress": [
-      95,
+      97.0,
       10.0,
-      0,
-      1,
-      0,
-      0,
-      8
+      0.0,
+      1.0,
+      0.0,
+      0.0,
+      8.0
     ],
     "progress_level": [
       3.0,
@@ -199,14 +199,14 @@
     "width": 1280.0
   },
   "Tasks": {
-    "count_end_game": 95,
-    "count_end_game_company": 0,
+    "count_end_game": 97.0,
+    "count_end_game_company": 0.0,
     "count_spend_money": 0.0,
     "daily_task_career_you": [
       [
         1.0,
         1.0,
-        17422.0,
+        17453.0,
         1.0,
         0.0
       ],
@@ -232,103 +232,103 @@
         0.0
       ]
     ],
-    "daily_task_update_day": 20642,
-    "daily_task_update_week": 20642,
-    "deal_damage": 9268,
-    "destroy_enemies": 31,
+    "daily_task_update_day": 20688.0,
+    "daily_task_update_week": 20688.0,
+    "deal_damage": 8961.28540799998,
+    "destroy_enemies": 30.0,
     "get_coins": 0.0,
-    "get_common_hero_cards": 0,
+    "get_common_hero_cards": 0.0,
     "get_common_turret_cards": 0.0,
     "get_diamonds": 0.0,
     "get_epic_hero_cards": 0.0,
-    "get_epic_turret_cards": 0,
+    "get_epic_turret_cards": 0.0,
     "get_rare_hero_cards": 0.0,
     "get_rare_turret_cards": 0.0,
     "list_tasks_you": [
       [
+        1.0,
+        46.0,
         0.0,
-        15601.0,
-        0.0,
-        7.0,
-        0.0
-      ],
-      [
-        2.0,
         3.0,
-        0.0,
-        6.0,
         0.0
       ],
       [
-        5.0,
-        1.0,
-        0.0,
-        1.0,
-        0.0
-      ],
-      [
-        9.0,
-        1.0,
-        0.0,
         4.0,
-        0.0
-      ],
-      [
-        0.0,
-        24648.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      [
         2.0,
-        5.0,
         0.0,
-        36972.0,
+        16.0,
         0.0
       ],
       [
         5.0,
+        1.0,
+        0.0,
         2.0,
-        0.0,
-        10.0,
-        0.0
-      ],
-      [
-        6.0,
-        18.0,
-        0.0,
-        0.0,
         0.0
       ],
       [
         8.0,
         2.0,
         0.0,
-        72.0,
+        6.0,
+        0.0
+      ],
+      [
+        1.0,
+        37.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        3.0,
+        2.0,
+        0.0,
+        92.0,
+        0.0
+      ],
+      [
+        5.0,
+        2.0,
+        0.0,
+        4.0,
+        0.0
+      ],
+      [
+        7.0,
+        2.0,
+        0.0,
+        8.0,
+        0.0
+      ],
+      [
+        8.0,
+        1.0,
+        0.0,
+        8.0,
         0.0
       ],
       [
         10.0,
-        1.0,
+        2.0,
         0.0,
-        14.0,
+        6.0,
         0.0
       ],
       [
         11.0,
-        4.0,
+        3.0,
         0.0,
-        0.0,
+        1.0,
         0.0
       ]
     ],
-    "support_damage": 0,
-    "support_win_unique_count": 0,
-    "upgrade_turrets": 0,
+    "support_damage": 0.0,
+    "support_win_unique_count": 0.0,
+    "upgrade_turrets": 0.0,
     "weekly_task_update_day": 2034.0,
-    "win_matches": 1.0,
-    "win_one_hp_count": 8,
+    "win_matches": 0.0,
+    "win_one_hp_count": 8.0,
     "win_several_times": [
       0.0,
       0.0,
@@ -336,10 +336,10 @@
       0.0,
       0.0,
       0.0,
-      0.0,
-      0.0,
       1.0,
-      0
+      0.0,
+      0.0,
+      0.0
     ]
   },
   "Turrets": {
@@ -352,20 +352,20 @@
       "cards": 4.0,
       "have": true,
       "level": 7.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 36
+      "mastery_lvl": 0.0,
+      "mastery_xp": 36.0
     },
     "Turret_11T1": {
       "ability": [
         true,
         true
       ],
-      "activity": false,
+      "activity": true,
       "cards": 0.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 9
+      "mastery_lvl": 0.0,
+      "mastery_xp": 9.0
     },
     "Turret_12T1": {
       "ability": [
@@ -376,8 +376,8 @@
       "cards": 0.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_1T1": {
       "ability": [
@@ -385,35 +385,35 @@
         true
       ],
       "activity": true,
-      "cards": 29.0,
+      "cards": 30.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_2T1": {
       "ability": [
         true,
         true
       ],
-      "activity": false,
-      "cards": 34.0,
+      "activity": true,
+      "cards": 35.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 9,
-      "mastery_xp": 2000029
+      "mastery_lvl": 9.0,
+      "mastery_xp": 2000029.0
     },
     "Turret_3T1": {
       "ability": [
         true,
         true
       ],
-      "activity": true,
+      "activity": false,
       "cards": 15.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 3
+      "mastery_lvl": 0.0,
+      "mastery_xp": 3.0
     },
     "Turret_4T1": {
       "ability": [
@@ -421,23 +421,23 @@
         true
       ],
       "activity": false,
-      "cards": 35.0,
+      "cards": 37.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_5T1": {
       "ability": [
         true,
         true
       ],
-      "activity": false,
-      "cards": 34.0,
+      "activity": true,
+      "cards": 36.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_6T1": {
       "ability": [
@@ -448,32 +448,32 @@
       "cards": 39.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_7T1": {
       "ability": [
         true,
         true
       ],
-      "activity": true,
-      "cards": 29.0,
+      "activity": false,
+      "cards": 31.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 1
+      "mastery_lvl": 0.0,
+      "mastery_xp": 1.0
     },
     "Turret_8T1": {
       "ability": [
         true,
         true
       ],
-      "activity": true,
+      "activity": false,
       "cards": 29.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 0
+      "mastery_lvl": 0.0,
+      "mastery_xp": 0.0
     },
     "Turret_9T1": {
       "ability": [
@@ -484,8 +484,8 @@
       "cards": 10.0,
       "have": true,
       "level": 9.0,
-      "mastery_lvl": 0,
-      "mastery_xp": 1
+      "mastery_lvl": 0.0,
+      "mastery_xp": 1.0
     }
   }
 }

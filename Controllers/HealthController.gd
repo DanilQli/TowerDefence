@@ -15,8 +15,9 @@ func update_health(base_health: int):
 
 func _on_base_health_changed(new_hp: int):
 	update_health(new_hp)
-	if new_hp <= 0:
-		main_scene.get_node("GameEndController").end_game()
+	if GameSession.game_mode in [GameConstants.GameMode.SANDBOX, GameConstants.GameMode.CAMPAIGN]:
+		if new_hp <= 0:
+			main_scene.get_node("GameEndController").end_game()
 	
 func initialize(scene):
 	main_scene = scene
