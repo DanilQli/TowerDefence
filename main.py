@@ -132,7 +132,7 @@ if __name__ == "__main__":
     import os"""
 
     # Расширения файлов, которые нас интересуют
-    TARGET_EXTENSIONS = ['.gd', '.ю']
+    TARGET_EXTENSIONS = ['.gd', '.tscn']
 
     # Путь к директории проекта (может быть . — текущая директория)
     PROJECT_DIR = '.'

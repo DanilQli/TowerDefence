@@ -188,7 +188,8 @@ func _sync_profile_after_battle() -> void:
 		},
 		"created_at": ProfileManager.profile_data.get("created_at", FirebaseHelper.get_timestamp()),
 		"last_online": FirebaseHelper.get_timestamp(),  # ← Обновляем время
-		"last_gift_sent": ProfileManager.profile_data.get("last_gift_sent", {})
+		"last_gift_sent": ProfileManager.profile_data.get("last_gift_sent", {}),
+		"claimed_gift_ids": ProfileManager.profile_data.get("claimed_gift_ids", [])
 	}
 	
 	# ✅ СОХРАНЯЕМ (set_doc создаст если нет, обновит если есть)

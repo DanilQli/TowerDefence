@@ -64,7 +64,7 @@
     ]
   },
   "PathOfGlory": {
-    "level": 7.0,
+    "level": 6.0,
     "progress": 20.0,
     "rewards_level_get": [
       [
@@ -92,11 +92,31 @@
         0.0
       ],
       [
-        1.0,
+        1,
         0.0
       ],
       [
         1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.0
+      ],
+      [
+        0.0,
         0.0
       ]
     ],
@@ -179,7 +199,7 @@
   "Resources": {
     "critical_damage": 728,
     "diamond": 0.0,
-    "money": 63891
+    "money": 63901
   },
   "Settings": {
     "list_wave_gift": [
@@ -206,7 +226,7 @@
       [
         1.0,
         1.0,
-        17453.0,
+        17483.0,
         1.0,
         0.0
       ],
@@ -232,10 +252,10 @@
         0.0
       ]
     ],
-    "daily_task_update_day": 20688.0,
-    "daily_task_update_week": 20688.0,
-    "deal_damage": 8961.28540799998,
-    "destroy_enemies": 30.0,
+    "daily_task_update_day": 20729.0,
+    "daily_task_update_week": 20729.0,
+    "deal_damage": 0.0,
+    "destroy_enemies": 0.0,
     "get_coins": 0.0,
     "get_common_hero_cards": 0.0,
     "get_common_turret_cards": 0.0,
@@ -246,10 +266,45 @@
     "get_rare_turret_cards": 0.0,
     "list_tasks_you": [
       [
-        1.0,
-        46.0,
+        0.0,
+        13381.0,
+        0.0,
+        5.0,
+        0.0
+      ],
+      [
+        3.0,
+        2.0,
+        0.0,
+        4.0,
+        0.0
+      ],
+      [
+        6.0,
+        16.0,
         0.0,
         3.0,
+        0.0
+      ],
+      [
+        10.0,
+        1.0,
+        0.0,
+        6.0,
+        0.0
+      ],
+      [
+        0.0,
+        15757.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      [
+        3.0,
+        2.0,
+        0.0,
+        31514.0,
         0.0
       ],
       [
@@ -257,41 +312,6 @@
         2.0,
         0.0,
         16.0,
-        0.0
-      ],
-      [
-        5.0,
-        1.0,
-        0.0,
-        2.0,
-        0.0
-      ],
-      [
-        8.0,
-        2.0,
-        0.0,
-        6.0,
-        0.0
-      ],
-      [
-        1.0,
-        37.0,
-        0.0,
-        0.0,
-        0.0
-      ],
-      [
-        3.0,
-        2.0,
-        0.0,
-        92.0,
-        0.0
-      ],
-      [
-        5.0,
-        2.0,
-        0.0,
-        4.0,
         0.0
       ],
       [
@@ -305,21 +325,21 @@
         8.0,
         1.0,
         0.0,
-        8.0,
+        6.0,
         0.0
       ],
       [
         10.0,
         2.0,
         0.0,
-        6.0,
+        7.0,
         0.0
       ],
       [
-        11.0,
-        3.0,
+        10.0,
+        2.0,
         0.0,
-        1.0,
+        14.0,
         0.0
       ]
     ],
@@ -349,7 +369,7 @@
         true
       ],
       "activity": false,
-      "cards": 4.0,
+      "cards": 11.0,
       "have": true,
       "level": 7.0,
       "mastery_lvl": 0.0,
@@ -385,7 +405,7 @@
         true
       ],
       "activity": true,
-      "cards": 30.0,
+      "cards": 35.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -397,7 +417,7 @@
         true
       ],
       "activity": true,
-      "cards": 35.0,
+      "cards": 41.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 9.0,
@@ -409,7 +429,7 @@
         true
       ],
       "activity": false,
-      "cards": 15.0,
+      "cards": 21.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -421,7 +441,7 @@
         true
       ],
       "activity": false,
-      "cards": 37.0,
+      "cards": 40.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -433,7 +453,7 @@
         true
       ],
       "activity": true,
-      "cards": 36.0,
+      "cards": 50.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -445,7 +465,7 @@
         true
       ],
       "activity": false,
-      "cards": 39.0,
+      "cards": 48.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -457,7 +477,7 @@
         true
       ],
       "activity": false,
-      "cards": 31.0,
+      "cards": 48.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -469,7 +489,7 @@
         true
       ],
       "activity": false,
-      "cards": 29.0,
+      "cards": 49.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,
@@ -481,7 +501,7 @@
         true
       ],
       "activity": false,
-      "cards": 10.0,
+      "cards": 12.0,
       "have": true,
       "level": 9.0,
       "mastery_lvl": 0.0,

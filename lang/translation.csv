@@ -82,6 +82,8 @@ KEY_ETERNAL_BATTLE,Вечная битва,Eternal Battle
 KEY_PVP_AI,AI,AI
 KEY_PVP,PVP,PVP
 KEY_AGAINST_BOT,Против бота,Against the bot
+KEY_ALL_TOWERS,Все башни,All towers
+KEY_AVAILABLE_DECK,Активная колода,Available deck
 KEY_ONLINE,Онлайн,Online
 KEY_LOADING,Загрузка...,Loading...
 KEY_EQUIPPED,Экипировано,Equipped
