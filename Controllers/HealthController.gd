@@ -16,8 +16,11 @@ func update_health(base_health: int):
 func _on_base_health_changed(new_hp: int):
 	update_health(new_hp)
 	if GameSession.game_mode in [GameConstants.GameMode.SANDBOX, GameConstants.GameMode.CAMPAIGN]:
-		if new_hp <= 0:
-			main_scene.get_node("GameEndController").end_game()
+		if new_hp <= 0 and is_instance_valid(main_scene):
+			if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN:
+				main_scene.game_end_controller.end_game_company()
+			else:
+				main_scene.game_end_controller.end_game()
 	
 func initialize(scene):
 	main_scene = scene
@@ -37,9 +40,7 @@ func initialize(scene):
 
 func on_base_damage(damage: int):
 	if GameSession.game_mode in [GameConstants.GameMode.SANDBOX, GameConstants.GameMode.CAMPAIGN]:
-		var new_hp = GameSession.base_health - damage
-		GameSession.base_health = new_hp
-		GameSession.emit_signal("base_health_changed", new_hp)
+		GameSession.spend_base_health(damage)
 	else:
 		if GameSession.game_mode == GameConstants.GameMode.PVP_AI:
 			print("[HealthController] ⚠️ Вызван on_base_damage в PvP_AI режиме - игнорируем")
@@ -84,3 +85,5 @@ func on_base_damage(damage: int):
 					main_scene.game_end_controller.end_game()
 				else:
 					main_scene.game_end_controller.end_game_company()
+
+

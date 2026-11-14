@@ -9,13 +9,20 @@ var gift_controller
 var ui_controller
 var game_end_controller
 var health_controller
+var campaign_pause_menu: CanvasLayer
 
 func _ready():
+	# Install before loading the map/controllers, so input remains available even
+	# if a later controller cannot finish initialising.
+	if GameSession.game_mode in [GameConstants.GameMode.CAMPAIGN, GameConstants.GameMode.SANDBOX]:
+		campaign_pause_menu = preload("res://Controllers/CampaignPauseMenu.gd").new()
+		add_child(campaign_pause_menu)
+		campaign_pause_menu.initialize(self)
 	#if GameSession.current_level == 0:
 		#map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
 	#else:
 		#map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
-	map_node = load("res://Scenes/Maps/map_7.tscn" % randi_range(9, 9)).instantiate()
+	map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(1, 9)).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
@@ -36,6 +43,7 @@ func _ready():
 	ui_controller.initialize(self)
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
+
 	GameManager.get_road_coords(self)
 
 	get_tree().paused = false
@@ -47,15 +55,22 @@ func _ready():
 func _process(delta):
 	if build_controller.build_mode:
 		build_controller.update_tower_preview()
-	if GameSession.speed_game > 0.0:
-		var is_last_wave = GameSession.current_wave >= DataManager.data_wave["level_" + str(GameSession.current_level)].size()
-		var enemies_remaining = map_node.get_node("Path").get_child_count()
-
-		if is_last_wave and (enemies_remaining == 0 or GameSession.base_health == 0):
+	if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN and GameSession.speed_game > 0.0:
+		var total_waves = wave_controller.wave_data_all.size()
+		var is_last_wave = total_waves > 0 and GameSession.current_wave >= total_waves
+		var enemies_remaining = 0
+		for path in map_node.get_node("Path").get_children():
+			for enemy in path.get_children():
+				if not enemy.is_queued_for_deletion():
+					enemies_remaining += 1
+		if is_last_wave and wave_controller.active_spawn_sequences == 0 and enemies_remaining == 0:
 			game_end_controller.end_game_company()
 	var stats = get_node("UI/StatsPanel")
 	if stats.visible:
 		stats.update_stats()
+
+func is_campaign_pause_menu_open() -> bool:
+	return is_instance_valid(campaign_pause_menu) and campaign_pause_menu.visible
 
 func _create_controller(script_path: String) -> Node:
 	var script = load(script_path)
@@ -93,3 +108,5 @@ func on_stone(number_block: int, duration: int):
 		number_block -= 1
 	for i in range(len(tur)):
 		tur[i].stone_effect_start(duration)
+
+

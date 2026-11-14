@@ -4,11 +4,15 @@ extends Node
 var main_scene
 var stars_earned := 0
 var end
+var game_ended := false
 
 func initialize(scene):
 	main_scene = scene
 
 func end_game_company():
+	if game_ended:
+		return
+	game_ended = true
 	TasksManager.count_end_game_company += 1
 	tasks()
 	get_tree().paused = true
@@ -43,6 +47,8 @@ func end_game_company():
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	else:
 		stars_earned = 0
+		if health > 0:
+			end.get_node(panel_root + "/Label").text = tr("KEY_WIN")
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect1").queue_free()
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect2").queue_free()
 		end.get_node(panel_root + "/HBoxContainer2/NinePatchRect3").queue_free()
@@ -61,24 +67,25 @@ func end_game_company():
 
 	if score > ResourceManager.best_score:
 		ResourceManager.best_score = score
-		DataManager.data["settings_game"]["best_score"] = score
+		DataManager.data["SettingsGame"]["best_score"] = score
 
-		var total_money = int(score / 10) + money_dop
-		DataManager.add_data_money(total_money)
-		DataManager.data["Resources"]["money"] = DataManager.data_money
-
-		if not DataManager.level_option[GameSession.current_level - 1]:
-			DataManager.level_option[GameSession.current_level - 1] = true
-			DataManager.data["level_option"]["level"] = DataManager.level_option
-
-		DataManager.write_file()
+	var total_money = int(score / 10) + money_dop
+	DataManager.add_data_money(total_money)
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	var level_index = GameSession.current_level - 1
+	if health > 0 and level_index >= 0 and level_index < DataManager.level_option.size():
+		DataManager.level_option[level_index] = true
+		DataManager.data["LevelOption"]["level"] = DataManager.level_option
+	DataManager.write_file()
 
 	GameSession.current_game_score = 0
 
 func end_game():
 	if GameSession.game_mode == GameConstants.GameMode.PVP: # Нужно добавить такой режим в GameConstants
 		return # Ничего не делаем, ждем сигнала от сервера
-		
+	if game_ended:
+		return
+	game_ended = true
 	tasks()
 	get_tree().paused = true
 	end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
@@ -87,10 +94,11 @@ func end_game():
 	if score > ResourceManager.best_score:
 		ResourceManager.best_score = score
 		DataManager.data["SettingsGame"]["best_score"] = score
-		DataManager.add_data_money(int(score / 10))
-		DataManager.data["Resources"]["money"] = DataManager.data_money
-		DataManager.write_file()
-	stars_earned = randi_range(0, 3)
+	DataManager.add_data_money(int(score / 10))
+	DataManager.data["Resources"]["money"] = DataManager.data_money
+	DataManager.write_file()
+	# В обычном режиме отсутствие здоровья означает поражение, без случайной награды.
+	stars_earned = 0 if GameSession.base_health <= 0 else 1
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(score)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(score / 10))
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
@@ -107,7 +115,7 @@ func tasks():
 	if GameSession.base_health == 1:
 		TasksManager.win_one_hp_count += 1
 		TasksManager.win_several_times.append(1)
-	elif GameSession.base_health == 0:
+	elif GameSession.base_health <= 0:
 		TasksManager.win_several_times.append(0)
 	else:
 		TasksManager.win_matches += 1
@@ -118,7 +126,8 @@ func tasks():
 	
 func restart():
 	GameSession.current_wave = 0
-	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level]
+	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level] if GameSession.current_level < GameConstants.MONEY_BEGIN.size() else 500.0
+	GameSession.base_health = 10
 	UiManager.list_open_menu_turrets = []
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
@@ -203,3 +212,5 @@ func _sync_profile_after_battle() -> void:
 	# ✅ Обновляем локальный кэш
 	FirebaseHelper.save_offline_profile_data(profile_data)
 	OfflineManager.cache_profile(profile_data)
+
+

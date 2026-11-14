@@ -53,7 +53,7 @@ func initialize(scene, flag=true):
 			var button_path = "UI/HUD/BuldBar/Tower_" + str(index)
 
 			if main_scene.has_node(icon_path):
-				main_scene.get_node(icon_path).texture = load("res://Assets/Props/towerDefense_tile_turret_" + str(tower_index) + ".png")
+				main_scene.get_node(icon_path).texture = preload("res://Systems/SkinPreview.gd").texture(tower_index)
 
 			if main_scene.has_node(button_path):
 				var button = main_scene.get_node(button_path)
@@ -83,8 +83,8 @@ func initialize(scene, flag=true):
 # Эти методы больше не нужны, если используется DraggableButton.gd,
 # но оставим их на всякий случай или для ПК логики (если там не драг)
 func start_drag_build(type, index):
-	main_scene.build_controller.initiate_build_mode(type, index)
-	main_scene.build_controller.update_tower_preview()
+	if main_scene.build_controller.initiate_build_mode(type, index):
+		main_scene.build_controller.update_tower_preview()
 
 func finish_drag_build():
 	if main_scene.build_controller.build_mode:
@@ -125,7 +125,7 @@ func _on_money_changed():
 			var index = i + 1
 			var tower_idx = list_activity_turret[i] + 1
 			
-			var cost = GameConstants.DATA_TOWER[tower_idx].cost_in_session
+			var cost = GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session
 			# Учет мастерства
 			if DataManager.data["Turrets"].has(DataManager.keys[tower_idx - 1]):
 				if DataManager.data["Turrets"][DataManager.keys[tower_idx - 1]].mastery_lvl >= 2:
@@ -161,3 +161,5 @@ func title_hide():
 		if is_instance_valid(menu):
 			menu.queue_free()
 	UiManager.list_open_menu_turrets.clear()
+
+

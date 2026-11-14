@@ -8,6 +8,7 @@ var enemies_in_wave: int
 var gift_controller
 var game_end_controller
 var current_wave_index: int = -1
+var active_spawn_sequences: int = 0
 var rng = RandomNumberGenerator.new()
 
 func initialize(scene: Node, waves_data = null):
@@ -34,6 +35,7 @@ func retrieve_wave_data() -> Array:
 	return wave_data
 
 func spawn_enemies(wave: Array, enemy_progress=false):
+	active_spawn_sequences += 1
 	if main_scene.has_node("UI/HUD/InfoBar/H3/WaveValue"):
 		main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameSession.current_wave)
 	
@@ -112,6 +114,7 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 
 		if not is_instance_valid(main_scene.map_node):
 			enemy.queue_free()
+			active_spawn_sequences -= 1
 			return
 
 		var path_node = main_scene.map_node.get_node_or_null("Path")
@@ -133,6 +136,7 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 
 		await get_tree().create_timer(delay).timeout
 
+	active_spawn_sequences -= 1
 	if not enemy_progress and GameSession.current_wave < wave_data_all.size():
 		await get_tree().create_timer(5).timeout
 		start_next_wave()
@@ -151,3 +155,5 @@ func start_next_wave():
 	if wave_data.size() > 0: spawn_enemies(wave_data)
 
 func get_current_wave_index() -> int: return current_wave_index
+
+

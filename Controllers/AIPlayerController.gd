@@ -8,6 +8,7 @@ var container: Node
 var is_active := false
 var last_action_time := 0.0
 var min_action_interval := 0.5
+var request_in_flight := false
 
 # === ДОБАВИТЬ ЭТИ СТРОКИ ===
 var max_damage_val := 0.0
@@ -20,7 +21,7 @@ func setup(player_container: Node):
 	print("[AI Player] Контроллер активирован")
 
 func _process(delta):
-	if not is_active or not is_instance_valid(container):
+	if not is_active or request_in_flight or not is_instance_valid(container):
 		return
 	
 	var current_time = Time.get_ticks_msec() / 1000.0
@@ -55,7 +56,9 @@ func _request_ai_decision():
 	last_action_time = Time.get_ticks_msec() / 1000.0
 	
 	var state = _collect_game_state()
+	request_in_flight = true
 	var action = await AIManager.predict(state)
+	request_in_flight = false
 	
 	if action.has("error"):
 		print("[AI Player] Ошибка AI: ", action.error)
@@ -74,7 +77,7 @@ func _collect_game_state() -> Dictionary:
 	var deck = []
 	if container.has_node("Controllers/UIController"):
 		var ui_controller = container.get_node("Controllers/UIController")
-		if ui_controller.has_property("list_activity_turret"):
+		if "list_activity_turret" in ui_controller:
 			deck = ui_controller.list_activity_turret.duplicate()
 	
 	if deck.size() == 0:
@@ -380,10 +383,9 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int):
 		print("[AI Player] Нет слоя Turret!")
 		return
 	
-	turret_layer.add_child(turret)
 	turret.position = position
 	turret.built = true
-	turret._ready()
+	turret_layer.add_child(turret)
 	
 	if tilemap:
 		tilemap.set_cell(Vector2i(grid_x, grid_y), 0, Vector2i(0, 4))
@@ -429,3 +431,5 @@ func _upgrade_tower(grid_x: int, grid_y: int):
 func stop():
 	is_active = false
 	print("[AI Player] Контроллер остановлен")
+
+
