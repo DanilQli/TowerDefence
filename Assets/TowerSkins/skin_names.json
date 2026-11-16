@@ -155,8 +155,8 @@
   },
   "turret_12": {
     "skin_01": {
-      "name_ru": "Золотой механизм",
-      "original_id": "golden_mechanism"
+      "name_ru": "Лазурный механизм",
+      "original_id": "azure_mechanism"
     },
     "skin_02": {
       "name_ru": "Лесной механизм",

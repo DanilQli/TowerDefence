@@ -128,7 +128,7 @@ func _on_money_changed():
 			var cost = GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session
 			# Учет мастерства
 			if DataManager.data["Turrets"].has(DataManager.keys[tower_idx - 1]):
-				if DataManager.data["Turrets"][DataManager.keys[tower_idx - 1]].mastery_lvl >= 2:
+				if DataManager.data["Turrets"][DataManager.keys[tower_idx - 1]].mastery_lvl >= 3:
 					cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 			
 			var cost_label_path = "UI/HUD/BuldBar/Tower_" + str(index) + "/Color/Cost"
@@ -161,5 +161,3 @@ func title_hide():
 		if is_instance_valid(menu):
 			menu.queue_free()
 	UiManager.list_open_menu_turrets.clear()
-
-

@@ -130,5 +130,3 @@ func continue_game():
 	have_open_present = false
 	get_tree().paused = false
 	Engine.set_time_scale(GameSession.speed_game)
-
-

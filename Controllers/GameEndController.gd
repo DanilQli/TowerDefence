@@ -73,10 +73,19 @@ func end_game_company():
 	DataManager.add_data_money(total_money)
 	DataManager.data["Resources"]["money"] = DataManager.data_money
 	var level_index = GameSession.current_level - 1
+	var diamonds_earned := 0
 	if health > 0 and level_index >= 0 and level_index < DataManager.level_option.size():
+		if not bool(DataManager.level_option[level_index]):
+			diamonds_earned = DataManager.grant_campaign_diamonds(GameSession.current_level)
 		DataManager.level_option[level_index] = true
 		DataManager.data["LevelOption"]["level"] = DataManager.level_option
 	DataManager.write_file()
+	if diamonds_earned > 0:
+		var gem_label := Label.new()
+		gem_label.name = "DiamondReward"
+		gem_label.text = tr("KEY_CAMPAIGN_DIAMOND_REWARD") % diamonds_earned
+		end.get_node(panel_root).add_child(gem_label)
+		end.get_node(panel_root).move_child(gem_label, 3)
 
 	GameSession.current_game_score = 0
 
@@ -111,14 +120,16 @@ func end_game():
 	GameSession.current_game_score = 0
 
 func tasks():
+	TasksManager.finish_battle(GameSession.base_health > 0)
 	TasksManager.win_several_times.pop_at(0)
 	if GameSession.base_health == 1:
+		TasksManager.record_task(11)
 		TasksManager.win_one_hp_count += 1
 		TasksManager.win_several_times.append(1)
 	elif GameSession.base_health <= 0:
 		TasksManager.win_several_times.append(0)
 	else:
-		TasksManager.win_matches += 1
+		TasksManager.record_task(11)
 		TasksManager.win_several_times.append(1)
 	TasksManager.count_end_game += 1
 	DataManager.write_mastery()
@@ -191,7 +202,7 @@ func _sync_profile_after_battle() -> void:
 			"pvp_wins": ProfileManager.get_stat("pvp_wins"),
 			"pvp_losses": ProfileManager.get_stat("pvp_losses"),
 			"best_wave": GameSession.current_wave,  # ← Лучшая волна из сессии
-			"total_damage": TasksManager.deal_damage,  # ← Урон из сессии
+			"total_damage": TasksManager.battle_damage,  # ← Урон из сессии
 			"total_kills": GameSession.session_enemies_killed,  # ← Убийства из сессии
 			"towers_built": ResourceManager.list_turret.size()  # ← Построено башен
 		},
@@ -212,5 +223,3 @@ func _sync_profile_after_battle() -> void:
 	# ✅ Обновляем локальный кэш
 	FirebaseHelper.save_offline_profile_data(profile_data)
 	OfflineManager.cache_profile(profile_data)
-
-

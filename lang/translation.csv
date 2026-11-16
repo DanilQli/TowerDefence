@@ -1,4 +1,4 @@
-﻿,ru,en
+,ru,en
 KEY_WELCOME,Добро пожаловать,Welcome
 KEY_NEW_GAME,Новая игра,New game
 KEY_CONTINUE,Продолжить,Continue
@@ -41,8 +41,6 @@ KEY_GOLD,💰 Золото: ,💰 Gold:
 KEY_TOWERS,🏰 Башен: ,🏰 Towers:
 KEY_CHANGE,Изменить,Change
 KEY_PVP_AI,PvP vs AI,PvP vs AI
-
-
 KEY_LVL_UP,Улучшить,Lvl Up
 KEY_LVL_MAX,Макс уровень,Lvl Max
 KEY_CLOSE,Закрыть,Close
@@ -88,20 +86,18 @@ KEY_LOADING,Загрузка...,Loading...
 KEY_EQUIPPED,Экипировано,Equipped
 KEY_TURRET_NAME,Название башни,Turret Name
 KEY_IN_DECK,Выбрано,Selected
-
-KEY_NAME_TURRET_1,Пушка,Gun
-KEY_NAME_TURRET_2,Ракета,Rocket
-KEY_NAME_TURRET_3,Арбалет,Crossbow
-KEY_NAME_TURRET_4,Замедление,Slowing 
-KEY_NAME_TURRET_5,Хронопетля,Chronopetl
-KEY_NAME_TURRET_6,Доход,Income
-KEY_NAME_TURRET_7,Отравитель,Poisoner
-KEY_NAME_TURRET_8,Минотавр,Minotaur
-KEY_NAME_TURRET_9,Палач,Hangman
-KEY_NAME_TURRET_10,Задира,Bully
-KEY_NAME_TURRET_11,Дроновод,Drone driver
-KEY_NAME_TURRET_12,Связующая башня,Connecting Tower
-
+KEY_NAME_TURRET_1,«Пушка»,“Gun”
+KEY_NAME_TURRET_2,«Ракета»,“Rocket”
+KEY_NAME_TURRET_3,«Арбалет»,“Crossbow”
+KEY_NAME_TURRET_4,«Замедление»,“Slowing”
+KEY_NAME_TURRET_5,«Хронопетля»,“Chronopetl”
+KEY_NAME_TURRET_6,«Доход»,“Income”
+KEY_NAME_TURRET_7,«Отравитель»,“Poisoner”
+KEY_NAME_TURRET_8,«Минотавр»,“Minotaur”
+KEY_NAME_TURRET_9,«Палач»,“Hangman”
+KEY_NAME_TURRET_10,«Задира»,“Bully”
+KEY_NAME_TURRET_11,«Дроновод»,“Drone driver”
+KEY_NAME_TURRET_12,«Связующая башня»,“Connecting Tower”
 KEY_HEALTH_LEVEL_FINISHING,Процент здоровья для добивания,The percentage of health to finish off
 KEY_BONUS_ATTACK,Увеличение урона,Increased damage
 KEY_BUY_FOR,Купить за,Buy for
@@ -134,7 +130,23 @@ KEY_AWARDS_DETAILS,Детали награды,Award Details
 KEY_PROMOTION_LEVEL,Уровень достижения,Achievement level
 KEY_BOX,Сундук,Chest
 KEY_OPEN,Открыть,Open
-KEY_TASKS_INFO,Новые еженедельные задания появляются один раз в 24 часа. Задания предыдущей недели не сохраняются,New weekly tasks appear once every 24 hours. The tasks of the previous week are not saved
+KEY_TASKS_INFO,"АЛМАЗЫ
+
+Кампания: за первое победное прохождение уровня — 1 алмаз. За поражение или повторное прохождение алмазы не выдаются.
+
+Ранее пройденные уровни учитываются однократно при обновлении сохранения.
+
+Задания: за выполнение всех ежедневных заданий начисляется 1 алмаз; всех еженедельных — 3 алмаза. Награда выдаётся один раз за период, даже если отдельные награды заданий ещё не забраны.
+
+Ежедневные задания обновляются раз в сутки, еженедельные — раз в семь дней. Задания на получение алмазов учитывают начисленные алмазы. Баланс показан в главном меню.","DIAMONDS
+
+Campaign: earn 1 diamond for the first victory on each level. Defeats and repeat clears do not award diamonds.
+
+Previously completed levels are credited once when the save is updated.
+
+Tasks: completing all daily tasks grants 1 diamond; completing all weekly tasks grants 3 diamonds. Each bonus is awarded once per period, even if individual task rewards are unclaimed.
+
+Daily tasks refresh every day and weekly tasks every seven days. Earned diamonds count toward diamond tasks. Your balance appears in the main menu."
 KEY_TASKS_DAILY,Ежедневные,Daily
 KEY_TASKS_WEEKLY,Еженедельные,Weekly
 KEY_TASKS_CAREER,Карьерные,Career goals
@@ -147,7 +159,6 @@ KEY_SEARCH_PVP,Поиск соперника,Finding an opponent
 KEY_SEARCH_PVP_NO,Не удалось найти соперника. Попробуйте позже.,Couldn't find an opponent. Try again later.
 KEY_DRONE_DAMAGE,Урон дрона,Drone Damage
 KEY_RELOAD_DRONE,Скорость атаки дрона,Drone's attack speed
-
 KEY_STAT_GAME_SESSION,Статистика матча,MATCH STATISTICS
 KEY_STATS_GAME_TIME, Время игры: ,Game Time:
 KEY_STATS_WAVE, Волна: ,Wave:
@@ -177,7 +188,6 @@ KEY_STATS_TIME,Время в бою,Battle Time
 KEY_STATS_KILLS,Уничтожено врагов,Enemies Killed
 KEY_STATS_TOTAL_DAMAGE,Общий урон,Total Damage
 KEY_STATS_DECK_EFFICIENCY,Эффективность колоды,Deck Efficiency
-
 KEY_MASTERY_LVL_1,+1% к базовому урону,+1% to base damage
 KEY_MASTERY_LVL_2,+1% к скорости атаки,+1% attack speed
 KEY_MASTERY_LVL_3,-1% от стоимости постройки,-1% of the cost of construction
@@ -189,7 +199,6 @@ KEY_MASTERY_LVL_8,+2% к скорости атаки,+2% attack speed
 KEY_MASTERY_LVL_9,Башни этого типа получают +5% урона по боссам,Towers of this type take +5% damage on bosses.
 KEY_MASTERY_LVL_10,Открывает уникальный скин,Opens a unique skin
 KEY_MASTERY_DESC,Накопление опыта: Каждая башня на поле боя накапливает XP за определённые действия. \nНанесённый урон: +1 XP за каждые 1 000 000 единиц урона.\nУбийство врага: +1 XP за каждого 1 000 убитого врага. \nЗаработанные деньги (для MoneyTower): +1 XP за каждые 100 монет. \nЗамедленные/остановленные враги (для башен контроля): +1 XP за каждого 100 000 врага под эффектом.,"Experience accumulation: Each tower on the battlefield accumulates XP for certain actions. Damage Done: +1 XP for every 1,000,000 damage units.Enemy Kill: +1 XP for every 1,000 enemy killed. Earned money (for MoneyTower): +1 XP for every 100 coins. Slowed/Stopped enemies (for control towers): +1 XP for every 100,000 enemies under effect."
-
 KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player
 KEY_PROMOTION_DESC_2,Потратьте монет более:,Spend more coins:
@@ -204,7 +213,6 @@ KEY_PROMOTION_DESC_6,Победите с использованием неско
 KEY_PROMOTION_NAME_6,Разнообразная поддержка,Diverse Support
 KEY_PROMOTION_DESC_7,Одержите победу в матчах имея 1 ОЗ:,Win matches with 1 HP left:
 KEY_PROMOTION_NAME_7,На грани поражения,On the Edge of Defeat
-
 KEY_TASK_1,Нанесите единиц урона: ,Deal damage units
 KEY_TASK_2,Уничтожите врагов: ,Destroy enemies
 KEY_TASK_3,Получите карточек обычных башен: ,Get common turret cards
@@ -213,11 +221,10 @@ KEY_TASK_5,Получите карточек эпических башен: ,Get
 KEY_TASK_6,Улучшите башен: ,Upgrade turrets
 KEY_TASK_7,Получите монет: ,Get coins
 KEY_TASK_8,Получите алмазов: ,Get diamonds
-KEY_TASK_9,Получите карточек обычного героя: ,Get common hero cards
-KEY_TASK_10,Получите карточек редкого героя: ,Get rare hero cards
-KEY_TASK_11,Получите карточек эпического героя: ,Get epic hero cards
+KEY_TASK_9,Получите карточек обычных башен: ,Get common tower cards: 
+KEY_TASK_10,Получите карточек редких башен: ,Get rare tower cards: 
+KEY_TASK_11,Получите карточек эпических башен: ,Get epic tower cards: 
 KEY_TASK_12,Выиграйте матчей: ,Win matches:
-
 KEY_ENEMY_BOSS_1,Каждые [color='blue']3[/color] секунды [color='blue']3[/color] башни окаменеют на [color='blue']5[/color] секунд,Every [color='blue']3[/color] seconds [color='blue']3[/color] towers will petrify for [color='blue']5[/color] seconds
 KEY_ENEMY_BOSS_2,Блокирует [color='blue']10%[/color] получаемого урона,Blocks [color='blue']10%[/color] of damage received
 KEY_ENEMY_BOSS_3,"При появлении на дороге заливает её водой, ускоряя движение всех врагов на [color='blue']20%[/color]","When it appears on the road, it fills it with water, speeding up the movement of all enemies by [color='blue']20%[/color]"
@@ -231,7 +238,6 @@ KEY_ENEMY_BOSS_10,"Гонец. При смерти появляются [color='
 KEY_ENEMY_BOSS_11,Медик. Появляется со 'свитой'. Каждые [color='blue']3[/color] секунды излечивает 'свиту' на [color='blue']3%[/color] от их текущего здоровья,The medic. Appears with a 'retinue'. Every [color='blue']3[/color] seconds heals a 'retinue' by [color='blue']3%[/color] of their current health
 KEY_ENEMY_BOSS_12,"Поглотитель всплесков. Попадание сплеш-зарядов на [color='blue']75%[/color] менее эффективно. Любое замедление ускоряет поглотителя, максимум [color='blue']250%[/color] от начальной скорости","A splash absorber. Splash charges hitting [color='blue']75%[/color] are less effective. Any deceleration accelerates the absorber, a maximum of [color='blue']250%[/color] of the initial velocity"
 KEY_ENEMY_BOSS_13,"Дракон. Поджигает башни, уменьшая их уровень, только башни [color='blue']1[/color] уровня в безопасности","The dragon. Sets towers on fire, reducing their level, only towers of [color='blue']1[/color] level are safe"
-
 KEY_TURRET1_DESC,Пушка наносит [color='blue']случайный[/color] дополнительный урон цели,The cannon deals random additional damage to the target
 KEY_TURRET1_UP0_DESC,С шансом[color='blue'] 50%[/color] пушка атакует цели дважды,"With chance[color='red'] 50%[/color], the cannon will attack the targets twice"
 KEY_TURRET1_UP1_DESC,Добавляется величина от [color='blue']0%[/color] до [color='blue']40%[/color] критического урона,A value from [color='blue']0%[/color] to [color='blue']40%[/color] critical damage is added
@@ -239,28 +245,28 @@ KEY_TURRET2_DESC,"Пушка атакует [color='blue']первые неск�
 KEY_TURRET2_UP0_DESC,Смерть боса пометит [color='blue']случайную ракету[/color]. Урон за каждую метку увеличивается на [color='blue']3%[/color],The death of the boss will mark [color='blue']a random rocket[/color]. The damage for each mark increases by [color='blue']3%[/color]
 KEY_TURRET2_UP1_DESC,Увеличивает шанс критического урона по боссам на [color='blue']5%[/color] от всех ракет,Increases the chance of critical damage to bosses by [color='blue']5%[/color] of all missiles
 KEY_TURRET3_DESC,Арбалет периодически меняет фазу стрельбы. В первой фазе значительно увеличивает свою [color='blue']скорость стрельбы[/color]. Длительность фаз и интервал их переключения зависят от [color='blue']уровня[/color],"The crossbow periodically changes the firing phase. In the first phase, it significantly increases its [color='blue']firing rate[/color]. The duration of the phases and their switching interval depend on the [color='blue']level[/color]"
-KEY_TURRET3_UP0_DESC,С шансом[color='blue'] 10%[/color] башня может перейти в первую стадию повторно,"With a [color='blue']10% [/color]chance of , the tower can advance to the first stage again."
+KEY_TURRET3_UP0_DESC,С шансом[color='blue'] 10%[/color] башня может перейти в первую стадию повторно,There is a [color='blue']10%[/color] chance the tower will return to its first phase.
 KEY_TURRET3_UP1_DESC,Каждый третий переход арбалета во вторую фазу увеличит его урон на [color='blue']200%[/color] до конца фазы,Every third transition of the crossbow to the second phase will increase its damage by [color='blue']200%[/color] until the end of the phase
 KEY_TURRET4_DESC,Замедляет врагов в радиусе действия,Slows down enemies in range
 KEY_TURRET4_UP0_DESC,Во время начала действия замедления всем врагам в радиусе наносится урон равный[color='blue'] 1%[/color] от текущего здоровья врага,"During the start of the deceleration action, all enemies in the radius are dealt damage equal to [color='blue'] 1%[/color] of the enemy's current health."
 KEY_TURRET4_UP1_DESC,Урон по боссам увеличен до[color='blue'] 5%[/color],Boss damage increased to [color='blue'] 5%[/color]
 KEY_TURRET5_DESC,Отбрасывает врагов назад.,Knocks enemies back.
-KEY_TURRET5_UP0_DESC,С шансом[color='blue'] 10%[/color] отбросит врага на начало пути.,"With a 10% chance of [color='blue'],[/color] will throw the enemy back to the beginning of the path."
+KEY_TURRET5_UP0_DESC,С шансом[color='blue'] 10%[/color] отбросит врага на начало пути.,There is a [color='blue']10%[/color] chance to send an enemy back to the start of the path.
 KEY_TURRET5_UP1_DESC,Добивает врагов чъё здоровье меньше[color='blue'] 10%[/color]. Не действует на боссов.,Finishes off enemies whose health is less than [color='blue'] 10%[/color]. Does not work on bosses.
 KEY_TURRET6_DESC,Майнит золото,Mining gold
 KEY_TURRET6_UP0_DESC,Увеличивает количество золота добываемое с убийства врага на[color='blue'] 1[/color] единицу,Increases the amount of gold extracted from enemies by[color='blue'] 1[/color] unit
 KEY_TURRET6_UP1_DESC,Доход от башни увеличивается на[color='blue'] 1%[/color] от каждой башни на поле,Tower revenue increases by[color='blue'] 1%[/color] from each tower on the field
 KEY_TURRET7_DESC,Отравляет первого врага на пути. Отравление действует[color='blue'] 4[/color] секунды и периодически наносит урон врагу.,Poisons the first enemy on the way. Poisoning lasts for[color='blue'] 4[/color] seconds and periodically deals damage to the enemy.
 KEY_TURRET7_UP0_DESC,Отравленные враги передвигаются на[color='blue'] 5%[/color] медленнее,Poisoned enemies move[color='blue'] 5%[/color] slower
-KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,"With a 5% chance of [color='blue'][/color], the poisoner can infect[color='blue'] 2 [/color]enemies at the same time"
-KEY_TURRET8_DESC,"Минотавр атакует [color='blue']первую цель[/color] на дороге. Периодически вызывается в случайной области [color='blue']землетрясение[/color], в радиусе которого монстры замедляются и получают урон","The minotaur is attacking [color='blue'] the first target[/color] on the road. An earthquake [/color] is periodically triggered in a random area [color='blue'], in the radius of which monsters slow down and take damage."
+KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,There is a [color='blue']5%[/color] chance to poison [color='blue']2[/color] enemies at once.
+KEY_TURRET8_DESC,"Минотавр атакует [color='blue']первую цель[/color] на дороге. Периодически вызывается в случайной области [color='blue']землетрясение[/color], в радиусе которого монстры замедляются и получают урон","The Minotaur attacks the [color='blue']first target[/color] on the path. An [color='blue']earthquake[/color] periodically strikes a random area, slowing enemies and damaging them."
 KEY_TURRET8_UP0_DESC,"При повышении уровня, появлении Минотавра начисляется заряд ярости, и все Минотавры входят в режим [color='blue']берсерка[/color] на [color='blue']10с[/color]. В этом режиме урон вызываемых землетрясений увеличивается на [color='blue']50%[/color] и дополнительно на 1% за каждый заряд ярости","When a Minotaur level up, a rage charge is charged, and all Minotaurs enter [color='blue']berserk mode[/color] by [color='blue']10c[/color]. In this mode, the damage caused by earthquakes increases by [color='blue']50%[/color] and an additional 1% for each rage charge"
 KEY_TURRET8_UP1_DESC,Каждый заряд ярости увеличивает действия режима [color='blue']берсерка[/color] на [color='blue']1[/color] секунду. Максимум [color='blue']30[/color] секунд,Each rage charge increases the effects of the [color='blue']Berserker mode[/color] by [color='blue']1[/color] second. Maximum [color='blue']30[/color] seconds
 KEY_TURRET9_DESC,"Если здоровье врага меньше определенно уровня Палач добивает его, не действует на боссов","If the enemy's health is less than a certain level, the Executioner finishes him off, does not affect bosses."
 KEY_TURRET9_UP0_DESC,После добивания врага следующий выстрел нанесёт урон на [color='blue']300%[/color] больше,"After finishing off the enemy, the next shot will cause damage by [color='blue']300%[/color] more"
 KEY_TURRET9_UP1_DESC,Открывает возможность добивать боссов,Opens up the opportunity to finish off bosses
 KEY_TURRET10_DESC,"При наличии на поле более [color='blue']5[/color] врагов с вероятностью [color='blue']15%[/color] может прийти в состояние [color='blue']ярости[/color], получая бонус к [color='blue']скорости атаки, урону[/color]. Всегда в [color='blue']ярости[/color] в битве с боссами. После завершения [color='blue']ярости[/color] не может атаковать и повторно применять ярость в течении [color='blue']3[/color]с.","If there are more than [color='blue']5[/color] enemies on the field, with a probability of [color='blue']15%[/color] can enter a state of [color='blue']rage[/color], receiving a bonus to [color='blue']attack speed, damage[/color]. Always in [color='blue']rage[/color] in boss battles. After completing [color='blue']rage, [/color] cannot attack and reapply rage for [color='blue']3[/color]seconds."
-KEY_TURRET10_UP0_DESC,С шансом [color='blue']5%[/color] Задира может совершить усиленный удар при атаке босса. Такой удар наносит [color='blue']1000%[/color] урона от атаки Задиры,With a [color='blue']5%[/color] chance of  The bully can make an enhanced hit when attacking the boss. This strike deals [color='blue']1000%[/color] damage from the Bully's attack
+KEY_TURRET10_UP0_DESC,С шансом [color='blue']5%[/color] Задира может совершить усиленный удар при атаке босса. Такой удар наносит [color='blue']1000%[/color] урона от атаки Задиры,"There is a [color='blue']5%[/color] chance to land an enhanced strike on a boss, dealing [color='blue']1000%[/color] of the tower's attack damage."
 KEY_TURRET10_UP1_DESC,Урон Задиры увеличивается на [color='blue']10%[/color] за каждого монстра на дороге. Максимальный бонус - [color='blue']100%[/color],Bully's damage increases by [color='blue']10%[/color] for each monster on the road. The maximum bonus is [color='blue']100%[/color]
 KEY_TURRET11_DESC,"Каждые [color='blue']20[/color] секунд выпускает двух автономных дронов: 'Разведчика', атакующего самого [color='blue']дальнего[/color] врага, и 'Перехватчика', атакующего самого [color='blue']близкого[/color] к базе. Дроны живут [color='blue']15[/color] секунд. За каждого убитого врага дрон получает жетон. По возвращении жетоны увеличивают урон [color='blue']следующего поколения[/color] дронов на [color='blue']1%[/color] за каждый жетон.","Every [color='blue']20[/color] seconds, launches two autonomous drones: a 'Scout' that attacks the [color='blue']farthest[/color] enemy, and an 'Interceptor' that attacks the [color='blue']closest[/color] to the base. Drones live for [color='blue']15[/color] seconds. For each enemy killed, a drone earns a token. Upon return, tokens increase the damage of the [color='blue']next generation[/color] of drones by [color='blue']1%[/color] per token."
 KEY_TURRET11_UP0_DESC,"При запуске дронов есть [color='blue']50%[/color] шанс создать третьего, 'Случайного' дрона, который будет атаковать произвольную цель на карте.","When launching drones, there is a [color='blue']50%[/color] chance to create a third, 'Random' drone that will attack a random target on the map."
@@ -315,7 +321,7 @@ KEY_SKIN_T10_03,Солнечная кузница,Sun Forge
 KEY_SKIN_T11_01,Алый сигнал,Crimson Signal
 KEY_SKIN_T11_02,Звёздный сигнал,Stellar Signal
 KEY_SKIN_T11_03,Глубинный сигнал,Deep Signal
-KEY_SKIN_T12_01,Золотой механизм,Golden Mechanism
+KEY_SKIN_T12_01,Лазурный механизм,Azure Mechanism
 KEY_SKIN_T12_02,Лесной механизм,Forest Mechanism
 KEY_SKIN_T12_03,Астральный механизм,Astral Mechanism
 KEY_SKIN_CONFIRM_BUTTON,Купить,Buy
@@ -332,236 +338,236 @@ KEY_PAUSE_EXIT,"Да, выйти","Yes, exit"
 KEY_SKIN_LEVELS_HINT,Внешний вид на каждом уровне боя. Уровни 1–2 и 9–10 используют одинаковые стадии.,Appearance at every battle level. Levels 1–2 and 9–10 share the same stages.
 KEY_SKIN_BATTLE_LEVEL,Уровень %d,Level %d
 KEY_SKIN_PREVIEW_UNAVAILABLE,Превью недоступно,Preview unavailable
-KEY_LOC_50FA71BE94DB,Уровень 1,Level 1
-KEY_LOC_4B3CDE5BA4C5,+1% к базовому урону,+1% to base damage
-KEY_LOC_619B2ECC933B,Пушка,Gun
-KEY_LOC_2B9ADEB608EA,Нанесите урон пешкой: 466,Deal damage with a pawn: 466
-KEY_LOC_9DD01BC199E8,Задания и награды,Quests and rewards
-KEY_LOC_F8B03C67532A,Выполняйте цели и получайте ценные награды,Complete goals and receive valuable rewards
-KEY_LOC_04B557540113,23ч 59м,23h 59m
-KEY_LOC_2B02CCEBEC98,ЗОЛОТОЙ СТРАТЕГ4444444,GOLDEN STRATEGIST4444444
-KEY_LOC_124DB96D8082,ПУТЬ СЛАВЫ,PATH OF GLORY
-KEY_LOC_A999D7502B84,Текущий уровень: 0,Current level: 0
-KEY_LOC_56E183441483,РЕЖИМ: PvP,MODE: PvP
-KEY_LOC_9B0E57A92F47,В БОЙ!,BATTLE!
-KEY_LOC_7DB724BB7A33,ВЫБОР РЕЖИМА,MODE SELECTION
-KEY_LOC_F7939FE17430,"КАМПАНИЯ
+KEY_LEVEL_1,Уровень 1,Level 1
+KEY_1_TO_BASE_DAMAGE,+1% к базовому урону,+1% to base damage
+KEY_GUN,Пушка,Gun
+KEY_DEAL_DAMAGE_WITH_PAWN_466,Нанесите урон пешкой: 466,Deal damage with a pawn: 466
+KEY_QUESTS_AND_REWARDS,Задания и награды,Quests and rewards
+KEY_COMPLETE_GOALS_AND_RECEIVE_VALUABLE_REWARDS,Выполняйте цели и получайте ценные награды,Complete goals and receive valuable rewards
+KEY_23H_59M,23ч 59м,23h 59m
+KEY_GOLDEN_STRATEGIST4444444,ЗОЛОТОЙ СТРАТЕГ4444444,GOLDEN STRATEGIST4444444
+KEY_PATH_OF_GLORY,ПУТЬ СЛАВЫ,PATH OF GLORY
+KEY_CURRENT_LEVEL_0,Текущий уровень: 0,Current level: 0
+KEY_MODE_PVP,РЕЖИМ: PvP,MODE: PvP
+KEY_BATTLE,В БОЙ!,BATTLE!
+KEY_MODE_SELECTION,ВЫБОР РЕЖИМА,MODE SELECTION
+KEY_CAMPAIGN_STORY,"КАМПАНИЯ
 (Сюжет)","CAMPAIGN
 (Story)"
-KEY_LOC_0756AF8AEBBE,"ПЕСОЧНИЦА
+KEY_SANDBOX_ENDLESS,"ПЕСОЧНИЦА
 (Бесконечная)","SANDBOX
 (Endless)"
-KEY_LOC_B9BC5A3FA6C2,"PvP АРЕНА
+KEY_PVP_ARENA_MULTIPLAYER,"PvP АРЕНА
 (Мультиплеер)","PvP ARENA
 (Multiplayer)"
-KEY_LOC_DC97E5ABA200,БОЕВАЯ КОЛОДА,COMBAT DECK
-KEY_LOC_DA46892831DD,НАЙДЕННЫЕ КАРТЫ,FOUND CARDS
-KEY_LOC_7125D76C336D,НЕ НАЙДЕНО: 0/12,NOT FOUND: 0/12
-KEY_LOC_D57EB085DAD5,ПРОФИЛЬ,PROFILE
-KEY_LOC_B764B9BC98DD,СТАТИСТИКА  •  ТИТУЛЫ  •  КОЛОДА,STATISTICS • TITLES • DECK
-KEY_LOC_DBDFF4E331B0,←  НАЗАД,← BACK
-KEY_LOC_856A163769A4,СМЕНИТЬ АВАТАР,CHANGE AVATAR
-KEY_LOC_D5D305702A57,ПРОФИЛЬ ИГРОКА,PLAYER PROFILE
-KEY_LOC_DE666642D765,Игрок,Player
-KEY_LOC_E7D6D5DB3F0D,Код друга: #00000000,Friend code: #00000000
-KEY_LOC_A490062D3D69,КОПИРОВАТЬ,COPY
-KEY_LOC_7C63D0410D28,ВАША СТАТИСТИКА,YOUR STATISTICS
-KEY_LOC_404BCDFBC4CE,РЕЙТИНГ,RATING
-KEY_LOC_1080EC408A45,ПОБЕДЫ В PVP,PVP WINS
-KEY_LOC_76C63CC17F92,ПОРАЖЕНИЯ,DEFEATS
-KEY_LOC_C53A27257779,ЛУЧШАЯ ВОЛНА,BEST WAVE
-KEY_LOC_E23A5A6CEBF2,ЗОЛОТО,GOLD
-KEY_LOC_398D636F0FEF,БАШНИ ПОСТРОЕНЫ,TOWERS BUILT
-KEY_LOC_51C38AB2D8F1,АКТИВНАЯ КОЛОДА,ACTIVE DECK
-KEY_LOC_9DEB85629CB0,"Четыре башни, выбранные для боя",Four towers chosen for battle
-KEY_LOC_FEE3771FCBB4,ТИТУЛЫ И ДОСТИЖЕНИЯ,TITLES AND ACHIEVEMENTS
-KEY_LOC_9C760A40B565,← Назад,← Back
-KEY_LOC_9078C699306B,Друзья,Friends
-KEY_LOC_668D1A3FD30E,＋  Добавить друга,＋ Add a friend
-KEY_LOC_C7A4CD283E79,Пока нет друзей — добавьте первого по коду,No friends yet — add your first friend using their code
-KEY_LOC_83AEFC4C8187,Новых заявок нет,No new requests
-KEY_LOC_E99B87BD3E33,Подарков пока нет,No gifts yet
-KEY_LOC_0255C0591CC8,"Лидерборд заполнится, когда появятся друзья",The leaderboard will fill up when friends appear
-KEY_LOC_2FD522674B44,Добавить друга,Add a friend
-KEY_LOC_CFBFFA4DA2E1,Введите код друга из его профиля,Enter your friend's code from their profile
-KEY_LOC_7D2EA8E0820F,Отправить заявку,Send a request
-KEY_LOC_0EC753BE8DF9,Отмена,Cancel
-KEY_LOC_28FAC7A86457,⏳ Загрузка...,⏳ Loading...
-KEY_LOC_D266FFDCCF37,Войти через Google,Sign in with Google
-KEY_LOC_AA2601072CF7,Войти через Email,Sign in with email
-KEY_LOC_F4499A716EE3,Играть как гость,Play as a guest
-KEY_LOC_C296E8F55B24,Придумайте никнейм,Come up with a nickname
-KEY_LOC_1CF37EEF9F64,Никнейм (3-16 символов),Nickname (3-16 characters)
-KEY_LOC_3EFD7F8FD040,Сменить никнейм,Change nickname
-KEY_LOC_180D58509549,Вход через Email,Sign in with email
-KEY_LOC_A7FAE991DB70,Никнейм,Nickname
-KEY_LOC_14F7C63CC128,Пароль,Password
-KEY_LOC_939E95A11DDD,Войти,Sign in
-KEY_LOC_7224765E4459,Регистрация,Sign up
-KEY_LOC_B92BC8AFFE39,⚫ Не в сети,⚫ Offline
-KEY_LOC_FBFBAB24EBA0,Код друга: —,Friend code: -
-KEY_LOC_4A05D8619DED,Копировать,Copy
-KEY_LOC_A227BE92E255,🏆 Побед в PvP: —,🏆 PvP victories: —
-KEY_LOC_949574F150EB,🌊 Лучшая волна: —,🌊 Best wave: —
-KEY_LOC_84EBBA17635F,⚔️ Нанесён урон: —,⚔️ Damage done: —
-KEY_LOC_691297B29790,Колода друга,Friend's deck
-KEY_LOC_5424B103C943,⏳ Загрузка колоды...,⏳Loading deck...
-KEY_LOC_5D0BD7619A89,⏳ Загрузка данных...,⏳ Loading data...
-KEY_LOC_531CF4CE8777,✅ Принять заявку,✅ Accept request
-KEY_LOC_5047A0698663,Отклонить,Reject
-KEY_LOC_4682DEC493FB,📋 Скопировать колоду,📋Copy deck
-KEY_LOC_53043B998A60,🎁 Подарить 50 золота,🎁 Give 50 gold
-KEY_LOC_D2839DE39250,🗑 Удалить из друзей,🗑 Unfriend
-KEY_LOC_4AE50D30739D,Закрыть,Close
-KEY_LOC_ADF42E07C372,Выберите аватар,Select an avatar
-KEY_LOC_B609E7712A91,Все ежедневные награды получены — возвращайтесь завтра!,All daily rewards have been received - check back tomorrow!
-KEY_LOC_6B316C061B83,Все еженедельные награды собраны!,All weekly rewards have been collected!
-KEY_LOC_C941F0899469,На этом этапе пока нет заданий,There are no tasks at this stage yet
-KEY_LOC_B417B348BCED,Этап завершён — награда ждёт вас,Stage completed — your reward is waiting
-KEY_LOC_EFF68A047634,Башня %d,Tower %d
-KEY_LOC_DF2753B31E2D,Текущий Уровень: %d,Current Level: %d
-KEY_LOC_25FC9426D91B,РЕЖИМ: ,MODE: 
-KEY_LOC_68E9848B8BB7,НЕ НАЙДЕНО: ,NOT FOUND: 
-KEY_LOC_C9713E7C3410,ПУСТО,EMPTY
-KEY_LOC_EE868774908A,Удалить из друзей,Unfriend
-KEY_LOC_86EA33AEF5E9,Удалить,Delete
-KEY_LOC_53DB08029D65,⏳ Подарок через %d дн.,⏳ Gift in %d days.
-KEY_LOC_9E8BF7E60472,⏳ Проверка колоды...,⏳Checking the deck...
-KEY_LOC_9CC5A3BFB1B4,📋 Колода недоступна,📋 Deck not available
-KEY_LOC_2C11DE90DD5D,❌ Не удалось скопировать,❌ Failed to copy
-KEY_LOC_BDFD7D628F35,этого игрока,this player
-KEY_LOC_0AC978A0B278,"Удалить %s из друзей?
+KEY_COMBAT_DECK,БОЕВАЯ КОЛОДА,COMBAT DECK
+KEY_FOUND_CARDS,НАЙДЕННЫЕ КАРТЫ,FOUND CARDS
+KEY_NOT_FOUND_0_12,НЕ НАЙДЕНО: 0/12,NOT FOUND: 0/12
+KEY_PROFILE_VARIANT_2,ПРОФИЛЬ,PROFILE
+KEY_STATISTICS_TITLES_DECK,СТАТИСТИКА  •  ТИТУЛЫ  •  КОЛОДА,STATISTICS • TITLES • DECK
+KEY_BACK_BACK,←  НАЗАД,← BACK
+KEY_CHANGE_AVATAR,СМЕНИТЬ АВАТАР,CHANGE AVATAR
+KEY_PLAYER_PROFILE,ПРОФИЛЬ ИГРОКА,PLAYER PROFILE
+KEY_PLAYER,Игрок,Player
+KEY_FRIEND_CODE_00000000,Код друга: #00000000,Friend code: #00000000
+KEY_COPY_VARIANT_2,КОПИРОВАТЬ,COPY
+KEY_YOUR_STATISTICS,ВАША СТАТИСТИКА,YOUR STATISTICS
+KEY_RATING_VARIANT_2,РЕЙТИНГ,RATING
+KEY_PVP_WINS,ПОБЕДЫ В PVP,PVP WINS
+KEY_DEFEATS,ПОРАЖЕНИЯ,DEFEATS
+KEY_BEST_WAVE_VARIANT_2,ЛУЧШАЯ ВОЛНА,BEST WAVE
+KEY_GOLD_VARIANT_2,ЗОЛОТО,GOLD
+KEY_TOWERS_BUILT,БАШНИ ПОСТРОЕНЫ,TOWERS BUILT
+KEY_ACTIVE_DECK,АКТИВНАЯ КОЛОДА,ACTIVE DECK
+KEY_FOUR_TOWERS_CHOSEN_FOR_BATTLE,"Четыре башни, выбранные для боя",Four towers chosen for battle
+KEY_TITLES_AND_ACHIEVEMENTS,ТИТУЛЫ И ДОСТИЖЕНИЯ,TITLES AND ACHIEVEMENTS
+KEY_BACK_BACK_VARIANT_2,← Назад,← Back
+KEY_FRIENDS_VARIANT_2,Друзья,Friends
+KEY_PLUS_ADD_FRIEND,＋  Добавить друга,＋ Add a friend
+KEY_NO_FRIENDS_YET_ADD_YOUR_FIRST_FRIEND_USING_THEIR,Пока нет друзей — добавьте первого по коду,No friends yet — add your first friend using their code
+KEY_NO_NEW_REQUESTS,Новых заявок нет,No new requests
+KEY_NO_GIFTS_YET,Подарков пока нет,No gifts yet
+KEY_LEADERBOARD_WILL_FILL_UP_WHEN_FRIENDS_APPEAR,"Лидерборд заполнится, когда появятся друзья",The leaderboard will fill up when friends appear
+KEY_ADD_FRIEND_VARIANT_2,Добавить друга,Add a friend
+KEY_ENTER_YOUR_FRIEND_S_CODE_FROM_THEIR_PROFILE,Введите код друга из его профиля,Enter your friend's code from their profile
+KEY_SEND_REQUEST,Отправить заявку,Send a request
+KEY_CANCEL,Отмена,Cancel
+KEY_LOADING_VARIANT_2,⏳ Загрузка...,⏳ Loading...
+KEY_SIGN_IN_WITH_GOOGLE,Войти через Google,Sign in with Google
+KEY_SIGN_IN_WITH_EMAIL,Войти через Email,Sign in with email
+KEY_PLAY_AS_GUEST,Играть как гость,Play as a guest
+KEY_COME_UP_WITH_NICKNAME,Придумайте никнейм,Come up with a nickname
+KEY_NICKNAME_3_16_CHARACTERS,Никнейм (3-16 символов),Nickname (3-16 characters)
+KEY_CHANGE_NICKNAME,Сменить никнейм,Change nickname
+KEY_SIGN_IN_WITH_EMAIL_VARIANT_2,Вход через Email,Sign in with email
+KEY_NICKNAME,Никнейм,Nickname
+KEY_PASSWORD,Пароль,Password
+KEY_SIGN_IN,Войти,Sign in
+KEY_SIGN_UP,Регистрация,Sign up
+KEY_OFFLINE,⚫ Не в сети,⚫ Offline
+KEY_FRIEND_CODE,Код друга: —,Friend code: -
+KEY_COPY_VARIANT_3,Копировать,Copy
+KEY_PVP_VICTORIES,🏆 Побед в PvP: —,🏆 PvP victories: —
+KEY_BEST_WAVE_VARIANT_3,🌊 Лучшая волна: —,🌊 Best wave: —
+KEY_DAMAGE_DONE,⚔️ Нанесён урон: —,⚔️ Damage done: —
+KEY_FRIEND_S_DECK,Колода друга,Friend's deck
+KEY_LOADING_DECK,⏳ Загрузка колоды...,⏳Loading deck...
+KEY_LOADING_DATA,⏳ Загрузка данных...,⏳ Loading data...
+KEY_ACCEPT_REQUEST,✅ Принять заявку,✅ Accept request
+KEY_REJECT,Отклонить,Reject
+KEY_COPY_DECK_VARIANT_2,📋 Скопировать колоду,📋Copy deck
+KEY_GIVE_50_GOLD,🎁 Подарить 50 золота,🎁 Give 50 gold
+KEY_UNFRIEND,🗑 Удалить из друзей,🗑 Unfriend
+KEY_CLOSE_VARIANT_2,Закрыть,Close
+KEY_SELECT_AVATAR,Выберите аватар,Select an avatar
+KEY_ALL_DAILY_REWARDS_HAVE_BEEN_RECEIVED_CHECK_BACK_TOMORROW,Все ежедневные награды получены — возвращайтесь завтра!,All daily rewards have been received - check back tomorrow!
+KEY_ALL_WEEKLY_REWARDS_HAVE_BEEN_COLLECTED,Все еженедельные награды собраны!,All weekly rewards have been collected!
+KEY_THERE_ARE_NO_TASKS_AT_THIS_STAGE_YET,На этом этапе пока нет заданий,There are no tasks at this stage yet
+KEY_STAGE_COMPLETED_YOUR_REWARD_IS_WAITING,Этап завершён — награда ждёт вас,Stage completed — your reward is waiting
+KEY_TOWER_NUMBER,Башня %d,Tower %d
+KEY_CURRENT_LEVEL_NUMBER,Текущий Уровень: %d,Current Level: %d
+KEY_MODE,РЕЖИМ: ,MODE: 
+KEY_NOT_FOUND_VARIANT_2,НЕ НАЙДЕНО: ,NOT FOUND: 
+KEY_EMPTY,ПУСТО,EMPTY
+KEY_UNFRIEND_VARIANT_2,Удалить из друзей,Unfriend
+KEY_DELETE,Удалить,Delete
+KEY_GIFT_IN_NUMBER_DAYS,⏳ Подарок через %d дн.,⏳ Gift in %d days.
+KEY_CHECKING_DECK,⏳ Проверка колоды...,⏳Checking the deck...
+KEY_DECK_NOT_AVAILABLE,📋 Колода недоступна,📋 Deck not available
+KEY_FAILED_TO_COPY,❌ Не удалось скопировать,❌ Failed to copy
+KEY_THIS_PLAYER,этого игрока,this player
+KEY_UNFRIEND_TEXT_ENTRY_WILL_BE_DELETED_FOR_BOTH_OF,"Удалить %s из друзей?
 Запись будет удалена у вас обоих.","Unfriend %s?
 The entry will be deleted for both of you."
-KEY_LOC_8F442E606989,⏳ Удаление...,⏳ Removal...
-KEY_LOC_243D9F45BD2F,❌ Не удалось удалить,❌ Failed to delete
-KEY_LOC_30DD288183AB,Игрок ,Player 
-KEY_LOC_2279A10364CE,Код друга: ,Friend Code: 
-KEY_LOC_881EE114D189,неизвестен,unknown
-KEY_LOC_89C99A4F5578,Колода друга ещё не настроена,Friend's deck is not set up yet
-KEY_LOC_0D70CA077613,Колода по умолчанию,Default deck
-KEY_LOC_A29C99F5E627,Текущая колода,Current deck
-KEY_LOC_775A4ECA9E04,⏳ Копирование...,⏳ Copying...
-KEY_LOC_5314FCAED727,📋 Колода не настроена,📋 Deck not configured
-KEY_LOC_726899AB7405,🔒 Нет нужных башен,🔒 Required towers not owned
-KEY_LOC_25E1E4F0AC4A,✅ Колода скопирована,✅ Deck copied
-KEY_LOC_A486DD039371,⏳ Отправка...,⏳ Sending...
-KEY_LOC_70009FD5A1BC,✅ Подарок отправлен,✅ Gift sent
-KEY_LOC_48BA91651F85,❌ Не удалось отправить,❌ Failed to send
-KEY_LOC_8B84A9BA1CA9,"Удалить %s из друзей?
+KEY_REMOVAL,⏳ Удаление...,⏳ Removal...
+KEY_FAILED_TO_DELETE,❌ Не удалось удалить,❌ Failed to delete
+KEY_PLAYER_VARIANT_2,Игрок ,Player 
+KEY_FRIEND_CODE_VARIANT_2,Код друга: ,Friend Code: 
+KEY_UNKNOWN,неизвестен,unknown
+KEY_FRIEND_S_DECK_IS_NOT_SET_UP_YET,Колода друга ещё не настроена,Friend's deck is not set up yet
+KEY_DEFAULT_DECK,Колода по умолчанию,Default deck
+KEY_CURRENT_DECK,Текущая колода,Current deck
+KEY_COPYING,⏳ Копирование...,⏳ Copying...
+KEY_DECK_NOT_CONFIGURED,📋 Колода не настроена,📋 Deck not configured
+KEY_REQUIRED_TOWERS_NOT_OWNED,🔒 Нет нужных башен,🔒 Required towers not owned
+KEY_DECK_COPIED,✅ Колода скопирована,✅ Deck copied
+KEY_SENDING,⏳ Отправка...,⏳ Sending...
+KEY_GIFT_SENT,✅ Подарок отправлен,✅ Gift sent
+KEY_FAILED_TO_SEND,❌ Не удалось отправить,❌ Failed to send
+KEY_UNFRIEND_TEXT_CONNECTION_WILL_BE_DELETED_FOR_BOTH_OF,"Удалить %s из друзей?
 Связь будет удалена у вас обоих.","Unfriend %s?
 The connection will be deleted for both of you."
-KEY_LOC_0495C84504DF,❌ Не удалось удалить — повторить,❌ Could not remove — try again
-KEY_LOC_41370203B79D,🟢 В сети,🟢 Online
-KEY_LOC_E2539E7038FC,🔴 В бою,🔴In battle
-KEY_LOC_B2A7FC32F8BB,🏆 Побед в PvP: ,🏆 Victories in PvP: 
-KEY_LOC_DF86BA95659D,🌊 Лучшая волна: ,🌊 Best wave: 
-KEY_LOC_F6267803BC70,⚔️ Нанесён урон: ,⚔️Damage done: 
-KEY_LOC_1D9C7AA8E9D8,Колода недоступна,Deck not available
-KEY_LOC_99874BED6683,Не удалось загрузить колоду друга,Failed to load friend's deck
-KEY_LOC_9A35E72645EC,✓ Скопировано,✓ Copied
-KEY_LOC_C8B24AA70B28,ПОБЕДА!,VICTORY!
-KEY_LOC_6754ED43F8CC,ПОРАЖЕНИЕ,DEFEAT
-KEY_LOC_3F539351C873,Статистика башен (MVP):,Tower statistics (MVP):
-KEY_LOC_50638119C7F0,Башня,Tower
-KEY_LOC_68A2A786107E,Урон,Damage
-KEY_LOC_3EDB0C6E2778,В ГЛАВНОЕ МЕНЮ,TO MAIN MENU
-KEY_LOC_5D9AB1303E18,Никнейм должен быть от 3 до 16 символов,Nickname must be 3–16 characters
-KEY_LOC_DC450B781C4E,Ошибка: ProfileManager не найден,Error: ProfileManager not found
-KEY_LOC_09FE0A352F10,Не удалось изменить никнейм — детали в консоли,Failed to change nickname - details in console
-KEY_LOC_C7B8796D5687,Никнейм изменён!,Nickname has been changed!
-KEY_LOC_33BAC971A79A,Запуск AI сервера...,Launching the AI ​​server...
-KEY_LOC_25F5020FAB36,❌ Ошибка запуска AI,❌ AI launch error
-KEY_LOC_63F46BCE44BA,AI готов. Старт через 2 сек...,AI is ready. Start in 2 seconds...
-KEY_LOC_4C6BB3911B36,Вы обыграли AI!,You beat AI!
-KEY_LOC_4CC9EC4722DB,AI победил,AI won
-KEY_LOC_ED5D419CDB73,MVP башня: ,MVP tower: 
-KEY_LOC_F8E018BA5075,Нет башен,No towers
-KEY_LOC_476D2601B134,Инфо:,Info:
-KEY_LOC_55B363D29EEE,Постройте башни для статистики,Build towers for statistics
-KEY_LOC_3F26F940D908,Вход через Google...,Login with Google...
-KEY_LOC_933698CCC8A5,Вход как гость...,Login as a guest...
-KEY_LOC_DAB0CBE7C7DF,Успешный вход!,Successful login!
-KEY_LOC_A88E15D11D94,Ошибка входа,Login error
-KEY_LOC_A6F91C4FE2A2,Профиль создан!,Profile created!
-KEY_LOC_10CE2004879D,Нет аккаунта? Регистрация,No account? Sign up
-KEY_LOC_C5F967A933F1,Уже есть аккаунт? Войти,Already have an account? Sign in
-KEY_LOC_2E42751836D4,Зарегистрироваться,Register
-KEY_LOC_6B9099598D07,Введите email и пароль (мин. 6 символов),Enter email and password (min. 6 characters)
-KEY_LOC_283DE3332D7A,АВАТАР,AVATAR
-KEY_LOC_F8C18D4D72A0,КОПИР.,COPY
-KEY_LOC_24EA56CA0681,Профиль пока не загружен,Profile not loaded yet
-KEY_LOC_D9848A322EF4,Профиль загружен,Profile loaded
-KEY_LOC_2FC3CAEB5BAB,Пока нет открытых титулов,No titles unlocked yet
-KEY_LOC_9373C705E786,Титул,Title
-KEY_LOC_043F9029ED19,Четыре башни готовы к бою,Four towers ready for battle
-KEY_LOC_9C063217022C,Колода ещё не настроена,The deck is not configured yet
-KEY_LOC_4A6D77E7C5A2,Выбрано башен: %d из 4,Towers selected: %d out of 4
-KEY_LOC_32749E418173,дата не указана,no date specified
-KEY_LOC_A3B296561A02,СКОПИРОВАНО,COPIED
-KEY_LOC_7B262A5F42C8,❌ Код должен начинаться с #,❌ The code must start with #
-KEY_LOC_1909A2772807,"❌ Формат кода: # + 8 цифр (например, #12345678)","❌ Code format: # + 8 digits (for example, #12345678)"
-KEY_LOC_53B34E252CBF,⏳ Отправка заявки...,⏳ Sending request...
-KEY_LOC_1ADE87BF43DD,✅ Заявка отправлена!,✅ Request sent!
-KEY_LOC_F34441E6A4EC,Не удалось отправить заявку — детали в консоли,Failed to submit request - details in console
-KEY_LOC_625BBB81EA67,Победы в PvP,Victories in PvP
-KEY_LOC_0C4FE0F6A5B1,Лучшая волна,Best wave
-KEY_LOC_C80BC159A8AA,Нанесён урон,Damage done
-KEY_LOC_8AD03F0B3BE7,"ЛКМ — профиль, ПКМ — действия","LMB - profile, RMB - actions"
-KEY_LOC_08C3D7EBF36F,"
+KEY_COULD_NOT_REMOVE_TRY_AGAIN,❌ Не удалось удалить — повторить,❌ Could not remove — try again
+KEY_ONLINE_VARIANT_2,🟢 В сети,🟢 Online
+KEY_IN_BATTLE,🔴 В бою,🔴In battle
+KEY_VICTORIES_IN_PVP,🏆 Побед в PvP: ,🏆 Victories in PvP: 
+KEY_BEST_WAVE_VARIANT_4,🌊 Лучшая волна: ,🌊 Best wave: 
+KEY_DAMAGE_DONE_VARIANT_2,⚔️ Нанесён урон: ,⚔️Damage done: 
+KEY_DECK_NOT_AVAILABLE_VARIANT_2,Колода недоступна,Deck not available
+KEY_FAILED_TO_LOAD_FRIEND_S_DECK,Не удалось загрузить колоду друга,Failed to load friend's deck
+KEY_COPIED,✓ Скопировано,✓ Copied
+KEY_VICTORY,ПОБЕДА!,VICTORY!
+KEY_DEFEAT_VARIANT_2,ПОРАЖЕНИЕ,DEFEAT
+KEY_TOWER_STATISTICS_MVP,Статистика башен (MVP):,Tower statistics (MVP):
+KEY_TOWER,Башня,Tower
+KEY_DAMAGE_VARIANT_2,Урон,Damage
+KEY_TO_MAIN_MENU,В ГЛАВНОЕ МЕНЮ,TO MAIN MENU
+KEY_NICKNAME_MUST_BE_3_16_CHARACTERS,Никнейм должен быть от 3 до 16 символов,Nickname must be 3–16 characters
+KEY_ERROR_PROFILEMANAGER_NOT_FOUND,Ошибка: ProfileManager не найден,Error: ProfileManager not found
+KEY_FAILED_TO_CHANGE_NICKNAME_DETAILS_IN_CONSOLE,Не удалось изменить никнейм — детали в консоли,Failed to change nickname - details in console
+KEY_NICKNAME_HAS_BEEN_CHANGED,Никнейм изменён!,Nickname has been changed!
+KEY_LAUNCHING_AI_SERVER,Запуск AI сервера...,Launching the AI ​​server...
+KEY_AI_LAUNCH_ERROR,❌ Ошибка запуска AI,❌ AI launch error
+KEY_AI_IS_READY_START_IN_2_SECONDS,AI готов. Старт через 2 сек...,AI is ready. Start in 2 seconds...
+KEY_YOU_BEAT_AI,Вы обыграли AI!,You beat AI!
+KEY_AI_WON,AI победил,AI won
+KEY_MVP_TOWER,MVP башня: ,MVP tower: 
+KEY_NO_TOWERS,Нет башен,No towers
+KEY_INFO_VARIANT_2,Инфо:,Info:
+KEY_BUILD_TOWERS_FOR_STATISTICS,Постройте башни для статистики,Build towers for statistics
+KEY_LOGIN_WITH_GOOGLE,Вход через Google...,Login with Google...
+KEY_LOGIN_AS_GUEST,Вход как гость...,Login as a guest...
+KEY_SUCCESSFUL_LOGIN,Успешный вход!,Successful login!
+KEY_LOGIN_ERROR,Ошибка входа,Login error
+KEY_PROFILE_CREATED,Профиль создан!,Profile created!
+KEY_NO_ACCOUNT_SIGN_UP,Нет аккаунта? Регистрация,No account? Sign up
+KEY_ALREADY_HAVE_ACCOUNT_SIGN_IN,Уже есть аккаунт? Войти,Already have an account? Sign in
+KEY_REGISTER,Зарегистрироваться,Register
+KEY_ENTER_EMAIL_AND_PASSWORD_MIN_6_CHARACTERS,Введите email и пароль (мин. 6 символов),Enter email and password (min. 6 characters)
+KEY_AVATAR,АВАТАР,AVATAR
+KEY_COPY_VARIANT_4,КОПИР.,COPY
+KEY_PROFILE_NOT_LOADED_YET,Профиль пока не загружен,Profile not loaded yet
+KEY_PROFILE_LOADED,Профиль загружен,Profile loaded
+KEY_NO_TITLES_UNLOCKED_YET,Пока нет открытых титулов,No titles unlocked yet
+KEY_TITLE,Титул,Title
+KEY_FOUR_TOWERS_READY_FOR_BATTLE,Четыре башни готовы к бою,Four towers ready for battle
+KEY_DECK_IS_NOT_CONFIGURED_YET,Колода ещё не настроена,The deck is not configured yet
+KEY_TOWERS_SELECTED_NUMBER_OUT_OF_4,Выбрано башен: %d из 4,Towers selected: %d out of 4
+KEY_NO_DATE_SPECIFIED,дата не указана,no date specified
+KEY_COPIED_VARIANT_2,СКОПИРОВАНО,COPIED
+KEY_CODE_MUST_START_WITH,❌ Код должен начинаться с #,❌ The code must start with #
+KEY_CODE_FORMAT_8_DIGITS_FOR_EXAMPLE_12345678,"❌ Формат кода: # + 8 цифр (например, #12345678)","❌ Code format: # + 8 digits (for example, #12345678)"
+KEY_SENDING_REQUEST,⏳ Отправка заявки...,⏳ Sending request...
+KEY_REQUEST_SENT,✅ Заявка отправлена!,✅ Request sent!
+KEY_FAILED_TO_SUBMIT_REQUEST_DETAILS_IN_CONSOLE,Не удалось отправить заявку — детали в консоли,Failed to submit request - details in console
+KEY_VICTORIES_IN_PVP_VARIANT_2,Победы в PvP,Victories in PvP
+KEY_BEST_WAVE_VARIANT_5,Лучшая волна,Best wave
+KEY_DAMAGE_DONE_VARIANT_3,Нанесён урон,Damage done
+KEY_LMB_PROFILE_RMB_ACTIONS,"ЛКМ — профиль, ПКМ — действия","LMB - profile, RMB - actions"
+KEY_CODE,"
 Код: ","
 Code: "
-KEY_LOC_101C91986F9C,"ЛКМ — профиль (принять/отклонить), ПКМ — отклонить","LMB - profile (accept/reject), RMB - reject"
-KEY_LOC_A71CD54E1973,📤  Отправлена: %s,📤 Sent to: %s
-KEY_LOC_AD9E1A1A08CC,"ЛКМ — профиль, ПКМ — отменить заявку","LMB - profile, RMB - cancel request"
-KEY_LOC_0260AEE9187B,"
+KEY_LMB_PROFILE_ACCEPT_REJECT_RMB_REJECT,"ЛКМ — профиль (принять/отклонить), ПКМ — отклонить","LMB - profile (accept/reject), RMB - reject"
+KEY_SENT_TO_TEXT,📤  Отправлена: %s,📤 Sent to: %s
+KEY_LMB_PROFILE_RMB_CANCEL_REQUEST,"ЛКМ — профиль, ПКМ — отменить заявку","LMB - profile, RMB - cancel request"
+KEY_FRIEND_CODE_VARIANT_3,"
 Код друга: ","
 Friend Code: "
-KEY_LOC_1F46405BAD5F,💰 Золото,💰 Gold
-KEY_LOC_724A7EFCCF3B,🎴 Карта,🎴 Card
-KEY_LOC_0C5A0D153269,%s  от %s: ×%d,%s from %s: ×%d
-KEY_LOC_1E2C0390CBCC,"ЛКМ — получить, ПКМ — профиль отправителя","LMB - receive, RMB - sender profile"
-KEY_LOC_B91C8966455D,Нет данных волн для уровня %d,No wave data for level %d
-KEY_LOC_AFEC8964BFD4,Нет авторизации — войдите в аккаунт,No authorization - log in to your account
-KEY_LOC_0FD935CDCEA9,Нельзя добавить самого себя,You can't add yourself
-KEY_LOC_747E3491AF13,Игрок с таким кодом не найден,Player with this code not found
-KEY_LOC_7EE4FF4B8CB8,Уже в друзьях,Already friends
-KEY_LOC_AD8CBBC3C004,Заявка уже отправлена — ждём ответа,Request already sent — awaiting a response
-KEY_LOC_0DBAB21AF192,Этот игрок уже отправил вам заявку — смотрите вкладку «Заявки»,This player already sent you a request — check the Requests tab
-KEY_LOC_557F8BABB20B,"Никнейм может содержать только буквы, цифры, _ и -","Nickname can only contain letters, numbers, _ and -"
-KEY_LOC_F6995792672F,Никнейм содержит недопустимые слова,Nickname contains inappropriate words
-KEY_LOC_49ED4BDE8155,Название содержит недопустимые слова,The title contains invalid words
-KEY_LOC_B2B1B0EE654E,Аккаунт с таким email не найден — проверьте email или зарегистрируйтесь,An account with this email was not found - check your email or register
-KEY_LOC_2D0D0D9E2C19,Неверный email или пароль,Invalid email or password
-KEY_LOC_AAB6CFF7FF76,Этот аккаунт заблокирован,This account is blocked
-KEY_LOC_26DF0FD0075A,Этот email уже зарегистрирован — попробуйте войти,This email is already registered - try logging in
-KEY_LOC_2D7DD980C5E9,Слишком слабый пароль — минимум 6 символов,Password is too weak - at least 6 characters
-KEY_LOC_84F47F2AEB19,"Некорректный email — проверьте формат (например, name@mail.com)","Incorrect email - check the format (for example, name@mail.com)"
-KEY_LOC_3093424C59D5,Слишком много попыток — подождите пару минут,Too many attempts - wait a few minutes
-KEY_LOC_79177D28EACA,Этот способ входа не включён в консоли Firebase,This login method is not enabled in the Firebase console
-KEY_LOC_62B3CE3825D1,Не введён пароль,No password entered
-KEY_LOC_2C3A1237194B,Нет соединения с Firebase — проверьте интернет,No connection to Firebase - check the internet
-KEY_LOC_CBCD97FB5C41,Firebase не ответил за 20 секунд — проверьте интернет и повторите,Firebase did not respond in 20 seconds - check the internet and try again
-KEY_LOC_EFD69E960CDB,Firebase не готов — подождите пару секунд и повторите,Firebase is not ready - wait a couple of seconds and try again
-KEY_LOC_8F696041E75D,Auth модуль не найден,Auth module not found
-KEY_LOC_1F3BFCB81F5A,Google Provider не доступен,Google Provider is not available
-KEY_LOC_600D99F1D4DA,Google auth не поддерживается,Google auth is not supported
-KEY_LOC_67E672254E90,Firebase не готов,Firebase is not ready
-KEY_LOC_C09D678329B0,Firebase занят — подождите пару секунд и повторите,Firebase is busy - wait a couple of seconds and try again
-KEY_LOC_60AD3A140895,Email вход не поддерживается — смотри лог: список методов узла Auth,Email login is not supported - see log: list of Auth node methods
-KEY_LOC_192CF3C31C44,Регистрация не поддерживается — смотри лог: список методов узла Auth,Registration is not supported - see log: list of Auth node methods
-KEY_LOC_DDCC06588FF6,Вход...,Signing in...
-KEY_LOC_65FFFF5A3D7C,Регистрация...,Signing up...
-KEY_LOC_2BF0C3B8CE3E,КАМПАНИЯ,CAMPAIGN
-KEY_LOC_C45494F01CE4,ПЕСОЧНИЦА,SANDBOX
-KEY_LOC_E7BA0B328979,Никнейм слишком короткий (минимум %d символа),Nickname is too short (minimum %d characters)
-KEY_LOC_5AAC8BC771D6,Никнейм слишком длинный (максимум %d символов),Nickname is too long (maximum %d characters)
-KEY_LOC_13E9E1723FB9,Название слишком короткое (минимум %d символа),Name is too short (minimum %d characters)
-KEY_LOC_7D9FB684CB54,Название слишком длинное (максимум %d символов),Name is too long (maximum %d characters)
-KEY_LOC_A47C0A1853D8,Обновление через %d ч %d мин,Refresh in %d h %d min
-KEY_LOC_1781666321ED,Обновление через %d д %d ч,Refresh in %d d %d h
-KEY_LOC_B40BBCA36D2D,с,s
-KEY_LOC_BE8E37D7C0EC,ед,units
+KEY_GOLD_VARIANT_3,💰 Золото,💰 Gold
+KEY_CARD,🎴 Карта,🎴 Card
+KEY_TEXT_FROM_TEXT_TIMES_NUMBER,%s  от %s: ×%d,%s from %s: ×%d
+KEY_LMB_RECEIVE_RMB_SENDER_PROFILE,"ЛКМ — получить, ПКМ — профиль отправителя","LMB - receive, RMB - sender profile"
+KEY_NO_WAVE_DATA_FOR_LEVEL_NUMBER,Нет данных волн для уровня %d,No wave data for level %d
+KEY_NO_AUTHORIZATION_LOG_IN_TO_YOUR_ACCOUNT,Нет авторизации — войдите в аккаунт,No authorization - log in to your account
+KEY_YOU_CAN_T_ADD_YOURSELF,Нельзя добавить самого себя,You can't add yourself
+KEY_PLAYER_WITH_THIS_CODE_NOT_FOUND,Игрок с таким кодом не найден,Player with this code not found
+KEY_ALREADY_FRIENDS,Уже в друзьях,Already friends
+KEY_REQUEST_ALREADY_SENT_AWAITING_RESPONSE,Заявка уже отправлена — ждём ответа,Request already sent — awaiting a response
+KEY_THIS_PLAYER_ALREADY_SENT_YOU_REQUEST_CHECK_REQUESTS_TAB,Этот игрок уже отправил вам заявку — смотрите вкладку «Заявки»,This player already sent you a request — check the Requests tab
+KEY_NICKNAME_CAN_ONLY_CONTAIN_LETTERS_NUMBERS_AND,"Никнейм может содержать только буквы, цифры, _ и -","Nickname can only contain letters, numbers, _ and -"
+KEY_NICKNAME_CONTAINS_INAPPROPRIATE_WORDS,Никнейм содержит недопустимые слова,Nickname contains inappropriate words
+KEY_TITLE_CONTAINS_INVALID_WORDS,Название содержит недопустимые слова,The title contains invalid words
+KEY_ACCOUNT_WITH_THIS_EMAIL_WAS_NOT_FOUND_CHECK_YOUR,Аккаунт с таким email не найден — проверьте email или зарегистрируйтесь,An account with this email was not found - check your email or register
+KEY_INVALID_EMAIL_OR_PASSWORD,Неверный email или пароль,Invalid email or password
+KEY_THIS_ACCOUNT_IS_BLOCKED,Этот аккаунт заблокирован,This account is blocked
+KEY_THIS_EMAIL_IS_ALREADY_REGISTERED_TRY_LOGGING_IN,Этот email уже зарегистрирован — попробуйте войти,This email is already registered - try logging in
+KEY_PASSWORD_IS_TOO_WEAK_AT_LEAST_6_CHARACTERS,Слишком слабый пароль — минимум 6 символов,Password is too weak - at least 6 characters
+KEY_INCORRECT_EMAIL_CHECK_FORMAT_FOR_EXAMPLE_NAME_MAIL_COM,"Некорректный email — проверьте формат (например, name@mail.com)","Incorrect email - check the format (for example, name@mail.com)"
+KEY_TOO_MANY_ATTEMPTS_WAIT_FEW_MINUTES,Слишком много попыток — подождите пару минут,Too many attempts - wait a few minutes
+KEY_THIS_LOGIN_METHOD_IS_NOT_ENABLED_IN_FIREBASE_CONSOLE,Этот способ входа не включён в консоли Firebase,This login method is not enabled in the Firebase console
+KEY_NO_PASSWORD_ENTERED,Не введён пароль,No password entered
+KEY_NO_CONNECTION_TO_FIREBASE_CHECK_INTERNET,Нет соединения с Firebase — проверьте интернет,No connection to Firebase - check the internet
+KEY_FIREBASE_DID_NOT_RESPOND_IN_20_SECONDS_CHECK_INTERNET,Firebase не ответил за 20 секунд — проверьте интернет и повторите,Firebase did not respond in 20 seconds - check the internet and try again
+KEY_FIREBASE_IS_NOT_READY_WAIT_COUPLE_OF_SECONDS_AND,Firebase не готов — подождите пару секунд и повторите,Firebase is not ready - wait a couple of seconds and try again
+KEY_AUTH_MODULE_NOT_FOUND,Auth модуль не найден,Auth module not found
+KEY_GOOGLE_PROVIDER_IS_NOT_AVAILABLE,Google Provider не доступен,Google Provider is not available
+KEY_GOOGLE_AUTH_IS_NOT_SUPPORTED,Google auth не поддерживается,Google auth is not supported
+KEY_FIREBASE_IS_NOT_READY,Firebase не готов,Firebase is not ready
+KEY_FIREBASE_IS_BUSY_WAIT_COUPLE_OF_SECONDS_AND_TRY,Firebase занят — подождите пару секунд и повторите,Firebase is busy - wait a couple of seconds and try again
+KEY_EMAIL_LOGIN_IS_NOT_SUPPORTED_SEE_LOG_LIST_OF,Email вход не поддерживается — смотри лог: список методов узла Auth,Email login is not supported - see log: list of Auth node methods
+KEY_REGISTRATION_IS_NOT_SUPPORTED_SEE_LOG_LIST_OF_AUTH,Регистрация не поддерживается — смотри лог: список методов узла Auth,Registration is not supported - see log: list of Auth node methods
+KEY_SIGNING_IN,Вход...,Signing in...
+KEY_SIGNING_UP,Регистрация...,Signing up...
+KEY_CAMPAIGN,КАМПАНИЯ,CAMPAIGN
+KEY_SANDBOX_VARIANT_2,ПЕСОЧНИЦА,SANDBOX
+KEY_NICKNAME_IS_TOO_SHORT_MINIMUM_NUMBER_CHARACTERS,Никнейм слишком короткий (минимум %d символа),Nickname is too short (minimum %d characters)
+KEY_NICKNAME_IS_TOO_LONG_MAXIMUM_NUMBER_CHARACTERS,Никнейм слишком длинный (максимум %d символов),Nickname is too long (maximum %d characters)
+KEY_NAME_IS_TOO_SHORT_MINIMUM_NUMBER_CHARACTERS,Название слишком короткое (минимум %d символа),Name is too short (minimum %d characters)
+KEY_NAME_IS_TOO_LONG_MAXIMUM_NUMBER_CHARACTERS,Название слишком длинное (максимум %d символов),Name is too long (maximum %d characters)
+KEY_REFRESH_IN_NUMBER_H_NUMBER_MIN,Обновление через %d ч %d мин,Refresh in %d h %d min
+KEY_REFRESH_IN_NUMBER_D_NUMBER_H,Обновление через %d д %d ч,Refresh in %d d %d h
+KEY_S,с,s
+KEY_UNITS,ед,units
 KEY_MAX_LVL,Максимальный уровень,Max level
 KEY_BUY,Купить,Buy
 KEY_UNIT_SECONDS,с,s
@@ -594,3 +600,315 @@ KEY_TITLE_SURVIVOR,Выживший,Survivor
 KEY_TITLE_SURVIVOR_DESC,Достиг волны 50 в Песочнице,Reach wave 50 in Sandbox
 KEY_TITLE_BUILDER,Строитель,Builder
 KEY_TITLE_BUILDER_DESC,Построено 1000 башен,"Build 1,000 towers"
+KEY_AVATAR_PICK_TITLE,Выбор аватара,Choose an avatar
+KEY_AVATAR_SELECTED,Выбран аватар №%d,Selected avatar #%d
+KEY_AVATAR_NUMBER,Аватар №%d,Avatar #%d
+KEY_AVATAR_NOT_READY,Аватар №%d пока недоступен,Avatar #%d is not available yet
+KEY_AVATAR_CLOSE,Закрыть,Close
+KEY_FRIEND_TAB_REQUESTS,Заявки,Requests
+KEY_FRIEND_TAB_GIFTS,Подарки,Gifts
+KEY_FRIEND_TAB_LEADERBOARD,Лидеры,Leaderboard
+KEY_TURRET_DETAILS_TITLE,КАРТОЧКА БАШНИ,TOWER DETAILS
+KEY_TURRET_ABOUT,О башне,Overview
+KEY_TURRET_MASTERY,Мастерство,Mastery
+KEY_TURRET_STATS,Характеристики,Stats
+KEY_TURRET_ABILITY_NUMBER,Способность %d,Ability %d
+KEY_TURRET_CARDS_PROGRESS,Карты: %d / %d,Cards: %d / %d
+KEY_TURRET_LOCKED,Башня ещё не открыта,Tower not unlocked
+KEY_TURRET_BUY_COST,Открыть • %d монет,Unlock • %d coins
+KEY_TURRET_UP_COST,Улучшить • %d монет,Upgrade • %d coins
+KEY_TURRET_NO_MONEY,Недостаточно монет,Not enough coins
+KEY_TURRET_NO_CARDS,Недостаточно карт для улучшения,Not enough cards to upgrade
+KEY_TURRET_MASTERY_PROGRESS,Уровень %d · %d / %d XP,Level %d · %d / %d XP
+KEY_TURRET_ABILITY_OPEN,Способность открыта,Ability unlocked
+KEY_TURRET_ABILITY_LEVEL,Доступно с уровня %d,Available at level %d
+KEY_TURRET_ABILITY_READY,Можно открыть,Ready to unlock
+KEY_MASTERY_WINDOW_TITLE,МАСТЕРСТВО БАШНИ,TOWER MASTERY
+KEY_MASTERY_XP_TITLE,Опыт мастерства,Mastery experience
+KEY_MASTERY_HOW_TO_EARN,Как получить опыт,How to earn experience
+KEY_MASTERY_THRESHOLDS,Уровни мастерства,Mastery levels
+KEY_MASTERY_THRESHOLDS_HINT,Пороги опыта и заявленные награды,Experience thresholds and listed rewards
+KEY_MASTERY_ALL_THRESHOLDS,%d XP · все пороги достигнуты,%d XP · all thresholds reached
+KEY_MASTERY_XP_PROGRESS,%d / %d XP до следующего порога,%d / %d XP to next threshold
+KEY_MASTERY_LEVEL_FORMAT,Уровень %d,Level %d
+KEY_MASTERY_XP_REQUIRED,%d XP,%d XP
+KEY_MASTERY_THRESHOLD_REACHED,Порог достигнут,Threshold reached
+KEY_MASTERY_THRESHOLD_PENDING,Пока не достигнут,Not reached yet
+KEY_SKIN_MASTERY_1,Награда мастерства I,Mastery reward I
+KEY_SKIN_MASTERY_2,Награда мастерства II,Mastery reward II
+KEY_SKIN_MASTERY_NEED_LEVEL,Мастерство: уровень %d,Mastery level %d required
+KEY_SKIN_MASTERY_EARNED_PENDING,Получен за опыт · облик готовится,Earned through mastery · artwork coming soon
+KEY_SKIN_MASTERY_ART_PENDING,Облик ещё не создан,Artwork not available yet
+KEY_SKIN_MASTERY_EARNED,Получен за опыт,Earned through mastery
+KEY_MASTERY_SKIN_VIEW,Посмотреть облик ›,View skin ›
+KEY_SKIN_NEXT_MASTERY_REWARD,До скина %d: ещё %d XP,Skin %d: %d XP remaining
+KEY_SKIN_MASTERY_BOTH_EARNED,Оба скина мастерства получены,Both mastery skins earned
+KEY_SKIN_MASTERY_REWARD_EARNED,Скин %d получен за опыт,Skin %d earned through mastery
+KEY_TASK_13,Постройте разных типов башен за один бой: ,Build different tower types in one battle: 
+KEY_TASK_14,Улучшите башни за один бой: ,Upgrade towers in one battle: 
+KEY_TASK_15,Победите боссов: ,Defeat bosses: 
+KEY_TASK_16,Победите в боях без потери здоровья базы: ,Win battles without base damage: 
+KEY_TASK_17,Получите XP мастерства башен: ,Earn tower mastery XP: 
+KEY_TASK_18,Победите и используйте за неделю разных типов башен: ,Win and use different tower types this week: 
+KEY_TASK_19,Заработайте монет башней «Доход»: ,Earn coins with the “Income” tower: 
+KEY_TASK_20,Доведите башен до 5 уровня мастерства: ,Reach mastery level 5 with towers: 
+KEY_TASK_21,Доведите башен до 10 уровня мастерства: ,Reach mastery level 10 with towers: 
+KEY_TASK_22,Пройдите страниц кампании: ,Complete campaign pages: 
+KEY_TASK_23,Получите скинов за мастерство: ,Obtain mastery skins: 
+KEY_TASK_24,Победите боссов на разных уровнях кампании: ,Defeat bosses on different campaign levels: 
+KEY_CAMPAIGN_DIAMOND_REWARD,Получено алмазов: %d,Diamonds earned: %d
+KEY_PERIOD_DIAMONDS_PENDING,За все задания: %d алм.,Complete all tasks: %d diamonds
+KEY_PERIOD_DIAMONDS_GRANTED,За все задания получено: %d алм.,All-task reward received: %d diamonds
+KEY_DIAMOND_BALANCE,Баланс алмазов: %d,Diamond balance: %d
+KEY_TASK_25,Постройте башен за несколько боёв: ,Build towers across battles: 
+KEY_TASK_26,Улучшите башни в боях: ,Upgrade towers in battles: 
+KEY_TASK_27,Завершите боёв: ,Finish battles: 
+KEY_TASK_28,Постройте башню «Пушка»: ,Build the “Gun” tower: 
+KEY_TASK_29,Победите в боях с тремя разными типами башен: ,Win battles with three different tower types: 
+KEY_TASK_30,Нанесите урона башней «Пушка»: ,Deal damage with the “Gun” tower: 
+KEY_PROMOTION_NAME_8,Последний рубеж,Last Stand
+KEY_PROMOTION_DESC_8,Победите на разных уровнях кампании с 1–2 ОЗ базы. Уровней:,Win distinct campaign levels with 1–2 base HP remaining. Levels:
+KEY_PROMOTION_NAME_9,Мастер комбинаций,Combination Master
+KEY_PROMOTION_DESC_9,"Победите на разных уровнях кампании, построив «Пушку», «Ракету» и «Арбалет». Уровней:","Win distinct campaign levels after building “Gun”, “Rocket”, and “Crossbow”. Levels:"
+KEY_PROMOTION_NAME_10,Экономный командир,Frugal Commander
+KEY_PROMOTION_DESC_10,"Победите на разных уровнях кампании, построив башню и потратив за бой не более 1800 монет (без вычета возвратов). Уровней:",Win distinct campaign levels with at least one tower and at most 1800 battle coins spent (refunds do not reduce spending). Levels:
+KEY_PROMOTION_XP_PROGRESS,Опыт: %d / %d   ·   До следующего уровня: %d,XP: %d / %d   ·   Until next level: %d
+KEY_PROMOTION_MAX_LEVEL,Максимальный уровень достигнут,Maximum level reached
+KEY_PROMOTION_REWARD_LOCKED,Закрыто,Locked
+KEY_PROMOTION_REWARD_CLAIMED,Получено,Claimed
+KEY_PROMOTION_REWARD_READY,Можно забрать,Ready to claim
+KEY_PROMOTION_NAME_11,Безупречная оборона,Perfect Defense
+KEY_PROMOTION_DESC_11,"Победите на разных уровнях кампании, построив башню и не потеряв ОЗ базы. Уровней:",Win distinct campaign levels after building a tower without losing base HP. Levels:
+KEY_PROMOTION_NAME_12,Мастер улучшений,Upgrade Expert
+KEY_PROMOTION_DESC_12,"Победите на разных уровнях кампании, выполнив за бой не менее 5 улучшений башен. Уровней:",Win distinct campaign levels after upgrading towers at least 5 times in the battle. Levels:
+KEY_PROMOTION_NAME_13,Слаженный дуэт,Dynamic Duo
+KEY_PROMOTION_DESC_13,"Победите на разных уровнях кампании, построив за бой ровно 2 разных типа башен. Уровней:",Win distinct campaign levels after building exactly 2 different tower types during the battle. Levels:
+KEY_PROMOTION_NAME_14,Арена чемпионов,Arena Champion
+KEY_PROMOTION_DESC_14,Победите реальных соперников в PvP. Побед:,Defeat real opponents in PvP. Wins:
+KEY_PROMOTION_NAME_15,Испытательный полигон,Testing Grounds
+KEY_PROMOTION_DESC_15,Нанесите башнями за один завершённый бой в песочнице урон не меньше:,Deal at least this much tower damage in one completed sandbox battle:
+KEY_PROMOTION_NAME_16,Архитектор укреплений,Fortress Architect
+KEY_PROMOTION_DESC_16,Выполните улучшения башен за один завершённый бой в любом режиме. Улучшений:,Upgrade towers in one completed battle in any mode. Upgrades:
+KEY_REWARDS_SECTION,НАГРАДЫ ПО УРОВНЯМ,LEVEL REWARDS
+KEY_REWARDS_HINT,Листайте вправо · выберите доступную награду,Scroll right · select an available reward
+KEY_REWARD_CARD_LEVEL,УРОВЕНЬ,LEVEL
+KEY_PROMOTION_NAME_17,Несокрушимый рубеж,Unbroken Line
+KEY_PROMOTION_DESC_17,Уничтожьте противников за один завершённый бой в любом режиме. Противников:,Defeat enemies in one completed battle in any mode. Enemies:
+KEY_PROMOTION_NAME_18,Полная команда,Full Squad
+KEY_PROMOTION_DESC_18,"Победите в PvP или в бою с ИИ, построив за бой 4 разных типа башен и выполнив не менее 5 улучшений. Побед:",Win in PvP or against AI after building 4 different tower types and performing at least 5 upgrades in the battle. Wins:
+KEY_PROMOTION_NAME_19,Коллекция защитника,Defender's Collection
+KEY_PROMOTION_DESC_19,Постройте за всё время разные типы башен в любом режиме. Типов:,Build different tower types over time in any mode. Types:
+KEY_PROMOTION_NAME_20,Покоритель волн,Wave Conqueror
+KEY_PROMOTION_DESC_20,Достигните волны в одном завершённом бою песочницы. Волна:,Reach this wave in one completed sandbox battle. Wave:
+KEY_PROMOTION_NAME_21,Неприступная арена,Flawless Arena
+KEY_PROMOTION_DESC_21,"Победите в PvP или бою с ИИ, построив башню и не потеряв ОЗ базы. Побед:",Win PvP or against AI after building a tower without losing base HP. Wins:
+KEY_PROMOTION_NAME_22,Гроза боссов,Boss Nemesis
+KEY_PROMOTION_DESC_22,Уничтожьте боссов на своей стороне в любом режиме. Боссов:,Defeat bosses on your side in any mode. Bosses:
+KEY_PROMOTION_COMPLETED_DATE,Выполнено: %s,Completed: %s
+KEY_PROMOTION_CLAIMED_DATE,Получено: %s,Claimed: %s
+KEY_PROMOTION_NAME_23,Марафон боссов,Boss Marathon
+KEY_PROMOTION_DESC_23,Уничтожьте боссов на своей стороне за один завершённый бой песочницы. Боссов:,Defeat bosses on your side in one completed sandbox battle. Bosses:
+KEY_PROMOTION_NAME_24,Один против всех,One Against All
+KEY_PROMOTION_DESC_24,"Победите в PvP или против ИИ, построив только один тип башни и выполнив не менее пяти улучшений. Побед:",Win PvP or against AI after building exactly one tower type and upgrading towers at least five times. Wins:
+KEY_PROMOTION_NAME_25,Грандмастер башен,Tower Grandmaster
+KEY_PROMOTION_DESC_25,Достигните 10-го уровня мастерства у разных башен. Башен:,Reach mastery level 10 with different towers. Towers:
+KEY_GUIDE_OPEN,Открыть справочник ресурсов,Open the resource guide
+KEY_GUIDE_EYEBROW,СПРАВКА,REFERENCE
+KEY_GUIDE_TITLE,Справка по игре,Game reference
+KEY_GUIDE_TAB_COINS,Монеты,Coins
+KEY_GUIDE_TAB_DIAMONDS,Алмазы,Diamonds
+KEY_GUIDE_TAB_CRITICAL,Крит. урон,Crit. damage
+KEY_GUIDE_CURRENT_VALUE,Сейчас: %s,Current: %s
+KEY_GUIDE_COINS_TITLE,Монеты,Coins
+KEY_GUIDE_COINS_INTRO,Монеты — постоянная валюта вашего профиля. Её запас отображается в верхней панели меню.,Coins are a permanent profile currency. Your balance appears in the menu's top bar.
+KEY_GUIDE_COINS_EARN,"Монеты профиля можно получить за задания, награды уровней достижений и некоторые награды Пути славы.","Earn profile coins from tasks, achievement-level rewards and some Path of Glory rewards."
+KEY_GUIDE_COINS_USE,"Монеты профиля нужны для открытия башен, повышения уровня их карточек и покупки доступных способностей. Улучшение карточки также требует карточки этой башни.","Profile coins unlock towers, upgrade tower cards and purchase available abilities. Card upgrades also require cards for that tower."
+KEY_GUIDE_COINS_BATTLE,В бою используется отдельный запас монет: за него строятся и улучшаются башни. Начальный запас зависит от режима и настроек боя.,Battles use a separate coin balance for building and upgrading towers. The starting amount depends on the mode and battle settings.
+KEY_GUIDE_DIAMONDS_TITLE,Алмазы,Diamonds
+KEY_GUIDE_DIAMONDS_INTRO,Алмазы — отдельный ресурс профиля. Баланс сохраняется и показывается в верхней панели.,Diamonds are a separate profile resource. Your balance is saved and shown in the top bar.
+KEY_GUIDE_DIAMONDS_CAMPAIGN,За первую победу на каждом уровне кампании — 1 алмаз. Повторная победа и поражение не дают алмаз; дополнительного бонуса за босса нет.,Earn 1 diamond for the first win on each campaign level. Replays and defeats give none; there is no extra boss bonus.
+KEY_GUIDE_DIAMONDS_TASKS,Выполните все ежедневные задания за период — 1 алмаз; все еженедельные — 3 алмаза. Каждый бонус выдаётся один раз за свой период.,"Complete all daily tasks in a period for 1 diamond, or all weekly tasks for 3. Each bonus is granted once per period."
+KEY_GUIDE_DIAMONDS_USE,В текущей версии проекта расходование алмазов пока не реализовано.,Diamond spending is not implemented in the current project version.
+KEY_GUIDE_CRITICAL_TITLE,Критический урон,Critical damage
+KEY_GUIDE_CRITICAL_INTRO,Этот показатель усиливает критическое попадание; это не вероятность критического удара.,This stat increases critical-hit damage; it is not critical-hit chance.
+KEY_GUIDE_CRITICAL_EXAMPLE,"Для обычной формулы: урон крита = урон × (1 + показатель / 100). Например, при 100% бонуса 100 урона превращаются в 200 до дополнительных эффектов.","For the standard formula: critical damage = damage × (1 + stat / 100). For example, a 100% bonus turns 100 damage into 200 before extra effects."
+KEY_GUIDE_CRITICAL_CHANCE,Базовый шанс крита — 5%; мастерство и отдельные способности могут влиять на шанс или урон. Формулы некоторых башен имеют особенности.,The base critical chance is 5%; mastery and individual abilities may affect chance or damage. Some towers have special formulas.
+KEY_GUIDE_CRITICAL_EARN,Награды общего уровня достижений дают от 15 до 31 единицы: на каждом следующем уровне на 1 больше. Заберите награду на экране уровней достижений.,"Achievement-level rewards grant 15 to 31 points, increasing by 1 per level. Claim them on the achievement-level rewards screen."
+KEY_GUIDE_COINS_SEPARATE,Боевой запас и монеты профиля не взаимозаменяемы: остаток боевых монет не переносится в профиль напрямую.,Battle coins and profile coins are separate: remaining battle coins are not directly transferred to the profile.
+KEY_GUIDE_COINS_SKINS,"В магазине монеты также тратятся на платные скины. Скины, получаемые за мастерство, бесплатны.",Coins also buy paid skins in the shop. Mastery reward skins are free.
+KEY_GUIDE_CRITICAL_SHOP,Открытие башни и повышение уровня её карточки дают по 1 единице критического урона. Покупка способности сама по себе этот показатель не повышает.,Unlocking a tower and upgrading its card each grant 1 critical damage point. Buying an ability does not itself increase this stat.
+KEY_GUIDE_CRITICAL_DETAILS,"Показатель применяется при критическом попадании, а не прибавляется ко всем ударам. Бонусы мастерства, тип цели и особенности башни могут менять итоговый расчёт.","The stat applies to critical hits, not every hit. Mastery bonuses, target type and tower-specific rules can change the final calculation."
+KEY_GUIDE_COINS_SCORE,"В кампании и обычном режиме за завершённый бой начисляется целая часть очков, делённых на 10; в кампании может добавляться бонус, зависящий от результата и прохождения уровня.","In campaign and the standard mode, a completed battle awards the whole-number part of score divided by 10; campaign may add a bonus based on the result and level completion."
+KEY_GUIDE_DIAMONDS_LEGACY,При переходе со старого сохранения ранее пройденные уровни кампании учитываются однократно.,"When migrating an older save, previously completed campaign levels are credited once."
+KEY_GUIDE_DIAMONDS_PERIOD,"Бонус за задания выдаётся один раз за соответствующий период, когда выполнены все задания этого периода.",The task bonus is granted once per corresponding period when all tasks for that period are complete.
+KEY_GUIDE_COINS_BATTLE_EARN,Боевые монеты начисляются за уничтожение врагов; доходная башня также приносит монеты во время боя. Размер награды за врага зависит в том числе от волны и настроек.,"Battle coins are awarded for defeating enemies, and the income tower generates coins during battle. Enemy rewards depend in part on the wave and settings."
+KEY_GUIDE_COINS_CAMPAIGN_BONUS,"В кампании к основной награде может добавиться бонус: при первом прохождении с 3, 2 или 1 звёздой — основная награда, делённая соответственно на 3, 3,1 или 3,2; при повторе с нулём звёзд — на 4. Дробная часть отбрасывается.","Campaign may add a bonus: on a first completion with 3, 2 or 1 stars, the base reward is divided by 3, 3.1 or 3.2 respectively; on a zero-star replay, by 4. Fractions are discarded."
+KEY_PROMOTION_NAME_26,Меткий выстрел,Precision Shot
+KEY_PROMOTION_DESC_26,Нанесите критические попадания «Пушкой» в любом режиме. Критических попаданий:,Land critical hits with the Cannon in any mode. Critical hits:
+KEY_PROMOTION_NAME_27,Залповый огонь,Volley Fire
+KEY_PROMOTION_DESC_27,Поразите «Ракетой» не менее трёх разных противников за один залп в любом режиме. Таких залпов:,"Hit at least three different enemies with the Rocket in one volley, in any mode. Volleys:"
+KEY_PROMOTION_NAME_28,Быстрый арбалет,Rapid Crossbow
+KEY_PROMOTION_DESC_28,Поразите противников «Арбалетом» во время ускоренной фазы атаки в любом режиме. Попаданий:,Hit enemies with the Crossbow during its accelerated attack phase in any mode. Hits:
+KEY_PROMOTION_NAME_29,Линия замедления,Slowing Line
+KEY_PROMOTION_DESC_29,Постройте башни «Замедление» в любых боях. Построено:,Build Slowing towers in any battle. Built:
+KEY_PROMOTION_NAME_30,Хозяин времени,Master of Time
+KEY_PROMOTION_DESC_30,"Победите в бою любого режима, построив хотя бы одну «Хронопетлю». Побед:",Win battles in any mode after building at least one Chronopetl. Wins:
+KEY_PROMOTION_NAME_31,Доходная стратегия,Income Strategy
+KEY_PROMOTION_DESC_31,Получайте боевые монеты от башни «Доход» в любых боях. Положительных выплат:,Receive battle coins from the Income tower in any battle. Positive payouts:
+KEY_GUIDE_TAB_MASTERY,Мастерство,Mastery
+KEY_GUIDE_TAB_TASKS,Задания,Tasks
+KEY_GUIDE_TAB_ACHIEVEMENTS,Достижения,Achievements
+KEY_GUIDE_TAB_GLORY,Путь славы,Path of Glory
+KEY_GUIDE_MASTERY_TITLE,Мастерство и наградные скины,Mastery and reward skins
+KEY_GUIDE_MASTERY_INTRO,Мастерство развивается отдельно для каждого типа башни и даёт постоянные бонусы и два наградных скина.,Mastery progresses separately for each tower type and grants permanent bonuses and two reward skins.
+KEY_GUIDE_MASTERY_XP,"Опыт рассчитывается по накопленным боевым показателям соответствующей башни и обновляется при завершении боя; для разных башен учитываются урон, доход или другие показатели.","XP is calculated from the corresponding tower’s accumulated battle statistics and updated when a battle ends; depending on the tower, damage, income or other statistics count."
+KEY_GUIDE_MASTERY_LEVELS,"Пороговые значения опыта суммарные: 1 000, 2 500, 5 000, 10 000, 20 000, 35 000, 50 000, 75 000, 100 000 и 150 000. Уровни 1–10 дают указанные в окне мастерства бонусы или награды.","Cumulative XP thresholds are 1,000, 2,500, 5,000, 10,000, 20,000, 35,000, 50,000, 75,000, 100,000 and 150,000. Levels 1–10 grant the bonuses or rewards shown in the mastery panel."
+KEY_GUIDE_MASTERY_REWARDS,"На 5-м уровне (20 000 опыта) открывается первый скин, на 10-м (150 000) — второй. Они бесплатны, уникальны для башни и выдаются по достижении порога.","The first skin unlocks at level 5 (20,000 XP), the second at level 10 (150,000 XP). Both are free, tower-specific and granted on reaching the threshold."
+KEY_GUIDE_MASTERY_SELECT,Получение скина не меняет выбранный вид: выберите открытый скин в магазине. Покупные и наградные скины хранятся отдельно от выбора.,Unlocking a skin does not change your selection: choose the unlocked skin in the shop. Ownership and selection are separate.
+KEY_GUIDE_MASTERY_PREVIEW,"В магазине и окне мастерства можно посмотреть, как вид выглядит на уровнях башни; предварительный просмотр доступен и до открытия награды.",The shop and mastery panel preview the tower’s appearance across its levels; reward skins can be previewed before unlocking.
+KEY_GUIDE_TASKS_TITLE,Задания и карьерные главы,Tasks and career chapters
+KEY_GUIDE_TASKS_INTRO,"В заданиях есть ежедневные, еженедельные и карьерные цели. Награды указываются на карточке задания.","Tasks include daily, weekly and career objectives. Each task card shows its reward."
+KEY_GUIDE_TASKS_PERIOD,Есть четыре ежедневных и семь еженедельных заданий. Ежедневные обновляются при смене дня UTC; еженедельные — через семь дней после начала своего периода.,There are four daily and seven weekly tasks. Daily tasks reset at the UTC day boundary; weekly tasks reset seven days after their period starts.
+KEY_GUIDE_TASKS_CLAIM,"После выполнения заберите награду кнопкой на карточке: ежедневные задания дают монеты, еженедельные — жетоны; карьерные задания могут давать монеты или сундук.","Claim completed tasks using the button on the card: daily tasks give coins, weekly tasks give tokens, and career tasks can give coins or a chest."
+KEY_GUIDE_TASKS_DIAMONDS,"За выполнение всех ежедневных заданий периода выдаётся 1 алмаз, всех еженедельных — 3; каждый бонус можно получить один раз за период.","Completing all daily tasks awards 1 diamond, and completing all weekly tasks awards 3; each bonus is granted once per period."
+KEY_GUIDE_TASKS_CAREER,В карьере 30 этапов по 15 разных заданий. Засчитывается прогресс только открытой главы; закрытые главы его не накапливают.,Career has 30 stages of 15 distinct tasks each. Only the active chapter progresses; locked chapters do not accumulate progress.
+KEY_GUIDE_TASKS_CHEST,"Выполняйте и забирайте задания текущей главы, чтобы перейти к следующей. Если глава даёт сундук, его нужно открыть отдельно.","Complete and claim the current chapter’s tasks to advance. If a chapter offers a chest, open it separately."
+KEY_GUIDE_ACHIEVEMENTS_TITLE,Достижения и даты наград,Achievements and reward dates
+KEY_GUIDE_ACHIEVEMENTS_INTRO,Каждое достижение содержит пять ступеней с отдельными целями и наградами. Условия каждого показаны в его карточке.,Each achievement has five tiers with separate goals and rewards. Each card explains its conditions.
+KEY_GUIDE_ACHIEVEMENTS_TIERS,"Прогресс фиксируется по условию достижения; разные достижения могут требовать победы, рекорд за бой, разные уровни или накопленные действия.","Progress follows each achievement’s condition: it may require wins, a single-battle record, distinct levels or accumulated actions."
+KEY_GUIDE_ACHIEVEMENTS_CLAIM,"Достижение порога открывает ступень, но звёзды начисляются после нажатия кнопки получения. Каждую ступень можно забрать один раз.","Reaching a threshold unlocks a tier, but its stars are awarded when you claim it. Each tier can be claimed once."
+KEY_GUIDE_ACHIEVEMENTS_DATES,"Дата выполнения — день достижения порога; дата получения — день, когда забрана награда. Они могут различаться.",Completion date is when the threshold was reached; claim date is when its reward was collected. They may differ.
+KEY_GUIDE_ACHIEVEMENTS_OLD,В старых сохранениях известная дата получения сохраняется; неизвестная дата выполнения не придумывается.,"In older saves, known claim dates are preserved; unknown completion dates are not invented."
+KEY_GUIDE_ACHIEVEMENTS_TRACK,"Звёзды повышают общий уровень достижений. За доступные уровни 1–17 отдельно забираются монеты, критический урон и сундуки; уже полученные уровни не выдаются повторно.","Stars raise the overall achievement level. Claim coins, critical damage and chests separately for available levels 1–17; claimed levels cannot be collected twice."
+KEY_GUIDE_GLORY_TITLE,Путь славы,Path of Glory
+KEY_GUIDE_GLORY_INTRO,Путь славы — отдельная шкала этапов и наград; она не равна уровню достижений или мастерству башни.,Path of Glory is a separate track of stages and rewards; it is not the achievement level or tower mastery.
+KEY_GUIDE_GLORY_TRACKS,На этапе есть обычная и VIP-ветка. Обычная награда доступна на открытом этапе; VIP-награда требует активного VIP-доступа.,Each stage has a free and a VIP track. The free reward is available on an unlocked stage; the VIP reward requires active VIP access.
+KEY_GUIDE_GLORY_CLAIM,"Открытые, но не забранные награды можно получить и позже. Каждая награда ветки получает отдельную отметку получения.",Unlocked rewards can be claimed later. Each track reward has its own claimed state.
+KEY_GUIDE_GLORY_REWARDS,Награды этапов включают монеты и сундуки с карточками башен. В сундуке показываются полученные карточки и их количество.,Stage rewards include coins and chests containing tower cards. A chest shows the cards and quantities received.
+KEY_GUIDE_GLORY_PROGRESS,Шкала показывает сохранённый уровень и опыт Пути славы. В текущем проекте автоматическое начисление этого опыта пока не реализовано.,The bar shows the saved Path of Glory level and XP. Automatic awarding of this XP is not currently implemented in the project.
+KEY_PROMOTION_NAME_32,Ядовитый след,Poison Trail
+KEY_PROMOTION_DESC_32,Примените яд башней «Отравитель» к живым противникам в любом режиме. Применений:,Apply poison to living enemies with the Poisoner in any mode. Applications:
+KEY_PROMOTION_NAME_33,Ловушки Минотавра,Minotaur Traps
+KEY_PROMOTION_DESC_33,Создайте дорожные ловушки башней «Минотавр» в любом режиме. Ловушек:,Create road traps with the Minotaur in any mode. Traps:
+KEY_PROMOTION_NAME_34,Неотвратимая казнь,Inevitable Execution
+KEY_PROMOTION_DESC_34,Добейте противников башней «Палач» её приёмом добивания в любом режиме. Добиваний:,Execute enemies using the Hangman’s finishing move in any mode. Executions:
+KEY_PROMOTION_NAME_35,Гнев против гигантов,Fury Against Giants
+KEY_PROMOTION_DESC_35,Поразите боссов башней «Задира» во время ярости в любом режиме. Попаданий:,Hit bosses with the Bully while enraged in any mode. Hits:
+KEY_PROMOTION_NAME_36,Успешное возвращение,Successful Return
+KEY_PROMOTION_DESC_36,Верните к башне «Дроновод» дронов с хотя бы одним жетоном в любом режиме. Возвращений:,Return drones carrying at least one token to the Drone Driver in any mode. Returns:
+KEY_PROMOTION_NAME_37,Крепкие связи,Strong Connections
+KEY_PROMOTION_DESC_37,Соедините «Связующую башню» с другими своими башнями в любых боях. Каждая пара учитывается один раз за бой. Связей:,Connect the Connecting Tower to your other towers in any battle. Each pair counts once per battle. Connections:
+KEY_GUIDE_TAB_DAILY_REWARDS,Ежедневные награды,Daily rewards
+KEY_GUIDE_DAILY_REWARDS_TITLE,Ежедневные награды,Daily rewards
+KEY_GUIDE_DAILY_REWARDS_INTRO,Раздел для будущей системы ежедневных наград.,A reference section for a future daily rewards system.
+KEY_GUIDE_DAILY_REWARDS_STATUS,Отдельная система ежедневных наград пока не реализована; получить награду за вход сейчас нельзя.,A separate daily rewards system has not been implemented; login rewards cannot currently be claimed.
+KEY_GUIDE_DAILY_REWARDS_DISTINCTION,Не путайте их с ежедневными заданиями: задания и бонус за их выполнение уже работают отдельно.,These are not the daily tasks: tasks and their completion bonus already work separately.
+KEY_GUIDE_DAILY_REWARDS_UNDECIDED,"Состав наград, расписание и правила получения будут определены при реализации системы.","Reward contents, schedule and claim rules will be determined when the system is implemented."
+KEY_PROFILE_ACHIEVEMENT_LEVEL,Уровень достижений: %d,Achievement level: %d
+KEY_PROFILE_ACHIEVEMENT_XP,%d / %d XP · осталось %d,%d / %d XP · %d remaining
+KEY_PROFILE_MEDALS,Медали: %d / %d,Medals: %d / %d
+KEY_PROFILE_MAX_MASTERY,Максимальное мастерство: %d / %d башен,Maximum mastery: %d / %d towers
+KEY_PROFILE_MASTERY_NONE,Мастерство башен пока не развито,Tower mastery not yet developed
+KEY_PROFILE_BEST_TOWER,Лучшая: %s · уровень %d · %d XP,Best: %s · level %d · %d XP
+KEY_PROFILE_TITLES,Титулы,Titles
+KEY_PROFILE_ACHIEVEMENT_RANK,Уровень %s,Level %s
+KEY_PROFILE_ACHIEVEMENT_LOCKED,Не открыто,Locked
+KEY_PROFILE_NO_RECEIVED_ACHIEVEMENTS,Пока нет полученных достижений,No achievements claimed yet
+KEY_PROFILE_DETAIL_PROGRESS,Текущий прогресс: %d,Current progress: %d
+KEY_PROFILE_DETAIL_TARGET,Необходимо: %d,Required: %d
+KEY_PROFILE_DETAIL_RECEIVED,Получено,Claimed
+KEY_PROFILE_DETAIL_READY,Выполнено · награда не получена,Completed · reward not claimed
+KEY_CAREER_TASK_REWARD,Награда: %s,Reward: %s
+KEY_CAREER_CLAIM,Получить,Claim
+KEY_CAREER_REWARD_COINS,%d монет,%d coins
+KEY_CAREER_REWARD_TOKEN,%d жетонов,%d tokens
+KEY_CAREER_REWARD_DIAMOND,%d алм.,%d diamonds
+KEY_CAREER_REWARD_COMMON,%d обычных карт,%d common cards
+KEY_CAREER_REWARD_RARE,%d редких карт,%d rare cards
+KEY_CAREER_CHEST_PREVIEW_BUTTON,Содержимое сундука этапа,Preview stage chest
+KEY_CAREER_CHEST_PREVIEW_TITLE,Сундук этапа %d,Stage %d chest
+KEY_CAREER_CHEST_COMMON,Обычные карты: %d,Common cards: %d
+KEY_CAREER_CHEST_RARE,Редкие карты: %d,Rare cards: %d
+KEY_CAREER_CHEST_EPIC,Эпические карты: %d,Epic cards: %d
+KEY_CAREER_REWARD_EPIC,%d эпических карт,%d epic cards
+KEY_GUIDE_TAB_WAVES,Волны,Waves
+KEY_GUIDE_TAB_BOSSES,Боссы,Bosses
+KEY_GUIDE_WAVES_TITLE,Волны врагов,Enemy waves
+KEY_GUIDE_WAVES_INTRO,"Волна — группа врагов, которые выходят на маршрут с заданными промежутками. Защищайте базу, пока они движутся к ней.",A wave is a group of enemies spawning onto the path at set intervals. Defend the base as they move toward it.
+KEY_GUIDE_WAVES_TIMING,После появления последнего врага следующая волна начинается через 5 секунд; оставшиеся противники могут ещё быть на карте.,The next wave starts 5 seconds after the last enemy spawns; earlier enemies may still be on the map.
+KEY_GUIDE_WAVES_CAMPAIGN,В кампании для каждого уровня задан собственный набор волн. В текущих данных кампании боссы в эти волны не включены.,Campaign levels have their own wave lists. The current campaign wave data does not include bosses.
+KEY_GUIDE_WAVES_SANDBOX,Для песочницы генерируется 500 волн. В конце каждой генератор добавляет случайного босса одного из 13 типов.,Sandbox generates 500 waves. The generator adds one randomly selected boss from 13 types at the end of each wave.
+KEY_GUIDE_WAVES_LOSS,"Если враг достигает конца пути, база получает урон; следите за её здоровьем.",An enemy that reaches the end of the path damages the base; keep an eye on its health.
+KEY_GUIDE_BOSSES_TITLE,Боссы и их способности,Bosses and their abilities
+KEY_GUIDE_BOSSES_INTRO,"Способности описаны по скриптам. В базовом цикле босса сейчас не вызывается fire(): способности боссов 1, 4, 5, 6 и лечение босса 11 автоматически не запускаются. Действие остальных зависит от режима и целей.","Abilities reflect the scripts. The base boss loop currently does not call fire(): boss 1, 4, 5, 6 abilities and boss 11 healing do not start automatically. Other effects depend on the mode and targets."
+KEY_GUIDE_BOSS_1,"Босс 1: в коде задано окаменение до трёх башен на 5 с с интервалом 3 с, но fire() автоматически не вызывается. Для выбора целей также нужны два контейнера игроков.","Boss 1: code defines petrification of up to three towers for 5 s every 3 s, but fire() is not called automatically. Target selection also requires two player containers."
+KEY_GUIDE_BOSS_2,Босс 2: получает на 10% меньше урона от попаданий.,Boss 2: takes 10% less damage from hits.
+KEY_GUIDE_BOSS_3,"Босс 3: создаёт воду на дороге и настроен на ускорение врагов. Сейчас множитель скорости хранится как целое число, поэтому ускорение 20% может не примениться.","Boss 3: creates water on the road and is configured to speed up enemies. The current speed multiplier is an integer, so the 20% increase may not apply."
+KEY_GUIDE_BOSS_4,Босс 4: в коде задан призыв 3–5 обычных врагов каждые 5 с; автоматически способность сейчас не запускается.,Boss 4: code defines summoning 3–5 normal enemies every 5 s; the ability currently does not start automatically.
+KEY_GUIDE_BOSS_5,Босс 5: в коде задано восстановление до 5% максимального здоровья каждые 5 с; автоматически способность сейчас не запускается.,Boss 5: code defines restoring up to 5% maximum health every 5 s; the ability currently does not start automatically.
+KEY_GUIDE_BOSS_6,Босс 6: в коде задано уничтожение одной случайной доступной башни; автоматически способность сейчас не запускается.,Boss 6: code defines destroying one random available tower; the ability currently does not start automatically.
+KEY_GUIDE_BOSS_7,"Босс 7: при попадании прямой или площадной атаки уменьшает множитель урона атакующей башни на 0,1 процентного пункта; предел снижения — около 30%.","Boss 7: each direct or area hit reduces the attacking tower’s damage multiplier by 0.1 percentage points, down to approximately −30%."
+KEY_GUIDE_BOSS_8,"Босс 8: заражает башни в радиусе спорами, увеличивая интервал атаки на 20%; при его уничтожении эффект снимается.","Boss 8: infects towers in range with spores, increasing their attack interval by 20%; the effect is removed on its destruction."
+KEY_GUIDE_BOSS_9,Босс 9: чередует 3 с уязвимости и 3 с неуязвимости.,Boss 9: alternates 3 s of vulnerability and 3 s of invulnerability.
+KEY_GUIDE_BOSS_10,"Босс 10: после уничтожения пытается разместить на дороге три участка ускорения; враги, проходящие по ним, ускоряются.",Boss 10: on destruction attempts to place three speed tiles on the road; enemies crossing them speed up.
+KEY_GUIDE_BOSS_11,"Босс 11: при появлении создаёт до трёх спутников. Их лечение на 3% текущего здоровья каждые 3 с задано в fire(), но автоматически сейчас не запускается.","Boss 11: creates up to three escorts on spawn. Healing them by 3% of current health every 3 s is defined in fire(), but currently does not start automatically."
+KEY_GUIDE_BOSS_12,"Босс 12: взаимодействует с площадным уроном и замедлением. В текущем коде площадное попадание обрабатывается дважды, а попадание замедления передаёт отрицательный урон; это требует исправления и проверки.",Boss 12: interacts with area damage and slow attacks. Current code processes an area hit twice and passes negative damage for slow attacks; this needs a fix and verification.
+KEY_GUIDE_BOSS_13,"Босс 13: снижает уровень башен в своём радиусе на один, если уровень выше начального.",Boss 13: reduces the level of towers in range by one if they are above their initial level.
+KEY_GUIDE_DIAMONDS_CAREER,Некоторые карьерные задания также дают алмазы; награда указана на карточке задания.,Some career tasks also award diamonds; each task card shows its reward.
+KEY_CAREER_RECEIPT_TITLE,Награда получена,Reward received
+KEY_CAREER_RECEIPT_CARDS,Полученные карты,Cards received
+KEY_CAREER_RECEIPT_CARD_AMOUNT,× %d,× %d
+KEY_CAREER_RECEIPT_CLOSE,Отлично,Done
+KEY_AVATAR_SELECTED_NAMED,Аватар №%d — %s,Avatar #%d — %s
+KEY_AVATAR_NAME_01,Лазурный рыцарь,Azure Knight
+KEY_AVATAR_NAME_02,Огненный дракон,Fire Dragon
+KEY_AVATAR_NAME_03,Ледяной страж,Frost Guardian
+KEY_AVATAR_NAME_04,Гоблин-механик,Goblin Engineer
+KEY_AVATAR_NAME_05,Лесная сова,Forest Owl
+KEY_AVATAR_NAME_06,Звёздная чародейка,Star Sorceress
+KEY_AVATAR_NAME_07,Робот-исследователь,Explorer Robot
+KEY_AVATAR_NAME_08,Снежный волк,Snow Wolf
+KEY_AVATAR_NAME_09,Золотой лев,Golden Lion
+KEY_AVATAR_NAME_10,Лис-разведчик,Fox Scout
+KEY_AVATAR_NAME_11,Рунный голем,Rune Golem
+KEY_AVATAR_NAME_12,Морской хранитель,Ocean Guardian
+KEY_AVATAR_NAME_13,Гном-кузнец,Dwarf Smith
+KEY_AVATAR_NAME_14,Ворон-маг,Raven Mage
+KEY_AVATAR_NAME_15,Панда-страж,Panda Guardian
+KEY_AVATAR_NAME_16,Огненный феникс,Fire Phoenix
+KEY_AVATAR_NAME_17,Космический кот,Space Cat
+KEY_AVATAR_NAME_18,Грибной дух,Mushroom Spirit
+KEY_AVATAR_NAME_19,Тёмный самурай,Dark Samurai
+KEY_AVATAR_NAME_20,Морская фея,Sea Fairy
+KEY_AVATAR_NAME_21,Золотой скарабей,Golden Scarab
+KEY_AVATAR_NAME_22,Аксолотль,Axolotl
+KEY_AVATAR_NAME_23,Снежный олень,Snow Stag
+KEY_AVATAR_NAME_24,Осьминог-механик,Clockwork Octopus
+KEY_AVATAR_NAME_25,Пустынная лётчица,Desert Aviator
+KEY_AVATAR_NAME_26,Боевой кролик,Battle Rabbit
+KEY_AVATAR_NAME_27,Аметистовый страж,Amethyst Guardian
+KEY_AVATAR_NAME_28,Дух облаков,Cloud Spirit
+KEY_AVATAR_NAME_29,Капитан-призрак,Ghost Captain
+KEY_AVATAR_NAME_30,Солнечный страж,Sun Guardian
+KEY_AVATAR_NAME_31,Изумрудный дракон,Emerald Dragon
+KEY_AVATAR_NAME_32,Сова-волшебник,Owl Wizard
+KEY_AVATAR_NAME_33,Гномиха-кузнец,Dwarf Craftswoman
+KEY_AVATAR_NAME_34,Коралловый дракон,Coral Dragon
+KEY_AVATAR_NAME_35,Красная панда,Red Panda
+KEY_AVATAR_NAME_36,Каменный малыш,Little Stone Golem
+KEY_AVATAR_NAME_37,Страж шакалов,Jackal Guardian
+KEY_AVATAR_NAME_38,Механическая пчела,Clockwork Bee
+KEY_AVATAR_NAME_39,Звёздный единорог,Star Unicorn
+KEY_AVATAR_NAME_40,Хамелеон-алхимик,Chameleon Alchemist
+KEY_AVATAR_NAME_41,Капибара-повар,Capybara Chef
+KEY_AVATAR_NAME_42,Рыцарь-барсук,Badger Knight
+KEY_AVATAR_NAME_43,Лунная ведьма,Moon Witch
+KEY_AVATAR_NAME_44,Огненный аксолотль,Fire Axolotl
+KEY_AVATAR_NAME_45,Солнечная паладин,Sun Paladin
+KEY_AVATAR_NAME_46,Кристальная черепаха,Crystal Tortoise
+KEY_AVATAR_NAME_47,Ворон-пират,Raven Pirate
+KEY_AVATAR_NAME_48,Лесная дриада,Forest Dryad
+KEY_AVATAR_NAME_49,Ёж-путешественник,Hedgehog Explorer
+KEY_AVATAR_NAME_50,Облачный джинн,Cloud Djinn
+
+KEY_SKIN_T12_XP1,Золотой механизм · награда мастерства I,Golden Mechanism · Mastery Reward I

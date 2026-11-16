@@ -85,5 +85,3 @@ func on_base_damage(damage: int):
 					main_scene.game_end_controller.end_game()
 				else:
 					main_scene.game_end_controller.end_game_company()
-
-

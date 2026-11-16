@@ -155,5 +155,3 @@ func start_next_wave():
 	if wave_data.size() > 0: spawn_enemies(wave_data)
 
 func get_current_wave_index() -> int: return current_wave_index
-
-

@@ -1,0 +1,32 @@
+[gd_resource type="Theme" load_steps=5 format=3]
+
+[ext_resource type="Texture2D" path="res://Assets/UI/Selection/selected.png" id="selected"]
+[ext_resource type="Texture2D" path="res://Assets/UI/Selection/unselected.png" id="unselected"]
+[ext_resource type="Texture2D" path="res://Assets/UI/Selection/selected_disabled.png" id="selected_disabled"]
+[ext_resource type="Texture2D" path="res://Assets/UI/Selection/unselected_disabled.png" id="unselected_disabled"]
+
+[resource]
+CheckBox/icons/checked = ExtResource("selected")
+CheckBox/icons/unchecked = ExtResource("unselected")
+CheckBox/icons/checked_disabled = ExtResource("selected_disabled")
+CheckBox/icons/unchecked_disabled = ExtResource("unselected_disabled")
+CheckBox/icons/radio_checked = ExtResource("selected")
+CheckBox/icons/radio_unchecked = ExtResource("unselected")
+CheckBox/icons/radio_checked_disabled = ExtResource("selected_disabled")
+CheckBox/icons/radio_unchecked_disabled = ExtResource("unselected_disabled")
+PopupMenu/icons/checked = ExtResource("selected")
+PopupMenu/icons/unchecked = ExtResource("unselected")
+PopupMenu/icons/checked_disabled = ExtResource("selected_disabled")
+PopupMenu/icons/unchecked_disabled = ExtResource("unselected_disabled")
+PopupMenu/icons/radio_checked = ExtResource("selected")
+PopupMenu/icons/radio_unchecked = ExtResource("unselected")
+PopupMenu/icons/radio_checked_disabled = ExtResource("selected_disabled")
+PopupMenu/icons/radio_unchecked_disabled = ExtResource("unselected_disabled")
+CheckButton/icons/checked = ExtResource("selected")
+CheckButton/icons/unchecked = ExtResource("unselected")
+CheckButton/icons/checked_disabled = ExtResource("selected_disabled")
+CheckButton/icons/unchecked_disabled = ExtResource("unselected_disabled")
+CheckButton/icons/checked_mirrored = ExtResource("selected")
+CheckButton/icons/unchecked_mirrored = ExtResource("unselected")
+CheckButton/icons/checked_disabled_mirrored = ExtResource("selected_disabled")
+CheckButton/icons/unchecked_disabled_mirrored = ExtResource("unselected_disabled")

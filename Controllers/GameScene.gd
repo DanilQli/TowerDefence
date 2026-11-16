@@ -12,6 +12,7 @@ var health_controller
 var campaign_pause_menu: CanvasLayer
 
 func _ready():
+	TasksManager.begin_battle()
 	# Install before loading the map/controllers, so input remains available even
 	# if a later controller cannot finish initialising.
 	if GameSession.game_mode in [GameConstants.GameMode.CAMPAIGN, GameConstants.GameMode.SANDBOX]:
@@ -108,5 +109,3 @@ func on_stone(number_block: int, duration: int):
 		number_block -= 1
 	for i in range(len(tur)):
 		tur[i].stone_effect_start(duration)
-
-

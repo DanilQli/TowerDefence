@@ -250,7 +250,7 @@ func _execute_action(action: Dictionary):
 			
 			# Мастерство (скидка)
 			if DataManager.data["Turrets"].has(DataManager.keys[tower_id]):
-				if DataManager.data["Turrets"][DataManager.keys[tower_id]].mastery_lvl >= 2:
+				if DataManager.data["Turrets"][DataManager.keys[tower_id]].mastery_lvl >= 3:
 					cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 			
 			print("[AI Player] Действие: Build tower=", tower_id, 
@@ -283,7 +283,7 @@ func _execute_action(action: Dictionary):
 				
 				# Мастерство (скидка на апгрейд)
 				if DataManager.data["Turrets"].has(turret.turret_id):
-					if DataManager.data["Turrets"][turret.turret_id].mastery_lvl >= 6:
+					if DataManager.data["Turrets"][turret.turret_id].mastery_lvl >= 7:
 						upgrade_cost = MathUtils.round_to_dec(upgrade_cost * turret.mastery_cost_upgrade, 1)
 			
 			print("[AI Player] Действие: Upgrade pos=(", grid_x, ",", grid_y, 
@@ -341,7 +341,7 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int):
 	
 	# Мастерство (скидка)
 	if DataManager.data["Turrets"].has(DataManager.keys[tower_id]):
-		if DataManager.data["Turrets"][DataManager.keys[tower_id]].mastery_lvl >= 2:
+		if DataManager.data["Turrets"][DataManager.keys[tower_id]].mastery_lvl >= 3:
 			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 	
 	var current_money = _get_current_money()
@@ -411,7 +411,7 @@ func _upgrade_tower(grid_x: int, grid_y: int):
 			
 			# Мастерство (скидка)
 			if DataManager.data["Turrets"].has(turret.turret_id):
-				if DataManager.data["Turrets"][turret.turret_id].mastery_lvl >= 6:
+				if DataManager.data["Turrets"][turret.turret_id].mastery_lvl >= 7:
 					cost = MathUtils.round_to_dec(cost * turret.mastery_cost_upgrade, 1)
 			
 			var current_money = _get_current_money()
@@ -431,5 +431,3 @@ func _upgrade_tower(grid_x: int, grid_y: int):
 func stop():
 	is_active = false
 	print("[AI Player] Контроллер остановлен")
-
-

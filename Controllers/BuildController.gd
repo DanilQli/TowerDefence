@@ -22,7 +22,7 @@ func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
 
 	var build_name = tower_type + "T1"
 	var cost = GameConstants.DATA_TOWER[int(tower_type.split("_")[1]) - 1].cost_in_session
-	if DataManager.data["Turrets"][DataManager.keys[tower_index - 1]].mastery_lvl >= 2:
+	if DataManager.data["Turrets"][DataManager.keys[tower_index - 1]].mastery_lvl >= 3:
 		cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 	if GameSession.current_money_in_game_session < cost:
@@ -100,7 +100,7 @@ func verify_and_build():
 	if build_valid:
 		var tower_index = int(build_type.left(build_type.length() - 2).split("_")[1]) - 1
 		var required_cost = GameConstants.DATA_TOWER[tower_index].cost_in_session
-		if DataManager.data["Turrets"][DataManager.keys[tower_index]].mastery_lvl >= 2:
+		if DataManager.data["Turrets"][DataManager.keys[tower_index]].mastery_lvl >= 3:
 			required_cost = MathUtils.round_to_dec(required_cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		if GameSession.current_money_in_game_session < required_cost:
 			return
@@ -114,6 +114,7 @@ func verify_and_build():
 		turret.name = build_type + "_1"
 		turret.built = true
 		turret_layer.add_child(turret)
+		TasksManager.record_build(tower_index)
 		turret.get_node("Menu").setup(turret.id)
 		
 		var excl = main_scene.map_node.get_node("TowerExlusion")
@@ -124,7 +125,7 @@ func verify_and_build():
 		turret.ui_system.update_menu()
 		turret.ui_system.update_menu_upgrade()
 		var cost = GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session
-		if DataManager.data["Turrets"][DataManager.keys[int(build_type.left(build_type.length() - 2).split("_")[1])  - 1]].mastery_lvl >= 2:
+		if DataManager.data["Turrets"][DataManager.keys[int(build_type.left(build_type.length() - 2).split("_")[1])  - 1]].mastery_lvl >= 3:
 			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		GameSession.spend_money(cost)
 		main_scene.ui_controller._on_money_changed()
@@ -172,5 +173,3 @@ func _input(event):
 			cancel_build_mode()
 		if event.is_action_released("ui_cancel"):
 			cancel_build_mode()
-
-
