@@ -14,8 +14,11 @@ func initialize(scene):
 func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
 	while UiManager.list_open_menu_turrets.size() > 0:
 		var menu = UiManager.list_open_menu_turrets.pop_at(0)
-		if has_node(menu):
-			menu.queue_free()
+		if is_instance_valid(menu):
+			if menu.get_parent() == main_scene:
+				menu.queue_free()
+			else:
+				menu.hide()
 
 	if build_mode:
 		cancel_build_mode()

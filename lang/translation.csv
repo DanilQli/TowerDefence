@@ -360,8 +360,8 @@ KEY_SANDBOX_ENDLESS,"ПЕСОЧНИЦА
 KEY_PVP_ARENA_MULTIPLAYER,"PvP АРЕНА
 (Мультиплеер)","PvP ARENA
 (Multiplayer)"
-KEY_COMBAT_DECK,БОЕВАЯ КОЛОДА,COMBAT DECK
-KEY_FOUND_CARDS,НАЙДЕННЫЕ КАРТЫ,FOUND CARDS
+KEY_COMBAT_DECK,БОЕВЫЕ БАШНИ,COMBAT TOWERS
+KEY_FOUND_CARDS,НАЙДЕННЫЕ БАШНИ,FOUND TOWERS
 KEY_NOT_FOUND_0_12,НЕ НАЙДЕНО: 0/12,NOT FOUND: 0/12
 KEY_PROFILE_VARIANT_2,ПРОФИЛЬ,PROFILE
 KEY_STATISTICS_TITLES_DECK,СТАТИСТИКА  •  ТИТУЛЫ  •  КОЛОДА,STATISTICS • TITLES • DECK
@@ -912,3 +912,5 @@ KEY_AVATAR_NAME_49,Ёж-путешественник,Hedgehog Explorer
 KEY_AVATAR_NAME_50,Облачный джинн,Cloud Djinn
 
 KEY_SKIN_T12_XP1,Золотой механизм · награда мастерства I,Golden Mechanism · Mastery Reward I
+KEY_NAV_DECK,Колода,Deck
+KEY_SEARCHING,Поиск соперника...,Searching opponent...
