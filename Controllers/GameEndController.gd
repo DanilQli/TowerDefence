@@ -1,6 +1,10 @@
 ## GameEndController
 extends Node
 
+const END_GAME_COMPANY_SCENE: PackedScene = preload("res://Scenes/SupportScenes/end_game_company.tscn")
+const END_GAME_SCENE: PackedScene = preload("res://Scenes/SupportScenes/EndGame.tscn")
+const BUY_BOX_OPEN_SCENE: PackedScene = preload("res://Scenes/SupportScenes/buy_box_open.tscn")
+
 var main_scene
 var stars_earned := 0
 var end
@@ -56,9 +60,11 @@ func _apply_end_theme_and_anim(modal: Control, is_win: bool, star_count: int = -
 				if idx <= star_count:
 					star_node.modulate = Color(1.0, 1.0, 1.0, 0.0)
 					star_node.scale = Vector2(0.25, 0.25)
+					var star_pitch: float = 1.0 + float(idx - 1) * 0.08
 					var stw: Tween = modal.create_tween()
 					stw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
 					stw.tween_interval(0.14 + float(idx - 1) * 0.12)
+					stw.tween_callback(func() -> void: AudioManager.play_sfx("campaign_star", star_pitch))
 					stw.tween_property(star_node, "modulate:a", 1.0, 0.10)
 					stw.parallel().tween_property(star_node, "scale", Vector2.ONE, 0.28).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
 				else:
@@ -73,7 +79,7 @@ func end_game_company():
 	tasks()
 	get_tree().paused = true
 
-	end = load("res://Scenes/SupportScenes/end_game_company.tscn").instantiate()
+	end = END_GAME_COMPANY_SCENE.instantiate()
 	var money_dop = 0
 
 	var panel_root = "Panel/MarginContainer/VBoxContainer"
@@ -98,7 +104,8 @@ func end_game_company():
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	else:
 		stars_earned = 0
-		if DataManager.level_option[GameSession.current_level - 1]:
+		var lvl_idx: int = GameSession.current_level - 1
+		if health > 0 and lvl_idx >= 0 and lvl_idx < DataManager.level_option.size() and DataManager.level_option[lvl_idx]:
 			money_dop = int(int(score / 10) / 4.0)
 			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 
@@ -110,6 +117,7 @@ func end_game_company():
 	end.get_node(panel_root + "/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
 
 	main_scene.get_node("UI").add_child(end)
+	AudioManager.on_battle_finished(is_win)
 	_apply_end_theme_and_anim(end, is_win, stars_earned)
 
 	if score > ResourceManager.best_score:
@@ -148,14 +156,14 @@ func end_game_company():
 	GameSession.current_game_score = 0
 
 func end_game():
-	if GameSession.game_mode == GameConstants.GameMode.PVP:
+	if GameSession.game_mode in [GameConstants.GameMode.PVP, GameConstants.GameMode.PVP_AI]:
 		return
 	if game_ended:
 		return
 	game_ended = true
 	tasks()
 	get_tree().paused = true
-	end = load("res://Scenes/SupportScenes/EndGame.tscn").instantiate()
+	end = END_GAME_SCENE.instantiate()
 
 	var score = GameSession.current_game_score
 	if score > ResourceManager.best_score:
@@ -175,6 +183,7 @@ func end_game():
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
 
 	main_scene.get_node("UI").add_child(end)
+	AudioManager.on_battle_finished(is_win)
 	_apply_end_theme_and_anim(end, is_win, -1)
 
 	GameSession.current_game_score = 0
@@ -195,9 +204,20 @@ func tasks():
 	DataManager.write_mastery()
 	TasksManager.check_tasks_in_game_session()
 
-func restart():
+func _count_built_player_towers() -> int:
+	var count := 0
+	for bucket in ResourceManager.list_turret:
+		if bucket is Array:
+			for t in bucket:
+				if is_instance_valid(t) and not AudioManager.to_bool(t.get("is_opponent")):
+					count += 1
+	return count
+
+func _execute_restart() -> void:
+	GameSession.reset_battle_runtime_state()
 	GameSession.current_wave = 0
-	GameSession.current_money_in_game_session = GameConstants.MONEY_BEGIN[GameSession.current_level] if GameSession.current_level < GameConstants.MONEY_BEGIN.size() else 500.0
+	GameSession.current_game_score = 0
+	GameSession.current_money_in_game_session = 500.0
 	GameSession.base_health = 10
 	GameSession.speed_game = GameConstants.SPEED_NORMAL_GAME_SESSION
 	Engine.set_time_scale(GameConstants.SPEED_NORMAL_GAME_SESSION)
@@ -205,11 +225,15 @@ func restart():
 	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Scenes/UI/GameScene.tscn")
 
+func restart():
+	open_chest_pressed(_execute_restart)
+
 func exit_menu():
 	open_chest_pressed()
 
-func open_chest_pressed():
-	end.queue_free()
+func open_chest_pressed(after_open: Callable = Callable()):
+	if is_instance_valid(end):
+		end.queue_free()
 	var card_counts = GameConstants.POST_BATTLE_REWARDS.get(stars_earned)
 	var box_card = GameConstants.get_random_card_pairs(card_counts)
 	var i = 0
@@ -221,8 +245,8 @@ func open_chest_pressed():
 	var chest_item_id = GameConstants.BATTLE_CHEST_ITEM_ID
 	DataManager.TYPE_ITEMS[chest_item_id][0].call(box_card)
 	DataManager.write_file()
-	var choose_buy = load("res://Scenes/SupportScenes/buy_box_open.tscn").instantiate()
-	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4], true)
+	var choose_buy = BUY_BOX_OPEN_SCENE.instantiate()
+	choose_buy.setup(box_card, DataManager.TYPE_ITEMS[chest_item_id][2], DataManager.TYPE_ITEMS[chest_item_id][4], not after_open.is_valid(), after_open)
 	_sync_profile_after_battle()
 	get_tree().current_scene.get_node("UI").add_child(choose_buy)
 
@@ -260,7 +284,7 @@ func _sync_profile_after_battle() -> void:
 			"best_wave": GameSession.current_wave,
 			"total_damage": TasksManager.battle_damage,
 			"total_kills": GameSession.session_enemies_killed,
-			"towers_built": ResourceManager.list_turret.size()
+			"towers_built": _count_built_player_towers()
 		},
 		"created_at": ProfileManager.profile_data.get("created_at", FirebaseHelper.get_timestamp()),
 		"last_online": FirebaseHelper.get_timestamp(),

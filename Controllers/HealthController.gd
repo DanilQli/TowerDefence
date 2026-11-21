@@ -5,9 +5,12 @@ var hp_label: Label = null
 signal ai_health_changed(new_hp: int)
 
 func _ready() -> void:
-	# ← ПОДКЛЮЧИ СИГНАЛ
-	if GameSession:
+	if GameSession and not GameSession.base_health_changed.is_connected(_on_base_health_changed):
 		GameSession.base_health_changed.connect(_on_base_health_changed)
+
+func _exit_tree() -> void:
+	if GameSession and GameSession.base_health_changed.is_connected(_on_base_health_changed):
+		GameSession.base_health_changed.disconnect(_on_base_health_changed)
 
 func update_health(base_health: int):
 	if is_instance_valid(hp_label):

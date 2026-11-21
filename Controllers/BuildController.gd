@@ -1,5 +1,7 @@
 extends Node
 
+const RANGE_OVERLAY_TEX: Texture2D = preload("res://Assets/Props/range_overlay.png")
+
 var main_scene
 var build_mode := false
 var native_drag_active := false
@@ -29,12 +31,14 @@ func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
 		cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 	if GameSession.current_money_in_game_session < cost:
+		AudioManager.play_combat_sfx("tower_invalid", main_scene)
 		return false
 	build_type = build_name
 	build_mode = true
 	if not set_tower_preview(build_type, main_scene.get_global_mouse_position()):
 		build_mode = false
 		return false
+	AudioManager.play_combat_sfx("tower_select", main_scene)
 	return true
 		
 func update_tower_preview_ui(new_position: Vector2, color: String):
@@ -53,7 +57,7 @@ func update_tower_preview_ui(new_position: Vector2, color: String):
 		sprite.modulate = new_color
 
 func set_tower_preview(tower_type: String, mouse_position: Vector2) -> bool:
-	var scene = load("res://Scenes/Turrets/%s.tscn" % tower_type)
+	var scene: PackedScene = TurretFactory.get_scene(tower_type)
 	if not scene:
 		push_error("Не удалось загрузить превью башни: " + tower_type)
 		return false
@@ -67,14 +71,15 @@ func set_tower_preview(tower_type: String, mouse_position: Vector2) -> bool:
 	control.add_child(drag_tower, true)
 
 	var range_texture = Sprite2D.new()
+	var tower_idx: int = int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1
 	var scaling: float
-	if GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1].type_attack != 4:
-		scaling = GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1]["parametr_" + str(GameConstants.DATA_TOWER[int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1].parametr_range)][0] / 600.0
+	if GameConstants.DATA_TOWER[tower_idx].type_attack != 4:
+		scaling = GameConstants.DATA_TOWER[tower_idx]["parametr_" + str(GameConstants.DATA_TOWER[tower_idx].parametr_range)][0] / 600.0
 	else:
 		scaling = 0.1
 
 	range_texture.scale = Vector2(scaling, scaling)
-	range_texture.texture = load("res://Assets/Props/range_overlay.png")
+	range_texture.texture = RANGE_OVERLAY_TEX
 	range_texture.modulate = Color("ad54ff3c")
 	range_texture.name = "Sprite"
 	control.add_child(range_texture, true)
@@ -106,6 +111,7 @@ func verify_and_build():
 		if DataManager.data["Turrets"][DataManager.keys[tower_index]].mastery_lvl >= 3:
 			required_cost = MathUtils.round_to_dec(required_cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		if GameSession.current_money_in_game_session < required_cost:
+			AudioManager.play_combat_sfx("tower_invalid", main_scene)
 			return
 		var turret = TurretFactory.create_turret(build_type, build_location)
 		if not turret:
@@ -117,6 +123,7 @@ func verify_and_build():
 		turret.name = build_type + "_1"
 		turret.built = true
 		turret_layer.add_child(turret)
+		AudioManager.play_combat_sfx("tower_place", main_scene)
 		TasksManager.record_build(tower_index)
 		turret.get_node("Menu").setup(turret.id)
 		
@@ -132,6 +139,8 @@ func verify_and_build():
 			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		GameSession.spend_money(cost)
 		main_scene.ui_controller._on_money_changed()
+	else:
+		AudioManager.play_combat_sfx("tower_invalid", main_scene)
 
 
 func update_tower_preview():
@@ -175,4 +184,5 @@ func _input(event):
 			verify_and_build()
 			cancel_build_mode()
 		if event.is_action_released("ui_cancel"):
+			AudioManager.play_combat_sfx("tower_sell", main_scene)
 			cancel_build_mode()

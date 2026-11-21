@@ -8,38 +8,78 @@ var enemies_in_wave: int
 var gift_controller
 var game_end_controller
 var current_wave_index: int = -1
+var local_wave: int = 0
 var active_spawn_sequences: int = 0
 var rng = RandomNumberGenerator.new()
+var _scene_cache: Dictionary = {}
+
+func _load_enemy_scene(path: String) -> PackedScene:
+	if _scene_cache.has(path):
+		return _scene_cache[path] as PackedScene
+	var sc: PackedScene = load(path) as PackedScene
+	if sc != null:
+		_scene_cache[path] = sc
+	return sc
+
+func _is_primary_player_controller() -> bool:
+	if is_instance_valid(main_scene) and ("is_player" in main_scene):
+		return AudioManager.to_bool(main_scene.is_player, true)
+	return true
 
 func initialize(scene: Node, waves_data = null):
 	main_scene = scene
-	if waves_data: wave_data_all = waves_data
-	else: 
+	local_wave = 0
+	current_wave_index = -1
+	active_spawn_sequences = 0
+	if waves_data:
+		wave_data_all = waves_data
+	else:
 		var key = "level_" + str(GameSession.current_level)
 		if DataManager.data_wave.has(key):
 			wave_data_all = DataManager.data_wave[key]
 		else:
-			wave_data_all = [] 
+			wave_data_all = []
 			
 	gift_controller = main_scene.gift_controller
 	game_end_controller = main_scene.game_end_controller
 
 func retrieve_wave_data() -> Array:
-	if GameSession.current_wave >= wave_data_all.size(): return []
-	wave_data = wave_data_all[GameSession.current_wave]
-	if GameSession.game_mode != GameConstants.GameMode.CAMPAIGN:
-		if GameSession.current_wave in DataManager.list_wave_gift and not main_scene.gift_controller.have_open_present:
-			main_scene.gift_controller.launch_gift_box()
-	GameSession.current_wave += 1
+	if local_wave >= wave_data_all.size():
+		return []
+	wave_data = wave_data_all[local_wave]
+	if _is_primary_player_controller() and GameSession.game_mode in [GameConstants.GameMode.SANDBOX, GameConstants.GameMode.CAMPAIGN]:
+		if local_wave > 0 and local_wave % 10 == 0:
+			if is_instance_valid(main_scene.gift_controller) and not main_scene.gift_controller.have_open_present:
+				main_scene.gift_controller.launch_gift_box(local_wave)
+	local_wave += 1
+	if _is_primary_player_controller():
+		GameSession.current_wave = local_wave
 	enemies_in_wave = wave_data.size()
 	return wave_data
 
-func spawn_enemies(wave: Array, enemy_progress=false):
+func spawn_enemies(wave: Array, enemy_progress = null):
+	if not is_instance_valid(self) or not is_inside_tree() or not is_instance_valid(main_scene):
+		return
+	var has_custom_progress: bool = (typeof(enemy_progress) in [TYPE_FLOAT, TYPE_INT] and float(enemy_progress) >= 0.0)
+	var spawn_wave_num: int = maxi(1, local_wave)
+	if not has_custom_progress and _is_primary_player_controller():
+		AudioManager.play_combat_sfx("wave_start", main_scene)
+
 	active_spawn_sequences += 1
 	if main_scene.has_node("UI/HUD/InfoBar/H3/WaveValue"):
-		main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(GameSession.current_wave)
+		main_scene.get_node("UI/HUD/InfoBar/H3/WaveValue").text = str(spawn_wave_num)
+	else:
+		var wv = main_scene.find_child("WaveValue", true, false) as Label
+		if wv:
+			wv.text = str(spawn_wave_num)
 	
 	for unit in wave:
+		while is_instance_valid(self) and is_inside_tree() and get_tree().paused:
+			await get_tree().create_timer(0.1, false).timeout
+		if not is_instance_valid(self) or not is_inside_tree() or not is_instance_valid(main_scene):
+			active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
+			return
+
 		var unit_type = str(unit[0])
 		var delay = float(unit[1])
 		
@@ -62,21 +102,26 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 			enemy_scene_path = "res://Scenes/Enemies/" + unit_type + ".tscn"
 			enemy_id = int(unit_type.split("_")[1]) - 1
 
-		var enemy_scene = load(enemy_scene_path)
+		var enemy_scene: PackedScene = _load_enemy_scene(enemy_scene_path)
 		if enemy_scene == null:
 			push_error("❌ [WaveController] Не удалось загрузить врага: " + enemy_scene_path)
-			await get_tree().create_timer(delay).timeout
+			await get_tree().create_timer(delay, false).timeout
+			if not is_instance_valid(self) or not is_inside_tree():
+				return
 			continue
 		
 		var enemy = enemy_scene.instantiate()
 		if enemy == null:
 			push_error("❌ [WaveController] Ошибка создания экземпляра: " + enemy_scene_path)
-			await get_tree().create_timer(delay).timeout
+			await get_tree().create_timer(delay, false).timeout
+			if not is_instance_valid(self) or not is_inside_tree():
+				return
 			continue
 		
 		enemy.names = unit_type
 		enemy.id = enemy_id
 		enemy.duration_speed_mod = 0
+		enemy.set_meta("spawn_wave", spawn_wave_num)
 		
 		if is_boss:
 			if GameConstants.DATA_ENEMY_BOSS.has(enemy.id):
@@ -99,22 +144,18 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 				enemy.speed = 100
 			enemy.current_speed = enemy.speed
 		
-		# === ИСПРАВЛЕНО: Логика is_spectator_enemy ===
 		if "is_spectator_enemy" in enemy:
 			var is_pvp_ai = GameSession.game_mode == GameConstants.GameMode.PVP_AI
 			if is_pvp_ai:
-				# В PvP AI все враги реальные, двигаются сами
 				enemy.is_spectator_enemy = false
 			elif "is_player" in main_scene:
-				# В обычном PvP: зрительский контейнер = spectator враги
 				enemy.is_spectator_enemy = not main_scene.is_player
 			else:
 				enemy.is_spectator_enemy = false
-		# =============================================
 
 		if not is_instance_valid(main_scene.map_node):
 			enemy.queue_free()
-			active_spawn_sequences -= 1
+			active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 			return
 
 		var path_node = main_scene.map_node.get_node_or_null("Path")
@@ -125,33 +166,32 @@ func spawn_enemies(wave: Array, enemy_progress=false):
 			
 			if path_child is Path2D:
 				path_child.add_child(enemy, true)
-				if enemy_progress:
-					enemy.progress = enemy_progress
-				else:
-					enemy.progress = 0
+				enemy.progress = float(enemy_progress) if has_custom_progress else 0.0
 			else:
 				enemy.queue_free()
 		else:
 			enemy.queue_free()
 
-		await get_tree().create_timer(delay).timeout
+		await get_tree().create_timer(delay, false).timeout
+		if not is_instance_valid(self) or not is_inside_tree() or not is_instance_valid(main_scene):
+			active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
+			return
 
-	active_spawn_sequences -= 1
-	if not enemy_progress and GameSession.current_wave < wave_data_all.size():
-		await get_tree().create_timer(5).timeout
-		start_next_wave()
+	active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
+	if not has_custom_progress and _is_primary_player_controller():
+		AudioManager.play_combat_sfx("wave_complete", main_scene)
+	if not has_custom_progress and local_wave < wave_data_all.size():
+		await get_tree().create_timer(5.0, false).timeout
+		while is_instance_valid(self) and is_inside_tree() and get_tree().paused:
+			await get_tree().create_timer(0.1, false).timeout
+		if is_instance_valid(self) and is_inside_tree() and is_instance_valid(main_scene):
+			start_next_wave()
 		
-func set_wave_data(waves: Array): wave_data_all = waves
-
-func force_start_wave(index: int):
-	if current_wave_index >= index: return
-	current_wave_index = index
-	GameSession.current_wave = index
-	if index < wave_data_all.size(): spawn_enemies(wave_data_all[index])
+func set_wave_data(waves: Array):
+	wave_data_all = waves
 
 func start_next_wave():
-	current_wave_index = GameSession.current_wave
+	current_wave_index = local_wave
 	wave_data = retrieve_wave_data()
-	if wave_data.size() > 0: spawn_enemies(wave_data)
-
-func get_current_wave_index() -> int: return current_wave_index
+	if wave_data.size() > 0:
+		spawn_enemies(wave_data)

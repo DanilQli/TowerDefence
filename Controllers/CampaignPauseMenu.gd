@@ -14,6 +14,17 @@ func initialize(scene: Node) -> void:
 	_build_menu()
 	hide()
 
+func open_menu() -> void:
+	if not is_instance_valid(game_scene):
+		return
+	var end_controller = game_scene.get("game_end_controller")
+	if is_instance_valid(end_controller) and "game_ended" in end_controller and end_controller.game_ended:
+		return
+	if visible:
+		_resume()
+	else:
+		_open()
+
 func _input(event: InputEvent) -> void:
 	# Escape works even when the project's InputMap was not replaced or differs.
 	if not (event is InputEventKey and event.pressed and not event.echo and (event.keycode == KEY_ESCAPE or event.physical_keycode == KEY_ESCAPE)):
@@ -104,9 +115,11 @@ func _open() -> void:
 	_show_confirmation(false)
 	show()
 	get_tree().paused = true
+	AudioManager.play_sfx("pause_toggle")
 	menu_box.get_child(0).grab_focus()
 
 func _resume() -> void:
+	AudioManager.play_sfx("pause_toggle")
 	hide()
 	get_tree().paused = was_paused
 
@@ -122,13 +135,15 @@ func _show_confirmation(value: bool) -> void:
 
 func _exit_to_map() -> void:
 	# Leaving is not a victory or a defeat and does not grant rewards.
+	GameSession.reset_battle_runtime_state()
 	GameSession.current_wave = 0
 	GameSession.current_game_score = 0
 	GameSession.base_health = 10
 	GameSession.speed_game = GameConstants.SPEED_NORMAL_GAME_SESSION
 	Engine.time_scale = 1.0
 	get_tree().paused = false
-	var destination := "res://Scenes/UI/company_world.tscn"
+	var is_mobile := OS.get_name() in ["Android", "iOS"]
+	var destination := "res://Scenes/Mobile/company_world_mobile.tscn" if is_mobile else "res://Scenes/UI/company_world.tscn"
 	if GameSession.game_mode == GameConstants.GameMode.SANDBOX:
-		destination = "res://Scenes/Mobile/Menu_mobile.tscn" if OS.get_name() in ["Android", "iOS"] else "res://Scenes/UI/Menu.tscn"
+		destination = "res://Scenes/Mobile/Menu_mobile.tscn" if is_mobile else "res://Scenes/UI/Menu.tscn"
 	get_tree().change_scene_to_file(destination)

@@ -10,19 +10,20 @@ var ui_controller
 var game_end_controller
 var health_controller
 var campaign_pause_menu: CanvasLayer
+var _path_root: Node = null
+var _stats_panel = null
 
 func _ready():
+	GameSession.reset_battle_runtime_state()
 	TasksManager.begin_battle()
+	if GameSession.game_mode in [GameConstants.GameMode.CAMPAIGN, GameConstants.GameMode.SANDBOX]:
+		AudioManager.start_battle_music("music_battle")
 	# Install before loading the map/controllers, so input remains available even
 	# if a later controller cannot finish initialising.
 	if GameSession.game_mode in [GameConstants.GameMode.CAMPAIGN, GameConstants.GameMode.SANDBOX]:
 		campaign_pause_menu = preload("res://Controllers/CampaignPauseMenu.gd").new()
 		add_child(campaign_pause_menu)
 		campaign_pause_menu.initialize(self)
-	#if GameSession.current_level == 0:
-		#map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(9, 9)).instantiate()
-	#else:
-		#map_node = load("res://Scenes/Maps/map_%d.tscn" % GameSession.current_level).instantiate()
 	map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(1, 9)).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
@@ -50,25 +51,30 @@ func _ready():
 	get_tree().paused = false
 	
 	InputManager.game_scene = self
-	var stats = get_node("UI/StatsPanel")
-	stats.game_scene = self
+	_path_root = map_node.get_node_or_null("Path")
+	_stats_panel = get_node_or_null("UI/StatsPanel")
+	if _stats_panel:
+		_stats_panel.game_scene = self
 
-func _process(delta):
+func _process(_delta):
 	if build_controller.build_mode:
 		build_controller.update_tower_preview()
 	if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN and GameSession.speed_game > 0.0:
-		var total_waves = wave_controller.wave_data_all.size()
-		var is_last_wave = total_waves > 0 and GameSession.current_wave >= total_waves
-		var enemies_remaining = 0
-		for path in map_node.get_node("Path").get_children():
-			for enemy in path.get_children():
-				if not enemy.is_queued_for_deletion():
-					enemies_remaining += 1
-		if is_last_wave and wave_controller.active_spawn_sequences == 0 and enemies_remaining == 0:
-			game_end_controller.end_game_company()
-	var stats = get_node("UI/StatsPanel")
-	if stats.visible:
-		stats.update_stats()
+		var total_waves: int = wave_controller.wave_data_all.size()
+		var is_last_wave: bool = total_waves > 0 and GameSession.current_wave >= total_waves
+		if is_last_wave and wave_controller.active_spawn_sequences == 0 and is_instance_valid(_path_root):
+			var has_alive_enemy: bool = false
+			for path in _path_root.get_children():
+				for enemy in path.get_children():
+					if not enemy.is_queued_for_deletion():
+						has_alive_enemy = true
+						break
+				if has_alive_enemy:
+					break
+			if not has_alive_enemy:
+				game_end_controller.end_game_company()
+	if is_instance_valid(_stats_panel) and _stats_panel.visible:
+		_stats_panel.update_stats()
 
 func is_campaign_pause_menu_open() -> bool:
 	return is_instance_valid(campaign_pause_menu) and campaign_pause_menu.visible
@@ -94,7 +100,12 @@ func on_stone(number_block: int, duration: int):
 		if len(ResourceManager.list_turret[i]) != 0:
 			for j in range(len(ResourceManager.list_turret[i])):
 				var turret = ResourceManager.list_turret[i][j]
-				if not turret.get_node("NinePatchRect").visible:
+				if not is_instance_valid(turret) or turret.is_opponent or turret.is_protected_by_link:
+					continue
+				if turret is MoneyTower or turret is LinkTower:
+					continue
+				var rect = turret.get_node_or_null("NinePatchRect")
+				if rect and not rect.visible:
 					available_turrets.append(turret)
 
 	# Если нет доступных башен без эффекта, выходим
@@ -108,4 +119,5 @@ func on_stone(number_block: int, duration: int):
 		available_turrets.remove_at(random_index)
 		number_block -= 1
 	for i in range(len(tur)):
-		tur[i].stone_effect_start(duration)
+		if is_instance_valid(tur[i]):
+			tur[i].stone_effect_start(duration)

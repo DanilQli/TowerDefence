@@ -13,8 +13,9 @@ func initialize(scene, flag=true):
 		_selected_speed = GameConstants.SPEED_UP_GAME_SESSION
 	else:
 		_selected_speed = GameConstants.SPEED_NORMAL_GAME_SESSION
-	GameSession.speed_game = _selected_speed
-	Engine.set_time_scale(_selected_speed)
+	if is_player:
+		GameSession.speed_game = _selected_speed
+		Engine.set_time_scale(_selected_speed)
 
 	# Подключаем управление игрой только если это игрок
 	if is_player and main_scene.has_node("UI/HUD/GameControl/PausePlay"):
@@ -29,11 +30,13 @@ func initialize(scene, flag=true):
 		pause_button.pressed.connect(_on_pause_play_pressed)
 		speed_button.pressed.connect(_on_speed_up_pressed)
 
-	# Сигнал денег
-	if not GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
-		GameSession.money_in_game_session_changed.connect(_on_money_changed)
-
-	GameSession.current_money_in_game_session = 500 # Дефолт для старта
+	# Сигнал денег и стартовый баланс — только для контейнера игрока
+	if is_player:
+		if not GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
+			GameSession.money_in_game_session_changed.connect(_on_money_changed)
+		GameSession.current_money_in_game_session = 500
+	elif GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
+		GameSession.money_in_game_session_changed.disconnect(_on_money_changed)
 
 	# Собираем доступные башни
 	list_activity_turret.clear()
@@ -67,20 +70,21 @@ func initialize(scene, flag=true):
 				else:
 					print("❌ Ошибка: DraggableButton.gd не найден!")
 
-	_update_speed_up_visuals()
-	_on_money_changed()
+	if is_player:
+		_update_speed_up_visuals()
+		_on_money_changed()
+
+func _exit_tree() -> void:
+	if GameSession and GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
+		GameSession.money_in_game_session_changed.disconnect(_on_money_changed)
 
 func start_drag_build(type, index):
 	if main_scene.build_controller.initiate_build_mode(type, index):
 		main_scene.build_controller.update_tower_preview()
 
-func finish_drag_build():
-	if main_scene.build_controller.build_mode:
-		main_scene.build_controller.verify_and_build()
-		main_scene.build_controller.cancel_build_mode()
-
 func _on_pause_play_pressed():
 	if not is_player: return
+	AudioManager.play_sfx("pause_toggle")
 	if main_scene.build_controller.build_mode:
 		main_scene.build_controller.cancel_build_mode()
 
@@ -102,6 +106,7 @@ func _on_pause_play_pressed():
 
 func _on_speed_up_pressed():
 	if not is_player: return
+	AudioManager.play_sfx("speed_toggle")
 	if is_equal_approx(_selected_speed, GameConstants.SPEED_UP_GAME_SESSION):
 		_selected_speed = GameConstants.SPEED_NORMAL_GAME_SESSION
 	else:
@@ -191,19 +196,3 @@ func _on_money_changed():
 					pill_style.shadow_offset = Vector2(0, 2)
 					pill.add_theme_stylebox_override("panel", pill_style)
 
-func title_show(id_ui: String, id: String):
-	var node_mouse_entered = load("res://Scenes/SupportScenes/TurretMenu.tscn").instantiate()
-	main_scene.add_child(node_mouse_entered)
-	var tower_path = "UI/HUD/BuldBar/Tower_" + id_ui
-
-	if main_scene.has_node(tower_path):
-		var tower_pos = main_scene.get_node(tower_path).global_position
-		node_mouse_entered.global_position = tower_pos + Vector2(90, 0)
-		node_mouse_entered.setup(int(id) - 1)
-		UiManager.list_open_menu_turrets.append(node_mouse_entered)
-
-func title_hide():
-	for menu in UiManager.list_open_menu_turrets:
-		if is_instance_valid(menu):
-			menu.queue_free()
-	UiManager.list_open_menu_turrets.clear()

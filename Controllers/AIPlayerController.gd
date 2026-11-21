@@ -381,14 +381,18 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int):
 	
 	if not turret_layer:
 		print("[AI Player] Нет слоя Turret!")
+		turret.queue_free()
 		return
 	
 	turret.position = position
+	turret.set_opponent_tower(true)
 	turret.built = true
 	turret_layer.add_child(turret)
 	
 	if tilemap:
-		tilemap.set_cell(Vector2i(grid_x, grid_y), 0, Vector2i(0, 4))
+		var cell_coords := Vector2i(grid_x, grid_y)
+		tilemap.set_cell(cell_coords, 0, Vector2i(0, 4))
+		turret.tree_exited.connect(turret._on_turret_tree_exited.bind(tilemap, cell_coords))
 	
 	# === КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: Обновляем деньги AI ===
 	container.set_meta("ai_money", current_money - cost)
