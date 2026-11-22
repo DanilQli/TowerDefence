@@ -21,7 +21,10 @@ func open_menu() -> void:
 	if is_instance_valid(end_controller) and "game_ended" in end_controller and end_controller.game_ended:
 		return
 	if visible:
-		_resume()
+		if confirm_box.visible:
+			_show_confirmation(false)
+		else:
+			_resume()
 	else:
 		_open()
 

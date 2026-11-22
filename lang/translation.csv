@@ -914,3 +914,15 @@ KEY_AVATAR_NAME_50,Облачный джинн,Cloud Djinn
 KEY_SKIN_T12_XP1,Золотой механизм · награда мастерства I,Golden Mechanism · Mastery Reward I
 KEY_NAV_DECK,Колода,Deck
 KEY_SEARCHING,Поиск соперника...,Searching opponent...
+KEY_REWARDS,Награды,Rewards
+KEY_ACCOUNT,Аккаунт,Account
+KEY_MATCH_FOUND,Соперник найден!,Match found!
+KEY_CTRL_SPEED,Ускорение игры,Game Speed
+KEY_CTRL_PAUSE,Пауза,Pause
+KEY_CTRL_RANGES,Радиусы башен,Tower Ranges
+KEY_CTRL_STATS,Статистика боя,Battle Stats
+KEY_CTRL_TOWER_1,Башня 1,Tower 1
+KEY_CTRL_TOWER_2,Башня 2,Tower 2
+KEY_CTRL_TOWER_3,Башня 3,Tower 3
+KEY_CTRL_TOWER_4,Башня 4,Tower 4
+KEY_CTRL_CANCEL,Отмена / Закрыть,Cancel / Close
