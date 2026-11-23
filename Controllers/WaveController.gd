@@ -80,17 +80,20 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 			return
 
-		var unit_type = str(unit[0])
-		var delay = float(unit[1])
+		var unit_type: String = str(unit[0])
+		var delay: float = float(unit[1])
+		var speed_mult: float = float(unit[2]) if unit.size() >= 3 else 1.0
+		var hp_mult: float = float(unit[3]) if unit.size() >= 4 else 1.0
 		
-		var enemy_scene_path = ""
-		var enemy_id = 0
-		var is_boss = false
+		var enemy_scene_path: String = ""
+		var enemy_id: int = 0
+		var is_boss: bool = false
 		
 		if unit_type.begins_with("BOSS_"):
 			is_boss = true
-			enemy_id = int(unit_type.split("_")[1])
-			enemy_scene_path = "res://Scenes/EnemiesBoss/Enemy_boss_" + str(enemy_id) + ".tscn"
+			var boss_num: int = clampi(int(unit_type.split("_")[1]), 1, 13)
+			enemy_id = boss_num - 1
+			enemy_scene_path = "res://Scenes/EnemiesBoss/Enemy_boss_" + str(boss_num) + ".tscn"
 		elif unit_type.begins_with("Enemy_"):
 			is_boss = false
 			var parts = unit_type.split("_")
@@ -125,11 +128,11 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 		
 		if is_boss:
 			if GameConstants.DATA_ENEMY_BOSS.has(enemy.id):
-				enemy.hp = GameConstants.DATA_ENEMY_BOSS[enemy.id].hp
-				enemy.speed = GameConstants.DATA_ENEMY_BOSS[enemy.id].speed
+				enemy.hp = float(GameConstants.DATA_ENEMY_BOSS[enemy.id].hp) * hp_mult
+				enemy.speed = float(GameConstants.DATA_ENEMY_BOSS[enemy.id].speed) * speed_mult
 			else:
-				enemy.hp = 1000
-				enemy.speed = 100
+				enemy.hp = 1000.0 * hp_mult
+				enemy.speed = 100.0 * speed_mult
 			enemy.current_speed = enemy.speed
 			if enemy.has_signal("stone"): 
 				enemy.stone.connect(main_scene.on_stone)
@@ -137,11 +140,11 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 				enemy.signal_spawn_enemies.connect(main_scene.on_signal_spawn_enemies)
 		else:
 			if GameConstants.DATA_ENEMY.has(enemy.id):
-				enemy.hp = GameConstants.DATA_ENEMY[enemy.id].hp
-				enemy.speed = GameConstants.DATA_ENEMY[enemy.id].speed
+				enemy.hp = float(GameConstants.DATA_ENEMY[enemy.id].hp) * hp_mult
+				enemy.speed = float(GameConstants.DATA_ENEMY[enemy.id].speed) * speed_mult
 			else:
-				enemy.hp = 100
-				enemy.speed = 100
+				enemy.hp = 100.0 * hp_mult
+				enemy.speed = 100.0 * speed_mult
 			enemy.current_speed = enemy.speed
 		
 		if "is_spectator_enemy" in enemy:
@@ -195,3 +198,4 @@ func start_next_wave():
 	wave_data = retrieve_wave_data()
 	if wave_data.size() > 0:
 		spawn_enemies(wave_data)
+

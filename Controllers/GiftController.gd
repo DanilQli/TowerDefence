@@ -130,10 +130,11 @@ func launch_gift_box(cleared_wave: int = 0) -> void:
 	if panel:
 		var vp_size: Vector2 = box_gift.get_viewport_rect().size
 		var target_scale := Vector2.ONE
-		var base_w: float = 920.0 if is_mobile else 760.0
+		var base_w: float = 960.0 if is_mobile else 760.0
 		if vp_size.x > 0.0 and vp_size.x < base_w + 40.0:
 			var fit: float = clampf((vp_size.x - 32.0) / base_w, 0.65, 1.0)
 			target_scale = Vector2(fit, fit)
+		box_gift.set_meta("is_mobile_buf", is_mobile)
 		panel.pivot_offset = panel.size * 0.5
 		panel.scale = target_scale * 0.90
 		panel.modulate.a = 0.0
@@ -168,13 +169,17 @@ func generate_gift(box_gift: Node, is_mobile: bool = false) -> void:
 
 		var box_node: Control = box_gift.get_node("Panel/V/H/Box" + str(i + 1)) as Control
 		if is_mobile and box_node:
-			box_node.custom_minimum_size = Vector2(256, 206)
+			box_node.custom_minimum_size = Vector2(268, 224)
 			box_node.pivot_offset = box_node.custom_minimum_size * 0.5
 			var lbl := box_node.get_node_or_null("Label") as Label
 			if lbl:
 				lbl.add_theme_font_size_override("font_size", 19)
+				lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		if box_node and box_node.has_method("configure_chest"):
 			box_node.call("configure_chest", chest_variant, i, _tower_buff_title(t))
+	var hbox_mods := box_gift.get_node_or_null("Panel/V/HBox") as Control
+	if hbox_mods:
+		hbox_mods.visible = false
 
 func gift_open(index: int, box_gift: Node) -> void:
 	if not is_instance_valid(box_gift) or box_gift.has_meta("gift_opened"):
@@ -182,6 +187,19 @@ func gift_open(index: int, box_gift: Node) -> void:
 	box_gift.set_meta("gift_opened", true)
 	AudioManager.play_sfx("chest_open")
 	AudioManager.play_sfx("gift_pick")
+
+	var is_mob_buf: bool = bool(box_gift.get_meta("is_mobile_buf", false))
+	var panel_ctrl := box_gift.get_node_or_null("Panel") as Control
+	if is_mob_buf and panel_ctrl:
+		panel_ctrl.custom_minimum_size = Vector2(960, 880)
+		panel_ctrl.offset_left = -480.0
+		panel_ctrl.offset_right = 480.0
+		panel_ctrl.offset_top = -440.0
+		panel_ctrl.offset_bottom = 440.0
+		panel_ctrl.pivot_offset = Vector2(480.0, 440.0)
+	var hbox_mods := box_gift.get_node_or_null("Panel/V/HBox") as Control
+	if hbox_mods:
+		hbox_mods.visible = true
 
 	for i in range(3):
 		var btn := box_gift.get_node("Panel/V/H/Box" + str(i + 1)) as BaseButton

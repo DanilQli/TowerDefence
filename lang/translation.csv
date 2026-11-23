@@ -651,10 +651,10 @@ KEY_TASK_16,Победите в боях без потери здоровья б
 KEY_TASK_17,Получите XP мастерства башен: ,Earn tower mastery XP: 
 KEY_TASK_18,Победите и используйте за неделю разных типов башен: ,Win and use different tower types this week: 
 KEY_TASK_19,Заработайте монет башней «Доход»: ,Earn coins with the “Income” tower: 
-KEY_TASK_20,Доведите башен до 5 уровня мастерства: ,Reach mastery level 5 with towers: 
-KEY_TASK_21,Доведите башен до 10 уровня мастерства: ,Reach mastery level 10 with towers: 
-KEY_TASK_22,Пройдите страниц кампании: ,Complete campaign pages: 
-KEY_TASK_23,Получите скинов за мастерство: ,Obtain mastery skins: 
+KEY_TASK_20,Имейте башен с уровнем мастерства 1+: ,Have towers with mastery level 1+: 
+KEY_TASK_21,Имейте башен с 5+ уровнем мастерства: ,Have towers with mastery level 5+: 
+KEY_TASK_22,Имейте пройденных глав кампании: ,Have completed campaign chapters: 
+KEY_TASK_23,Имейте скинов за мастерство: ,Have mastery skins: 
 KEY_TASK_24,Победите боссов на разных уровнях кампании: ,Defeat bosses on different campaign levels: 
 KEY_CAMPAIGN_DIAMOND_REWARD,Получено алмазов: %d,Diamonds earned: %d
 KEY_PERIOD_DIAMONDS_PENDING,За все задания: %d алм.,Complete all tasks: %d diamonds
@@ -728,7 +728,7 @@ KEY_GUIDE_DIAMONDS_TITLE,Алмазы,Diamonds
 KEY_GUIDE_DIAMONDS_INTRO,Алмазы — отдельный ресурс профиля. Баланс сохраняется и показывается в верхней панели.,Diamonds are a separate profile resource. Your balance is saved and shown in the top bar.
 KEY_GUIDE_DIAMONDS_CAMPAIGN,За первую победу на каждом уровне кампании — 1 алмаз. Повторная победа и поражение не дают алмаз; дополнительного бонуса за босса нет.,Earn 1 diamond for the first win on each campaign level. Replays and defeats give none; there is no extra boss bonus.
 KEY_GUIDE_DIAMONDS_TASKS,Выполните все ежедневные задания за период — 1 алмаз; все еженедельные — 3 алмаза. Каждый бонус выдаётся один раз за свой период.,"Complete all daily tasks in a period for 1 diamond, or all weekly tasks for 3. Each bonus is granted once per period."
-KEY_GUIDE_DIAMONDS_USE,В текущей версии проекта расходование алмазов пока не реализовано.,Diamond spending is not implemented in the current project version.
+KEY_GUIDE_DIAMONDS_USE,За 1000 алмазов можно навсегда открыть VIP Путь славы и забирать обе награды (обычную и VIP) на каждом из 50 этапов.,Spend 1000 diamonds to permanently unlock the VIP Path of Glory and claim both Free and VIP rewards across all 50 stages.
 KEY_GUIDE_CRITICAL_TITLE,Критический урон,Critical damage
 KEY_GUIDE_CRITICAL_INTRO,Этот показатель усиливает критическое попадание; это не вероятность критического удара.,This stat increases critical-hit damage; it is not critical-hit chance.
 KEY_GUIDE_CRITICAL_EXAMPLE,"Для обычной формулы: урон крита = урон × (1 + показатель / 100). Например, при 100% бонуса 100 урона превращаются в 200 до дополнительных эффектов.","For the standard formula: critical damage = damage × (1 + stat / 100). For example, a 100% bonus turns 100 damage into 200 before extra effects."
@@ -739,7 +739,6 @@ KEY_GUIDE_COINS_SKINS,"В магазине монеты также тратят�
 KEY_GUIDE_CRITICAL_SHOP,Открытие башни и повышение уровня её карточки дают по 1 единице критического урона. Покупка способности сама по себе этот показатель не повышает.,Unlocking a tower and upgrading its card each grant 1 critical damage point. Buying an ability does not itself increase this stat.
 KEY_GUIDE_CRITICAL_DETAILS,"Показатель применяется при критическом попадании, а не прибавляется ко всем ударам. Бонусы мастерства, тип цели и особенности башни могут менять итоговый расчёт.","The stat applies to critical hits, not every hit. Mastery bonuses, target type and tower-specific rules can change the final calculation."
 KEY_GUIDE_COINS_SCORE,"В кампании и обычном режиме за завершённый бой начисляется целая часть очков, делённых на 10; в кампании может добавляться бонус, зависящий от результата и прохождения уровня.","In campaign and the standard mode, a completed battle awards the whole-number part of score divided by 10; campaign may add a bonus based on the result and level completion."
-KEY_GUIDE_DIAMONDS_LEGACY,При переходе со старого сохранения ранее пройденные уровни кампании учитываются однократно.,"When migrating an older save, previously completed campaign levels are credited once."
 KEY_GUIDE_DIAMONDS_PERIOD,"Бонус за задания выдаётся один раз за соответствующий период, когда выполнены все задания этого периода.",The task bonus is granted once per corresponding period when all tasks for that period are complete.
 KEY_GUIDE_COINS_BATTLE_EARN,Боевые монеты начисляются за уничтожение врагов; доходная башня также приносит монеты во время боя. Размер награды за врага зависит в том числе от волны и настроек.,"Battle coins are awarded for defeating enemies, and the income tower generates coins during battle. Enemy rewards depend in part on the wave and settings."
 KEY_GUIDE_COINS_CAMPAIGN_BONUS,"В кампании к основной награде может добавиться бонус: при первом прохождении с 3, 2 или 1 звёздой — основная награда, делённая соответственно на 3, 3,1 или 3,2; при повторе с нулём звёзд — на 4. Дробная часть отбрасывается.","Campaign may add a bonus: on a first completion with 3, 2 or 1 stars, the base reward is divided by 3, 3.1 or 3.2 respectively; on a zero-star replay, by 4. Fractions are discarded."
@@ -782,10 +781,10 @@ KEY_GUIDE_ACHIEVEMENTS_OLD,В старых сохранениях известн
 KEY_GUIDE_ACHIEVEMENTS_TRACK,"Звёзды повышают общий уровень достижений. За доступные уровни 1–17 отдельно забираются монеты, критический урон и сундуки; уже полученные уровни не выдаются повторно.","Stars raise the overall achievement level. Claim coins, critical damage and chests separately for available levels 1–17; claimed levels cannot be collected twice."
 KEY_GUIDE_GLORY_TITLE,Путь славы,Path of Glory
 KEY_GUIDE_GLORY_INTRO,Путь славы — отдельная шкала этапов и наград; она не равна уровню достижений или мастерству башни.,Path of Glory is a separate track of stages and rewards; it is not the achievement level or tower mastery.
-KEY_GUIDE_GLORY_TRACKS,На этапе есть обычная и VIP-ветка. Обычная награда доступна на открытом этапе; VIP-награда требует активного VIP-доступа.,Each stage has a free and a VIP track. The free reward is available on an unlocked stage; the VIP reward requires active VIP access.
-KEY_GUIDE_GLORY_CLAIM,"Открытые, но не забранные награды можно получить и позже. Каждая награда ветки получает отдельную отметку получения.",Unlocked rewards can be claimed later. Each track reward has its own claimed state.
-KEY_GUIDE_GLORY_REWARDS,Награды этапов включают монеты и сундуки с карточками башен. В сундуке показываются полученные карточки и их количество.,Stage rewards include coins and chests containing tower cards. A chest shows the cards and quantities received.
-KEY_GUIDE_GLORY_PROGRESS,Шкала показывает сохранённый уровень и опыт Пути славы. В текущем проекте автоматическое начисление этого опыта пока не реализовано.,The bar shows the saved Path of Glory level and XP. Automatic awarding of this XP is not currently implemented in the project.
+KEY_GUIDE_GLORY_TRACKS,"В Пути славы 50 этапов, на каждом есть обычная и VIP-ветка. VIP-доступ открывается за 1000 алмазов и позволяет забирать обе награды каждого достигнутого этапа.","Path of Glory has 50 stages, each with a Free and a VIP track. VIP access costs 1000 diamonds and lets you claim both rewards on every reached stage."
+KEY_GUIDE_GLORY_CLAIM,"Открытые, но не забранные награды можно получить и позже. При покупке VIP сразу открываются все VIP-награды уже пройденных этапов.","Unlocked rewards can be claimed later. Purchasing VIP immediately unlocks all VIP rewards from stages you have already reached."
+KEY_GUIDE_GLORY_REWARDS,"Награды этапов включают монеты, бонус критического урона, алмазы и сундуки с карточками башен всех редкостей.","Stage rewards include coins, critical damage bonuses, diamonds, and chests containing tower cards of all rarities."
+KEY_GUIDE_GLORY_PROGRESS,Жетоны из ежедневных и карьерных заданий автоматически заполняют шкалу опыта и повышают уровень Пути славы вплоть до 50-го.,Tokens earned from daily and career tasks automatically fill the XP bar and advance your Path of Glory level up to Stage 50.
 KEY_PROMOTION_NAME_32,Ядовитый след,Poison Trail
 KEY_PROMOTION_DESC_32,Примените яд башней «Отравитель» к живым противникам в любом режиме. Применений:,Apply poison to living enemies with the Poisoner in any mode. Applications:
 KEY_PROMOTION_NAME_33,Ловушки Минотавра,Minotaur Traps
@@ -840,20 +839,33 @@ KEY_GUIDE_WAVES_CAMPAIGN,В кампании для каждого уровня 
 KEY_GUIDE_WAVES_SANDBOX,Для песочницы генерируется 500 волн. В конце каждой генератор добавляет случайного босса одного из 13 типов.,Sandbox generates 500 waves. The generator adds one randomly selected boss from 13 types at the end of each wave.
 KEY_GUIDE_WAVES_LOSS,"Если враг достигает конца пути, база получает урон; следите за её здоровьем.",An enemy that reaches the end of the path damages the base; keep an eye on its health.
 KEY_GUIDE_BOSSES_TITLE,Боссы и их способности,Bosses and their abilities
-KEY_GUIDE_BOSSES_INTRO,"Способности описаны по скриптам. В базовом цикле босса сейчас не вызывается fire(): способности боссов 1, 4, 5, 6 и лечение босса 11 автоматически не запускаются. Действие остальных зависит от режима и целей.","Abilities reflect the scripts. The base boss loop currently does not call fire(): boss 1, 4, 5, 6 abilities and boss 11 healing do not start automatically. Other effects depend on the mode and targets."
-KEY_GUIDE_BOSS_1,"Босс 1: каждые 3 с окаменяет до трёх боевых башен на 5 с, временно блокируя их атаку.","Boss 1: every 3 s petrifies up to three combat towers for 5 s, temporarily disabling their attacks."
-KEY_GUIDE_BOSS_2,Босс 2: получает на 10% меньше урона от попаданий.,Boss 2: takes 10% less damage from hits.
-KEY_GUIDE_BOSS_3,"Босс 3: заливает дорогу водой и увеличивает скорость передвижения всех врагов на 20%, пока находится на поле.","Boss 3: floods the road with water and increases the movement speed of all enemies by 20% while active."
-KEY_GUIDE_BOSS_4,Босс 4: каждые 5 с призывает на дорогу от 3 до 5 обычных врагов.,Boss 4: summons 3 to 5 normal enemies onto the road every 5 s.
-KEY_GUIDE_BOSS_5,Босс 5: каждые 5 с восстанавливает себе 5% от максимального здоровья.,Boss 5: restores 5% of its maximum health every 5 s.
-KEY_GUIDE_BOSS_6,Босс 6: каждые 8 с уничтожает одну случайную незащищённую башню на карте.,Boss 6: destroys one random unprotected tower on the map every 8 s.
-KEY_GUIDE_BOSS_7,"Босс 7: при попадании прямой или площадной атаки уменьшает множитель урона незащищённой атакующей башни на 0,1 процентного пункта (до −30%).","Boss 7: each direct or area hit reduces an unprotected attacking tower’s damage multiplier by 0.1 percentage points (down to −30%)."
-KEY_GUIDE_BOSS_8,"Босс 8: заражает незащищённые башни в радиусе спорами, увеличивая интервал атаки на 20%; при его уничтожении эффект снимается.","Boss 8: infects unprotected towers in range with spores, increasing their attack interval by 20%; the effect is removed on its destruction."
-KEY_GUIDE_BOSS_9,Босс 9: чередует 3 с уязвимости и 3 с неуязвимости.,Boss 9: alternates 3 s of vulnerability and 3 s of invulnerability.
-KEY_GUIDE_BOSS_10,"Босс 10: после уничтожения размещает на дороге три участка ускорения; враги, проходящие по ним, ускоряются.",Boss 10: on destruction places three speed tiles on the road; enemies crossing them speed up.
-KEY_GUIDE_BOSS_11,"Босс 11: при появлении создаёт трёх спутников и каждые 3 с восстанавливает им по 3% от максимального здоровья.","Boss 11: spawns three escorts on arrival and heals them for 3% of their maximum health every 3 s."
-KEY_GUIDE_BOSS_12,"Босс 12: получает лишь 25% урона от площадных атак, а эффекты замедления вместо торможения ускоряют его.","Boss 12: takes only 25% damage from area attacks, and slow effects accelerate it instead of slowing it down."
-KEY_GUIDE_BOSS_13,"Босс 13 (Дракон): с вероятностью 20% снижает уровень башен в своём радиусе на 1, если их уровень выше начального.","Boss 13 (Dragon): has a 20% chance to reduce the level of towers in range by 1 if they are above their initial level."
+KEY_GUIDE_BOSSES_INTRO,"Особо опасные противники с повышенным запасом здоровья и уникальными способностями, способными ослаблять башни, ускорять волны или менять ход сражения.","Powerful elite enemies with high health and unique abilities that weaken towers, speed up waves, or shift the tide of battle."
+KEY_BOSS_NAME_1,Каменный голем,Stone Golem
+KEY_BOSS_NAME_2,Бронированный нетопырь,Armored Bat
+KEY_BOSS_NAME_3,Приливный омар,Tidal Lobster
+KEY_BOSS_NAME_4,Пернатый призыватель,Feathered Summoner
+KEY_BOSS_NAME_5,Страж возрождения,Guardian of Renewal
+KEY_BOSS_NAME_6,Лютый волк,Dire Wolf
+KEY_BOSS_NAME_7,Пожиратель мощности,Power Eater
+KEY_BOSS_NAME_8,Споровый культиватор,Spore Cultivator
+KEY_BOSS_NAME_9,Призрачный скат,Phantom Ray
+KEY_BOSS_NAME_10,Гонец,Messenger
+KEY_BOSS_NAME_11,Медик,Medic
+KEY_BOSS_NAME_12,Поглотитель всплесков,Splash Absorber
+KEY_BOSS_NAME_13,Дракон,Dragon
+KEY_GUIDE_BOSS_1,"Каждые 3 с окаменяет до трёх боевых башен на 5 с, временно блокируя их атаку.","Every 3 s petrifies up to three combat towers for 5 s, temporarily disabling their attacks."
+KEY_GUIDE_BOSS_2,Получает на 10% меньше урона от попаданий.,Takes 10% less damage from hits.
+KEY_GUIDE_BOSS_3,"Заливает дорогу водой и увеличивает скорость передвижения всех врагов на 20%, пока находится на поле.","Floods the road with water and increases the movement speed of all enemies by 20% while active."
+KEY_GUIDE_BOSS_4,Каждые 5 с призывает на дорогу от 3 до 5 обычных врагов.,Summons 3 to 5 normal enemies onto the road every 5 s.
+KEY_GUIDE_BOSS_5,Каждые 5 с восстанавливает себе 5% от максимального здоровья.,Restores 5% of its maximum health every 5 s.
+KEY_GUIDE_BOSS_6,Каждые 8 с уничтожает одну случайную незащищённую башню на карте.,Destroys one random unprotected tower on the map every 8 s.
+KEY_GUIDE_BOSS_7,"При попадании прямой или площадной атаки уменьшает множитель урона незащищённой атакующей башни на 0,1 процентного пункта (до −30%).","Each direct or area hit reduces an unprotected attacking tower’s damage multiplier by 0.1 percentage points (down to −30%)."
+KEY_GUIDE_BOSS_8,"Заражает незащищённые башни в радиусе спорами, увеличивая интервал атаки на 20%; при его уничтожении эффект снимается.","Infects unprotected towers in range with spores, increasing their attack interval by 20%; the effect is removed on its destruction."
+KEY_GUIDE_BOSS_9,Чередует 3 с уязвимости и 3 с неуязвимости.,Alternates 3 s of vulnerability and 3 s of invulnerability.
+KEY_GUIDE_BOSS_10,"После уничтожения размещает на дороге три участка ускорения; враги, проходящие по ним, ускоряются.",On destruction places three speed tiles on the road; enemies crossing them speed up.
+KEY_GUIDE_BOSS_11,"При появлении создаёт трёх спутников и каждые 3 с восстанавливает им по 3% от максимального здоровья.","Spawns three escorts on arrival and heals them for 3% of their maximum health every 3 s."
+KEY_GUIDE_BOSS_12,"Получает лишь 25% урона от площадных атак, а эффекты замедления вместо торможения ускоряют его.","Takes only 25% damage from area attacks, and slow effects accelerate it instead of slowing it down."
+KEY_GUIDE_BOSS_13,"С вероятностью 20% снижает уровень башен в своём радиусе на 1, если их уровень выше начального.","Has a 20% chance to reduce the level of towers in range by 1 if they are above their initial level."
 KEY_GUIDE_DIAMONDS_CAREER,Некоторые карьерные задания также дают алмазы; награда указана на карточке задания.,Some career tasks also award diamonds; each task card shows its reward.
 KEY_CAREER_RECEIPT_TITLE,Награда получена,Reward received
 KEY_CAREER_RECEIPT_CARDS,Полученные карты,Cards received
@@ -926,3 +938,25 @@ KEY_CTRL_TOWER_2,Башня 2,Tower 2
 KEY_CTRL_TOWER_3,Башня 3,Tower 3
 KEY_CTRL_TOWER_4,Башня 4,Tower 4
 KEY_CTRL_CANCEL,Отмена / Закрыть,Cancel / Close
+KEY_SEARCH_RETRY,🔄 Повторить поиск,🔄 Retry Search
+KEY_AUTH_CREATE_ACCOUNT,Создать аккаунт,Create Account
+KEY_AUTH_FORGOT_PASSWORD,Забыли пароль?,Forgot password?
+KEY_AUTH_OR,ИЛИ,OR
+KEY_AUTH_TAB_RESET,Сброс,Reset
+KEY_AUTH_LOGIN_SUBTITLE,Войдите в аккаунт для сохранения прогресса в облаке,Sign in to sync your progress to the cloud
+KEY_AUTH_REGISTER_SUBTITLE,"Создайте аккаунт для PvP, друзей и облачного сохранения","Create an account for PvP, friends, and cloud saves"
+KEY_AUTH_RESET_TITLE,Восстановление пароля,Password Recovery
+KEY_AUTH_RESET_SUBTITLE,Сброс пароля по электронной почте,Reset your password via email
+KEY_AUTH_RESET_DESC,Введите Email от вашего аккаунта — мы отправим письмо со ссылкой для создания нового пароля.,Enter your account email — we will send a link to set a new password.
+KEY_AUTH_SEND_RESET_LINK,Отправить письмо сброса,Send Reset Link
+KEY_AUTH_SENDING_RESET,Отправляем письмо для сброса пароля...,Sending password reset email...
+KEY_AUTH_RESET_SENT_FMT,Письмо для сброса пароля отправлено на %s! Проверьте «Входящие» и «Спам».,Password reset email sent to %s! Check your Inbox and Spam folder.
+KEY_AUTH_BACK_TO_LOGIN,← Вернуться ко входу,← Back to Sign In
+KEY_AUTH_CONFIRM_PASSWORD,Повторите пароль,Confirm Password
+KEY_AUTH_PASSWORDS_DO_NOT_MATCH,Пароли не совпадают. Проверьте ввод.,Passwords do not match. Please check your input.
+KEY_GLORY_TOKENS,Жетоны славы,Glory Tokens
+KEY_GLORY_TRACK_FREE,ОБЫЧНЫЙ,FREE
+KEY_GLORY_BUY_VIP,👑 VIP ПУТЬ · %d,👑 VIP PASS · %d
+KEY_GLORY_BUY_VIP_SHORT,👑 VIP · %d,👑 VIP · %d
+KEY_GLORY_VIP_ACTIVE,👑 VIP АКТИВЕН,👑 VIP ACTIVE
+KEY_GLORY_MAX_LEVEL,МАКС. УРОВЕНЬ,MAX LEVEL

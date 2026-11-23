@@ -10,7 +10,7 @@ config_version=5
 
 [application]
 
-config/name="Games"
+config/name="Tower Defense"
 run/main_scene="uid://bm6yyxyf628tf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 

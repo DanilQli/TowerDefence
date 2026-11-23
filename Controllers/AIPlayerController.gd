@@ -71,8 +71,6 @@ func _request_ai_decision():
 	emit_signal("action_decided", action)
 
 func _collect_game_state() -> Dictionary:
-	var map_node = container.map_node
-	
 	# === ПОЛУЧАЕМ КОЛОДУ ===
 	var deck = []
 	if container.has_node("Controllers/UIController"):

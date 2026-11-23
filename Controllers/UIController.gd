@@ -34,7 +34,7 @@ func initialize(scene, flag=true):
 	if is_player:
 		if not GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
 			GameSession.money_in_game_session_changed.connect(_on_money_changed)
-		GameSession.current_money_in_game_session = 500
+		GameSession.current_money_in_game_session = GameConstants.get_campaign_starting_money(GameSession.current_level) if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN else 500.0
 	elif GameSession.money_in_game_session_changed.is_connected(_on_money_changed):
 		GameSession.money_in_game_session_changed.disconnect(_on_money_changed)
 

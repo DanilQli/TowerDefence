@@ -7,6 +7,8 @@ const BUY_BOX_OPEN_SCENE: PackedScene = preload("res://Scenes/SupportScenes/buy_
 
 var main_scene
 var stars_earned := 0
+var _pending_card_counts: Array = []
+var _pending_chest_item_id: int = GameConstants.BATTLE_CHEST_ITEM_ID
 var end
 var game_ended := false
 
@@ -80,38 +82,41 @@ func end_game_company():
 	get_tree().paused = true
 
 	end = END_GAME_COMPANY_SCENE.instantiate()
-	var money_dop = 0
 
 	var panel_root = "Panel/MarginContainer/VBoxContainer"
-	var score = GameSession.current_game_score
-	var health = GameSession.base_health
+	var score: int = int(GameSession.current_game_score)
+	var health: int = int(GameSession.base_health)
+	var level_num: int = maxi(1, int(GameSession.current_level))
+	DataManager.ensure_campaign_capacity(maxi(GameConstants.CAMPAIGN_TOTAL_LEVELS, level_num))
+	var prev_max_stars: int = DataManager.get_level_max_stars(level_num)
+	var was_completed: bool = bool(DataManager.level_option[level_num - 1])
 	var is_win: bool = health > 0
 
 	if health >= 9:
 		stars_earned = 3
-		if not DataManager.level_option[GameSession.current_level - 1]:
-			money_dop = int(int(score / 10) / 3.0)
-			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
-	elif health > 7:
+	elif health >= 6:
 		stars_earned = 2
-		if not DataManager.level_option[GameSession.current_level - 1]:
-			money_dop = int(int(score / 10) / 3.1)
-			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
-	elif health > 5:
+	elif health >= 1:
 		stars_earned = 1
-		if not DataManager.level_option[GameSession.current_level - 1]:
-			money_dop = int(int(score / 10) / 3.2)
-			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 	else:
 		stars_earned = 0
-		var lvl_idx: int = GameSession.current_level - 1
-		if health > 0 and lvl_idx >= 0 and lvl_idx < DataManager.level_option.size() and DataManager.level_option[lvl_idx]:
-			money_dop = int(int(score / 10) / 4.0)
-			end.get_node(panel_root + "/HBoxStar/Label2").text = str(money_dop)
 
-	end.get_node(panel_root + "/HBoxScore/Label2").text = str(score)
-	end.get_node(panel_root + "/HBoxCoin/Label2").text = str(int(score / 10))
-	end.get_node(panel_root + "/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
+	var gold_info: Dictionary = GameConstants.get_campaign_gold_reward(level_num, stars_earned, prev_max_stars, score, is_win)
+	var base_gold: int = int(gold_info.get("base_gold", 0))
+	var money_dop: int = int(gold_info.get("star_bonus", 0))
+	var total_money: int = int(gold_info.get("total_gold", base_gold + money_dop))
+
+	_pending_card_counts = GameConstants.get_campaign_card_rewards(level_num, stars_earned, is_win and not was_completed)
+	_pending_chest_item_id = GameConstants.get_campaign_chest_item_id(level_num, stars_earned)
+
+	if score > ResourceManager.best_score:
+		ResourceManager.best_score = score
+		DataManager.data["SettingsGame"]["best_score"] = score
+
+	end.get_node(panel_root + "/HBoxStar/Label2").text = MathUtils.format_int(money_dop)
+	end.get_node(panel_root + "/HBoxScore/Label2").text = MathUtils.format_int(score)
+	end.get_node(panel_root + "/HBoxCoin/Label2").text = MathUtils.format_int(base_gold)
+	end.get_node(panel_root + "/HBoxScoreBest/Label2").text = MathUtils.format_int(int(ResourceManager.best_score))
 
 	end.get_node(panel_root + "/HBoxContainer/TextureButton_1").pressed.connect(restart)
 	end.get_node(panel_root + "/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
@@ -120,20 +125,13 @@ func end_game_company():
 	AudioManager.on_battle_finished(is_win)
 	_apply_end_theme_and_anim(end, is_win, stars_earned)
 
-	if score > ResourceManager.best_score:
-		ResourceManager.best_score = score
-		DataManager.data["SettingsGame"]["best_score"] = score
-
-	var total_money = int(score / 10) + money_dop
 	DataManager.add_data_money(total_money)
 	DataManager.data["Resources"]["money"] = DataManager.data_money
-	var level_index = GameSession.current_level - 1
 	var diamonds_earned := 0
-	if health > 0 and level_index >= 0 and level_index < DataManager.level_option.size():
-		if not bool(DataManager.level_option[level_index]):
-			diamonds_earned = DataManager.grant_campaign_diamonds(GameSession.current_level)
-		DataManager.level_option[level_index] = true
-		DataManager.data["LevelOption"]["level"] = DataManager.level_option
+	if is_win:
+		if not was_completed:
+			diamonds_earned = DataManager.grant_campaign_diamonds(level_num)
+		DataManager.record_campaign_level_result(level_num, stars_earned)
 	DataManager.write_file()
 	if diamonds_earned > 0:
 		var gem_label := Label.new()
@@ -165,19 +163,25 @@ func end_game():
 	get_tree().paused = true
 	end = END_GAME_SCENE.instantiate()
 
-	var score = GameSession.current_game_score
+	var score: int = int(GameSession.current_game_score)
 	if score > ResourceManager.best_score:
 		ResourceManager.best_score = score
 		DataManager.data["SettingsGame"]["best_score"] = score
-	DataManager.add_data_money(int(score / 10))
+
+	var is_win: bool = GameSession.base_health > 0
+	var waves_cleared: int = GameConstants.get_sandbox_waves_cleared(int(GameSession.current_wave), is_win)
+	var earned_coins: int = int(score / 10.0) + GameConstants.get_sandbox_bonus_gold(waves_cleared)
+	_pending_card_counts = GameConstants.get_sandbox_card_rewards(waves_cleared)
+	_pending_chest_item_id = GameConstants.get_sandbox_chest_item_id(waves_cleared)
+
+	DataManager.add_data_money(earned_coins)
 	DataManager.data["Resources"]["money"] = DataManager.data_money
 	DataManager.write_file()
 
-	var is_win: bool = GameSession.base_health > 0
 	stars_earned = 0 if not is_win else 1
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = str(score)
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = str(int(score / 10))
-	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = str(ResourceManager.best_score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = MathUtils.format_int(score)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxCoin/Label2").text = MathUtils.format_int(earned_coins)
+	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScoreBest/Label2").text = MathUtils.format_int(int(ResourceManager.best_score))
 
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_1").pressed.connect(restart)
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxContainer/TextureButton_2").pressed.connect(exit_menu)
@@ -217,7 +221,7 @@ func _execute_restart() -> void:
 	GameSession.reset_battle_runtime_state()
 	GameSession.current_wave = 0
 	GameSession.current_game_score = 0
-	GameSession.current_money_in_game_session = 500.0
+	GameSession.current_money_in_game_session = GameConstants.get_campaign_starting_money(GameSession.current_level) if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN else 500.0
 	GameSession.base_health = 10
 	GameSession.speed_game = GameConstants.SPEED_NORMAL_GAME_SESSION
 	Engine.set_time_scale(GameConstants.SPEED_NORMAL_GAME_SESSION)
@@ -234,7 +238,7 @@ func exit_menu():
 func open_chest_pressed(after_open: Callable = Callable()):
 	if is_instance_valid(end):
 		end.queue_free()
-	var card_counts = GameConstants.POST_BATTLE_REWARDS.get(stars_earned)
+	var card_counts: Array = _pending_card_counts if not _pending_card_counts.is_empty() else GameConstants.POST_BATTLE_REWARDS.get(stars_earned, [1, 0, 0, 0])
 	var box_card = GameConstants.get_random_card_pairs(card_counts)
 	var i = 0
 	while i < box_card.size():
@@ -242,7 +246,7 @@ func open_chest_pressed(after_open: Callable = Callable()):
 			box_card.remove_at(i)
 		else:
 			i += 1
-	var chest_item_id = GameConstants.BATTLE_CHEST_ITEM_ID
+	var chest_item_id: int = _pending_chest_item_id if DataManager.TYPE_ITEMS.has(_pending_chest_item_id) else GameConstants.BATTLE_CHEST_ITEM_ID
 	DataManager.TYPE_ITEMS[chest_item_id][0].call(box_card)
 	DataManager.write_file()
 	var choose_buy = BUY_BOX_OPEN_SCENE.instantiate()
