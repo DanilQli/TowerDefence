@@ -474,7 +474,7 @@ KEY_DAMAGE_VARIANT_2,Урон,Damage
 KEY_TO_MAIN_MENU,В ГЛАВНОЕ МЕНЮ,TO MAIN MENU
 KEY_NICKNAME_MUST_BE_3_16_CHARACTERS,Никнейм должен быть от 3 до 16 символов,Nickname must be 3–16 characters
 KEY_ERROR_PROFILEMANAGER_NOT_FOUND,Ошибка: ProfileManager не найден,Error: ProfileManager not found
-KEY_FAILED_TO_CHANGE_NICKNAME_DETAILS_IN_CONSOLE,Не удалось изменить никнейм — детали в консоли,Failed to change nickname - details in console
+KEY_FAILED_TO_CHANGE_NICKNAME_DETAILS_IN_CONSOLE,Не удалось изменить никнейм. Проверьте длину (3–16 символов) и допустимые символы.,Failed to change nickname. Check length (3-16 chars) and allowed characters.
 KEY_NICKNAME_HAS_BEEN_CHANGED,Никнейм изменён!,Nickname has been changed!
 KEY_LAUNCHING_AI_SERVER,Запуск AI сервера...,Launching the AI ​​server...
 KEY_AI_LAUNCH_ERROR,❌ Ошибка запуска AI,❌ AI launch error
@@ -509,7 +509,7 @@ KEY_CODE_MUST_START_WITH,❌ Код должен начинаться с #,❌ T
 KEY_CODE_FORMAT_8_DIGITS_FOR_EXAMPLE_12345678,"❌ Формат кода: # + 8 цифр (например, #12345678)","❌ Code format: # + 8 digits (for example, #12345678)"
 KEY_SENDING_REQUEST,⏳ Отправка заявки...,⏳ Sending request...
 KEY_REQUEST_SENT,✅ Заявка отправлена!,✅ Request sent!
-KEY_FAILED_TO_SUBMIT_REQUEST_DETAILS_IN_CONSOLE,Не удалось отправить заявку — детали в консоли,Failed to submit request - details in console
+KEY_FAILED_TO_SUBMIT_REQUEST_DETAILS_IN_CONSOLE,Не удалось отправить заявку. Проверьте подключение к сети и код игрока.,Failed to submit request. Check your connection and friend code.
 KEY_VICTORIES_IN_PVP_VARIANT_2,Победы в PvP,Victories in PvP
 KEY_BEST_WAVE_VARIANT_5,Лучшая волна,Best wave
 KEY_DAMAGE_DONE_VARIANT_3,Нанесён урон,Damage done
@@ -534,7 +534,7 @@ KEY_PLAYER_WITH_THIS_CODE_NOT_FOUND,Игрок с таким кодом не н�
 KEY_ALREADY_FRIENDS,Уже в друзьях,Already friends
 KEY_REQUEST_ALREADY_SENT_AWAITING_RESPONSE,Заявка уже отправлена — ждём ответа,Request already sent — awaiting a response
 KEY_THIS_PLAYER_ALREADY_SENT_YOU_REQUEST_CHECK_REQUESTS_TAB,Этот игрок уже отправил вам заявку — смотрите вкладку «Заявки»,This player already sent you a request — check the Requests tab
-KEY_NICKNAME_CAN_ONLY_CONTAIN_LETTERS_NUMBERS_AND,"Никнейм может содержать только буквы, цифры, _ и -","Nickname can only contain letters, numbers, _ and -"
+KEY_NICKNAME_CAN_ONLY_CONTAIN_LETTERS_NUMBERS_AND,"Никнейм может содержать только буквы, цифры, одиночные пробелы, _ и -","Nickname can only contain letters, numbers, single spaces, _ and -"
 KEY_NICKNAME_CONTAINS_INAPPROPRIATE_WORDS,Никнейм содержит недопустимые слова,Nickname contains inappropriate words
 KEY_TITLE_CONTAINS_INVALID_WORDS,Название содержит недопустимые слова,The title contains invalid words
 KEY_ACCOUNT_WITH_THIS_EMAIL_WAS_NOT_FOUND_CHECK_YOUR,Аккаунт с таким email не найден — проверьте email или зарегистрируйтесь,An account with this email was not found - check your email or register
@@ -671,8 +671,8 @@ KEY_PROMOTION_DESC_8,Победите на разных уровнях камп�
 KEY_PROMOTION_NAME_9,Мастер комбинаций,Combination Master
 KEY_PROMOTION_DESC_9,"Победите на разных уровнях кампании, построив «Пушку», «Ракету» и «Арбалет». Уровней:","Win distinct campaign levels after building “Gun”, “Rocket”, and “Crossbow”. Levels:"
 KEY_PROMOTION_NAME_10,Экономный командир,Frugal Commander
-KEY_PROMOTION_DESC_10,"Победите на разных уровнях кампании, построив башню и потратив за бой не более 1800 монет (без вычета возвратов). Уровней:",Win distinct campaign levels with at least one tower and at most 1800 battle coins spent (refunds do not reduce spending). Levels:
-KEY_PROMOTION_XP_PROGRESS,Опыт: %d / %d   ·   До следующего уровня: %d,XP: %d / %d   ·   Until next level: %d
+KEY_PROMOTION_DESC_10,"Победите на разных уровнях кампании, построив башню и потратив за бой не более 1 800 монет (без вычета возвратов). Уровней:",Win distinct campaign levels with at least one tower and at most 1 800 battle coins spent (refunds do not reduce spending). Levels:
+KEY_PROMOTION_XP_PROGRESS,Опыт: %s / %s   ·   До следующего уровня: %s,XP: %s / %s   ·   Until next level: %s
 KEY_PROMOTION_MAX_LEVEL,Максимальный уровень достигнут,Maximum level reached
 KEY_PROMOTION_REWARD_LOCKED,Закрыто,Locked
 KEY_PROMOTION_REWARD_CLAIMED,Получено,Claimed
@@ -738,7 +738,7 @@ KEY_GUIDE_COINS_SEPARATE,Боевой запас и монеты профиля 
 KEY_GUIDE_COINS_SKINS,"В магазине монеты также тратятся на платные скины. Скины, получаемые за мастерство, бесплатны.",Coins also buy paid skins in the shop. Mastery reward skins are free.
 KEY_GUIDE_CRITICAL_SHOP,Открытие башни и повышение уровня её карточки дают по 1 единице критического урона. Покупка способности сама по себе этот показатель не повышает.,Unlocking a tower and upgrading its card each grant 1 critical damage point. Buying an ability does not itself increase this stat.
 KEY_GUIDE_CRITICAL_DETAILS,"Показатель применяется при критическом попадании, а не прибавляется ко всем ударам. Бонусы мастерства, тип цели и особенности башни могут менять итоговый расчёт.","The stat applies to critical hits, not every hit. Mastery bonuses, target type and tower-specific rules can change the final calculation."
-KEY_GUIDE_COINS_SCORE,"В кампании и обычном режиме за завершённый бой начисляется целая часть очков, делённых на 10; в кампании может добавляться бонус, зависящий от результата и прохождения уровня.","In campaign and the standard mode, a completed battle awards the whole-number part of score divided by 10; campaign may add a bonus based on the result and level completion."
+KEY_GUIDE_COINS_SCORE,"В песочнице за завершённый бой начисляется целая часть очков, делённых на 20 (монеты = очки / 20); в кампании — очки, делённые на 10, плюс награда уровня и бонус за звёзды.","In sandbox mode, a completed battle awards the whole-number part of score divided by 20 (coins = score / 20); in campaign, score divided by 10 plus the level reward and star bonus."
 KEY_GUIDE_DIAMONDS_PERIOD,"Бонус за задания выдаётся один раз за соответствующий период, когда выполнены все задания этого периода.",The task bonus is granted once per corresponding period when all tasks for that period are complete.
 KEY_GUIDE_COINS_BATTLE_EARN,Боевые монеты начисляются за уничтожение врагов; доходная башня также приносит монеты во время боя. Размер награды за врага зависит в том числе от волны и настроек.,"Battle coins are awarded for defeating enemies, and the income tower generates coins during battle. Enemy rewards depend in part on the wave and settings."
 KEY_GUIDE_COINS_CAMPAIGN_BONUS,"В кампании к основной награде может добавиться бонус: при первом прохождении с 3, 2 или 1 звёздой — основная награда, делённая соответственно на 3, 3,1 или 3,2; при повторе с нулём звёзд — на 4. Дробная часть отбрасывается.","Campaign may add a bonus: on a first completion with 3, 2 or 1 stars, the base reward is divided by 3, 3.1 or 3.2 respectively; on a zero-star replay, by 4. Fractions are discarded."
@@ -813,8 +813,8 @@ KEY_PROFILE_TITLES,Титулы,Titles
 KEY_PROFILE_ACHIEVEMENT_RANK,Уровень %s,Level %s
 KEY_PROFILE_ACHIEVEMENT_LOCKED,Не открыто,Locked
 KEY_PROFILE_NO_RECEIVED_ACHIEVEMENTS,Пока нет полученных достижений,No achievements claimed yet
-KEY_PROFILE_DETAIL_PROGRESS,Текущий прогресс: %d,Current progress: %d
-KEY_PROFILE_DETAIL_TARGET,Необходимо: %d,Required: %d
+KEY_PROFILE_DETAIL_PROGRESS,Текущий прогресс: %s,Current progress: %s
+KEY_PROFILE_DETAIL_TARGET,Необходимо: %s,Required: %s
 KEY_PROFILE_DETAIL_RECEIVED,Получено,Claimed
 KEY_PROFILE_DETAIL_READY,Выполнено · награда не получена,Completed · reward not claimed
 KEY_CAREER_TASK_REWARD,Награда: %s,Reward: %s
@@ -835,7 +835,7 @@ KEY_GUIDE_TAB_BOSSES,Боссы,Bosses
 KEY_GUIDE_WAVES_TITLE,Волны врагов,Enemy waves
 KEY_GUIDE_WAVES_INTRO,"Волна — группа врагов, которые выходят на маршрут с заданными промежутками. Защищайте базу, пока они движутся к ней.",A wave is a group of enemies spawning onto the path at set intervals. Defend the base as they move toward it.
 KEY_GUIDE_WAVES_TIMING,После появления последнего врага следующая волна начинается через 5 секунд; оставшиеся противники могут ещё быть на карте.,The next wave starts 5 seconds after the last enemy spawns; earlier enemies may still be on the map.
-KEY_GUIDE_WAVES_CAMPAIGN,В кампании для каждого уровня задан собственный набор волн. В текущих данных кампании боссы в эти волны не включены.,Campaign levels have their own wave lists. The current campaign wave data does not include bosses.
+KEY_GUIDE_WAVES_CAMPAIGN,"В кампании 50 уровней, и для каждого задан собственный набор волн (от 5 волн на 1-м уровне до 40 на 50-м), включая сражения с боссами.","Campaign features 50 levels, each with its own authored wave sequence (from 5 waves on level 1 up to 40 on level 50), including boss encounters."
 KEY_GUIDE_WAVES_SANDBOX,Для песочницы генерируется 500 волн. В конце каждой генератор добавляет случайного босса одного из 13 типов.,Sandbox generates 500 waves. The generator adds one randomly selected boss from 13 types at the end of each wave.
 KEY_GUIDE_WAVES_LOSS,"Если враг достигает конца пути, база получает урон; следите за её здоровьем.",An enemy that reaches the end of the path damages the base; keep an eye on its health.
 KEY_GUIDE_BOSSES_TITLE,Боссы и их способности,Bosses and their abilities
@@ -960,3 +960,37 @@ KEY_GLORY_BUY_VIP,👑 VIP ПУТЬ · %d,👑 VIP PASS · %d
 KEY_GLORY_BUY_VIP_SHORT,👑 VIP · %d,👑 VIP · %d
 KEY_GLORY_VIP_ACTIVE,👑 VIP АКТИВЕН,👑 VIP ACTIVE
 KEY_GLORY_MAX_LEVEL,МАКС. УРОВЕНЬ,MAX LEVEL
+KEY_GUIDE_TAB_RATING,Рейтинг,Rating
+KEY_GUIDE_RATING_TITLE,Рейтинг игрока,Player rating
+KEY_GUIDE_RATING_INTRO,Рейтинг отражает ваш боевой прогресс во всех режимах игры и отображается в профиле и таблице лидеров друзей.,Rating reflects your combat progress across all game modes and is displayed in your profile and friend leaderboards.
+KEY_GUIDE_RATING_BASE,Начальный рейтинг нового профиля — 1 000 очков. Минимальный порог составляет 100 очков (ниже 100 рейтинг не опускается).,Every new profile starts at 1 000 rating points. The minimum floor is 100 points (rating never drops below 100).
+KEY_GUIDE_RATING_PVP,PvP против игрока: за победу начисляется от +25 до +32 очков (+25 базово и до +7 за долю оставшегося ОЗ базы); за поражение списывается 15 очков.,PvP vs player: winning grants +25 to +32 points (+25 base plus up to +7 for remaining base HP ratio); losing deducts 15 points.
+KEY_GUIDE_RATING_AI,"Бой против ИИ: за победу начисляется от +14 до +24 очков (+14 базово, до +6 за пройденные волны и до +4 за сохранённое ОЗ базы); за поражение списывается 8 очков.","AI battle: winning grants +14 to +24 points (+14 base, up to +6 for waves cleared, and up to +4 for remaining base HP); losing deducts 8 points."
+KEY_GUIDE_RATING_CAMPAIGN,Кампания: за каждую впервые полученную звезду на уровне начисляется +5 очков рейтинга (до +15 за прохождение нового уровня на 3 звезды).,Campaign: each newly earned star on a level awards +5 rating points (up to +15 for clearing a new level with 3 stars).
+KEY_GUIDE_RATING_SANDBOX,Песочница: при обновлении личного рекорда волн начисляется +2 очка за каждую новую рекордную волну (до +30 очков за один бой).,Sandbox: beating your personal best wave awards +2 points per wave above your previous record (up to +30 points per battle).
+KEY_FROM,От: ,From: 
+KEY_GIFT_CARD_EYEBROW,🎁 ПОДАРОК ОТ ДРУГА,🎁 FRIEND GIFT
+KEY_GIFT_GOLD_AMOUNT,+%d золота,+%d Gold
+KEY_GIFT_CLAIM_BTN,Забрать,Claim
+KEY_STAT_RATING_CLEAN,🏆 Рейтинг,🏆 Rating
+KEY_STAT_PVP_WINS_CLEAN,⚔️ Побед в PvP,⚔️ PvP Wins
+KEY_STAT_BEST_WAVE_CLEAN,🌊 Лучшая волна,🌊 Best Wave
+KEY_STAT_DAMAGE_CLEAN,💥 Урон,💥 Damage
+KEY_LAST_SEEN_JUST_NOW,Был(а) в сети только что,Last seen just now
+KEY_LAST_SEEN_MIN_AGO,Был(а) в сети %d мин. назад,Last seen %dm ago
+KEY_LAST_SEEN_HOURS_AGO,Был(а) в сети %d ч. назад,Last seen %dh ago
+KEY_LAST_SEEN_YESTERDAY,Был(а) в сети вчера,Last seen yesterday
+KEY_LAST_SEEN_DAYS_AGO,Был(а) в сети %d дн. назад,Last seen %dd ago
+KEY_LAST_SEEN_DATE,Был(а) в сети %s,Last seen %s
+KEY_LOADER_SUBTITLE,ЦИТАДЕЛЬ ПРОБУЖДАЕТСЯ,AWAKENING THE CITADEL
+KEY_LOADER_STEP_1,Укрепляем бастионы...,Fortifying bastions...
+KEY_LOADER_STEP_2,Заряжаем магические башни...,Charging arcane towers...
+KEY_LOADER_STEP_3,Открываем врата цитадели...,Opening citadel gates...
+KEY_MIRROR_PVP,Зеркальные колоды,Mirror Decks
+KEY_MIRROR_DESC,Равные колоды,Equal Decks
+KEY_MIRROR_DESC_LONG,"4 случайные башни • Ур. 5 • 1-я способность • Равный крит","4 random towers • Lvl 5 • 1st ability • Fair crit"
+KEY_MIRROR_SEARCHING,🪞 Поиск матча (Зеркальные колоды)...,🪞 Searching match (Mirror Decks)...
+KEY_MIRROR_PVP_AI,Зеркальные с ИИ,Mirror vs AI
+KEY_MIRROR_BANNER_TITLE,🪞 ЗЕРКАЛЬНАЯ КОЛОДА МАТЧА,🪞 MATCH MIRROR DECK
+KEY_MIRROR_BANNER_STD,"Турнирный стандарт: ур. карт 5 • 1-я способность • крит 100%","Tournament Standard: Card Lvl 5 • 1st Ability • 100% Crit"
+

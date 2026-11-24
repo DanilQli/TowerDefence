@@ -24,7 +24,10 @@ func _ready():
 		campaign_pause_menu = preload("res://Controllers/CampaignPauseMenu.gd").new()
 		add_child(campaign_pause_menu)
 		campaign_pause_menu.initialize(self)
-	map_node = load("res://Scenes/Maps/map_%d.tscn" % randi_range(1, 9)).instantiate()
+	var map_idx: int = randi_range(1, 9)
+	if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN and GameSession.current_level > 0:
+		map_idx = ((GameSession.current_level - 1) % 9) + 1
+	map_node = load("res://Scenes/Maps/map_%d.tscn" % map_idx).instantiate()
 	for i in range(len(ResourceManager.list_turret)):
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"

@@ -40,10 +40,8 @@ func initialize(scene, flag=true):
 
 	# Собираем доступные башни
 	list_activity_turret.clear()
-	for i in range(len(GameConstants.DATA_TOWER)):
-		var turret_id = "Turret_" + str(i + 1) + "T1"
-		if DataManager.tower_data.has(turret_id) and DataManager.tower_data[turret_id]["activity"]:
-			list_activity_turret.append(i)
+	for tid in GameSession.get_battle_deck_ids():
+		list_activity_turret.append(tid)
 
 	# Настройка кнопок постройки
 	if is_player:
@@ -160,9 +158,8 @@ func _on_money_changed():
 			var tower_idx = list_activity_turret[i] + 1
 
 			var cost = GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session
-			if DataManager.data["Turrets"].has(DataManager.keys[tower_idx - 1]):
-				if DataManager.data["Turrets"][DataManager.keys[tower_idx - 1]].mastery_lvl >= 3:
-					cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
+			if GameSession.get_battle_mastery_lvl(DataManager.keys[tower_idx - 1]) >= 3:
+				cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 			var affordable: bool = GameSession.current_money_in_game_session >= cost
 			var cost_label_path = "UI/HUD/BuldBar/Tower_" + str(index) + "/Color/Cost"

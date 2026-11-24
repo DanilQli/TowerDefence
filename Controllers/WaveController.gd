@@ -1,6 +1,8 @@
 # Controllers/WaveController.gd
 extends Node
 
+signal wave_boss_spawned(boss: Node, wave_num: int)
+
 var main_scene
 var wave_data_all: Array
 var wave_data: Array
@@ -110,6 +112,7 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			push_error("❌ [WaveController] Не удалось загрузить врага: " + enemy_scene_path)
 			await get_tree().create_timer(delay, false).timeout
 			if not is_instance_valid(self) or not is_inside_tree():
+				active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 				return
 			continue
 		
@@ -118,6 +121,7 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			push_error("❌ [WaveController] Ошибка создания экземпляра: " + enemy_scene_path)
 			await get_tree().create_timer(delay, false).timeout
 			if not is_instance_valid(self) or not is_inside_tree():
+				active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 				return
 			continue
 		
@@ -127,6 +131,11 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 		enemy.set_meta("spawn_wave", spawn_wave_num)
 		
 		if is_boss:
+			if not has_custom_progress:
+				enemy.set_meta("is_wave_boss", true)
+				if is_instance_valid(main_scene) and main_scene.has_method("consume_boss_race_buff_for_wave"):
+					if main_scene.consume_boss_race_buff_for_wave(spawn_wave_num):
+						enemy.set_meta("boss_race_hp_buff", true)
 			if GameConstants.DATA_ENEMY_BOSS.has(enemy.id):
 				enemy.hp = float(GameConstants.DATA_ENEMY_BOSS[enemy.id].hp) * hp_mult
 				enemy.speed = float(GameConstants.DATA_ENEMY_BOSS[enemy.id].speed) * speed_mult
@@ -170,6 +179,8 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			if path_child is Path2D:
 				path_child.add_child(enemy, true)
 				enemy.progress = float(enemy_progress) if has_custom_progress else 0.0
+				if is_boss and not has_custom_progress:
+					wave_boss_spawned.emit(enemy, spawn_wave_num)
 			else:
 				enemy.queue_free()
 		else:
@@ -198,4 +209,3 @@ func start_next_wave():
 	wave_data = retrieve_wave_data()
 	if wave_data.size() > 0:
 		spawn_enemies(wave_data)
-

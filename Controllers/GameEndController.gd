@@ -133,6 +133,16 @@ func end_game_company():
 			diamonds_earned = DataManager.grant_campaign_diamonds(level_num)
 		DataManager.record_campaign_level_result(level_num, stars_earned)
 	DataManager.write_file()
+	if ProfileManager:
+		ProfileManager.record_battle_result(
+			GameConstants.GameMode.CAMPAIGN,
+			is_win,
+			int(GameSession.current_wave),
+			int(TasksManager.battle_damage),
+			int(GameSession.session_enemies_killed),
+			_count_built_player_towers(),
+			{"new_stars": maxi(0, stars_earned - prev_max_stars)}
+		)
 	if diamonds_earned > 0:
 		var gem_label := Label.new()
 		gem_label.name = "DiamondReward"
@@ -170,13 +180,22 @@ func end_game():
 
 	var is_win: bool = GameSession.base_health > 0
 	var waves_cleared: int = GameConstants.get_sandbox_waves_cleared(int(GameSession.current_wave), is_win)
-	var earned_coins: int = int(score / 10.0) + GameConstants.get_sandbox_bonus_gold(waves_cleared)
+	var earned_coins: int = int(score / 20.0)
 	_pending_card_counts = GameConstants.get_sandbox_card_rewards(waves_cleared)
 	_pending_chest_item_id = GameConstants.get_sandbox_chest_item_id(waves_cleared)
 
 	DataManager.add_data_money(earned_coins)
 	DataManager.data["Resources"]["money"] = DataManager.data_money
 	DataManager.write_file()
+	if ProfileManager:
+		ProfileManager.record_battle_result(
+			GameConstants.GameMode.SANDBOX,
+			is_win,
+			waves_cleared,
+			int(TasksManager.battle_damage),
+			int(GameSession.session_enemies_killed),
+			_count_built_player_towers()
+		)
 
 	stars_earned = 0 if not is_win else 1
 	end.get_node("Panel/MarginContainer/VBoxContainer/HBoxScore/Label2").text = MathUtils.format_int(score)
@@ -213,7 +232,7 @@ func _count_built_player_towers() -> int:
 	for bucket in ResourceManager.list_turret:
 		if bucket is Array:
 			for t in bucket:
-				if is_instance_valid(t) and not AudioManager.to_bool(t.get("is_opponent")):
+				if is_instance_valid(t) and not AudioManager.to_bool(t.get("is_opponent")) and not AudioManager.to_bool(t.get("_is_ai_tower")):
 					count += 1
 	return count
 
@@ -255,53 +274,5 @@ func open_chest_pressed(after_open: Callable = Callable()):
 	get_tree().current_scene.get_node("UI").add_child(choose_buy)
 
 func _sync_profile_after_battle() -> void:
-	print("[GameEnd] 📝 Синхронизация профиля с Firebase...")
-
-	var firebase = get_node_or_null("/root/Firebase")
-	var firestore = firebase.get_node_or_null("Firestore") if firebase else null
-
-	if not firestore:
-		print("[GameEnd] ❌ Firestore не доступен")
-		return
-
-	if not AuthService or not AuthService.is_authenticated:
-		print("[GameEnd] ❌ Пользователь не авторизован")
-		return
-
-	var uid = AuthService.get_current_uid()
-	var collection = firestore.collection("users")
-
-	var profile_data = {
-		"uid": uid,
-		"nickname": AuthService.get_current_nickname(),
-		"friend_code": AuthService.get_friend_code(),
-		"avatar_id": ProfileManager.profile_data.get("avatar_id", 1),
-		"is_registered": AuthService.is_user_registered(),
-		"gold": ProfileManager.profile_data.get("gold", 500),
-		"level": ProfileManager.profile_data.get("level", 1),
-		"clan_id": ProfileManager.profile_data.get("clan_id", null),
-		"current_deck": ProfileManager.profile_data.get("current_deck", [0, 1, 2, 3]),
-		"titles": ProfileManager.profile_data.get("titles", []),
-		"stats": {
-			"pvp_wins": ProfileManager.get_stat("pvp_wins"),
-			"pvp_losses": ProfileManager.get_stat("pvp_losses"),
-			"best_wave": GameSession.current_wave,
-			"total_damage": TasksManager.battle_damage,
-			"total_kills": GameSession.session_enemies_killed,
-			"towers_built": _count_built_player_towers()
-		},
-		"created_at": ProfileManager.profile_data.get("created_at", FirebaseHelper.get_timestamp()),
-		"last_online": FirebaseHelper.get_timestamp(),
-		"last_gift_sent": ProfileManager.profile_data.get("last_gift_sent", {}),
-		"claimed_gift_ids": ProfileManager.profile_data.get("claimed_gift_ids", [])
-	}
-
-	var result = await collection.set_doc(uid, profile_data)
-
-	if result:
-		print("[GameEnd] ✅ Профиль сохранён в Firebase")
-	else:
-		print("[GameEnd] ⚠️ Профиль сохранён (без подтверждения)")
-
-	FirebaseHelper.save_offline_profile_data(profile_data)
-	OfflineManager.cache_profile(profile_data)
+	if ProfileManager and ProfileManager.has_method("sync_profile_to_cloud"):
+		await ProfileManager.sync_profile_to_cloud()
