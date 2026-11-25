@@ -13,6 +13,7 @@ var current_wave_index: int = -1
 var local_wave: int = 0
 var active_spawn_sequences: int = 0
 var rng = RandomNumberGenerator.new()
+var _endless_rng = RandomNumberGenerator.new()
 var _scene_cache: Dictionary = {}
 
 func _load_enemy_scene(path: String) -> PackedScene:
@@ -41,17 +42,28 @@ func initialize(scene: Node, waves_data = null):
 			wave_data_all = DataManager.data_wave[key]
 		else:
 			wave_data_all = []
-			
+
 	gift_controller = main_scene.gift_controller
 	game_end_controller = main_scene.game_end_controller
+	if GameSession.game_mode == GameConstants.GameMode.PVP and PvPSession.room_id != "":
+		_endless_rng.seed = hash("pvp_endless_" + str(PvPSession.room_id))
+	else:
+		_endless_rng.randomize()
+
+func _is_endless_wave_mode() -> bool:
+	return GameSession.game_mode != GameConstants.GameMode.CAMPAIGN
 
 func retrieve_wave_data() -> Array:
 	if local_wave >= wave_data_all.size():
-		return []
+		if _is_endless_wave_mode():
+			while wave_data_all.size() <= local_wave:
+				wave_data_all.append(WaveGenerator.generate_wave(wave_data_all.size() + 1, _endless_rng))
+		else:
+			return []
 	wave_data = wave_data_all[local_wave]
 	if _is_primary_player_controller() and GameSession.game_mode in [GameConstants.GameMode.SANDBOX, GameConstants.GameMode.CAMPAIGN]:
 		if local_wave > 0 and local_wave % 10 == 0:
-			if is_instance_valid(main_scene.gift_controller) and not main_scene.gift_controller.have_open_present:
+			if is_instance_valid(main_scene) and is_instance_valid(main_scene.gift_controller) and not main_scene.gift_controller.have_open_present:
 				main_scene.gift_controller.launch_gift_box(local_wave)
 	local_wave += 1
 	if _is_primary_player_controller():
@@ -74,7 +86,7 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 		var wv = main_scene.find_child("WaveValue", true, false) as Label
 		if wv:
 			wv.text = str(spawn_wave_num)
-	
+
 	for unit in wave:
 		while is_instance_valid(self) and is_inside_tree() and get_tree().paused:
 			await get_tree().create_timer(0.1, false).timeout
@@ -86,11 +98,11 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 		var delay: float = float(unit[1])
 		var speed_mult: float = float(unit[2]) if unit.size() >= 3 else 1.0
 		var hp_mult: float = float(unit[3]) if unit.size() >= 4 else 1.0
-		
+
 		var enemy_scene_path: String = ""
 		var enemy_id: int = 0
 		var is_boss: bool = false
-		
+
 		if unit_type.begins_with("BOSS_"):
 			is_boss = true
 			var boss_num: int = clampi(int(unit_type.split("_")[1]), 1, 13)
@@ -115,7 +127,7 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 				active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 				return
 			continue
-		
+
 		var enemy = enemy_scene.instantiate()
 		if enemy == null:
 			push_error("❌ [WaveController] Ошибка создания экземпляра: " + enemy_scene_path)
@@ -124,12 +136,12 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 				active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 				return
 			continue
-		
+
 		enemy.names = unit_type
 		enemy.id = enemy_id
 		enemy.duration_speed_mod = 0
 		enemy.set_meta("spawn_wave", spawn_wave_num)
-		
+
 		if is_boss:
 			if not has_custom_progress:
 				enemy.set_meta("is_wave_boss", true)
@@ -143,9 +155,9 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 				enemy.hp = 1000.0 * hp_mult
 				enemy.speed = 100.0 * speed_mult
 			enemy.current_speed = enemy.speed
-			if enemy.has_signal("stone"): 
+			if enemy.has_signal("stone"):
 				enemy.stone.connect(main_scene.on_stone)
-			if enemy.has_signal("signal_spawn_enemies"): 
+			if enemy.has_signal("signal_spawn_enemies"):
 				enemy.signal_spawn_enemies.connect(main_scene.on_signal_spawn_enemies)
 		else:
 			if GameConstants.DATA_ENEMY.has(enemy.id):
@@ -155,7 +167,7 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 				enemy.hp = 100.0 * hp_mult
 				enemy.speed = 100.0 * speed_mult
 			enemy.current_speed = enemy.speed
-		
+
 		if "is_spectator_enemy" in enemy:
 			var is_pvp_ai = GameSession.game_mode == GameConstants.GameMode.PVP_AI
 			if is_pvp_ai:
@@ -171,11 +183,11 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			return
 
 		var path_node = main_scene.map_node.get_node_or_null("Path")
-		
+
 		if path_node and path_node.get_child_count() > 0:
 			var path_index = rng.randi_range(0, path_node.get_child_count() - 1)
 			var path_child = path_node.get_child(path_index)
-			
+
 			if path_child is Path2D:
 				path_child.add_child(enemy, true)
 				enemy.progress = float(enemy_progress) if has_custom_progress else 0.0
@@ -194,13 +206,13 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 	active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
 	if not has_custom_progress and _is_primary_player_controller():
 		AudioManager.play_combat_sfx("wave_complete", main_scene)
-	if not has_custom_progress and local_wave < wave_data_all.size():
+	if not has_custom_progress and (local_wave < wave_data_all.size() or _is_endless_wave_mode()):
 		await get_tree().create_timer(5.0, false).timeout
 		while is_instance_valid(self) and is_inside_tree() and get_tree().paused:
 			await get_tree().create_timer(0.1, false).timeout
 		if is_instance_valid(self) and is_inside_tree() and is_instance_valid(main_scene):
 			start_next_wave()
-		
+
 func set_wave_data(waves: Array):
 	wave_data_all = waves
 

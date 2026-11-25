@@ -148,7 +148,7 @@ func end_game_company():
 		gem_label.name = "DiamondReward"
 		gem_label.text = "💎 " + (tr("KEY_CAMPAIGN_DIAMOND_REWARD") % diamonds_earned)
 		gem_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-		gem_label.add_theme_font_size_override("font_size", 18)
+		gem_label.add_theme_font_size_override("font_size", Typography.D_BODY)
 		gem_label.add_theme_color_override("font_color", Color(0.46, 0.90, 1.0, 1.0))
 		var gem_st := StyleBoxFlat.new()
 		gem_st.bg_color = Color(0.05, 0.14, 0.24, 0.92)
@@ -160,6 +160,31 @@ func end_game_company():
 		gem_label.add_theme_stylebox_override("normal", gem_st)
 		end.get_node(panel_root).add_child(gem_label)
 		end.get_node(panel_root).move_child(gem_label, 3)
+
+	if is_win and not was_completed and level_num == SpellCatalog.UNLOCK_AFTER_CAMPAIGN_LEVEL:
+		var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
+		var sp_lbl := Label.new()
+		sp_lbl.name = "SpellUnlockReward"
+		sp_lbl.text = (
+			"🔓 ОТКРЫТ 5-Й СЛОТ: ЗАКЛИНАНИЯ!\nПолучено: ☄️ Кинетический Удар"
+			if is_ru else
+			"🔓 5TH SLOT UNLOCKED: SPELLS!\nUnlocked: ☄️ Kinetic Strike"
+		)
+		sp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		sp_lbl.add_theme_font_size_override("font_size", Typography.D_BODY_SM)
+		sp_lbl.add_theme_color_override("font_color", Color("ffe38f"))
+		var sp_st := StyleBoxFlat.new()
+		sp_st.bg_color = Color(0.06, 0.13, 0.25, 0.96)
+		sp_st.border_color = Color(1.0, 0.78, 0.28, 0.92)
+		sp_st.set_border_width_all(2)
+		sp_st.set_corner_radius_all(12)
+		sp_st.content_margin_top = 8
+		sp_st.content_margin_bottom = 8
+		sp_st.content_margin_left = 12
+		sp_st.content_margin_right = 12
+		sp_lbl.add_theme_stylebox_override("normal", sp_st)
+		end.get_node(panel_root).add_child(sp_lbl)
+		end.get_node(panel_root).move_child(sp_lbl, 3)
 
 	GameSession.current_game_score = 0
 

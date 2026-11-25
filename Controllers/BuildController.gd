@@ -40,7 +40,7 @@ func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
 		return false
 	AudioManager.play_combat_sfx("tower_select", main_scene)
 	return true
-		
+
 func update_tower_preview_ui(new_position: Vector2, color: String):
 	if not main_scene.get_node("UI").has_node("TowerPreview"):
 		return # ничего не делать, если preview удалён
@@ -79,6 +79,7 @@ func set_tower_preview(tower_type: String, mouse_position: Vector2) -> bool:
 		scaling = 0.1
 
 	range_texture.scale = Vector2(scaling, scaling)
+	range_texture.set_meta("base_scale", scaling)
 	range_texture.texture = RANGE_OVERLAY_TEX
 	range_texture.modulate = Color("ad54ff3c")
 	range_texture.name = "Sprite"
@@ -126,7 +127,9 @@ func verify_and_build():
 		AudioManager.play_combat_sfx("tower_place", main_scene)
 		TasksManager.record_build(tower_index)
 		turret.get_node("Menu").setup(turret.id)
-		
+		RuneSystem.hide_rune_tooltip(main_scene.get_tree().current_scene)
+		RuneSystem.apply_tile_rune_to_tower(main_scene.map_node, turret)
+
 		var excl = main_scene.map_node.get_node("TowerExlusion")
 		excl.set_cell(build_tile, 0, Vector2i(0, 4))
 
@@ -146,19 +149,19 @@ func verify_and_build():
 func update_tower_preview():
 	# Получаем позицию мыши в глобальных координатах экрана/мира
 	var mouse_position = main_scene.get_global_mouse_position()
-	
-	# Нам нужно перевести это в локальные координаты тайловой карты, 
+
+	# Нам нужно перевести это в локальные координаты тайловой карты,
 	# чтобы понять, над какой клеткой мы находимся.
 	var tilemap = main_scene.map_node.get_node("TowerExlusion")
-	
+
 	# Переводим глобальную позицию мыши в локальную позицию тайлмапа
 	var local_mouse_pos = tilemap.to_local(mouse_position)
-	
+
 	var current_tile = tilemap.local_to_map(local_mouse_pos)
-	
+
 	# Получаем центр тайла в локальных координатах
 	var tile_position_local = tilemap.map_to_local(current_tile)
-	
+
 	# Переводим обратно в глобальные, чтобы отрисовать превью в правильном месте на экране
 	var tile_position_global = tilemap.to_global(tile_position_local)
 
@@ -172,13 +175,62 @@ func update_tower_preview():
 	else:
 		update_tower_preview_ui(tile_position_global, "ff0000")
 		build_valid = false
+	_sync_preview_rune_feedback(current_tile)
+
+func _sync_preview_rune_feedback(cell: Vector2i) -> void:
+	var preview: Control = main_scene.get_node_or_null("UI/TowerPreview") as Control
+	if not is_instance_valid(preview) or not is_instance_valid(main_scene.map_node):
+		return
+	var rtile: RuneTile = RuneSystem.get_rune_tile_at_cell(main_scene.map_node, cell)
+	var sprite: Sprite2D = preview.get_node_or_null("Sprite") as Sprite2D
+	if is_instance_valid(sprite) and sprite.has_meta("base_scale"):
+		var bscale: float = float(sprite.get_meta("base_scale"))
+		var rmult: float = 1.28 if (rtile != null and rtile.rune_id == "SNIPER_NEST") else 1.0
+		sprite.scale = Vector2(bscale * rmult, bscale * rmult)
+	var hint: PanelContainer = preview.get_node_or_null("RuneHint") as PanelContainer
+	if rtile == null or not build_valid:
+		if is_instance_valid(hint):
+			hint.visible = false
+		return
+	var def: Dictionary = RuneSystem.get_rune_def(rtile.rune_id)
+	if def.is_empty():
+		return
+	var accent: Color = def["color"] as Color
+	if not is_instance_valid(hint):
+		hint = PanelContainer.new()
+		hint.name = "RuneHint"
+		hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		var sb := StyleBoxFlat.new()
+		sb.bg_color = Color(0.05, 0.08, 0.14, 0.94)
+		sb.border_color = accent
+		sb.set_border_width_all(1)
+		sb.set_corner_radius_all(8)
+		sb.content_margin_left = 8.0
+		sb.content_margin_right = 8.0
+		sb.content_margin_top = 4.0
+		sb.content_margin_bottom = 4.0
+		hint.add_theme_stylebox_override("panel", sb)
+		var lbl := Label.new()
+		lbl.name = "Lbl"
+		lbl.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		lbl.add_theme_font_size_override("font_size", Typography.D_CAPTION)
+		hint.add_child(lbl)
+		preview.add_child(hint)
+	var sb_cur := hint.get_theme_stylebox("panel") as StyleBoxFlat
+	if sb_cur:
+		sb_cur.border_color = accent
+	var hlbl: Label = hint.get_node("Lbl") as Label
+	hlbl.text = "%s %s (%s)" % [str(def["symbol"]), main_scene.tr(str(def["name_key"])), main_scene.tr(str(def["short_key"]))]
+	hlbl.add_theme_color_override("font_color", accent.lightened(0.20))
+	hint.visible = true
+	hint.position = Vector2(-110.0, -68.0)
 
 func _input(event):
 	if build_mode:
 		# На телефоне и ПК: движение мыши/пальца обновляет превью
 		if event is InputEventMouseMotion:
 			update_tower_preview()
-			
+
 		# На ПК: Клик ЛКМ подтверждает (если не через Drag&Drop)
 		if event.is_action_released("ui_accept") and not native_drag_active:
 			verify_and_build()

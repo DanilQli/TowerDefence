@@ -81,7 +81,7 @@ func _build_menu() -> void:
 	var title = Label.new()
 	title.text = tr("KEY_PAUSE_TITLE")
 	title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	title.add_theme_font_size_override("font_size", 28)
+	title.add_theme_font_size_override("font_size", Typography.D_HEADER)
 	title.add_theme_color_override("font_color", Color("f4e2b9"))
 	stack.add_child(title)
 

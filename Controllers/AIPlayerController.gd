@@ -14,6 +14,11 @@ var request_in_flight: bool = false
 var ai_deck: Array[int] = []
 var ai_card_levels: Dictionary = {}
 var ai_abilities: Dictionary = {}
+var ai_spell_id: String = ""
+var ai_spell_level: int = 0
+var ai_core_energy: float = SpellCatalog.CORE_ENERGY_INITIAL
+var ai_spell_cd: float = 0.0
+var _ai_spell_scan_accum: float = 0.0
 
 var _static_grid: Array = []
 var _static_grid_ready: bool = false
@@ -26,9 +31,21 @@ func setup(player_container: Node) -> void:
 	_static_grid.clear()
 	_static_grid_ready = false
 	_sync_player_deck_and_levels()
+	ai_spell_id = GameSession.get_battle_spell_id() if GameSession != null else ""
+	ai_spell_level = GameSession.get_battle_spell_level(ai_spell_id) if not ai_spell_id.is_empty() else 0
+	ai_core_energy = SpellCatalog.CORE_ENERGY_INITIAL
+	ai_spell_cd = 0.0
+	if is_instance_valid(container) and is_instance_valid(container.map_node):
+		container.map_node.set_meta("spell_energy_receiver", weakref(self))
 	_ensure_static_grid()
 	is_active = true
 	print("[AI Player] Контроллер активирован | Колода игрока: ", ai_deck, " | Уровни карт: ", ai_card_levels)
+
+func on_enemy_killed_for_energy(is_boss: bool) -> void:
+	if ai_spell_id.is_empty():
+		return
+	var gain: float = SpellCatalog.CORE_ENERGY_KILL_BOSS if is_boss else SpellCatalog.CORE_ENERGY_KILL_ENEMY
+	ai_core_energy = clampf(ai_core_energy + gain, 0.0, SpellCatalog.CORE_ENERGY_MAX)
 
 func _sync_player_deck_and_levels() -> void:
 	ai_deck.clear()
@@ -67,12 +84,16 @@ func _sync_player_deck_and_levels() -> void:
 			]
 
 func _process(_delta: float) -> void:
-	if not is_active or request_in_flight or not is_instance_valid(container):
+	if not is_active or not is_instance_valid(container):
 		return
 	if get_tree() and get_tree().paused:
 		return
 	if _get_ai_base_hp() <= 0:
 		stop()
+		return
+
+	_tick_ai_spell(_delta)
+	if request_in_flight:
 		return
 
 	var current_time: float = float(Time.get_ticks_msec()) / 1000.0
@@ -81,6 +102,28 @@ func _process(_delta: float) -> void:
 		var has_money: bool = _get_current_money() >= 50.0
 		if wave_active or has_money:
 			_request_ai_decision()
+
+func _tick_ai_spell(delta: float) -> void:
+	if ai_spell_id.is_empty() or not is_instance_valid(container) or not is_instance_valid(container.map_node):
+		return
+	if int(GameSession.current_wave) >= 1:
+		ai_core_energy = minf(SpellCatalog.CORE_ENERGY_MAX, ai_core_energy + SpellCatalog.CORE_ENERGY_PASSIVE_PER_SEC * delta)
+		if ai_spell_cd > 0.0:
+			ai_spell_cd = maxf(0.0, ai_spell_cd - delta)
+	_ai_spell_scan_accum += delta
+	if _ai_spell_scan_accum < 0.55:
+		return
+	_ai_spell_scan_accum = 0.0
+	var cost: int = SpellCatalog.get_energy_cost(ai_spell_id)
+	if ai_spell_cd > 0.01 or ai_core_energy + 0.001 < float(cost):
+		return
+	var rad: float = SpellCatalog.get_radius_at_level(ai_spell_id, ai_spell_level)
+	var target_pt: Vector2 = SpellBattleController.find_best_ai_kinetic_strike_target(container.map_node, rad)
+	if target_pt.x >= 0.0:
+		ai_core_energy = maxf(0.0, ai_core_energy - float(cost))
+		ai_spell_cd = SpellCatalog.get_cooldown_at_level(ai_spell_id, ai_spell_level)
+		var w_num: int = maxi(1, int(GameSession.current_wave))
+		SpellBattleController.execute_kinetic_strike_on_map(container.map_node, target_pt, ai_spell_level, w_num, false, container)
 
 func _is_wave_active() -> bool:
 	if not is_instance_valid(container) or not is_instance_valid(container.map_node):

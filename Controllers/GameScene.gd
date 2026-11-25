@@ -9,6 +9,7 @@ var gift_controller
 var ui_controller
 var game_end_controller
 var health_controller
+var spell_controller: SpellBattleController = null
 var campaign_pause_menu: CanvasLayer
 var _path_root: Node = null
 var _stats_panel = null
@@ -32,7 +33,8 @@ func _ready():
 		ResourceManager.list_turret[i] = []
 	map_node.name = "Map"
 	add_child(map_node)
-	
+	RuneSystem.setup_map_runes_for_current_mode(map_node, true)
+
 	# Динамически создаем контроллеры
 	build_controller = _create_controller("res://Controllers/BuildController.gd")
 	wave_controller = _create_controller("res://Controllers/WaveController.gd")
@@ -49,10 +51,15 @@ func _ready():
 	game_end_controller.initialize(self)
 	health_controller.initialize(self)
 
+	spell_controller = SpellBattleController.new()
+	spell_controller.name = "SpellBattleController"
+	add_child(spell_controller)
+	spell_controller.setup(self, map_node, get_node_or_null("UI/HUD") as Control, false)
+
 	GameManager.get_road_coords(self)
 
 	get_tree().paused = false
-	
+
 	InputManager.game_scene = self
 	_path_root = map_node.get_node_or_null("Path")
 	_stats_panel = get_node_or_null("UI/StatsPanel")
@@ -94,7 +101,7 @@ func on_base_damage(damage: int):
 
 func on_signal_spawn_enemies(wave: Array, enemy_progress: float):
 	ui_controller.main_scene.wave_controller.spawn_enemies(wave, enemy_progress)
-	
+
 func on_stone(number_block: int, duration: int):
 	var tur = []
 	var available_turrets = []
@@ -103,7 +110,7 @@ func on_stone(number_block: int, duration: int):
 		if len(ResourceManager.list_turret[i]) != 0:
 			for j in range(len(ResourceManager.list_turret[i])):
 				var turret = ResourceManager.list_turret[i][j]
-				if not is_instance_valid(turret) or turret.is_opponent or turret.is_protected_by_link:
+				if not is_instance_valid(turret) or turret.is_opponent or turret.has_boss_immunity():
 					continue
 				if turret is MoneyTower or turret is LinkTower:
 					continue

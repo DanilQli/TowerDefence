@@ -70,7 +70,7 @@ func _tower_buff_title(tower_idx: int) -> String:
 
 func _pick_buffable_towers() -> Array[int]:
 	var equipped: Array[int] = []
-	for tid in [0, 1, 2, 3, 4, 6, 7, 8, 9, 10]:
+	for tid in [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 12]:
 		var key: String = "Turret_" + str(tid + 1) + "T1"
 		if DataManager.tower_data.has(key) and AudioManager.to_bool(DataManager.tower_data[key].get("activity", false)):
 			equipped.append(tid)
@@ -173,7 +173,7 @@ func generate_gift(box_gift: Node, is_mobile: bool = false) -> void:
 			box_node.pivot_offset = box_node.custom_minimum_size * 0.5
 			var lbl := box_node.get_node_or_null("Label") as Label
 			if lbl:
-				lbl.add_theme_font_size_override("font_size", 19)
+				lbl.add_theme_font_size_override("font_size", Typography.D_BUTTON)
 				lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		if box_node and box_node.has_method("configure_chest"):
 			box_node.call("configure_chest", chest_variant, i, _tower_buff_title(t))
