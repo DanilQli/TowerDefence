@@ -16,6 +16,8 @@ var _stats_panel = null
 
 func _ready():
 	GameSession.reset_battle_runtime_state()
+	if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN:
+		DataManager.begin_campaign_attempt_snapshot()
 	TasksManager.begin_battle()
 	if GameSession.game_mode in [GameConstants.GameMode.CAMPAIGN, GameConstants.GameMode.SANDBOX]:
 		AudioManager.start_battle_music("music_battle")

@@ -138,6 +138,8 @@ func _show_confirmation(value: bool) -> void:
 
 func _exit_to_map() -> void:
 	# Leaving is not a victory or a defeat and does not grant rewards.
+	if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN and DataManager != null:
+		DataManager.discard_campaign_attempt_progress()
 	GameSession.reset_battle_runtime_state()
 	GameSession.current_wave = 0
 	GameSession.current_game_score = 0

@@ -77,8 +77,6 @@ func end_game_company():
 	if game_ended:
 		return
 	game_ended = true
-	TasksManager.count_end_game_company += 1
-	tasks()
 	get_tree().paused = true
 
 	end = END_GAME_COMPANY_SCENE.instantiate()
@@ -91,6 +89,14 @@ func end_game_company():
 	var prev_max_stars: int = DataManager.get_level_max_stars(level_num)
 	var was_completed: bool = bool(DataManager.level_option[level_num - 1])
 	var is_win: bool = health > 0
+	var is_first_clear_win: bool = is_win and (not was_completed)
+
+	if is_first_clear_win:
+		TasksManager.count_end_game_company += 1
+		tasks()
+		DataManager.clear_campaign_attempt_snapshot()
+	else:
+		DataManager.discard_campaign_attempt_progress()
 
 	if health >= 9:
 		stars_earned = 3
@@ -101,15 +107,15 @@ func end_game_company():
 	else:
 		stars_earned = 0
 
-	var gold_info: Dictionary = GameConstants.get_campaign_gold_reward(level_num, stars_earned, prev_max_stars, score, is_win)
-	var base_gold: int = int(gold_info.get("base_gold", 0))
-	var money_dop: int = int(gold_info.get("star_bonus", 0))
-	var total_money: int = int(gold_info.get("total_gold", base_gold + money_dop))
+	var gold_info: Dictionary = GameConstants.get_campaign_gold_reward(level_num, stars_earned, 1 if was_completed else 0, score, is_win)
+	var base_gold: int = int(gold_info.get("base_gold", 0)) if is_first_clear_win else 0
+	var money_dop: int = int(gold_info.get("star_bonus", 0)) if is_first_clear_win else 0
+	var total_money: int = (base_gold + money_dop) if is_first_clear_win else 0
 
-	_pending_card_counts = GameConstants.get_campaign_card_rewards(level_num, stars_earned, is_win and not was_completed)
+	_pending_card_counts = GameConstants.get_campaign_card_rewards(level_num, stars_earned, is_first_clear_win)
 	_pending_chest_item_id = GameConstants.get_campaign_chest_item_id(level_num, stars_earned)
 
-	if score > ResourceManager.best_score:
+	if is_first_clear_win and score > ResourceManager.best_score:
 		ResourceManager.best_score = score
 		DataManager.data["SettingsGame"]["best_score"] = score
 
@@ -125,28 +131,31 @@ func end_game_company():
 	AudioManager.on_battle_finished(is_win)
 	_apply_end_theme_and_anim(end, is_win, stars_earned)
 
-	DataManager.add_data_money(total_money)
-	DataManager.data["Resources"]["money"] = DataManager.data_money
 	var diamonds_earned := 0
-	if is_win:
-		if not was_completed:
-			diamonds_earned = DataManager.grant_campaign_diamonds(level_num)
+	if is_first_clear_win:
+		if total_money > 0:
+			DataManager.add_data_money(total_money)
+			DataManager.data["Resources"]["money"] = DataManager.data_money
+		diamonds_earned = DataManager.grant_campaign_diamonds(level_num)
 		DataManager.record_campaign_level_result(level_num, stars_earned)
-	DataManager.write_file()
-	if ProfileManager:
-		ProfileManager.record_battle_result(
-			GameConstants.GameMode.CAMPAIGN,
-			is_win,
-			int(GameSession.current_wave),
-			int(TasksManager.battle_damage),
-			int(GameSession.session_enemies_killed),
-			_count_built_player_towers(),
-			{"new_stars": maxi(0, stars_earned - prev_max_stars)}
-		)
+		DataManager.write_file()
+		if ProfileManager:
+			ProfileManager.record_battle_result(
+				GameConstants.GameMode.CAMPAIGN,
+				is_win,
+				int(GameSession.current_wave),
+				int(TasksManager.battle_damage),
+				int(GameSession.session_enemies_killed),
+				_count_built_player_towers(),
+				{"new_stars": maxi(0, stars_earned - prev_max_stars)}
+			)
+	elif is_win and was_completed and stars_earned > prev_max_stars:
+		DataManager.record_campaign_level_result(level_num, stars_earned)
+		DataManager.write_file()
 	if diamonds_earned > 0:
 		var gem_label := Label.new()
 		gem_label.name = "DiamondReward"
-		gem_label.text = "💎 " + (tr("KEY_CAMPAIGN_DIAMOND_REWARD") % diamonds_earned)
+		gem_label.text = tr("KEY_CAMPAIGN_DIAMOND_REWARD") % diamonds_earned
 		gem_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		gem_label.add_theme_font_size_override("font_size", Typography.D_BODY)
 		gem_label.add_theme_color_override("font_color", Color(0.46, 0.90, 1.0, 1.0))
@@ -161,21 +170,21 @@ func end_game_company():
 		end.get_node(panel_root).add_child(gem_label)
 		end.get_node(panel_root).move_child(gem_label, 3)
 
-	if is_win and not was_completed and level_num == SpellCatalog.UNLOCK_AFTER_CAMPAIGN_LEVEL:
+	if is_first_clear_win and level_num == SpellCatalog.UNLOCK_AFTER_CAMPAIGN_LEVEL:
 		var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
 		var sp_lbl := Label.new()
 		sp_lbl.name = "SpellUnlockReward"
 		sp_lbl.text = (
-			"🔓 ОТКРЫТ 5-Й СЛОТ: ЗАКЛИНАНИЯ!\nПолучено: ☄️ Кинетический Удар"
+			"ОТКРЫТ 5-Й СЛОТ: ЗАКЛИНАНИЯ!\nПолучено: Кинетический Удар"
 			if is_ru else
-			"🔓 5TH SLOT UNLOCKED: SPELLS!\nUnlocked: ☄️ Kinetic Strike"
+			"5TH SLOT UNLOCKED: SPELLS!\nUnlocked: Kinetic Strike"
 		)
 		sp_lbl.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		sp_lbl.add_theme_font_size_override("font_size", Typography.D_BODY_SM)
-		sp_lbl.add_theme_color_override("font_color", Color("ffe38f"))
+		sp_lbl.add_theme_color_override("font_color", Color("edd6ff"))
 		var sp_st := StyleBoxFlat.new()
-		sp_st.bg_color = Color(0.06, 0.13, 0.25, 0.96)
-		sp_st.border_color = Color(1.0, 0.78, 0.28, 0.92)
+		sp_st.bg_color = Color(0.13, 0.08, 0.24, 0.96)
+		sp_st.border_color = Color(0.68, 0.44, 1.0, 0.95)
 		sp_st.set_border_width_all(2)
 		sp_st.set_corner_radius_all(12)
 		sp_st.content_margin_top = 8
@@ -282,7 +291,25 @@ func exit_menu():
 func open_chest_pressed(after_open: Callable = Callable()):
 	if is_instance_valid(end):
 		end.queue_free()
-	var card_counts: Array = _pending_card_counts if not _pending_card_counts.is_empty() else GameConstants.POST_BATTLE_REWARDS.get(stars_earned, [1, 0, 0, 0])
+	var card_counts: Array = _pending_card_counts if not _pending_card_counts.is_empty() else (
+		[0, 0, 0, 0] if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN else GameConstants.POST_BATTLE_REWARDS.get(stars_earned, [1, 0, 0, 0])
+	)
+	var total_cards := 0
+	for c in card_counts:
+		total_cards += maxi(0, int(c))
+	if total_cards <= 0:
+		_sync_profile_after_battle()
+		if after_open.is_valid():
+			after_open.call()
+		else:
+			get_tree().paused = false
+			Engine.time_scale = 1.0
+			var is_mob := OS.get_name() in ["Android", "iOS"]
+			if GameSession.game_mode == GameConstants.GameMode.CAMPAIGN:
+				get_tree().change_scene_to_file("res://Scenes/Mobile/company_world_mobile.tscn" if is_mob else "res://Scenes/UI/company_world.tscn")
+			else:
+				get_tree().change_scene_to_file("res://Scenes/Mobile/Menu_mobile.tscn" if is_mob else "res://Scenes/UI/Menu.tscn")
+		return
 	var box_card = GameConstants.get_random_card_pairs(card_counts)
 	var i = 0
 	while i < box_card.size():

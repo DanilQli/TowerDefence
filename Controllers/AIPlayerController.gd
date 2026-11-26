@@ -45,7 +45,12 @@ func on_enemy_killed_for_energy(is_boss: bool) -> void:
 	if ai_spell_id.is_empty():
 		return
 	var gain: float = SpellCatalog.CORE_ENERGY_KILL_BOSS if is_boss else SpellCatalog.CORE_ENERGY_KILL_ENEMY
-	ai_core_energy = clampf(ai_core_energy + gain, 0.0, SpellCatalog.CORE_ENERGY_MAX)
+	add_core_energy(gain)
+
+func add_core_energy(amount: float) -> void:
+	if ai_spell_id.is_empty() or amount <= 0.0:
+		return
+	ai_core_energy = clampf(ai_core_energy + amount, 0.0, SpellCatalog.CORE_ENERGY_MAX)
 
 func _sync_player_deck_and_levels() -> void:
 	ai_deck.clear()
@@ -118,12 +123,12 @@ func _tick_ai_spell(delta: float) -> void:
 	if ai_spell_cd > 0.01 or ai_core_energy + 0.001 < float(cost):
 		return
 	var rad: float = SpellCatalog.get_radius_at_level(ai_spell_id, ai_spell_level)
-	var target_pt: Vector2 = SpellBattleController.find_best_ai_kinetic_strike_target(container.map_node, rad)
+	var target_pt: Vector2 = SpellBattleController.find_best_ai_spell_target(ai_spell_id, container.map_node, rad)
 	if target_pt.x >= 0.0:
 		ai_core_energy = maxf(0.0, ai_core_energy - float(cost))
 		ai_spell_cd = SpellCatalog.get_cooldown_at_level(ai_spell_id, ai_spell_level)
 		var w_num: int = maxi(1, int(GameSession.current_wave))
-		SpellBattleController.execute_kinetic_strike_on_map(container.map_node, target_pt, ai_spell_level, w_num, false, container)
+		SpellBattleController.execute_spell_on_map(ai_spell_id, container.map_node, target_pt, ai_spell_level, w_num, false, container)
 
 func _is_wave_active() -> bool:
 	if not is_instance_valid(container) or not is_instance_valid(container.map_node):

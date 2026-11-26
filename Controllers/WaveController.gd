@@ -221,3 +221,4 @@ func start_next_wave():
 	wave_data = retrieve_wave_data()
 	if wave_data.size() > 0:
 		spawn_enemies(wave_data)
+

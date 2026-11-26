@@ -14,9 +14,8 @@ config/name="Tower Defense"
 run/main_scene="uid://bm6yyxyf628tf"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 boot_splash/bg_color=Color(0.043, 0.055, 0.114, 1)
-boot_splash/image="res://Assets/Bg/boot_splash.png"
 boot_splash/fullsize=false
-boot_splash/use_filter=true
+boot_splash/image="res://Assets/Bg/boot_splash.png"
 
 [autoload]
 
@@ -48,13 +47,13 @@ Firebase="*res://addons/godot-firebase/firebase/firebase.tscn"
 
 window/size/viewport_width=1600
 window/size/viewport_height=900
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+window/handheld/orientation=1
 window/size/viewport_width.mobile=1080
 window/size/viewport_height.mobile=1920
 window/size/viewport_width.android=1080
 window/size/viewport_height.android=1920
-window/stretch/mode="canvas_items"
-window/stretch/aspect="expand"
-window/handheld/orientation=1
 
 [editor_plugins]
 
