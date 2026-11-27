@@ -286,8 +286,12 @@ func _get_all_towers() -> Array:
 		if is_instance_valid(turret) and not turret.is_queued_for_deletion() and not AudioManager.to_bool(turret.get("is_phantom_clone")):
 			var damage: float = float(turret.damage) if ("damage" in turret) else 0.0
 			var rof: float = float(turret.rof) if ("rof" in turret) else 1.0
+			if int(turret.id) in [12, 15] and ("tick_rate" in turret):
+				rof = maxf(0.08, float(turret.tick_rate))
 			var range_val: float = float(turret.range) if ("range" in turret) else 0.0
 			var dps: float = (damage / rof) if rof > 0.0 else 0.0
+			if int(turret.id) == 16:
+				dps *= 1.26
 
 			var grid_x: int = int(floor(turret.position.x / 64.0))
 			var grid_y: int = int(floor(turret.position.y / 64.0))
@@ -381,6 +385,10 @@ func _execute_action(action: Dictionary) -> void:
 				var flame_cell: Vector2i = _find_smart_flamethrower_cell(grid_x, grid_y)
 				grid_x = flame_cell.x
 				grid_y = flame_cell.y
+			elif tower_id == 16:
+				var sniper_cell: Vector2i = _find_smart_sniper_cell(grid_x, grid_y)
+				grid_x = sniper_cell.x
+				grid_y = sniper_cell.y
 			if not _is_cell_free(grid_x, grid_y):
 				return
 			_build_tower(tower_id, grid_x, grid_y)
@@ -550,3 +558,53 @@ func _find_smart_flamethrower_cell(fallback_x: int, fallback_y: int) -> Vector2i
 				best_score = score
 				best_cell = Vector2i(gx, gy)
 	return best_cell
+
+func _find_smart_sniper_cell(fallback_x: int, fallback_y: int) -> Vector2i:
+	var road_coords: Array = _get_local_road_coords()
+	if road_coords.is_empty():
+		return Vector2i(fallback_x, fallback_y)
+	# Снайпер — башня второй линии (бонус до +20% за дальнюю половину радиуса 95..190px):
+	# сохраняем ближние клетки первой линии под сплэш/огнемёт, выбирая тыловые/боковые клетки с максимальным покрытием.
+	if _is_cell_free(fallback_x, fallback_y):
+		var fb_pos := Vector2(float(fallback_x * 64 + 32), float(fallback_y * 64 + 32))
+		var fb_min_d: float = 99999.0
+		var fb_far_hits: int = 0
+		for rc in road_coords:
+			if rc is Vector2:
+				var d: float = fb_pos.distance_to(rc as Vector2)
+				fb_min_d = minf(fb_min_d, d)
+				if d >= 95.0 and d <= 190.0:
+					fb_far_hits += 1
+		if fb_min_d >= 84.0 and fb_far_hits >= 3:
+			return Vector2i(fallback_x, fallback_y)
+
+	var best_cell := Vector2i(fallback_x, fallback_y)
+	var best_score: float = -1.0
+	for gx in range(12):
+		for gy in range(14):
+			if not _is_cell_free(gx, gy):
+				continue
+			var cpos := Vector2(float(gx * 64 + 32), float(gy * 64 + 32))
+			var min_d: float = 99999.0
+			var near_hits: int = 0
+			var far_hits: int = 0
+			for rc in road_coords:
+				if rc is Vector2:
+					var d: float = cpos.distance_to(rc as Vector2)
+					min_d = minf(min_d, d)
+					if d <= 95.0:
+						near_hits += 1
+					elif d <= 192.0:
+						far_hits += 1
+			if near_hits + far_hits == 0:
+				continue
+			var score: float = float(far_hits) * 14.0 + float(near_hits) * 6.0
+			if min_d >= 86.0 and min_d <= 185.0:
+				score *= 1.38
+			elif min_d < 72.0:
+				score *= 0.72
+			if score > best_score:
+				best_score = score
+				best_cell = Vector2i(gx, gy)
+	return best_cell
+

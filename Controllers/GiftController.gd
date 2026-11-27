@@ -70,7 +70,9 @@ func _tower_buff_title(tower_idx: int) -> String:
 
 func _pick_buffable_towers() -> Array[int]:
 	var equipped: Array[int] = []
-	for tid in [0, 1, 2, 3, 4, 6, 7, 8, 9, 10, 12]:
+	for tid in range(GameConstants.DATA_TOWER.size()):
+		if tid in [5, 11, 14]:
+			continue
 		var key: String = "Turret_" + str(tid + 1) + "T1"
 		if DataManager.tower_data.has(key) and AudioManager.to_bool(DataManager.tower_data[key].get("activity", false)):
 			equipped.append(tid)
@@ -96,7 +98,9 @@ func _roll_modifier_for_tower(tower_idx: int) -> int:
 		return randi_range(1, 2) # Замедление: перезарядка / радиус
 	if tower_idx == 4:
 		return randi_range(1, 3) # Хронопетля: перезарядка / радиус / дистанция
-	return randi_range(0, 2) # Все боевые башни: урон / перезарядка / радиус
+	if tower_idx in [12, 15]:
+		return 0 if (randi() % 2 == 0) else 2 # Призма и Огнемёт: урон / радиус (используют tick_rate вместо rof)
+	return randi_range(0, 2) # Все боевые башни (включая Снайпера id=16): урон / перезарядка / радиус
 
 func launch_gift_box(cleared_wave: int = 0) -> void:
 	if have_open_present or not is_instance_valid(main_scene):
