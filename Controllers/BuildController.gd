@@ -14,6 +14,8 @@ func initialize(scene):
 	main_scene = scene
 
 func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
+	if is_instance_valid(main_scene) and "spell_controller" in main_scene and is_instance_valid(main_scene.spell_controller) and bool(main_scene.spell_controller.is_aiming):
+		main_scene.spell_controller.cancel_aiming()
 	while UiManager.list_open_menu_turrets.size() > 0:
 		var menu = UiManager.list_open_menu_turrets.pop_at(0)
 		if is_instance_valid(menu):
@@ -131,6 +133,7 @@ func verify_and_build():
 		RuneSystem.apply_tile_rune_to_tower(main_scene.map_node, turret)
 
 		var excl = main_scene.map_node.get_node("TowerExlusion")
+		turret.set_meta("bound_excl_cell", build_tile)
 		excl.set_cell(build_tile, 0, Vector2i(0, 4))
 
 		# Чистим клетку, когда башня удаляется (без лямбд)

@@ -283,7 +283,7 @@ func _get_all_towers() -> Array:
 	max_damage_tower_id = -1
 
 	for turret in turret_layer.get_children():
-		if is_instance_valid(turret) and not turret.is_queued_for_deletion():
+		if is_instance_valid(turret) and not turret.is_queued_for_deletion() and not AudioManager.to_bool(turret.get("is_phantom_clone")):
 			var damage: float = float(turret.damage) if ("damage" in turret) else 0.0
 			var rof: float = float(turret.rof) if ("rof" in turret) else 1.0
 			var range_val: float = float(turret.range) if ("range" in turret) else 0.0
@@ -373,12 +373,20 @@ func _execute_action(action: Dictionary) -> void:
 			var cost: float = _get_build_cost(tower_id)
 			if _get_current_money() < cost:
 				return
+			if tower_id == 14:
+				var smart_cell: Vector2i = _find_smart_mimic_cell(grid_x, grid_y)
+				grid_x = smart_cell.x
+				grid_y = smart_cell.y
+			elif tower_id == 15:
+				var flame_cell: Vector2i = _find_smart_flamethrower_cell(grid_x, grid_y)
+				grid_x = flame_cell.x
+				grid_y = flame_cell.y
 			if not _is_cell_free(grid_x, grid_y):
 				return
 			_build_tower(tower_id, grid_x, grid_y)
 		2: # Upgrade
 			var turret: TowerBase = _get_tower_at(grid_x, grid_y)
-			if turret == null or turret.current_lvl >= turret.max_lvl:
+			if turret == null or turret.is_phantom_clone or turret.current_lvl >= turret.max_lvl:
 				return
 			var upgrade_cost: float = _get_upgrade_cost(turret)
 			if _get_current_money() < upgrade_cost:
@@ -449,6 +457,7 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int) -> void:
 	turret.apply_level_and_gift_stats()
 
 	if tilemap:
+		turret.set_meta("bound_excl_cell", cell)
 		tilemap.set_cell(cell, 0, Vector2i(0, 4))
 		turret.tree_exited.connect(turret._on_turret_tree_exited.bind(tilemap, cell))
 
@@ -457,7 +466,7 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int) -> void:
 
 func _upgrade_tower(grid_x: int, grid_y: int) -> void:
 	var turret: TowerBase = _get_tower_at(grid_x, grid_y)
-	if turret == null or turret.current_lvl >= turret.max_lvl:
+	if turret == null or turret.is_phantom_clone or turret.current_lvl >= turret.max_lvl:
 		return
 
 	var cost: float = _get_upgrade_cost(turret)
@@ -478,3 +487,66 @@ func _upgrade_tower(grid_x: int, grid_y: int) -> void:
 func stop() -> void:
 	is_active = false
 	print("[AI Player] Контроллер остановлен")
+
+func _find_smart_mimic_cell(fallback_x: int, fallback_y: int) -> Vector2i:
+	if not is_instance_valid(container) or not is_instance_valid(container.map_node):
+		return Vector2i(fallback_x, fallback_y)
+	var turret_layer: Node = container.map_node.find_child("Turret", true, false)
+	if not turret_layer:
+		return Vector2i(fallback_x, fallback_y)
+	var dirs: Array[Vector2i] = [Vector2i(1, 0), Vector2i(-1, 0), Vector2i(0, 1), Vector2i(0, -1)]
+	var best_cell := Vector2i(fallback_x, fallback_y)
+	var best_val: float = -1.0
+	for child in turret_layer.get_children():
+		if not is_instance_valid(child) or child.is_queued_for_deletion() or not (child is TowerBase):
+			continue
+		var t := child as TowerBase
+		if not t.built or t.is_phantom_clone or t.id in [5, 11, 14] or t.is_mimic_copy:
+			continue
+		var tc: Vector2i = t.get_grid_cell_coords()
+		var base_cost: float = float(GameConstants.DATA_TOWER[t.id].cost_in_session) if GameConstants.DATA_TOWER.has(t.id) else 80.0
+		var val: float = base_cost + float(t.current_lvl) * 65.0
+		for d in dirs:
+			var cand: Vector2i = tc + d
+			if _is_cell_free(cand.x, cand.y):
+				var road_bonus: float = 0.0
+				var cpos := Vector2(float(cand.x * 64 + 32), float(cand.y * 64 + 32))
+				for rc in _get_local_road_coords():
+					if rc is Vector2 and cpos.distance_to(rc as Vector2) <= 135.0:
+						road_bonus += 8.0
+				if (road_bonus > 0.0 or t.id == 10) and (val + road_bonus) > best_val:
+					best_val = val + road_bonus
+					best_cell = cand
+	return best_cell
+
+func _find_smart_flamethrower_cell(fallback_x: int, fallback_y: int) -> Vector2i:
+	var road_coords: Array = _get_local_road_coords()
+	if road_coords.is_empty():
+		return Vector2i(fallback_x, fallback_y)
+	# Если исходная клетка уже стоит вплотную к дороге (<= 88 px до минимум 2 сегментов) — оставляем её
+	if _is_cell_free(fallback_x, fallback_y):
+		var fb_pos := Vector2(float(fallback_x * 64 + 32), float(fallback_y * 64 + 32))
+		var fb_hits: int = 0
+		for rc in road_coords:
+			if rc is Vector2 and fb_pos.distance_to(rc as Vector2) <= 88.0:
+				fb_hits += 1
+		if fb_hits >= 2:
+			return Vector2i(fallback_x, fallback_y)
+
+	var best_cell := Vector2i(fallback_x, fallback_y)
+	var best_score: float = -1.0
+	for gx in range(12):
+		for gy in range(14):
+			if not _is_cell_free(gx, gy):
+				continue
+			var cpos := Vector2(float(gx * 64 + 32), float(gy * 64 + 32))
+			var score: float = 0.0
+			for rc in road_coords:
+				if rc is Vector2:
+					var d: float = cpos.distance_to(rc as Vector2)
+					if d <= 90.0:
+						score += 12.0 + (90.0 - d) * 0.15
+			if score > best_score:
+				best_score = score
+				best_cell = Vector2i(gx, gy)
+	return best_cell

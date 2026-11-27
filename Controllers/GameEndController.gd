@@ -266,7 +266,7 @@ func _count_built_player_towers() -> int:
 	for bucket in ResourceManager.list_turret:
 		if bucket is Array:
 			for t in bucket:
-				if is_instance_valid(t) and not AudioManager.to_bool(t.get("is_opponent")) and not AudioManager.to_bool(t.get("_is_ai_tower")):
+				if is_instance_valid(t) and not AudioManager.to_bool(t.get("is_opponent")) and not AudioManager.to_bool(t.get("_is_ai_tower")) and not AudioManager.to_bool(t.get("is_phantom_clone")):
 					count += 1
 	return count
 

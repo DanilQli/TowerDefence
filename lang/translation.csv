@@ -203,13 +203,13 @@ KEY_PROMOTION_DESC_1,Завершите матчей:,Complete matches:
 KEY_PROMOTION_NAME_1,Серийный игрок,Serial Player
 KEY_PROMOTION_DESC_2,Потратьте монет более:,Spend more coins:
 KEY_PROMOTION_NAME_2,Большие траты,Big Spender
-KEY_PROMOTION_DESC_3,Пройдите уровней компании:,Complete campaign levels:
+KEY_PROMOTION_DESC_3,Пройдите уровней кампании:,Complete campaign levels:
 KEY_PROMOTION_NAME_3,Покоритель кампании,Campaign Conqueror
 KEY_PROMOTION_DESC_4,Победите несколько раз подряд:,Win several times in a row:
 KEY_PROMOTION_NAME_4,Победная серия,Winning Streak
 KEY_PROMOTION_DESC_5,Нанесите своей поддержкой урона более:,Deal more support damage:
 KEY_PROMOTION_NAME_5,Сила поддержки,Support Power
-KEY_PROMOTION_DESC_6,Победите с использованием нескольких разных поддержек:,Win using several different supports:
+KEY_PROMOTION_DESC_6,Победите с разными поддержками:,Win with different supports:
 KEY_PROMOTION_NAME_6,Разнообразная поддержка,Diverse Support
 KEY_PROMOTION_DESC_7,Одержите победу в матчах имея 1 ОЗ:,Win matches with 1 HP left:
 KEY_PROMOTION_NAME_7,На грани поражения,On the Edge of Defeat
@@ -667,51 +667,51 @@ KEY_TASK_28,Постройте башню «Пушка»: ,Build the “Gun” t
 KEY_TASK_29,Победите в боях с тремя разными типами башен: ,Win battles with three different tower types: 
 KEY_TASK_30,Нанесите урона башней «Пушка»: ,Deal damage with the “Gun” tower: 
 KEY_PROMOTION_NAME_8,Последний рубеж,Last Stand
-KEY_PROMOTION_DESC_8,Победите на разных уровнях кампании с 1–2 ОЗ базы. Уровней:,Win distinct campaign levels with 1–2 base HP remaining. Levels:
+KEY_PROMOTION_DESC_8,Уровни кампании с 1–2 ОЗ базы:,Campaign levels won at 1–2 HP:
 KEY_PROMOTION_NAME_9,Мастер комбинаций,Combination Master
-KEY_PROMOTION_DESC_9,"Победите на разных уровнях кампании, построив «Пушку», «Ракету» и «Арбалет». Уровней:","Win distinct campaign levels after building “Gun”, “Rocket”, and “Crossbow”. Levels:"
+KEY_PROMOTION_DESC_9,"Кампания с Пушкой, Ракетой и Арбалетом:","Campaign with Gun, Rocket & Crossbow:"
 KEY_PROMOTION_NAME_10,Экономный командир,Frugal Commander
-KEY_PROMOTION_DESC_10,"Победите на разных уровнях кампании, построив башню и потратив за бой не более 1 800 монет (без вычета возвратов). Уровней:",Win distinct campaign levels with at least one tower and at most 1 800 battle coins spent (refunds do not reduce spending). Levels:
+KEY_PROMOTION_DESC_10,Уровни кампании с тратой ≤ 1 800 монет:,"Campaign levels won spending ≤ 1,800:"
 KEY_PROMOTION_XP_PROGRESS,Опыт: %s / %s   ·   До следующего уровня: %s,XP: %s / %s   ·   Until next level: %s
 KEY_PROMOTION_MAX_LEVEL,Максимальный уровень достигнут,Maximum level reached
 KEY_PROMOTION_REWARD_LOCKED,Закрыто,Locked
 KEY_PROMOTION_REWARD_CLAIMED,Получено,Claimed
 KEY_PROMOTION_REWARD_READY,Можно забрать,Ready to claim
 KEY_PROMOTION_NAME_11,Безупречная оборона,Perfect Defense
-KEY_PROMOTION_DESC_11,"Победите на разных уровнях кампании, построив башню и не потеряв ОЗ базы. Уровней:",Win distinct campaign levels after building a tower without losing base HP. Levels:
+KEY_PROMOTION_DESC_11,Уровни кампании без потери ОЗ базы:,Flawless campaign levels won:
 KEY_PROMOTION_NAME_12,Мастер улучшений,Upgrade Expert
-KEY_PROMOTION_DESC_12,"Победите на разных уровнях кампании, выполнив за бой не менее 5 улучшений башен. Уровней:",Win distinct campaign levels after upgrading towers at least 5 times in the battle. Levels:
+KEY_PROMOTION_DESC_12,Кампания с 5+ улучшениями башен:,Campaign wins with 5+ upgrades:
 KEY_PROMOTION_NAME_13,Слаженный дуэт,Dynamic Duo
-KEY_PROMOTION_DESC_13,"Победите на разных уровнях кампании, построив за бой ровно 2 разных типа башен. Уровней:",Win distinct campaign levels after building exactly 2 different tower types during the battle. Levels:
+KEY_PROMOTION_DESC_13,Кампания ровно с 2 типами башен:,Campaign wins with 2 tower types:
 KEY_PROMOTION_NAME_14,Арена чемпионов,Arena Champion
-KEY_PROMOTION_DESC_14,Победите реальных соперников в PvP. Побед:,Defeat real opponents in PvP. Wins:
+KEY_PROMOTION_DESC_14,Победы над игроками в PvP:,PvP wins against real players:
 KEY_PROMOTION_NAME_15,Испытательный полигон,Testing Grounds
-KEY_PROMOTION_DESC_15,Нанесите башнями за один завершённый бой в песочнице урон не меньше:,Deal at least this much tower damage in one completed sandbox battle:
+KEY_PROMOTION_DESC_15,Макс. урон за бой в песочнице:,Max damage in one sandbox battle:
 KEY_PROMOTION_NAME_16,Архитектор укреплений,Fortress Architect
-KEY_PROMOTION_DESC_16,Выполните улучшения башен за один завершённый бой в любом режиме. Улучшений:,Upgrade towers in one completed battle in any mode. Upgrades:
+KEY_PROMOTION_DESC_16,Макс. улучшений башен за бой:,Max tower upgrades in one battle:
 KEY_REWARDS_SECTION,НАГРАДЫ ПО УРОВНЯМ,LEVEL REWARDS
 KEY_REWARDS_HINT,Листайте вправо · выберите доступную награду,Scroll right · select an available reward
 KEY_REWARD_CARD_LEVEL,УРОВЕНЬ,LEVEL
 KEY_PROMOTION_NAME_17,Несокрушимый рубеж,Unbroken Line
-KEY_PROMOTION_DESC_17,Уничтожьте противников за один завершённый бой в любом режиме. Противников:,Defeat enemies in one completed battle in any mode. Enemies:
+KEY_PROMOTION_DESC_17,Макс. уничтожено врагов за бой:,Max enemies defeated in one battle:
 KEY_PROMOTION_NAME_18,Полная команда,Full Squad
-KEY_PROMOTION_DESC_18,"Победите в PvP или в бою с ИИ, построив за бой 4 разных типа башен и выполнив не менее 5 улучшений. Побед:",Win in PvP or against AI after building 4 different tower types and performing at least 5 upgrades in the battle. Wins:
+KEY_PROMOTION_DESC_18,Победы (PvP/ИИ) с 4 типами и 5+ апгр.:,"PvP/AI wins (4 types, 5+ upgrades):"
 KEY_PROMOTION_NAME_19,Коллекция защитника,Defender's Collection
-KEY_PROMOTION_DESC_19,Постройте за всё время разные типы башен в любом режиме. Типов:,Build different tower types over time in any mode. Types:
+KEY_PROMOTION_DESC_19,Построено разных типов башен:,Distinct tower types built:
 KEY_PROMOTION_NAME_20,Покоритель волн,Wave Conqueror
-KEY_PROMOTION_DESC_20,Достигните волны в одном завершённом бою песочницы. Волна:,Reach this wave in one completed sandbox battle. Wave:
+KEY_PROMOTION_DESC_20,Рекордная волна в песочнице:,Highest wave in sandbox:
 KEY_PROMOTION_NAME_21,Неприступная арена,Flawless Arena
-KEY_PROMOTION_DESC_21,"Победите в PvP или бою с ИИ, построив башню и не потеряв ОЗ базы. Побед:",Win PvP or against AI after building a tower without losing base HP. Wins:
+KEY_PROMOTION_DESC_21,Победы в PvP/ИИ без потери ОЗ:,Flawless PvP or AI wins:
 KEY_PROMOTION_NAME_22,Гроза боссов,Boss Nemesis
-KEY_PROMOTION_DESC_22,Уничтожьте боссов на своей стороне в любом режиме. Боссов:,Defeat bosses on your side in any mode. Bosses:
+KEY_PROMOTION_DESC_22,Всего уничтожено боссов:,Total bosses defeated:
 KEY_PROMOTION_COMPLETED_DATE,Выполнено: %s,Completed: %s
 KEY_PROMOTION_CLAIMED_DATE,Получено: %s,Claimed: %s
 KEY_PROMOTION_NAME_23,Марафон боссов,Boss Marathon
-KEY_PROMOTION_DESC_23,Уничтожьте боссов на своей стороне за один завершённый бой песочницы. Боссов:,Defeat bosses on your side in one completed sandbox battle. Bosses:
+KEY_PROMOTION_DESC_23,Макс. боссов за бой песочницы:,Max bosses in one sandbox battle:
 KEY_PROMOTION_NAME_24,Один против всех,One Against All
-KEY_PROMOTION_DESC_24,"Победите в PvP или против ИИ, построив только один тип башни и выполнив не менее пяти улучшений. Побед:",Win PvP or against AI after building exactly one tower type and upgrading towers at least five times. Wins:
+KEY_PROMOTION_DESC_24,Победы в PvP/ИИ 1 типом (5+ апгр.):,"PvP/AI wins (1 tower type, 5+ upg.):"
 KEY_PROMOTION_NAME_25,Грандмастер башен,Tower Grandmaster
-KEY_PROMOTION_DESC_25,Достигните 10-го уровня мастерства у разных башен. Башен:,Reach mastery level 10 with different towers. Towers:
+KEY_PROMOTION_DESC_25,Башни 10-го уровня мастерства:,Towers at mastery level 10:
 KEY_GUIDE_OPEN,Открыть справочник ресурсов,Open the resource guide
 KEY_GUIDE_EYEBROW,СПРАВКА,REFERENCE
 KEY_GUIDE_TITLE,Справка по игре,Game reference
@@ -743,17 +743,17 @@ KEY_GUIDE_DIAMONDS_PERIOD,"Бонус за задания выдаётся од�
 KEY_GUIDE_COINS_BATTLE_EARN,Боевые монеты начисляются за уничтожение врагов; доходная башня также приносит монеты во время боя. Размер награды за врага зависит в том числе от волны и настроек.,"Battle coins are awarded for defeating enemies, and the income tower generates coins during battle. Enemy rewards depend in part on the wave and settings."
 KEY_GUIDE_COINS_CAMPAIGN_BONUS,"В кампании монеты, сундук с картами, алмазы и опыт начисляются только при первой победе на уровне. При поражении или повторном прохождении уже пройденного уровня награды не выдаются.","In campaign, coins, card chests, diamonds, and XP are granted only on the first win on a level. Defeats and replays of already completed levels grant no rewards."
 KEY_PROMOTION_NAME_26,Меткий выстрел,Precision Shot
-KEY_PROMOTION_DESC_26,Нанесите критические попадания «Пушкой» в любом режиме. Критических попаданий:,Land critical hits with the Cannon in any mode. Critical hits:
+KEY_PROMOTION_DESC_26,Критических попаданий «Пушкой»:,Critical hits with Gun:
 KEY_PROMOTION_NAME_27,Залповый огонь,Volley Fire
-KEY_PROMOTION_DESC_27,Поразите «Ракетой» не менее трёх разных противников за один залп в любом режиме. Таких залпов:,"Hit at least three different enemies with the Rocket in one volley, in any mode. Volleys:"
+KEY_PROMOTION_DESC_27,Залпов «Ракеты» по 3+ врагам:,Rocket volleys hitting 3+ enemies:
 KEY_PROMOTION_NAME_28,Быстрый арбалет,Rapid Crossbow
-KEY_PROMOTION_DESC_28,Поразите противников «Арбалетом» во время ускоренной фазы атаки в любом режиме. Попаданий:,Hit enemies with the Crossbow during its accelerated attack phase in any mode. Hits:
+KEY_PROMOTION_DESC_28,Попаданий «Арбалетом» в быстрой фазе:,Crossbow hits in rapid phase:
 KEY_PROMOTION_NAME_29,Линия замедления,Slowing Line
-KEY_PROMOTION_DESC_29,Постройте башни «Замедление» в любых боях. Построено:,Build Slowing towers in any battle. Built:
+KEY_PROMOTION_DESC_29,Построено башен «Замедление»:,Slowing towers built:
 KEY_PROMOTION_NAME_30,Хозяин времени,Master of Time
-KEY_PROMOTION_DESC_30,"Победите в бою любого режима, построив хотя бы одну «Хронопетлю». Побед:",Win battles in any mode after building at least one Chronopetl. Wins:
+KEY_PROMOTION_DESC_30,Побед с башней «Хронопетля»:,Wins with Chronoloop built:
 KEY_PROMOTION_NAME_31,Доходная стратегия,Income Strategy
-KEY_PROMOTION_DESC_31,Получайте боевые монеты от башни «Доход» в любых боях. Положительных выплат:,Receive battle coins from the Income tower in any battle. Positive payouts:
+KEY_PROMOTION_DESC_31,Выплат монет от башни «Доход»:,Coin payouts from Income tower:
 KEY_GUIDE_TAB_MASTERY,Мастерство,Mastery
 KEY_GUIDE_TAB_TASKS,Задания,Tasks
 KEY_GUIDE_TAB_ACHIEVEMENTS,Достижения,Achievements
@@ -786,17 +786,17 @@ KEY_GUIDE_GLORY_CLAIM,"Открытые, но не забранные награ
 KEY_GUIDE_GLORY_REWARDS,"Награды этапов включают монеты, бонус критического урона, алмазы и сундуки с карточками башен всех редкостей.","Stage rewards include coins, critical damage bonuses, diamonds, and chests containing tower cards of all rarities."
 KEY_GUIDE_GLORY_PROGRESS,Жетоны из ежедневных и карьерных заданий автоматически заполняют шкалу опыта и повышают уровень Пути славы вплоть до 50-го.,Tokens earned from daily and career tasks automatically fill the XP bar and advance your Path of Glory level up to Stage 50.
 KEY_PROMOTION_NAME_32,Ядовитый след,Poison Trail
-KEY_PROMOTION_DESC_32,Примените яд башней «Отравитель» к живым противникам в любом режиме. Применений:,Apply poison to living enemies with the Poisoner in any mode. Applications:
+KEY_PROMOTION_DESC_32,Отравлений башней «Отравитель»:,Enemies poisoned by Poisoner:
 KEY_PROMOTION_NAME_33,Ловушки Минотавра,Minotaur Traps
-KEY_PROMOTION_DESC_33,Создайте дорожные ловушки башней «Минотавр» в любом режиме. Ловушек:,Create road traps with the Minotaur in any mode. Traps:
+KEY_PROMOTION_DESC_33,Установлено ловушек «Минотавра»:,Minotaur road traps placed:
 KEY_PROMOTION_NAME_34,Неотвратимая казнь,Inevitable Execution
-KEY_PROMOTION_DESC_34,Добейте противников башней «Палач» её приёмом добивания в любом режиме. Добиваний:,Execute enemies using the Hangman’s finishing move in any mode. Executions:
+KEY_PROMOTION_DESC_34,Казней врагов башней «Палач»:,Executions with Hangman:
 KEY_PROMOTION_NAME_35,Гнев против гигантов,Fury Against Giants
-KEY_PROMOTION_DESC_35,Поразите боссов башней «Задира» во время ярости в любом режиме. Попаданий:,Hit bosses with the Bully while enraged in any mode. Hits:
+KEY_PROMOTION_DESC_35,Ударов «Задиры» в ярости по боссам:,Enraged Bully hits on bosses:
 KEY_PROMOTION_NAME_36,Успешное возвращение,Successful Return
-KEY_PROMOTION_DESC_36,Верните к башне «Дроновод» дронов с хотя бы одним жетоном в любом режиме. Возвращений:,Return drones carrying at least one token to the Drone Driver in any mode. Returns:
+KEY_PROMOTION_DESC_36,Возвратов дронов с жетонами:,Drone returns with tokens:
 KEY_PROMOTION_NAME_37,Крепкие связи,Strong Connections
-KEY_PROMOTION_DESC_37,Соедините «Связующую башню» с другими своими башнями в бою. Связей:,Link the Connecting Tower to your other towers in battle. Links:
+KEY_PROMOTION_DESC_37,Создано связей «Связующей башней»:,Tower links created:
 KEY_GUIDE_TAB_DAILY_REWARDS,Ежедневные награды,Daily rewards
 KEY_GUIDE_DAILY_REWARDS_TITLE,Ежедневные награды,Daily rewards
 KEY_GUIDE_DAILY_REWARDS_INTRO,Раздел для будущей системы ежедневных наград.,A reference section for a future daily rewards system.
@@ -1012,7 +1012,7 @@ KEY_MASTERY_DESC_PRISM,"«Лазерная Призма» накапливает
 • Melted Targets: +1 XP per 1,000 enemies destroyed.
 • Peak Crystal Overcharge: +1 XP per 250 beam ticks at maximum crystal heat (300%–350%)."
 KEY_PROMOTION_NAME_38,Солнечный фокус,Solar Focus
-KEY_PROMOTION_DESC_38,Наносите тики урона «Лазерной Призмой» на пике разогрева. Тиков:,Deal beam ticks with Laser Prism at max crystal heat. Ticks:
+KEY_PROMOTION_DESC_38,Тиков «Призмы» на пике разогрева:,Max-heat Laser Prism ticks:
 KEY_MASTERY_DESC_T1,"«Пушка» накапливает опыт мастерства в бою:
 • Огневой урон: +1 XP за каждые 1 000 000 ед. урона от выстрелов Пушки.
 • Уничтожение целей: +1 XP за каждую 1 000 врагов, добитых Пушкой.","Gun earns Mastery XP in battle:
@@ -1119,9 +1119,9 @@ KEY_GUIDE_SPELLS_ENERGY,"Энергия Ядра и применение: в б�
 KEY_GUIDE_SPELLS_SCALING,"Масштабирование урона от здоровья врагов: с каждой новой волной урон ударных заклинаний автоматически увеличивается на 80% от прироста здоровья врагов. Это сохраняет эффективность заклинаний на поздних волнах, но оставляет важной прокачку их уровня в Магазине.","Enemy-HP-Linked Damage Scaling: with each new wave, damaging spells automatically scale at 80% of enemy HP growth. This keeps spells effective on late waves while keeping Shop spell level upgrades meaningful."
 KEY_GUIDE_SPELLS_UPGRADE,"Магазин, сундуки и прокачка (1 → 10): новые заклинания открываются за золото в Магазине, а свитки заклинаний выпадают из сундуков наряду с картами башен. Для улучшения заклинания требуется золото и вдвое больше свитков, чем карт для башни той же редкости.","Shop, Chests & Upgrades (1 → 10): new spells unlock with gold in the Shop, and spell scrolls drop from chests alongside tower cards. Upgrading a spell requires gold and 2× as many scrolls as a tower card of the same rarity."
 KEY_SPELL_ROLE_1,Орбитальный урон по области,Orbital AoE Strike
-KEY_SPELL_DESC_1,"Через 0.6 сек после выбора цели на участок обрушивается орбитальный снаряд и наносит взрывной урон всем врагам в радиусе поражения. С каждой волной урон заклинания растёт пропорционально здоровью врагов (80% от их прироста). По Боссам наносит 35% урона.","0.6s after targeting, an orbital projectile strikes the chosen area and deals blast damage to all enemies in range. Its damage grows each wave alongside enemy HP (80% of enemy HP growth). Deals 35% damage to Bosses."
+KEY_SPELL_DESC_1,Через 0.6 сек после выбора цели на участок обрушивается орбитальный снаряд и наносит взрывной урон всем врагам в радиусе поражения. С каждой волной урон заклинания растёт пропорционально здоровью врагов (80% от их прироста). По Боссам наносит 35% урона.,"0.6s after targeting, an orbital projectile strikes the chosen area and deals blast damage to all enemies in range. Its damage grows each wave alongside enemy HP (80% of enemy HP growth). Deals 35% damage to Bosses."
 KEY_SPELL_ROLE_2,Экстренная заморозка толпы,Emergency Crowd Freeze
-KEY_SPELL_DESC_2,"Бросает крио-гранату (0.3 сек), которая полностью замораживает на месте обычных врагов в радиусе взрыва, а Боссов замедляет на 25% на 1.8 сек. Позволяет остановить прорыв под огнём башен.","Lobs a cryo grenade (0.3s) that freezes regular enemies solid in the blast radius and slows Bosses by 25% for 1.8s. Ideal for halting breakthroughs under tower fire."
+KEY_SPELL_DESC_2,"Бросает крио-гранату (0.3 сек), которая полностью замораживает на месте обычных врагов в радиусе взрыва, а Боссов замедляет на 25% на 1.8 сек. Позволяет остановить прорыв под огнём башен.",Lobs a cryo grenade (0.3s) that freezes regular enemies solid in the blast radius and slows Bosses by 25% for 1.8s. Ideal for halting breakthroughs under tower fire.
 KEY_SPELL_ROLE_3,Очищение и разгон башен,Tower Cleanse & Overclock
 KEY_SPELL_DESC_3,"Мгновенно снимает окаменение и любые негативные эффекты боссов со всех союзных башен в выбранной области, даёт им временный иммунитет к дебаффам и повышает скорость атаки.","Instantly removes petrification and all negative boss debuffs from allied towers in the target area, grants temporary debuff immunity, and boosts their attack speed."
 KEY_SPELL_ROLE_4,Горящая зона и уязвимость,Burning Zone & Vulnerability
@@ -1129,15 +1129,35 @@ KEY_SPELL_DESC_4,"Разбивает бочку с напалмом (0.35 сек
 KEY_SPELL_ROLE_5,Отброс врагов назад по тропе,Path Knockback Shockwave
 KEY_SPELL_DESC_5,"Ударная волна отбрасывает обычных врагов и Боссов назад вдоль дорожки, сбрасывает их ускорение и замедляет на 1.0 сек (-30% скорости обычным врагам, -15% Боссам).","A sonic shockwave pushes regular enemies and Bosses backward along the path, strips speed buffs, and slows them for 1.0s (-30% regular enemy speed, -15% Boss speed)."
 KEY_SPELL_ROLE_6,Экономическая метка наград,Bounty Gold & Energy Mark
-KEY_SPELL_DESC_6,"Помечает всех врагов в зоне действия золотым полем. Каждый добитый под меткой враг приносит повышенное боевое золото (Боссы — 50% бонуса) и даёт дополнительный заряд Энергии Ядра (до +8 ед. за каст).","Marks all enemies in the target zone with a golden bounty field. Slain marked enemies grant bonus battle gold (50% bonus on Bosses) and extra Core Energy (+0.35 per kill, up to +8 per cast)."
+KEY_SPELL_DESC_6,Помечает всех врагов в зоне действия золотым полем. Каждый добитый под меткой враг приносит повышенное боевое золото (Боссы — 50% бонуса) и даёт дополнительный заряд Энергии Ядра (до +8 ед. за каст).,"Marks all enemies in the target zone with a golden bounty field. Slain marked enemies grant bonus battle gold (50% bonus on Bosses) and extra Core Energy (+0.35 per kill, up to +8 per cast)."
 KEY_SPELL_ROLE_7,Ударный разгон башен сектора,Sector Tower Attack Speed Burst
-KEY_SPELL_DESC_7,"Посылает электромагнитный импульс перегрузки: все союзные башни в выбранном круге временно получают высокий бонус к скорости атаки для стремительного уничтожения волн и Боссов.","Unleashes an electromagnetic overdrive pulse: all allied towers inside the target circle gain a powerful temporary attack speed boost to shred dense waves and Bosses."
+KEY_SPELL_DESC_7,Посылает электромагнитный импульс перегрузки: все союзные башни в выбранном круге временно получают высокий бонус к скорости атаки для стремительного уничтожения волн и Боссов.,Unleashes an electromagnetic overdrive pulse: all allied towers inside the target circle gain a powerful temporary attack speed boost to shred dense waves and Bosses.
 KEY_SPELL_ROLE_8,Стяжка врагов к центру воронки,AoE Vortex Clustering Trap
-KEY_SPELL_DESC_8,"Открывает на участке дороги гравитационную воронку, которая замедляет врагов и стягивает разрозненные цели к эпицентру вдоль тропы (Боссы сопротивляются стяжке на 75%). Идеальная связка для башен по области.","Opens a gravitational vortex on the road that slows enemies and pulls scattered targets along the path into the epicenter (Bosses resist 75% of pull). Ideal setup for AoE towers."
+KEY_SPELL_DESC_8,"Открывает на участке дороги гравитационную воронку, которая замедляет врагов и стягивает разрозненные цели к эпицентру вдоль тропы (Боссы сопротивляются стяжке на 75%). Идеальная связка для башен по области.",Opens a gravitational vortex on the road that slows enemies and pulls scattered targets along the path into the epicenter (Bosses resist 75% of pull). Ideal setup for AoE towers.
 KEY_SPELL_ROLE_9,Перемещение башни с усилением,Tower Relocation & Damage Boost
 KEY_SPELL_DESC_9,"Тяжёлый транспортный дрон переносит выбранную союзную башню на любую свободную клетку карты с полным сохранением уровня прокачки и способностей, временно повышая её урон после посадки.","A heavy cargo drone airlifts a chosen allied tower to any empty buildable tile on the map, preserving all upgrade levels and abilities while granting bonus damage after landing."
 KEY_SPELL_ROLE_10,Раскол брони и запрет лечения,Armor Corrosion & Anti-Regen Rain
 KEY_SPELL_DESC_10,"Накрывает сектор дороги едким кислотным ливнем: полностью блокирует регенерацию и лечение врагов и Боссов, слегка замедляет их шаг и повышает получаемый ими урон от всех башен.","Drenches a road sector in corrosive acid rain: completely blocks enemy and Boss healing/regeneration, slows their stride, and increases tower damage taken."
+KEY_SPELL_ROLE_11,Цепная молния по группе и бегунам,Chain Lightning & Runner Zap
+KEY_SPELL_DESC_11,Бьёт высоковольтным разрядом в ближайшую к прицелу цель и перескакивает по цепочке до 6–10 врагов (урон растёт с волной на 80% от прироста ХП врагов; по Боссам — 40%). Наносит +25% урона быстрым врагам и кратковременно сковывает цели электрошоком.,Strikes the target nearest the cursor with high-voltage lightning that chains across up to 6–10 enemies (scales at 80% of enemy HP growth; 40% vs Bosses). Deals +25% bonus damage to fast runners and briefly jolts hit targets.
+KEY_SPELL_ROLE_12,Лазерная сеть полного удержания,Laser Grid Root & Boss Pin
+KEY_SPELL_DESC_12,"Разворачивает на дороге лазерную стазис-сеть: все обычные враги внутри полностью обездвиживаются и теряют ускорение до исчезновения сети, а Боссы приковываются на месте один раз за каст с последующим замедлением на 35%.","Deploys a ground laser stasis grid: regular enemies inside are rooted in place and stripped of speed buffs until the net expires, while Bosses are pinned once per cast followed by a 35% snare."
+KEY_SPELL_ROLE_13,Полевой пилон разгона и энергии,Field Pylon: Tower Haste & Core Energy
+KEY_SPELL_DESC_13,"Устанавливает энергетический пилон: союзные башни в радиусе ауры получают бонус к скорости атаки, а во время боя пилон дополнительно вырабатывает +2.0 ед./сек Энергии Ядра.","Deploys a field flux pylon: allied towers inside its aura gain bonus attack speed, while active combat generates +2.0 Core Energy per second for your spell core."
+KEY_SPELL_ROLE_14,Фокус-метка урона и критов по приоритетной цели,Priority Target Vulnerability & Crit Mark
+KEY_SPELL_DESC_14,"Накладывает снайперскую метку на врагов и Боссов в выбранной зоне: цели получают повышенный урон от всех источников (башен, заклинаний и яда; по Боссам — 80% эффекта), башни получают +15% к шансу крита по ним, а убийство приносит +20% золота (Боссы — +10%).","Brands enemies and Bosses in the target zone with a sniper mark: marked targets take increased damage from all sources (towers, spells, and poison; 80% effect on Bosses), towers gain +15% crit chance against them, and kills grant +20% bonus gold (+10% on Bosses)."
+KEY_SPELL_ROLE_15,Силовой барьер перекрытия дороги,Road-Blocking Energy Shield Wall
+KEY_SPELL_DESC_15,"Разворачивает поперёк выбранного участка тропы голографическую баррикаду с запасом прочности (растёт с волной на 80% от прироста ХП врагов). Враги и Боссы останавливаются перед щитом и бьют по нему, пока не разрушат барьер или не истечёт время его работы.",Projects a holographic forcefield wall across the nearest road lane with scaled shield HP (grows at 80% of enemy HP growth). Enemies and Bosses halt at the barrier and batter its shield until it shatters or expires.
+KEY_SPELL_ROLE_16,Линейный плазменный разлом вдоль дороги,Linear Road Plasma Fissure & True DoT
+KEY_SPELL_DESC_16,"Рассекает выбранный участок тропы линейным плазменным разломом: взрыв и кипящая трещина наносят чистый урон (игнорирует броню, фазовые щиты и сопротивления; урон растёт с волной на 80% от прироста ХП врагов, по Боссам — 55%) и замедляют врагов на 25%.","Rips open a linear plasma fissure along the selected road lane: the initial rupture and superheated crack deal true plasma damage (bypassing armor, phase shields, and AoE resistance; scales at 80% of enemy HP growth, 55% vs Bosses) and slow enemies by 25%."
+KEY_SPELL_ROLE_17,Голографический клон сильнейшей башни,Holographic Duplicate of Strongest Tower
+KEY_SPELL_DESC_17,"Проецирует на выбранную свободную клетку временного голографического двойника вашей самой сильной построенной боевой башни. Клон полностью наследует тип, уровень улучшения и открытые модификации оригинала, атакуя с долей его боевой мощи и освобождая клетку по завершении.","Projects a temporary holographic clone of your strongest built combat tower onto any chosen empty buildable tile. The clone inherits the original tower's type, upgrade level, and unlocked abilities, firing at a percentage of its power before cleanly dematerializing."
+KEY_SPELL_ROLE_18,Массовая казнь раненых и добивание Боссов,AoE Low-HP Execute & Boss Finisher
+KEY_SPELL_DESC_18,"Накрывает область серпом тёмной энергии: обычные враги с запасом здоровья ниже порога казни мгновенно уничтожаются на месте, остальные получают тёмный урон (растёт с волной на 80% от прироста ХП врагов), а раненые Боссы с HP ниже 25% получают удвоенный урон (×2).","Sweeps the target area with a dark reaper crescent: regular enemies below the HP execute threshold are slain instantly, healthier foes take wave-scaled dark damage, and wounded Bosses below 25% HP suffer double (×2) Soul Harvest damage."
+KEY_SPELL_ROLE_19,Защитный купол иммунитета и критов башен,Tower Boss-Immunity Sanctuary & Crit Dome
+KEY_SPELL_DESC_19,"Накрывает союзные башни силовым куполом Эгиды: мгновенно снимает окаменение и проклятия, даёт полную неуязвимость к оглушению, спорам, понижению уровня и разрушению башен способностями Боссов, повышает шанс критического удара и гарантирует крит следующего выстрела.","Projects an Aegis sanctuary dome over allied towers: instantly cleanses petrification and curses, grants total immunity against Boss stuns, spores, level-drains, and tower destruction, boosts critical strike chance, and guarantees a critical hit on the next shot."
+KEY_SPELL_ROLE_20,Ковровая бомбардировка метеоритами и кратерами,Carpet Meteor Barrage & Burning Craters
+KEY_SPELL_DESC_20,Обрушивает на широкую область серию раскалённых метеоритов: каждый удар наносит взрывной урон по площади и оставляет на земле пылающий магмовый кратер с периодическим уроном (урон растёт с волной на 80% от прироста ХП врагов; по Боссам — 42%).,Unleashes a sequential barrage of blazing meteors across a wide zone: each meteor deals explosive AoE impact damage and leaves a burning magma crater that scorches enemies passing over it (scales at 80% of enemy HP growth; 42% vs Bosses).
 KEY_SPELL_NAME_1,Кинетический Удар,Kinetic Strike
 KEY_SPELL_NAME_2,Крио-Граната,Cryo Grenade
 KEY_SPELL_NAME_3,Импульс Очищения,Purge Pulse
@@ -1163,3 +1183,73 @@ KEY_SPELL_NAME_22,Отмотка Времени,Chrono Rewind
 KEY_SPELL_NAME_23,Сингулярность,Singularity
 KEY_SPELL_NAME_24,Солнечное Копьё,Solar Lance
 KEY_SPELL_NAME_25,Приказ Командора,Commander's Decree
+KEY_FRIEND,Друг,Friend
+KEY_CARDS_VARIANT_2,карт,Cards
+KEY_SPELL_ROLE_21,Глобальная буря молний по лидерам волны,Global Lightning Storm vs Leading Enemies
+KEY_SPELL_DESC_21,"В течение 5 сек каждую секунду поражает орбитальными молниями до 5 ближайших к базе врагов на всей карте, нанося высокий урон (растёт с волной на 80% от прироста ХП врагов; по Боссам — 50%) и оглушая цели на 0.30 сек.","Strikes up to 5 enemies closest to your base across the entire map every second for 5 seconds, dealing heavy orbital lightning damage (scales at 80% of enemy HP growth; 50% vs Bosses) and stunning targets for 0.30s."
+KEY_SPELL_ROLE_22,Откат врагов и Боссов назад в % маршрута,Route % Rewind (Stronger on Bosses)
+KEY_SPELL_DESC_22,"Отматывает врагов в радиусе 195 px назад в процентах от всей длины маршрута (на 7–14%, а Боссов — на 16–28% маршрута), сбрасывает их ускорение и замедляет на 30% на 3.5 сек.","Rewinds enemies inside a 195 px sector backward by a percentage of the entire route length (7–14%, and 16–28% on Bosses), strips haste buffs, and slows by 30% for 3.5s."
+KEY_SPELL_ROLE_23,Стягивающая чёрная дыра и взрыв сверхновой,Collapsing Black Hole & Supernova Finale
+KEY_SPELL_DESC_23,"Сворачивает пространство на дороге в чёрную дыру (190 px, 3.5 сек), неумолимо стягивая врагов к эпицентру с нарастающим гравитационным уроном и взрываясь сверхновым коллапсом с оглушением на 0.35 сек (растёт с волной на 80% от прироста ХП врагов; по Боссам — 55%).","Warps space on the road into a black hole (190 px, 3.5s), relentlessly pulling enemies into the epicenter with escalating gravity damage before detonating in a supernova collapse with a 0.35s stun (scales at 80% of enemy HP growth; 55% vs Bosses)."
+KEY_SPELL_ROLE_24,Самонаводящийся орбитальный луч по Боссам,Auto-Tracking Orbital Beam vs Bosses
+KEY_SPELL_DESC_24,"Призывает столп солнечной плазмы (110 px, 4.5 сек), автоматически преследующий самую живучую цель или Босса: прожигает броню (+18–30% к урону башен), блокирует регенерацию и наносит чистый концентрированный урон со 100% эффективностью по Боссам.","Summons a solar plasma pillar (110 px, 4.5s) that automatically tracks the toughest enemy or Boss: melts armor (+18–30% tower damage), blocks healing, and deals concentrated true damage at 100% effectiveness vs Bosses."
+KEY_SPELL_ROLE_25,Глобальный штурмовой разгон и защита всех башен,"Global Tower Assault Haste, Crit & Immunity"
+KEY_SPELL_DESC_25,"Объявляет всеобщую боевую тревогу на всей карте (6.5–8.3 сек): мгновенно очищает все построенные башни от проклятий и окаменения, даёт им +30% к скорости атаки, +20% к шансу крита (1-й выстрел — 100% крит) и полный иммунитет к контролю Боссов.","Declares a map-wide assault offensive (6.5–8.3s): instantly cleanses all built allied towers, granting +30% attack speed, +20% crit chance (guaranteed 1st crit), and complete immunity to Boss crowd control."
+KEY_CHAKRAM_CHAIN,Цепочка:,Chain:
+KEY_NAME_TURRET_14,Чакрам,Chakram
+KEY_TURRET14_DESC,"Редкая кинетико-энергетическая башня бумерангового боя. Выпускает вращающийся диск, который рикошетит по цепочке до [color='blue']4–6 врагов[/color] в радиусе [color='blue']150 ед.[/color] друг от друга (каждый следующий отскок теряет всего [color='blue']10%[/color] урона), а затем возвращается по прямой обратно в башню, нанося [color='blue']50%[/color] урона всем целям на обратном пути.","Rare boomerang-blade tower built for stretched waves. Launches a spinning energy chakram that ricochets across up to [color='blue']4–6 enemies[/color] within [color='blue']150 units[/color] of each other (losing only [color='blue']10%[/color] damage per bounce), then slices straight back to the launcher dealing [color='blue']50%[/color] damage to every enemy along its return path."
+KEY_TURRET14_UP0_DESC,"Зазубренные грани. Каждое попадание чакрама рассекает броню цели и накладывает независимое [color='red']кровотечение на 3.0 с[/color], наносящее дополнительно [color='blue']+15%[/color] от базового урона броска каждую секунду.","Serrated Edges. Every chakram hit lacerates the target, applying an independent [color='red']3.0 s bleed[/color] that deals an extra [color='blue']+15%[/color] of the throw's base damage per second."
+KEY_TURRET14_UP1_DESC,"Дуэльный резонанс. Если на карте осталась [color='purple']одиночная цель[/color] (например, Босс) и рикошетить не в кого, чакрам фиксируется внутри хитбокса врага на [color='blue']1.2 с[/color], доводя суммарный урон броска до [color='blue']x2.2[/color] перед возвратом.","Duel Resonance. When hitting a [color='purple']lone target[/color] on the map (such as a Boss) with no secondary enemies to chain into, the chakram orbits inside the target's hitbox for [color='blue']1.2 s[/color], amplifying total throw damage to [color='blue']x2.2[/color] before returning."
+KEY_SKIN_T14_01,Алый полумесяц,Crimson Bloodmoon
+KEY_SKIN_T14_02,Нефритовый лотос,Jade Wind Lotus
+KEY_SKIN_T14_03,Звёздный затмеватель,Astral Eclipse
+KEY_SKIN_T14_XP1,Солнечный серафим,Solar Seraph
+KEY_SKIN_T14_XP2,Спектральный уроборос,Prismatic Ouroboros
+KEY_MASTERY_DESC_T14,"«Чакрам» накапливает опыт мастерства тремя способами:
+• Урон лезвий и кровотечения: +1 XP за каждые 1 000 000 ед. нанесённого урона.
+• Рассечённые враги: +1 XP за каждую 1 000 уничтоженных целей.
+• Мастерство рикошета и резонанса: +1 XP за каждые 200 цепных отскоков, обратных рассечений и тиков Дуэльного резонанса.","Chakram earns Mastery XP in three ways:
+• Blade & Bleed Damage: +1 XP per 1,000,000 total damage dealt.
+• Sliced Enemies: +1 XP per 1,000 targets eliminated.
+• Ricochet & Resonance Mastery: +1 XP per 200 chain bounces, return-path slashes, and Duel Resonance ticks."
+KEY_PROMOTION_NAME_39,Вихрь лезвий,Whirlwind of Blades
+KEY_PROMOTION_DESC_39,Рикошетов и рассечений «Чакрама»:,Chakram ricochets & slashes:
+KEY_MIMIC_EFFICIENCY,Сила слепка:,Copy Power:
+KEY_NAME_TURRET_15,Мимик,Mimic
+KEY_TURRET15_DESC,"Эпическая тактическая башня-хамелеон. При постройке сканирует [color='blue']4 соседние клетки[/color] по вертикали и горизонтали и мгновенно превращается в копию самой ценной союзной башни рядом (кроме другого Мимика), сохраняя [color='purple']фиолетовую призрачную маскировку[/color] и собственный уровень карты Мимика ([color='blue']85%–100%[/color] базовой силы). Если рядом пусто — сражается в форме [color='purple']Кристалла Мимика[/color] и трансформируется сразу при постройке соседа.","Epic tactical chameleon tower. Scans the [color='blue']4 orthogonally adjacent tiles[/color] (up/down/left/right) and instantly transforms into a copy of the highest-value allied neighbor (except another Mimic), retaining a [color='purple']ghostly violet disguise[/color] and Mimic's own card level ([color='blue']85%–100%[/color] base power). If placed alone, fights as a [color='purple']Mimic Crystal[/color] and transforms as soon as an ally is built next to it."
+KEY_TURRET15_UP0_DESC,"Идеальный слепок. В момент трансформации в соседнюю башню Мимик мгновенно получает [color='blue']+1 бесплатный боевой уровень[/color] улучшения без затрат золота.","Perfect Cast. Upon transforming into an adjacent tower, Mimic immediately gains [color='blue']+1 free in-battle upgrade level[/color] at zero gold cost."
+KEY_TURRET15_UP1_DESC,"Адаптивная связь. Пока скопированная Мимиком башня и её оригинал стоят на соседних клетках по вертикали или горизонтали, обе башни получают взаимный бонус [color='blue']+12%[/color] к скорости атаки.","Adaptive Link. While the Mimic copy and an original tower of the same type stand orthogonally adjacent, both towers gain a mutual [color='blue']+12%[/color] attack speed bonus."
+KEY_SKIN_T15_01,Зеркальная ртуть,Quicksilver Mirror
+KEY_SKIN_T15_02,Изумрудный шифр,Emerald Cipher
+KEY_SKIN_T15_03,Багровый доппельгангер,Crimson Doppelganger
+KEY_SKIN_T15_XP1,Астральный слепок,Astral Imprint
+KEY_SKIN_T15_XP2,Архонт иллюзий,Archon of Illusions
+KEY_MASTERY_DESC_T15,"«Мимик» накапливает опыт мастерства всеми действиями в бою (как в форме Кристалла, так и после маскировки в любую башню):
+• Нанесённый урон и экономика слепка: +1 XP за каждые 1 000 000 ед. урона, 100 ед. добытого золота или 100 000 контрольных эффектов.
+• Устранённые цели: +1 XP за каждую 1 000 добитых врагов.
+• Искусство маскировки: +1 XP за каждые 150 трансформаций и замаскированных атак Мимика.","Mimic earns Mastery XP from all actions in battle (both as a Crystal and after disguising as any allied tower):
+• Imprint Damage, Gold & Control: +1 XP per 1,000,000 damage dealt, 100 gold generated, or 100,000 control applications.
+• Eliminated Targets: +1 XP per 1,000 enemies defeated.
+• Art of Disguise: +1 XP per 150 Mimic transformations and disguised attacks."
+KEY_PROMOTION_NAME_40,Мастер иллюзий,Master of Illusions
+KEY_PROMOTION_DESC_40,Трансформаций и атак «Мимика»:,Mimic morphs & disguised hits:
+KEY_FLAME_BURN,Горение (0.5с):,Burn (0.5s):
+KEY_NAME_TURRET_16,Огнемёт,Flamethrower
+KEY_TURRET16_DESC,"Обычная башня ближнего боя первой линии для зачистки плотных волн на изгибах дороги. Выпускает непрерывную струю пламени сектором [color='blue']50°[/color] (тик каждые [color='blue']0.20 сек[/color]), поражая [color='blue']сразу всех врагов внутри конуса[/color] без лимита целей, и поджигает их на [color='blue']2.5 сек[/color] (огненный урон каждые [color='blue']0.5 сек[/color]).","Common frontline close-quarters tower built to clear dense waves around road bends. Streams a continuous [color='blue']50°[/color] cone of fire (damage tick every [color='blue']0.20s[/color]), scorching [color='blue']every enemy inside the cone[/color] with no target cap and igniting [color='blue']Burn[/color] for [color='blue']2.5s[/color] (fire damage every [color='blue']0.5s[/color])."
+KEY_TURRET16_UP0_DESC,"Термитная смесь. Пока на враге действует «Горение» Огнемёта, он получает [color='blue']+10%[/color] входящего урона от всех башен, а его собственная регенерация снижается на [color='blue']40%[/color].","Thermite Mix. While burning from Flamethrower, enemies take [color='blue']+10%[/color] incoming damage from all towers and suffer [color='blue']-40%[/color] self-healing and regeneration."
+KEY_TURRET16_UP1_DESC,"Широкое сопло. Расширяет угол конуса пламени с [color='blue']50°[/color] до [color='blue']68°[/color] и даёт [color='blue']+20%[/color] прямого урона врагам в ближней половине струи.","Wide Nozzle. Widens the flame cone angle from [color='blue']50°[/color] to [color='blue']68°[/color] and grants [color='blue']+20%[/color] direct stream damage to enemies in the near half of the cone."
+KEY_SKIN_T16_01,Плазменный резак,Plasma Torch
+KEY_SKIN_T16_02,Алхимический дракон,Alchemical Dragon
+KEY_SKIN_T16_03,Адское горнило,Abyssal Furnace
+KEY_SKIN_T16_XP1,Солнечный протуберанец,Solar Prominence
+KEY_SKIN_T16_XP2,Дыхание Феникса,Phoenix Breath
+KEY_MASTERY_DESC_T16,"«Огнемёт» накапливает опыт мастерства тремя способами:
+• Выжженный урон струи и горения: +1 XP за каждые 1 000 000 ед. нанесённого урона.
+• Испепелённые враги: +1 XP за каждую 1 000 уничтоженных целей.
+• Мастерство напалма: +1 XP за каждые 250 импульсов пламени и тиков Горения по врагам.","Flamethrower earns Mastery XP in three ways:
+• Stream & Burn Damage: +1 XP per 1,000,000 total damage dealt.
+• Incinerated Enemies: +1 XP per 1,000 targets eliminated.
+• Napalm Mastery: +1 XP per 250 flame cone pulses and Burn ticks applied to enemies."
+KEY_PROMOTION_NAME_41,Выжженная земля,Scorched Earth
+KEY_PROMOTION_DESC_41,Импульсов пламени и горения «Огнемёта»:,Flamethrower scorch & burn ticks:
+
