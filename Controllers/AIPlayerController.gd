@@ -5,6 +5,7 @@ class_name AIPlayerController
 
 signal action_decided(action: Dictionary)
 
+
 var container: Node = null
 var is_active: bool = false
 var last_action_time: float = 0.0
@@ -79,13 +80,14 @@ func _sync_player_deck_and_levels() -> void:
 		var td: Dictionary = GameSession.get_battle_tower_data(tkey)
 		var clvl: int = clampi(int(td.get("level", 0)), 0, 9)
 		ai_card_levels[i] = clvl
-		var raw_ab: Variant = td.get("ability", [false, false])
-		if raw_ab is Array and (raw_ab as Array).size() >= 2:
-			ai_abilities[i] = [bool((raw_ab as Array)[0]), bool((raw_ab as Array)[1])]
+		var raw_ab: Variant = td.get("ability", [false, false, false])
+		if raw_ab is Array and (raw_ab as Array).size() >= 3:
+			ai_abilities[i] = [bool((raw_ab as Array)[0]), bool((raw_ab as Array)[1]), bool((raw_ab as Array)[2])]
 		else:
 			ai_abilities[i] = [
 				(clvl + 1) >= int(GameConstants.LEVEL_OPEN_ABILITY[0]),
 				(clvl + 1) >= int(GameConstants.LEVEL_OPEN_ABILITY[1]),
+				(clvl + 1) >= int(GameConstants.LEVEL_OPEN_ABILITY[2]),
 			]
 
 func _process(_delta: float) -> void:
@@ -292,6 +294,10 @@ func _get_all_towers() -> Array:
 			var dps: float = (damage / rof) if rof > 0.0 else 0.0
 			if int(turret.id) == 16:
 				dps *= 1.26
+			elif int(turret.id) == 19:
+				var cycle_t: float = maxf(0.5, float(turret.get("archive_cycle")) if ("archive_cycle" in turret) else 2.0)
+				var cap_m: float = float(turret.get("echo_cap_mult")) if ("echo_cap_mult" in turret) else 8.0
+				dps += (damage * minf(cap_m * 0.35, 3.5)) / cycle_t
 
 			var grid_x: int = int(floor(turret.position.x / 64.0))
 			var grid_y: int = int(floor(turret.position.y / 64.0))
@@ -348,6 +354,13 @@ func _get_all_enemies() -> Array:
 func _get_build_cost(tower_id: int) -> float:
 	var cost: float = float(GameConstants.DATA_TOWER[tower_id].cost_in_session)
 	var tkey: String = "Turret_" + str(tower_id + 1) + "T1"
+	if tower_id == 5:
+		var map_ref: Node = container.map_node if is_instance_valid(container) else null
+		return MoneyTower.get_bank_build_cost_for_session(cost, map_ref, true, GameSession.get_battle_tower_data(tkey), GameSession.get_battle_mastery_lvl(tkey))
+	if tower_id == 11:
+		return LinkTower.get_link_build_cost_for_session(cost, GameSession.get_battle_tower_data(tkey), GameSession.get_battle_mastery_lvl(tkey))
+	if tower_id == 14:
+		return MimicTower.get_mimic_build_cost_for_session(cost, GameSession.get_battle_tower_data(tkey), GameSession.get_battle_mastery_lvl(tkey))
 	if GameSession.get_battle_mastery_lvl(tkey) >= 3:
 		cost = MathUtils.round_to_dec(cost * (1.0 - float(GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0])), 1)
 	return cost
@@ -452,13 +465,19 @@ func _build_tower(tower_id: int, grid_x: int, grid_y: int) -> void:
 		return
 
 	var card_lvl: int = int(ai_card_levels.get(tower_id, 0))
-	var card_ab: Array = (ai_abilities.get(tower_id, [false, false]) as Array).duplicate()
+	var card_ab: Array = (ai_abilities.get(tower_id, [false, false, false]) as Array).duplicate()
 	turret.position = pos
 	turret.name = "%s_AI_%d_%d" % [tower_name, grid_x, grid_y]
 	turret.built = true
 	turret.is_opponent = false
 	turret.ai_card_level = card_lvl
 	turret.ability = card_ab
+	var raw_ai_choices: Variant = GameSession.get_battle_tower_data(tower_name).get("ability_choices", {})
+	if raw_ai_choices is Dictionary:
+		turret.set_meta("ability_choices_ui", (raw_ai_choices as Dictionary).duplicate(true))
+	turret.set_meta("build_cost_paid", cost)
+	if tower_id == 5 and MoneyTower.is_seed_capital_selected_in_data(GameSession.get_battle_tower_data("Turret_6T1")):
+		MoneyTower.mark_seed_capital_used(container.map_node, true)
 	turret_layer.add_child(turret)
 
 	# Применяем точный уровень карты игрока (без подарков сессии игрока)
@@ -488,7 +507,6 @@ func _upgrade_tower(grid_x: int, grid_y: int) -> void:
 		turret.upgrade_system.upgrades.emit()
 	else:
 		turret.apply_level_and_gift_stats()
-
 	container.set_meta("ai_money", maxf(0.0, current_money - cost))
 	print("[AI Player] Улучшена башня на (", grid_x, ",", grid_y, ") до уровня ", turret.current_lvl + 1, " | денег: ", current_money - cost)
 

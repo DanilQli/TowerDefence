@@ -239,20 +239,20 @@ KEY_ENEMY_BOSS_11,Медик. Появляется со 'свитой'. Кажд
 KEY_ENEMY_BOSS_12,"Поглотитель всплесков. Попадание сплеш-зарядов на [color='blue']75%[/color] менее эффективно. Любое замедление ускоряет поглотителя, максимум [color='blue']250%[/color] от начальной скорости","A splash absorber. Splash charges hitting [color='blue']75%[/color] are less effective. Any deceleration accelerates the absorber, a maximum of [color='blue']250%[/color] of the initial velocity"
 KEY_ENEMY_BOSS_13,"Дракон. Поджигает башни, с вероятностью [color='blue']20%[/color] уменьшая их уровень на [color='blue']1[/color]; башни [color='blue']1[/color] уровня в безопасности",The dragon. Sets towers on fire with a [color='blue']20%[/color] chance to reduce their level by [color='blue']1[/color]; level [color='blue']1[/color] towers are safe
 KEY_TURRET1_DESC,Пушка наносит [color='blue']случайный[/color] дополнительный урон цели,The cannon deals random additional damage to the target
-KEY_TURRET1_UP0_DESC,С шансом[color='blue'] 50%[/color] пушка атакует цели дважды,"With chance[color='red'] 50%[/color], the cannon will attack the targets twice"
-KEY_TURRET1_UP1_DESC,Добавляется величина от [color='blue']0%[/color] до [color='blue']40%[/color] критического урона,A value from [color='blue']0%[/color] to [color='blue']40%[/color] critical damage is added
+KEY_TURRET1_UP0_DESC,С шансом[color='blue'] 50%[/color] пулемёт наносит по цели два последовательных удара.,"With a [color='red']50%[/color] chance, the machine gun hits its target twice in succession."
+KEY_TURRET1_UP1_DESC,Добавляет от [color='blue']0%[/color] до [color='blue']40%[/color] к критическому урону.,Adds [color='blue']0%[/color] to [color='blue']40%[/color] critical damage.
 KEY_TURRET2_DESC,"Пушка атакует [color='blue']первые несколько целей[/color] в зависимости от ранга: одна цель на первом, две на третьем, три на пятом...пять на девятом","The cannon attacks [color='blue'] the first few targets[/color] depending on the rank: one target on the first, two on the third, three on the fifth...five on the ninth"
-KEY_TURRET2_UP0_DESC,Смерть боса пометит [color='blue']случайную ракету[/color]. Урон за каждую метку увеличивается на [color='blue']3%[/color],The death of the boss will mark [color='blue']a random rocket[/color]. The damage for each mark increases by [color='blue']3%[/color]
-KEY_TURRET2_UP1_DESC,Увеличивает шанс критического урона по боссам на [color='blue']5%[/color] от всех ракет,Increases the chance of critical damage to bosses by [color='blue']5%[/color] of all missiles
+KEY_TURRET2_UP0_DESC,"Смерть босса помечает [color='blue']случайную ракету[/color], давая [color='blue']+3%[/color] урона за метку.","Boss death marks [color='blue']a random rocket[/color], adding [color='blue']+3%[/color] damage per mark."
+KEY_TURRET2_UP1_DESC,Шанс критического удара ракет по боссам увеличен на [color='blue']5%[/color].,Rocket critical hit chance against bosses increased by [color='blue']5%[/color].
 KEY_TURRET3_DESC,Арбалет периодически меняет фазу стрельбы. В первой фазе значительно увеличивает свою [color='blue']скорость стрельбы[/color]. Длительность фаз и интервал их переключения зависят от [color='blue']уровня[/color],"The crossbow periodically changes the firing phase. In the first phase, it significantly increases its [color='blue']firing rate[/color]. The duration of the phases and their switching interval depend on the [color='blue']level[/color]"
 KEY_TURRET3_UP0_DESC,С шансом[color='blue'] 10%[/color] башня может перейти в первую стадию повторно,There is a [color='blue']10%[/color] chance the tower will return to its first phase.
 KEY_TURRET3_UP1_DESC,Каждый третий переход арбалета во вторую фазу увеличит его урон на [color='blue']200%[/color] до конца фазы,Every third transition of the crossbow to the second phase will increase its damage by [color='blue']200%[/color] until the end of the phase
 KEY_TURRET4_DESC,Замедляет врагов в радиусе действия,Slows down enemies in range
-KEY_TURRET4_UP0_DESC,Во время начала действия замедления всем врагам в радиусе наносится урон равный[color='blue'] 1%[/color] от текущего здоровья врага,"During the start of the deceleration action, all enemies in the radius are dealt damage equal to [color='blue'] 1%[/color] of the enemy's current health."
+KEY_TURRET4_UP0_DESC,При старте замедления враги в радиусе получают урон [color='blue']1%[/color] от текущего здоровья.,"When slow starts, enemies in range take [color='blue']1%[/color] of current HP as damage."
 KEY_TURRET4_UP1_DESC,Урон по боссам увеличен до[color='blue'] 5%[/color],Boss damage increased to [color='blue'] 5%[/color]
 KEY_TURRET5_DESC,Отбрасывает врагов назад.,Knocks enemies back.
 KEY_TURRET5_UP0_DESC,С шансом[color='blue'] 10%[/color] отбросит врага на начало пути.,There is a [color='blue']10%[/color] chance to send an enemy back to the start of the path.
-KEY_TURRET5_UP1_DESC,Добивает врагов чъё здоровье меньше[color='blue'] 10%[/color]. Не действует на боссов.,Finishes off enemies whose health is less than [color='blue'] 10%[/color]. Does not work on bosses.
+KEY_TURRET5_UP1_DESC,Добивает обычных врагов при здоровье ниже [color='blue']10%[/color]. Не действует на боссов.,Executes regular enemies below [color='blue']10%[/color] HP. Does not affect bosses.
 KEY_TURRET6_DESC,Майнит золото,Mining gold
 KEY_TURRET6_UP0_DESC,Увеличивает количество золота добываемое с убийства врага на[color='blue'] 1[/color] единицу,Increases the amount of gold extracted from enemies by[color='blue'] 1[/color] unit
 KEY_TURRET6_UP1_DESC,Доход от башни увеличивается на[color='blue'] 1%[/color] от каждой башни на поле,Tower revenue increases by[color='blue'] 1%[/color] from each tower on the field
@@ -260,7 +260,7 @@ KEY_TURRET7_DESC,Отравляет первого врага на пути. О�
 KEY_TURRET7_UP0_DESC,Отравленные враги передвигаются на[color='blue'] 5%[/color] медленнее,Poisoned enemies move[color='blue'] 5%[/color] slower
 KEY_TURRET7_UP1_DESC,С шансом[color='blue'] 5%[/color] отравитель может заразить[color='blue'] 2 [/color]врагов одновременно,There is a [color='blue']5%[/color] chance to poison [color='blue']2[/color] enemies at once.
 KEY_TURRET8_DESC,"Минотавр атакует [color='blue']первую цель[/color] на дороге. Периодически вызывается в случайной области [color='blue']землетрясение[/color], в радиусе которого монстры замедляются и получают урон","The Minotaur attacks the [color='blue']first target[/color] on the path. An [color='blue']earthquake[/color] periodically strikes a random area, slowing enemies and damaging them."
-KEY_TURRET8_UP0_DESC,"При повышении уровня, появлении Минотавра начисляется заряд ярости, и все Минотавры входят в режим [color='blue']берсерка[/color] на [color='blue']10с[/color]. В этом режиме урон вызываемых землетрясений увеличивается на [color='blue']50%[/color] и дополнительно на 1% за каждый заряд ярости","When a Minotaur level up, a rage charge is charged, and all Minotaurs enter [color='blue']berserk mode[/color] by [color='blue']10c[/color]. In this mode, the damage caused by earthquakes increases by [color='blue']50%[/color] and an additional 1% for each rage charge"
+KEY_TURRET8_UP0_DESC,Апгрейд или появление Минотавра даёт берсерк на [color='blue']10 с[/color]: землетрясения [color='blue']+50%[/color] и +1% за заряд.,Upgrade or Minotaur spawn grants [color='blue']10s[/color] Berserk: earthquakes [color='blue']+50%[/color] plus +1% per charge.
 KEY_TURRET8_UP1_DESC,Каждый заряд ярости увеличивает действия режима [color='blue']берсерка[/color] на [color='blue']1[/color] секунду. Максимум [color='blue']30[/color] секунд,Each rage charge increases the effects of the [color='blue']Berserker mode[/color] by [color='blue']1[/color] second. Maximum [color='blue']30[/color] seconds
 KEY_TURRET9_DESC,"Если здоровье врага меньше определенно уровня Палач добивает его, не действует на боссов","If the enemy's health is less than a certain level, the Executioner finishes him off, does not affect bosses."
 KEY_TURRET9_UP0_DESC,После добивания врага следующий выстрел нанесёт урон на [color='blue']300%[/color] больше,"After finishing off the enemy, the next shot will cause damage by [color='blue']300%[/color] more"
@@ -269,10 +269,10 @@ KEY_TURRET10_DESC,"При наличии на поле более [color='blue']
 KEY_TURRET10_UP0_DESC,С шансом [color='blue']5%[/color] Задира может совершить усиленный удар при атаке босса. Такой удар наносит [color='blue']1000%[/color] урона от атаки Задиры,"There is a [color='blue']5%[/color] chance to land an enhanced strike on a boss, dealing [color='blue']1000%[/color] of the tower's attack damage."
 KEY_TURRET10_UP1_DESC,Урон Задиры увеличивается на [color='blue']10%[/color] за каждого монстра на дороге. Максимальный бонус - [color='blue']100%[/color],Bully's damage increases by [color='blue']10%[/color] for each monster on the road. The maximum bonus is [color='blue']100%[/color]
 KEY_TURRET11_DESC,"Каждые [color='blue']20[/color] секунд выпускает двух автономных дронов: 'Разведчика', атакующего самого [color='blue']дальнего[/color] врага, и 'Перехватчика', атакующего самого [color='blue']близкого[/color] к базе. Дроны живут [color='blue']15[/color] секунд. За каждого убитого врага дрон копит жетон и приносит его на базу: при следующем вылете накопленные жетоны увеличивают урон [color='blue']нового поколения[/color] дронов на [color='blue']1%[/color] за каждый жетон и сбрасываются в [color='blue']0[/color].","Every [color='blue']20[/color] seconds, launches two autonomous drones: a 'Scout' that attacks the [color='blue']farthest[/color] enemy, and an 'Interceptor' that attacks the [color='blue']closest[/color] to the base. Drones live for [color='blue']15[/color] seconds. Each kill earns a token delivered back to base: on the next launch, stored tokens boost the [color='blue']new generation's[/color] damage by [color='blue']1%[/color] per token and reset to [color='blue']0[/color]."
-KEY_TURRET11_UP0_DESC,"При запуске дронов есть [color='blue']50%[/color] шанс создать третьего, 'Случайного' дрона, который будет атаковать произвольную цель на карте.","When launching drones, there is a [color='blue']50%[/color] chance to create a third, 'Random' drone that will attack a random target on the map."
-KEY_TURRET11_UP1_DESC,"Усиление жетонов: теперь каждый жетон, принесённый дронами, увеличивает урон следующего поколения на [color='blue']2%[/color] вместо 1%.",Token Enhancement: each token brought back by drones now increases the damage of the next generation by [color='blue']2%[/color] instead of 1%.
+KEY_TURRET11_UP0_DESC,С шансом [color='blue']50%[/color] при запуске появляется третий случайный дрон.,[color='blue']50%[/color] chance on launch to spawn a third random drone.
+KEY_TURRET11_UP1_DESC,Каждый жетон увеличивает урон следующего поколения дронов на [color='blue']2%[/color] вместо 1%.,Each token boosts next generation drone damage by [color='blue']2%[/color] instead of 1%.
 KEY_TURRET12_DESC,"Связующая башня. Автоматически соединяется со всеми соседними башнями (кроме других Связующих), давая им [color='blue']+10%[/color] к урону, [color='blue']синхронизацию критов[/color] и [color='blue']защиту от дебаффов[/color]. Несколько Связующих башен могут быть объединены в [color='purple']сеть[/color] через общие башни-посредники.","Link Tower. Automatically links with all adjacent towers (except other Link Towers), granting them [color='blue']+10%[/color] damage, [color='blue']critical hit synchronization[/color], and [color='blue']protection from boss debuffs[/color]. Multiple Link Towers can be combined into a [color='purple']network[/color] through shared intermediary towers."
-KEY_TURRET12_UP0_DESC,"Сетевая синергия. Если в [color='purple']связанной сети[/color] есть [color='blue']6 или более[/color] связей с башнями одного типа, то все башни этого типа в сети получают [color='green']удвоенную скорость атаки[/color].","Network Synergy. If a [color='purple']linked network[/color] has [color='blue']6 or more[/color] links to towers of the same type, all towers of that type in the network gain [color='green']double attack speed[/color]."
+KEY_TURRET12_UP0_DESC,Сетевая синергия: от [color='blue']6[/color] связей с одним типом башен их скорость атаки удваивается.,"Network Synergy: With [color='blue']6+[/color] links to one tower type, that type gains double attack speed."
 KEY_TURRET12_UP1_DESC,Усиленная связь. Бонус к урону для всех связанных башен увеличивается до [color='blue']+15%[/color].,Enhanced Link. The damage bonus for all linked towers increases to [color='blue']+15%[/color].
 KEY_SKINS_TITLE,Скины башен,Tower skins
 KEY_SKIN_DEFAULT,Стандартный,Default
@@ -733,7 +733,7 @@ KEY_GUIDE_CRITICAL_TITLE,Критический урон,Critical damage
 KEY_GUIDE_CRITICAL_INTRO,Этот показатель усиливает критическое попадание; это не вероятность критического удара.,This stat increases critical-hit damage; it is not critical-hit chance.
 KEY_GUIDE_CRITICAL_EXAMPLE,"Для обычной формулы: урон крита = урон × (1 + показатель / 100). Например, при 100% бонуса 100 урона превращаются в 200 до дополнительных эффектов.","For the standard formula: critical damage = damage × (1 + stat / 100). For example, a 100% bonus turns 100 damage into 200 before extra effects."
 KEY_GUIDE_CRITICAL_CHANCE,Базовый шанс крита — 5%; мастерство и отдельные способности могут влиять на шанс или урон. Формулы некоторых башен имеют особенности.,The base critical chance is 5%; mastery and individual abilities may affect chance or damage. Some towers have special formulas.
-KEY_GUIDE_CRITICAL_EARN,Награды общего уровня достижений дают от 15 до 31 единицы: на каждом следующем уровне на 1 больше. Заберите награду на экране уровней достижений.,"Achievement-level rewards grant 15 to 31 points, increasing by 1 per level. Claim them on the achievement-level rewards screen."
+KEY_GUIDE_CRITICAL_EARN,Награды общего уровня достижений дают от 15 до 45 единиц критического урона. Заберите награду на экране уровней достижений.,"Achievement-level rewards grant 15 to 45 critical damage points. Claim them on the achievement-level rewards screen."
 KEY_GUIDE_COINS_SEPARATE,Боевой запас и монеты профиля не взаимозаменяемы: остаток боевых монет не переносится в профиль напрямую.,Battle coins and profile coins are separate: remaining battle coins are not directly transferred to the profile.
 KEY_GUIDE_COINS_SKINS,"В магазине монеты также тратятся на платные скины. Скины, получаемые за мастерство, бесплатны.",Coins also buy paid skins in the shop. Mastery reward skins are free.
 KEY_GUIDE_CRITICAL_SHOP,Открытие башни и повышение уровня её карточки дают по 1 единице критического урона. Покупка способности сама по себе этот показатель не повышает.,Unlocking a tower and upgrading its card each grant 1 critical damage point. Buying an ability does not itself increase this stat.
@@ -778,7 +778,7 @@ KEY_GUIDE_ACHIEVEMENTS_TIERS,"Прогресс фиксируется по ус�
 KEY_GUIDE_ACHIEVEMENTS_CLAIM,"Достижение порога открывает ступень, но звёзды начисляются после нажатия кнопки получения. Каждую ступень можно забрать один раз.","Reaching a threshold unlocks a tier, but its stars are awarded when you claim it. Each tier can be claimed once."
 KEY_GUIDE_ACHIEVEMENTS_DATES,"Дата выполнения — день достижения порога; дата получения — день, когда забрана награда. Они могут различаться.",Completion date is when the threshold was reached; claim date is when its reward was collected. They may differ.
 KEY_GUIDE_ACHIEVEMENTS_OLD,В старых сохранениях известная дата получения сохраняется; неизвестная дата выполнения не придумывается.,"In older saves, known claim dates are preserved; unknown completion dates are not invented."
-KEY_GUIDE_ACHIEVEMENTS_TRACK,"Звёзды повышают общий уровень достижений. За доступные уровни 1–17 отдельно забираются монеты, критический урон и сундуки; уже полученные уровни не выдаются повторно.","Stars raise the overall achievement level. Claim coins, critical damage and chests separately for available levels 1–17; claimed levels cannot be collected twice."
+KEY_GUIDE_ACHIEVEMENTS_TRACK,"Звёзды повышают общий уровень достижений. За доступные уровни 1–30 отдельно забираются монеты, критический урон, алмазы, жетоны славы и сундуки; уже полученные уровни не выдаются повторно.","Stars raise the overall achievement level. Claim coins, critical damage, diamonds, glory tokens and chests separately for available levels 1–30; claimed levels cannot be collected twice."
 KEY_GUIDE_GLORY_TITLE,Путь славы,Path of Glory
 KEY_GUIDE_GLORY_INTRO,Путь славы — отдельная шкала этапов и наград; она не равна уровню достижений или мастерству башни.,Path of Glory is a separate track of stages and rewards; it is not the achievement level or tower mastery.
 KEY_GUIDE_GLORY_TRACKS,"В Пути славы 50 этапов, на каждом есть обычная и VIP-ветка. VIP-доступ открывается за 1000 алмазов и позволяет забирать обе награды каждого достигнутого этапа.","Path of Glory has 50 stages, each with a Free and a VIP track. VIP access costs 1000 diamonds and lets you claim both rewards on every reached stage."
@@ -997,8 +997,8 @@ KEY_MIRROR_BANNER_STD,Турнирный стандарт: ур. карт 5 • 
 KEY_PRISM_MAX_HEAT,Разогрев:,Max Heat:
 KEY_NAME_TURRET_13,Лазерная Призма,Laser Prism
 KEY_TURRET13_DESC,"Энергетическая башня непрерывного луча — «плавщик» боссов и тяжёлых целей. Наносит урон каждые [color='blue']0.10 с[/color], а при непрерывном удержании одной цели поэтапно разогревает кристалл (через [color='blue']1.2 с -> 2.5 с -> 4.0 с[/color]) вплоть до [color='blue']максимального разогрева (300%–350%)[/color]. Разогрев сбрасывается при смене живой цели или оглушении.","Continuous-beam energy tower built to melt bosses and heavy targets. Deals damage every [color='blue']0.10 s[/color], ramping crystal heat in stages ([color='blue']1.2 s -> 2.5 s -> 4.0 s[/color]) while holding the same target up to its [color='blue']Max Heat (300%–350%)[/color]. Heat resets when switching off a living target or when stunned."
-KEY_TURRET13_UP0_DESC,"Преломление луча. На максимальной ступени разогрева кристалла ([color='blue']300%–350%[/color]) от основной цели отскакивают [color='purple']2 вторичных луча[/color] в ближайших врагов в радиусе [color='blue']220 ед.[/color], нанося им [color='blue']35%[/color] от текущего урона тика.","Beam Refraction. At maximum crystal heat ([color='blue']300%–350%[/color]), [color='purple']2 secondary beams[/color] refract from the primary target to the nearest enemies within [color='blue']220 units[/color], dealing [color='blue']35%[/color] of the current tick damage."
-KEY_TURRET13_UP1_DESC,"Инерция плазмы. Если удерживаемая цель [color='red']погибает[/color], призма сохраняет [color='blue']60%[/color] накопленного разогрева при переключении на следующую цель и быстрее возвращается на пик мощности.","Plasma Inertia. When the locked target [color='red']dies[/color], the prism retains [color='blue']60%[/color] of its accumulated crystal heat when switching to the next target, ramping back to peak power much faster."
+KEY_TURRET13_UP0_DESC,Преломление луча: на пике нагрева от цели отскакивают [color='purple']2 луча[/color] в радиусе [color='blue']220[/color] за [color='blue']35%[/color] урона тика.,"Beam Refraction: At max heat, [color='purple']2 beams[/color] refract within [color='blue']220[/color] range for [color='blue']35%[/color] tick damage."
+KEY_TURRET13_UP1_DESC,Инерция плазмы: при гибели цели сохраняет [color='blue']60%[/color] нагрева при переключении.,Plasma Inertia: Retains [color='blue']60%[/color] accumulated heat when switching after target death.
 KEY_SKIN_T13_01,Рубиновый резонатор,Ruby Resonator
 KEY_SKIN_T13_02,Изумрудный спектр,Emerald Spectrum
 KEY_SKIN_T13_03,Призма Пустоты,Void Prism
@@ -1197,9 +1197,9 @@ KEY_SPELL_ROLE_25,Глобальный штурмовой разгон и защ
 KEY_SPELL_DESC_25,"Объявляет всеобщую боевую тревогу на всей карте (6.5–8.3 сек): мгновенно очищает все построенные башни от проклятий и окаменения, даёт им +30% к скорости атаки, +20% к шансу крита (1-й выстрел — 100% крит) и полный иммунитет к контролю Боссов.","Declares a map-wide assault offensive (6.5–8.3s): instantly cleanses all built allied towers, granting +30% attack speed, +20% crit chance (guaranteed 1st crit), and complete immunity to Boss crowd control."
 KEY_CHAKRAM_CHAIN,Цепочка:,Chain:
 KEY_NAME_TURRET_14,Чакрам,Chakram
-KEY_TURRET14_DESC,"Редкая кинетико-энергетическая башня бумерангового боя. Выпускает вращающийся диск, который рикошетит по цепочке до [color='blue']4–6 врагов[/color] в радиусе [color='blue']150 ед.[/color] друг от друга (каждый следующий отскок теряет всего [color='blue']10%[/color] урона), а затем возвращается по прямой обратно в башню, нанося [color='blue']50%[/color] урона всем целям на обратном пути.","Rare boomerang-blade tower built for stretched waves. Launches a spinning energy chakram that ricochets across up to [color='blue']4–6 enemies[/color] within [color='blue']150 units[/color] of each other (losing only [color='blue']10%[/color] damage per bounce), then slices straight back to the launcher dealing [color='blue']50%[/color] damage to every enemy along its return path."
-KEY_TURRET14_UP0_DESC,"Зазубренные грани. Каждое попадание чакрама ранит цель и накладывает независимое [color='red']кровотечение на 3.0 с[/color], наносящее дополнительно [color='blue']+15%[/color] от базового урона броска каждую секунду.","Serrated Edges. Every chakram hit wounds the target, applying an independent [color='red']3.0 s bleed[/color] that deals an extra [color='blue']+15%[/color] of the throw's base damage per second."
-KEY_TURRET14_UP1_DESC,"Дуэльный резонанс. Если на карте осталась [color='purple']одиночная цель[/color] (например, Босс) и рикошетить не в кого, чакрам фиксируется внутри хитбокса врага на [color='blue']1.2 с[/color], доводя суммарный урон броска до [color='blue']x2.2[/color] перед возвратом.","Duel Resonance. When hitting a [color='purple']lone target[/color] on the map (such as a Boss) with no secondary enemies to chain into, the chakram orbits inside the target's hitbox for [color='blue']1.2 s[/color], amplifying total throw damage to [color='blue']x2.2[/color] before returning."
+KEY_TURRET14_DESC,"Бросает чакрам, который рикошетит между врагами и задевает цели на обратном пути.",Throws a chakram that ricochets between enemies and hits targets on its return.
+KEY_TURRET14_UP0_DESC,Зазубренные грани: попадание вызывает кровотечение на [color='red']3 с[/color] по [color='blue']15%[/color] базового урона/с.,Razor Edges: Hits inflict a [color='red']3s[/color] bleed for [color='blue']15%[/color] base throw damage/s.
+KEY_TURRET14_UP1_DESC,"Дуэльный резонанс: на одиночной цели чакрам держится [color='blue']1,2 с[/color] с общим уроном до [color='blue']×2,2[/color].","Duel Resonance: Against a lone target, spins inside it for [color='blue']1.2s[/color] for up to [color='blue']×2.2[/color] total damage."
 KEY_SKIN_T14_01,Алый полумесяц,Crimson Bloodmoon
 KEY_SKIN_T14_02,Нефритовый лотос,Jade Wind Lotus
 KEY_SKIN_T14_03,Звёздный затмеватель,Astral Eclipse
@@ -1216,9 +1216,9 @@ KEY_PROMOTION_NAME_39,Вихрь лезвий,Whirlwind of Blades
 KEY_PROMOTION_DESC_39,Рикошетов и рассечений «Чакрама»:,Chakram ricochets & slashes:
 KEY_MIMIC_EFFICIENCY,Сила слепка:,Copy Power:
 KEY_NAME_TURRET_15,Мимик,Mimic
-KEY_TURRET15_DESC,"Эпическая тактическая башня-хамелеон. При постройке сканирует [color='blue']4 соседние клетки[/color] по вертикали и горизонтали и мгновенно превращается в копию самой ценной союзной башни рядом (кроме другого Мимика), сохраняя [color='purple']фиолетовую призрачную маскировку[/color] и собственный уровень карты Мимика ([color='blue']85%–100%[/color] базовой силы). Если рядом пусто — сражается в форме [color='purple']Кристалла Мимика[/color] и трансформируется сразу при постройке соседа.","Epic tactical chameleon tower. Scans the [color='blue']4 orthogonally adjacent tiles[/color] (up/down/left/right) and instantly transforms into a copy of the highest-value allied neighbor (except another Mimic), retaining a [color='purple']ghostly violet disguise[/color] and Mimic's own card level ([color='blue']85%–100%[/color] base power). If placed alone, fights as a [color='purple']Mimic Crystal[/color] and transforms as soon as an ally is built next to it."
-KEY_TURRET15_UP0_DESC,"Идеальный слепок. В момент трансформации в соседнюю башню Мимик мгновенно получает [color='blue']+1 бесплатный боевой уровень[/color] улучшения без затрат золота.","Perfect Cast. Upon transforming into an adjacent tower, Mimic immediately gains [color='blue']+1 free in-battle upgrade level[/color] at zero gold cost."
-KEY_TURRET15_UP1_DESC,"Адаптивная связь. Пока скопированная Мимиком башня и её оригинал стоят на соседних клетках по вертикали или горизонтали, обе башни получают взаимный бонус [color='blue']+12%[/color] к скорости атаки.","Adaptive Link. While the Mimic copy and an original tower of the same type stand orthogonally adjacent, both towers gain a mutual [color='blue']+12%[/color] attack speed bonus."
+KEY_TURRET15_DESC,Копирует самую ценную соседнюю башню; без соседа сражается как Кристалл Мимика.,"Copies the highest-value adjacent tower; without a neighbor, fights as a Mimic Crystal."
+KEY_TURRET15_UP0_DESC,Идеальный слепок: при трансформации Мимик получает [color='blue']+1[/color] бесплатный боевой уровень.,"Perfect Cast: On morph, Mimic gains [color='blue']+1[/color] free battle upgrade level."
+KEY_TURRET15_UP1_DESC,Адаптивная связь: соседние копия и оригинал получают взаимно [color='blue']+12%[/color] скорости атаки.,Adaptive Link: Adjacent copy and original mutually gain [color='blue']+12%[/color] attack speed.
 KEY_SKIN_T15_01,Зеркальная ртуть,Quicksilver Mirror
 KEY_SKIN_T15_02,Изумрудный шифр,Emerald Cipher
 KEY_SKIN_T15_03,Багровый доппельгангер,Crimson Doppelganger
@@ -1235,9 +1235,9 @@ KEY_PROMOTION_NAME_40,Мастер иллюзий,Master of Illusions
 KEY_PROMOTION_DESC_40,Трансформаций и атак «Мимика»:,Mimic morphs & disguised hits:
 KEY_FLAME_BURN,Горение (0.5с):,Burn (0.5s):
 KEY_NAME_TURRET_16,Огнемёт,Flamethrower
-KEY_TURRET16_DESC,"Обычная башня ближнего боя первой линии для зачистки плотных волн на изгибах дороги. Выпускает непрерывную струю пламени сектором [color='blue']50°[/color] (тик каждые [color='blue']0.10 сек[/color]), поражая [color='blue']сразу всех врагов внутри конуса[/color] без лимита целей, и поджигает их на [color='blue']2.5 сек[/color] (огненный урон каждые [color='blue']0.5 сек[/color]).","Common frontline close-quarters tower built to clear dense waves around road bends. Streams a continuous [color='blue']50°[/color] cone of fire (damage tick every [color='blue']0.10s[/color]), scorching [color='blue']every enemy inside the cone[/color] with no target cap and igniting [color='blue']Burn[/color] for [color='blue']2.5s[/color] (fire damage every [color='blue']0.5s[/color])."
-KEY_TURRET16_UP0_DESC,"Термитная смесь. Пока на враге действует «Горение» Огнемёта, он получает [color='blue']+10%[/color] входящего урона от всех башен, а его собственная регенерация снижается на [color='blue']40%[/color].","Thermite Mix. While burning from Flamethrower, enemies take [color='blue']+10%[/color] incoming damage from all towers and suffer [color='blue']-40%[/color] self-healing and regeneration."
-KEY_TURRET16_UP1_DESC,"Широкое сопло. Расширяет угол конуса пламени с [color='blue']50°[/color] до [color='blue']68°[/color] и даёт [color='blue']+20%[/color] прямого урона врагам в ближней половине струи.","Wide Nozzle. Widens the flame cone angle from [color='blue']50°[/color] to [color='blue']68°[/color] and grants [color='blue']+20%[/color] direct stream damage to enemies in the near half of the cone."
+KEY_TURRET16_DESC,Обдаёт конусом пламени всех врагов перед собой и поджигает их.,Sweeps a cone of fire across enemies in front of it and ignites them.
+KEY_TURRET16_UP0_DESC,Термитная смесь: горящая цель получает [color='blue']+10%[/color] урона и [color='blue']-40%[/color] регенерации.,Thermite Mix: Burning targets take [color='blue']+10%[/color] damage and have [color='blue']-40%[/color] regeneration.
+KEY_TURRET16_UP1_DESC,"Широкое сопло: угол струи расширен с [color='blue']50°[/color] до [color='blue']68°[/color], ближняя половина даёт [color='blue']+20%[/color] прямого урона.",Wide Nozzle: Cone widens from [color='blue']50°[/color] to [color='blue']68°[/color]; near half deals [color='blue']+20%[/color] direct damage.
 KEY_SKIN_T16_01,Плазменный резак,Plasma Torch
 KEY_SKIN_T16_02,Алхимический дракон,Alchemical Dragon
 KEY_SKIN_T16_03,Адское горнило,Abyssal Furnace
@@ -1254,9 +1254,9 @@ KEY_PROMOTION_NAME_41,Выжженная земля,Scorched Earth
 KEY_PROMOTION_DESC_41,Импульсов пламени и горения «Огнемёта»:,Flamethrower scorch & burn ticks:
 
 KEY_NAME_TURRET_17,Снайпер,Sniper
-KEY_TURRET17_DESC,"Обычная дальнобойная винтовка второй линии для точечного отстрела опасных целей. Наносит высокий разовый урон, имеет дальность [color='blue']380–460[/color] и собственный бонус к шансу критического удара [color='blue']+15%[/color]. На дальней половине радиуса получает до [color='blue']+20%[/color] урона за дистанцию.","Common long-range second-line rifle for picking off dangerous targets. Deals high single-shot damage, has a [color='blue']380–460[/color] range and [color='blue']+15%[/color] bonus critical chance. Gains up to [color='blue']+20%[/color] distance damage in the far half of its radius."
-KEY_TURRET17_UP0_DESC,"Меткий выстрел. Накладывает на цель «Пробитие» на [color='blue']3.5 сек[/color], увеличивая получаемый ею урон от союзников на [color='blue']12%[/color].","Precision Shot. Applies Breach for [color='blue']3.5s[/color], increasing damage the target takes from allies by [color='blue']12%[/color]."
-KEY_TURRET17_UP1_DESC,"Сквозной калибр. Пуля пробивает ещё [color='blue']1[/color] врага на линии выстрела позади основной цели, нанося ему [color='blue']60%[/color] урона. При убийстве перезарядка сокращается на [color='blue']30%[/color].","Piercing Caliber. The bullet pierces [color='blue']1[/color] additional enemy behind the primary target along the shot line, dealing [color='blue']60%[/color] damage. A kill reduces reload time by [color='blue']30%[/color]."
+KEY_TURRET17_DESC,Дальнобойная винтовка для точечных выстрелов. У Снайпера есть собственный бонус +15% к шансу критического удара; на дальней дистанции урон растёт ещё до +20%.,A long-range rifle for precision shots. The Sniper has an innate +15% critical chance; damage rises by up to another +20% at long range.
+KEY_TURRET17_UP0_DESC,"Бронебойный патрон: накладывает Пробитие на [color='blue']3,5 с[/color] с бонусом [color='blue']+12%[/color] урона от союзников.","Armor-Piercing Round: Applies Breach for [color='blue']3.5s[/color], causing [color='blue']+12%[/color] damage from allies."
+KEY_TURRET17_UP1_DESC,Сквозной калибр: пробивает ещё [color='blue']1[/color] врага на [color='blue']60%[/color] урона; убийство ускоряет перезарядку на [color='blue']30%[/color].,Piercing Caliber: Pierces [color='blue']1[/color] extra enemy for [color='blue']60%[/color] damage; kill cuts reload by [color='blue']30%[/color].
 KEY_SKIN_T17_01,Гаусс-перехватчик,Gauss Interceptor
 KEY_SKIN_T17_02,Арктический фантом,Arctic Phantom
 KEY_SKIN_T17_03,Багровая вдова,Crimson Widow
@@ -1272,10 +1272,10 @@ KEY_MASTERY_DESC_T17,"«Снайпер» накапливает опыт мас�
 KEY_PROMOTION_NAME_42,Меткий выстрел,Deadeye
 KEY_PROMOTION_DESC_42,Выстрелов «Снайпера»:,Sniper shots fired:
 KEY_NAME_TURRET_18,Мортира,Mortar
-KEY_TURRET18_DESC,"Артиллерийская башня поддержки. Запускает снаряд по выбранному врагу, нанося урон по области: полный урон в центре и 60% у края. Радиус взрыва увеличивается с уровнем.","A support artillery tower. Fires a shell at its selected enemy, dealing area damage: full damage at the center and 60% near the edge. Blast radius grows with level."
+KEY_TURRET18_DESC,Обстреливает врагов снарядом по области: полный урон в центре и 60% у края взрыва.,Bombards enemies with an area shell: full damage at the center and 60% at the blast edge.
 KEY_MORTAR_RADIUS,Радиус взрыва: ,Blast radius: 
-KEY_TURRET18_UP0_DESC,"Шоковый взрыватель. Враги в центральной зоне оглушаются на 0,35 сек., а боссы вместо этого замедляются на 20% на 0,8 сек.","Concussive Fuse. Enemies in the inner blast are stunned for 0.35s; bosses are slowed by 20% for 0.8s instead."
-KEY_TURRET18_UP1_DESC,"Кассетный заряд. После основного взрыва разлетаются три осколка, каждый наносит 25% урона в небольшой области.","Cluster Charge. Three fragments burst from the main impact, each dealing 25% damage in a small area."
+KEY_TURRET18_UP0_DESC,"Шоковый взрыватель: центр оглушает врагов на 0,35 с; боссы замедляются на 20% на 0,8 с.",Concussive Fuse: Inner blast stuns enemies for 0.35s; slows bosses 20% for 0.8s.
+KEY_TURRET18_UP1_DESC,Кассетный заряд: после взрыва 3 осколка наносят по 25% урона в небольшой области.,"Cluster Charge: 3 fragments burst after impact, dealing 25% area damage each."
 KEY_SKIN_T18_01,Осадная броня,Siege Armor
 KEY_SKIN_T18_02,Пепельный гром,Ashen Thunder
 KEY_SKIN_T18_03,Полярная крепость,Polar Bastion
@@ -1291,42 +1291,293 @@ KEY_MASTERY_DESC_T18,"«Мортира» получает опыт мастер�
 KEY_PROMOTION_NAME_43,Гром артиллерии,Thunder of the Artillery
 KEY_PROMOTION_DESC_43,Выпущенных снарядов «Мортиры»:,Mortar shells fired:
 KEY_NAME_TURRET_19,Резонатор,Resonator
-KEY_TURRET19_DESC,"Попадания по врагам с отрицательными эффектами заряжают Резонатор. На трёх зарядах он выпускает дополнительный импульс.","Hits on debuffed enemies charge the Resonator. At three charges, it releases a bonus pulse."
-KEY_TURRET19_UP0_DESC,"На уровне 3 откройте выбор: Ответный тон или Рассыпчатый аккорд.","At level 3, unlock the choice between Returning Tone and Scattered Chord."
-KEY_TURRET19_UP1_DESC,"На уровне 7 откройте выбор: Память струны или Овертон.","At level 7, unlock the choice between String Memory and Overtone."
-KEY_TURRET19_UP2_DESC,"Совершенный резонанс: дополнительный импульс наносит 150% урона выстрела.","Perfect Resonance: the bonus pulse deals 150% of shot damage."
-KEY_ABILITY_LEVEL10_DESC,Фиксированная способность 10-го уровня.,Fixed level 10 ability.
+KEY_TURRET19_DESC,"Атакует ослабленных врагов, накапливая резонанс. Набрав 3 заряда, выпускает дополнительный импульс.","Attacks weakened enemies to build resonance. At 3 charges, it releases an extra pulse."
+KEY_TURRET19_UP0_DESC,Ветка 3 ур.: Ответный тон или Рассыпчатый аккорд.,Lv. 3 branch: Returning Tone or Scattered Chord.
+KEY_TURRET19_UP1_DESC,Ветка 7 ур.: Память струны или Овертон.,Lv. 7 branch: String Memory or Overtone.
+KEY_TURRET19_UP2_DESC,Совершенный резонанс: бонусный импульс наносит 150% урона выстрела.,Perfect Resonance: Bonus pulse deals 150% shot damage.
+KEY_ABILITY_LEVEL10_DESC,Способность 10-го уровня.,Level 10 ability.
 KEY_ABILITY_LEVEL10_HEADER,Способность 3 · уровень 10,Ability 3 · level 10
-KEY_TURRET1_UP2_DESC,"Раскрутка: каждый последовательный выстрел в ту же цель даёт +2% скорости атаки, максимум +12%; сброс после 2 с без стрельбы.","Accelerator: Each consecutive shot at the same target grants +2% attack speed, up to +12%; resets after 2 s without firing."
-KEY_TURRET2_UP2_DESC,Кассетная боеголовка: 3 осколка вокруг эпицентра наносят по 20% урона; каждый враг получает урон не более одного осколка.,Cluster Warhead: Three fragments around the impact deal 20% damage each; a target can be hit by only one fragment.
-KEY_TURRET3_UP2_DESC,Тройной залп: каждый 5-й выстрел выпускает дополнительный болт на 60% урона.,Triple Volley: Every fifth shot fires an extra bolt for 60% damage.
-KEY_TURRET4_UP2_DESC,"Абсолютный ноль: каждый 5-й импульс останавливает обычных врагов на 0,45 с; боссы вместо этого замедляются на 15% на 1 с.",Absolute Zero: Every fifth pulse freezes regular enemies for 0.45 s; bosses are slowed by 15% for 1 s.
+KEY_TURRET1_UP2_DESC,"Раскрутка: +2% скорости атаки за удар по одной цели, до +12%. Сброс через 2 с без огня.","Spin-Up: +2% attack speed per consecutive hit on one target, up to +12%. Resets after 2s idle."
+KEY_TURRET2_UP2_DESC,Кассетная боеголовка: 3 осколка вокруг удара наносят по 20% урона. Врага бьёт не более одного осколка.,Cluster Warhead: 3 shrapnel bursts around impact deal 20% damage each; max 1 hit per enemy.
+KEY_TURRET3_UP2_DESC,Тройной залп: каждый 5-й выстрел выпускает дополнительный болт на 60% урона.,Triple Volley: Every 5th shot fires an extra bolt for 60% damage.
+KEY_TURRET4_UP2_DESC,"Абсолютный ноль: каждый 5-й импульс оглушает врагов на 0,45 с или замедляет боссов на 15% на 1 с.",Absolute Zero: Every 5th pulse freezes regular enemies for 0.45s or slows bosses 15% for 1s.
 KEY_TURRET5_UP2_DESC,Парная петля: срабатывание переносит до 2 ближайших врагов; перезарядка не меняется.,Twin Loop: Teleports up to two nearest enemies; cooldown is unchanged.
 KEY_TURRET6_UP2_DESC,Золотое спонсорство: соседние боевые башни получают +6% урона.,Gold Sponsorship: Nearby damage towers gain +6% damage.
-KEY_TURRET7_UP2_DESC,"Эпидемия: при смерти отравленного врага яд переходит на 1 ближайшего врага в радиусе 90, сила переноса 50%.","Epidemic: When a poisoned enemy dies, poison transfers to one nearby enemy within 90 range at 50% strength."
-KEY_TURRET8_UP2_DESC,"Вожак стаи: землетрясения в берсерке наносят ещё +15% урона, без изменения длительности берсерка.",Pack Leader: Earthquakes during berserk deal +15% damage; berserk duration is unchanged.
+KEY_TURRET7_UP2_DESC,Эпидемия: при смерти отравленного врага яд переходит на соседа в радиусе 90 с силой 50%.,"Epidemic: On poisoned enemy death, poison spreads to 1 enemy within 90 range at 50% power."
+KEY_TURRET8_UP2_DESC,Вожак стаи: землетрясения в берсерке наносят ещё +15% урона.,Pack Leader: Berserk earthquakes deal +15% more damage.
 KEY_TURRET9_UP2_DESC,Жатва трофеев: казнь обычного врага приносит +2 золота; не чаще 1 раза в 2 с.,"Trophy Harvest: Executing a regular enemy grants +2 gold, at most once every 2 s."
-KEY_TURRET10_UP2_DESC,Запугивание: при активации Ярости враги рядом замедляются на 15% на 1 с; боссы: на 8%.,"Intimidation: When Rage activates, nearby enemies are slowed by 15% for 1 s; bosses by 8%."
+KEY_TURRET10_UP2_DESC,"Запугивание: Ярость замедляет врагов рядом на 15% на 1 с, боссов — на 8%.",Intimidation: Rage slows nearby enemies 15% for 1s; bosses 8%.
 KEY_TURRET11_UP2_DESC,Развед-сканер: атакуемая разведчиком цель получает +8% урона от союзников на 2 с.,Recon Scanner: A target attacked by the Scout takes +8% damage from allies for 2 s.
 KEY_TURRET12_UP2_DESC,Усилитель сигнала: бонус урона сети увеличен на +3 процентных пункта.,Signal Amplifier: The network damage bonus increases by 3 percentage points.
 KEY_TURRET13_UP2_DESC,Тепловой след: цель на пике нагрева получает +8% урона от призмы на 2 с.,"Thermal Trail: At maximum heat, the target takes +8% Prism damage for 2 s."
 KEY_TURRET14_UP2_DESC,Инерционный возврат: обратный путь наносит 65% урона вместо 50%.,Inertial Return: The return path deals 65% damage instead of 50%.
-KEY_TURRET15_UP2_DESC,Гибкая форма: один раз за волну можно сменить копируемого соседа; новый выбор действует со следующего цикла атаки.,"Flexible Form: Once per wave, change the copied neighbor; the new choice takes effect next attack cycle."
+KEY_TURRET15_UP2_DESC,Гибкая форма: раз за волну можно сменить копируемого соседа со следующего цикла атаки.,"Flexible Form: Once per wave, switch copied neighbor starting next attack cycle."
 KEY_TURRET16_UP2_DESC,Дымовая завеса: горящие враги замедлены на 8%.,Smoke Screen: Burning enemies are slowed by 8%.
-KEY_TURRET17_UP2_DESC,Экспансивный калибр: (+20% критического урона).,Expansive Caliber: +20% critical damage.
-KEY_TURRET18_UP2_DESC,"Беглый огонь: каждый 5-й залп выпускает второй снаряд через 0,3 с, он наносит 40% урона.",Rapid Fire: Every fifth volley fires a second shell after 0.3 s for 40% damage.
+KEY_TURRET17_UP2_DESC,Экспансивный калибр: +20% критического урона.,Expansive Caliber: +20% critical damage.
+KEY_TURRET18_UP2_DESC,"Беглый огонь: каждый 5-й залп выпускает второй снаряд через 0,3 с на 40% урона.",Rapid Fire: Every 5th volley fires a second shell after 0.3s for 40% damage.
 KEY_SKIN_T19_01,Угольный резонанс,Cinder Resonance
 KEY_SKIN_T19_02,Вердигрис,Living Verdigris
 KEY_SKIN_T19_03,Солнцестояние,Solstice
 KEY_SKIN_T19_XP1,Затмение,Eclipse
 KEY_SKIN_T19_XP2,Северное сияние,Borealis
 KEY_RESONATOR_RETURNING_TONE_NAME,Ответный тон,Returning Tone
-KEY_RESONATOR_RETURNING_TONE_DESC,"На 3 зарядах импульс наносит 80% урона выстрела той же цели.","At 3 charges, pulse the same target for 80% shot damage."
+KEY_RESONATOR_RETURNING_TONE_DESC,На 3 зарядах импульс наносит 80% урона выстрела той же цели.,"At 3 charges, pulse the same target for 80% shot damage."
 KEY_RESONATOR_SCATTERED_CHORD_NAME,Рассыпчатый аккорд,Scattered Chord
-KEY_RESONATOR_SCATTERED_CHORD_DESC,"На 3 зарядах делит 80% урона между максимум двумя ближайшими целями.","At 3 charges, split 80% damage between up to 2 nearest targets."
+KEY_RESONATOR_SCATTERED_CHORD_DESC,На 3 зарядах делит 80% урона между максимум двумя ближайшими целями.,"At 3 charges, splits 80% bonus damage across up to 2 nearest targets."
 KEY_RESONATOR_STRING_MEMORY_NAME,Память струны,String Memory
-KEY_RESONATOR_STRING_MEMORY_DESC,"Сохраняет все заряды при гибели или смене цели.","Keeps all charges when a target dies or changes."
+KEY_RESONATOR_STRING_MEMORY_DESC,Сохраняет все заряды при гибели или смене цели.,Keeps all charges when a target dies or changes.
 KEY_RESONATOR_OVERTONE_NAME,Овертон,Overtone
-KEY_RESONATOR_OVERTONE_DESC,"Цель с двумя разными отрицательными эффектами даёт 2 заряда.","A target with 2 different debuffs grants 2 charges."
+KEY_RESONATOR_OVERTONE_DESC,Цель с двумя разными отрицательными эффектами даёт 2 заряда.,A target with 2 different debuffs grants 2 charges.
 KEY_RESONATOR_PERFECT_RESONANCE_NAME,Совершенный резонанс,Perfect Resonance
-KEY_RESONATOR_PERFECT_RESONANCE_DESC,"Дополнительный импульс наносит 150% урона выстрела.","The bonus pulse deals 150% shot damage."
+KEY_RESONATOR_PERFECT_RESONANCE_DESC,Дополнительный импульс наносит 150% урона выстрела.,The bonus pulse deals 150% shot damage.
+KEY_CHOICE_T14_L3_O1_NAME,Зазубренные грани,Razor Edges
+KEY_CHOICE_T14_L3_O1_DESC,Попадание вызывает кровотечение на 3 с: 15% базового урона в секунду.,Hits cause 3s bleed for 15% of base throw damage per second.
+KEY_CHOICE_T14_L3_O2_NAME,Аэродинамика,Aerodynamics
+KEY_CHOICE_T14_L3_O2_DESC,Чакрам летит на 12% быстрее.,The chakram travels 12% faster.
+KEY_CHOICE_T14_L7_O1_NAME,Дуэльный резонанс,Duel Resonance
+KEY_CHOICE_T14_L7_O1_DESC,"Против одиночной цели диск вращается 1,2 с и наносит до ×2,2 урона.","Against a lone target, the disc spins for 1.2s and deals up to ×2.2 damage."
+KEY_CHOICE_T14_L7_O2_NAME,Широкий отскок,Wide Ricochet
+KEY_CHOICE_T14_L7_O2_DESC,Радиус поиска следующей цели увеличен на 15%.,The next-target search radius is increased by 15%.
+KEY_CHOICE_T14_L10_O1_NAME,Инерционный возврат,Inertial Return
+KEY_CHOICE_T14_L10_O1_DESC,Обратный путь чакрама наносит 65% урона вместо 50%.,The chakram return path deals 65% damage instead of 50%.
+KEY_CHOICE_T15_L3_O1_NAME,Идеальный слепок,Perfect Cast
+KEY_CHOICE_T15_L3_O1_DESC,Трансформация бесплатно повышает боевой уровень Мимика на 1.,Morphing grants the Mimic one free battle upgrade level.
+KEY_CHOICE_T15_L3_O2_NAME,Теневая скидка,Shadow Discount
+KEY_CHOICE_T15_L3_O2_DESC,Стоимость постройки Мимика снижена на 10 боевых монет.,Mimic battle cost is reduced by 10 coins.
+KEY_CHOICE_T15_L7_O1_NAME,Адаптивная связь,Adaptive Link
+KEY_CHOICE_T15_L7_O1_DESC,Копия и оригинал на соседних клетках получают +12% скорости атаки.,Adjacent copy and original gain +12% attack speed.
+KEY_CHOICE_T15_L7_O2_NAME,Чёткая матрица,Precision Matrix
+KEY_CHOICE_T15_L7_O2_DESC,Сила скопированных характеристик повышена на 5%.,Copied stat strength is increased by 5%.
+KEY_CHOICE_T15_L10_O1_NAME,Гибкая форма,Flexible Form
+KEY_CHOICE_T15_L10_O1_DESC,Раз за волну можно сменить копируемого соседа со следующего цикла атаки.,"Once per wave, switch copied neighbor starting next attack cycle."
+KEY_CHOICE_T16_L3_O1_NAME,Термитная смесь,Thermite Mix
+KEY_CHOICE_T16_L3_O1_DESC,Горящая цель получает +10% урона и на 40% меньше восстанавливает здоровье.,Burning targets take +10% damage and recover 40% less health.
+KEY_CHOICE_T16_L3_O2_NAME,Дальнобойная форсунка,Long-Range Nozzle
+KEY_CHOICE_T16_L3_O2_DESC,Дальность струи пламени увеличена на 12%.,Flame stream range is increased by 12%.
+KEY_CHOICE_T16_L7_O1_NAME,Широкое сопло,Wide Nozzle
+KEY_CHOICE_T16_L7_O1_DESC,Конус расширяется с 50° до 68°; ближняя часть наносит +20% урона.,Cone widens from 50° to 68°; its near half deals +20% damage.
+KEY_CHOICE_T16_L7_O2_NAME,Густое топливо,Dense Fuel
+KEY_CHOICE_T16_L7_O2_DESC,"Горение длится на 0,5 с дольше.",Burn lasts 0.5s longer.
+KEY_CHOICE_T16_L10_O1_NAME,Дымовая завеса,Smoke Screen
+KEY_CHOICE_T16_L10_O1_DESC,Горящие враги замедляются на 8%.,Burning enemies are slowed by 8%.
+KEY_CHOICE_T17_L3_O1_NAME,Бронебойный патрон,Armor-Piercing Round
+KEY_CHOICE_T17_L3_O1_DESC,"Накладывает «Пробитие» на 3,5 с: союзники наносят цели на 12% больше урона.",Applies Breach for 3.5 s: allies deal 12% more damage to the target.
+KEY_CHOICE_T17_L3_O2_NAME,Усиленная оптика,Reinforced Optics
+KEY_CHOICE_T17_L3_O2_DESC,Радиус атаки Снайпера увеличен на 10%.,Sniper attack range is increased by 10%.
+KEY_CHOICE_T17_L7_O1_NAME,Сквозной калибр,Piercing Caliber
+KEY_CHOICE_T17_L7_O1_DESC,Пуля пробивает ещё 1 врага на 60% урона; убийство ускоряет следующий выстрел на 30%.,Pierces one more enemy for 60% damage; a kill speeds up the next shot by 30%.
+KEY_CHOICE_T17_L7_O2_NAME,Скользящий затвор,Sliding Bolt
+KEY_CHOICE_T17_L7_O2_DESC,Скорость перезарядки Снайпера увеличена на 8%.,Sniper reload speed is increased by 8%.
+KEY_CHOICE_T17_L10_O1_NAME,Экспансивный калибр,Expansive Caliber
+KEY_CHOICE_T17_L10_O1_DESC,Собственный критический урон Снайпера увеличен на 20%.,Sniper’s personal critical damage is increased by 20%.
+KEY_CHOICE_T18_L3_O1_NAME,Шоковый взрыватель,Concussive Fuse
+KEY_CHOICE_T18_L3_O1_DESC,"Враги в центре взрыва оглушаются на 0,35 с; боссы замедляются на 20% на 0,8 с.",Enemies at the blast center are stunned for 0.35s; bosses are slowed 20% for 0.8s.
+KEY_CHOICE_T18_L3_O2_NAME,Усиленный порох,Heavy Powder
+KEY_CHOICE_T18_L3_O2_DESC,Радиус взрыва увеличен на 12%.,Blast radius is increased by 12%.
+KEY_CHOICE_T18_L7_O1_NAME,Кассетный заряд,Cluster Charge
+KEY_CHOICE_T18_L7_O1_DESC,"После взрыва появляются 3 осколка, каждый наносит 25% урона по области.","Three fragments follow the blast, each dealing 25% area damage."
+KEY_CHOICE_T18_L7_O2_NAME,Тяжёлый снаряд,Heavy Shell
+KEY_CHOICE_T18_L7_O2_DESC,Урон по цели в эпицентре увеличен на 18%.,Damage to the epicenter target is increased by 18%.
+KEY_CHOICE_T18_L10_O1_NAME,Беглый огонь,Rapid Fire
+KEY_CHOICE_T18_L10_O1_DESC,"Каждый пятый залп выпускает второй снаряд через 0,3 с; он наносит 40% урона.","Every fifth volley fires a second shell after 0.3s, dealing 40% damage."
+KEY_TURRET_FALLBACK,Башня %d,Tower %d
+KEY_SNIPER_CRIT_BONUS,Бонус к шансу критического удара,Critical chance bonus
+KEY_MASTERY_DESC_T19,"«Резонатор» накапливает мастерство за боевой вклад:
+• Нанесённый урон: +1 XP за каждые 1 000 000 ед. урона.
+• Уничтоженные враги: +1 XP за каждую 1 000 целей, добитых Резонатором.","Resonator earns Mastery from combat:
+• Damage dealt: +1 XP per 1,000,000 damage.
+• Enemies eliminated: +1 XP per 1,000 targets destroyed by Resonator."
+KEY_ABILITY_CHOICE_SELECT,ВЫБРАТЬ ВАРИАНТ,CHOOSE VARIANT
+KEY_ABILITY_CHOICE_REQUIRED,Сначала выбери вариант способности,Choose an ability variant first
+KEY_ABILITY_CHOICE_SAVE,СОХРАНИТЬ ВАРИАНТ,SAVE VARIANT
+KEY_CHOICE_T1_L3_O2_NAME,Длинный ствол,Long Barrel
+KEY_CHOICE_T1_L3_O2_DESC,Дальность атаки увеличена на 10%.,Increases attack range by 10%.
+KEY_NAME_TURRET_20,Эхоархив,Echoarchive
+KEY_UNIT_PERCENT,%,%
+KEY_ECHO_MULT_UNIT,× урона,× dmg
+KEY_ECHO_CYCLE,Цикл архива:,Archive cycle:
+KEY_ECHO_SHARE,Доля эха:,Echo share:
+KEY_ECHO_CAP,Предел эха:,Echo cap:
+KEY_TURRET20_DESC,"Архивный накопитель союзного урона. Раз в [color='blue']1.40–1.04 с[/color] стреляет по цели с наибольшим прогрессом на пути (дистанция [color='blue']320–383[/color]), нанося [color='blue']20–62[/color] урона ([color='purple']34.8–107.88[/color] на 10 ур. карты). Одновременно выбирает врага с наибольшим продвижением на архивный цикл ([color='blue']2.00–1.75 с[/color]): первые [color='blue']1.50 с[/color] башня записывает в буфер [color='blue']20%–25%[/color] прямого урона других союзных башен по всем целям (лимит [color='blue']8×–12×[/color] от своего выстрела), после чего наносит накопленное эхо выбранной цели. Собственные выстрелы Эхоархива и чужое эхо не перезаписываются; [color='purple']способность 10 ур.[/color] даёт [color='blue']+10 п.п.[/color] доли эха.","Archival echo amplifier that captures allied damage. Every [color='blue']1.40–1.04 s[/color] it fires a bolt at the enemy farthest along the path (range [color='blue']320–383[/color]), dealing [color='blue']20–62[/color] damage ([color='purple']34.8–107.88[/color] at card Lv. 10). Meanwhile it selects the enemy farthest along the path for an archive cycle ([color='blue']2.00–1.75 s[/color]): during the [color='blue']1.50 s[/color] recording window it stores [color='blue']20%–25%[/color] of direct damage dealt by other allied towers across all targets (capped at [color='blue']8×–12×[/color] its own bolt damage), then deals the stored echo burst to the marked enemy. Echoarchive’s own bolts and echoes never chain-record; its [color='purple']Lv. 10 ability[/color] adds [color='blue']+10 pp[/color] echo share."
+KEY_TURRET20_UP0_DESC,Ветка 3 ур.: Хоровое эхо или Большой переплёт.,Lv. 3 branch: Choral Echo or Big Binding.
+KEY_TURRET20_UP1_DESC,Ветка 7 ур.: Свидетель или Последняя запись.,Lv. 7 branch: Witness or Last Record.
+KEY_TURRET20_UP2_DESC,Синхронный индекс: доля записи эха +10 п.п. без изменения предела.,Synchronous Index: +10 pp echo recording share without changing the cap.
+KEY_ECHOARCHIVE_CHORAL_ECHO_NAME,Хоровое эхо,Choral Echo
+KEY_ECHOARCHIVE_CHORAL_ECHO_DESC,60% эха бьёт по основной цели и по 20% — до двух врагов рядом с ней.,60% of the echo hits the main target and 20% each hits up to 2 nearby enemies.
+KEY_ECHOARCHIVE_BIG_BINDING_NAME,Большой переплёт,Big Binding
+KEY_ECHOARCHIVE_BIG_BINDING_DESC,Предел хранения эха увеличивается на 25%.,Increases echo storage cap by 25%.
+KEY_ECHOARCHIVE_WITNESS_NAME,Свидетель,Witness
+KEY_ECHOARCHIVE_WITNESS_DESC,"Эхоархив также записывает урон союзных башен от яда, горения и кровотечения.","Echoarchive also records allied tower damage from poison, burn, and bleed."
+KEY_ECHOARCHIVE_LAST_RECORD_NAME,Последняя запись,Last Record
+KEY_ECHOARCHIVE_LAST_RECORD_DESC,При гибели цели 50% буфера переходит на соседа в радиусе без сброса таймера.,"When the target dies, 50% of stored echo shifts to a nearby enemy without resetting the timer."
+KEY_ECHOARCHIVE_SYNCHRONOUS_INDEX_NAME,Синхронный индекс,Synchronous Index
+KEY_ECHOARCHIVE_SYNCHRONOUS_INDEX_DESC,Доля записи эха +10 п.п. без изменения предела хранения.,+10 pp echo recording share without changing storage cap.
+KEY_SKIN_T20_01,Латунный астролябий,Brass Astrolabe
+KEY_SKIN_T20_02,Карминовый палимпсест,Crimson Palimpsest
+KEY_SKIN_T20_03,Нефритовый хронограф,Jade Chronograph
+KEY_SKIN_T20_XP1,Бронзовая печать,Bronze Seal
+KEY_SKIN_T20_XP2,Аметистовый оракул,Amethyst Oracle
+KEY_MASTERY_DESC_T20,"«Эхоархив» накапливает мастерство за боевой вклад:
+• Выпущенные эхо: +1 XP за каждые 100 залпов эха «Эхоархива».","Echoarchive earns Mastery from combat:
+• Echoes released: +1 XP per 100 echo releases by Echoarchive."
+KEY_PROMOTION_NAME_44,Хроника эха,Chronicle of Echoes
+KEY_PROMOTION_DESC_44,Выпущенных эхо «Эхоархива»:,Echoes released by Echoarchive:
+KEY_RARITY_0,Обычная,Common
+KEY_RARITY_1,Редкая,Rare
+KEY_RARITY_2,Эпическая,Epic
+KEY_RARITY_3,Легендарная,Legendary
+KEY_ABILITY_PLANNED,В планах,Planned
+KEY_ABILITY_EVOLUTION_HAS_BASE,Активна база Напалма: узел усилит эффект.,Base Napalm active: node will empower it.
+KEY_ABILITY_EVOLUTION_GRANTS_BASE,Включает базовый Напалм и его усиление.,Grants base Napalm plus its upgrade.
+KEY_CHOICE_T1_L3_O1_NAME,Двойной выстрел,Double Shot
+KEY_CHOICE_T1_L3_O1_DESC,С шансом 50% пулемёт наносит по цели два последовательных удара.,50% chance to fire two consecutive hits at the target.
+KEY_CHOICE_T1_L7_O1_NAME,Критический потенциал,Critical Potential
+KEY_CHOICE_T1_L7_O1_DESC,Случайный бонус +0–40% к критическому урону выстрела.,Adds a random +0–40% critical damage bonus per shot.
+KEY_CHOICE_T1_L7_O2_NAME,Ритмичная очередь,Rhythmic Burst
+KEY_CHOICE_T1_L7_O2_DESC,Каждый 7-й выстрел наносит +25% урона.,Every 7th shot deals +25% damage.
+KEY_CHOICE_T1_L10_O1_NAME,Раскрутка,Spin-Up
+KEY_CHOICE_T1_L10_O1_DESC,"+2% скорости атаки за удар по одной цели, до +12%. Сброс через 2 с без огня.","+2% attack speed per consecutive hit on one target, up to +12%. Resets after 2s idle."
+KEY_CHOICE_T2_L3_O1_NAME,Метка босса,Boss Mark
+KEY_CHOICE_T2_L3_O1_DESC,Смерть босса помечает случайную ракету: +3% урона за метку.,Boss death marks a random rocket: +3% damage per mark.
+KEY_CHOICE_T2_L3_O2_NAME,Напалм,Napalm
+KEY_CHOICE_T2_L3_O2_DESC,"Место попадания горит 1,5 с, нанося 15% урона снаряда в секунду.","Impact zone burns for 1.5s, dealing 15% projectile damage per second."
+KEY_CHOICE_T2_L7_O1_NAME,Охотник за боссами,Boss Hunter
+KEY_CHOICE_T2_L7_O1_DESC,Шанс критического удара ракет по боссам увеличен на 5%.,Increases rocket critical hit chance against bosses by 5%.
+KEY_CHOICE_T2_L7_O2_NAME,Напалм: усиленная смесь,Napalm: Enriched Mix
+KEY_CHOICE_T2_L7_O2_DESC,"Место попадания горит 3 с, нанося 20% урона снаряда в секунду. Работает и без базы.","Impact zone burns for 3s, dealing 20% projectile damage per second. Works even without base Napalm."
+KEY_CHOICE_T2_L10_O1_NAME,Кассетная боеголовка,Cluster Warhead
+KEY_CHOICE_T2_L10_O1_DESC,3 осколка вокруг удара наносят по 20% урона. Врага бьёт не более одного осколка.,3 shrapnel bursts around impact deal 20% damage each; max 1 hit per enemy.
+KEY_CHOICE_T3_L3_O1_NAME,Возврат фазы,Phase Rewind
+KEY_CHOICE_T3_L3_O1_DESC,С шансом 10% арбалет повторно входит в первую фазу.,10% chance for the crossbow to re-enter phase one.
+KEY_CHOICE_T3_L3_O2_NAME,Оптический прицел,Optical Sight
+KEY_CHOICE_T3_L3_O2_DESC,Дальность атаки увеличена на 10%.,Increases attack range by 10%.
+KEY_CHOICE_T3_L7_O1_NAME,Третий переход,Third Shift
+KEY_CHOICE_T3_L7_O1_DESC,Каждый 3-й переход во вторую фазу даёт +200% урона до её конца.,Every 3rd shift into phase two grants +200% damage until it ends.
+KEY_CHOICE_T3_L7_O2_NAME,Сквозной болт,Piercing Bolt
+KEY_CHOICE_T3_L7_O2_DESC,Пробивает ещё 1 врага на линии выстрела за 40% урона.,Pierces 1 extra enemy along the shot line for 40% damage.
+KEY_CHOICE_T3_L10_O1_NAME,Тройной залп,Triple Volley
+KEY_CHOICE_T3_L10_O1_DESC,Каждый 5-й выстрел выпускает дополнительный болт на 60% урона.,Every 5th shot fires an additional bolt for 60% damage.
+KEY_CHOICE_T4_L3_O1_NAME,Процентный импульс,Percent Pulse
+KEY_CHOICE_T4_L3_O1_DESC,При старте замедления враги в радиусе теряют 1% текущего здоровья.,"When slow begins, enemies in range take 1% current HP damage."
+KEY_CHOICE_T4_L3_O2_NAME,Широкий купол,Wide Dome
+KEY_CHOICE_T4_L3_O2_DESC,Радиус импульса увеличен на 12%.,Increases pulse radius by 12%.
+KEY_CHOICE_T4_L7_O1_NAME,Уязвимость босса,Boss Vulnerability
+KEY_CHOICE_T4_L7_O1_DESC,Урон по боссам от эффекта повышен до 5%.,Increases percentage pulse damage against bosses to 5%.
+KEY_CHOICE_T4_L7_O2_NAME,Холодный конденсатор,Cold Capacitor
+KEY_CHOICE_T4_L7_O2_DESC,"+0,35 с к длительности замедления; на боссах бонус вдвое меньше.",+0.35 s slow duration; halved against bosses.
+KEY_CHOICE_T4_L10_O1_NAME,Абсолютный ноль,Absolute Zero
+KEY_CHOICE_T4_L10_O1_DESC,"Каждый 5-й импульс оглушает врагов на 0,45 с или замедляет боссов на 15% на 1 с.",Every 5th pulse freezes regular enemies for 0.45s or slows bosses 15% for 1s.
+KEY_CHOICE_T5_L3_O1_NAME,Возврат к началу,Return to Start
+KEY_CHOICE_T5_L3_O1_DESC,С шансом 10% отбрасывает врага к началу пути.,10% chance to warp an enemy back to the start of the path.
+KEY_CHOICE_T5_L3_O2_NAME,Дальний захват,Long Capture
+KEY_CHOICE_T5_L3_O2_DESC,Радиус действия увеличен на 10%.,Increases teleport range by 10%.
+KEY_CHOICE_T5_L7_O1_NAME,Казнь слабого,Weak Execute
+KEY_CHOICE_T5_L7_O1_DESC,Добивает обычного врага при здоровье ниже 10%; на боссов не действует.,Executes regular enemies below 10% HP; does not affect bosses.
+KEY_CHOICE_T5_L7_O2_NAME,Пространственный шок,Spatial Shock
+KEY_CHOICE_T5_L7_O2_DESC,После телепортации враг замедлен на 20% на 1 с.,"After teleportation, the enemy is slowed by 20% for 1 s."
+KEY_CHOICE_T5_L10_O1_NAME,Парная петля,Twin Loop
+KEY_CHOICE_T5_L10_O1_DESC,Срабатывание переносит до 2 ближайших врагов; перезарядка не меняется.,Activation teleports up to 2 nearest enemies; cooldown stays unchanged.
+KEY_CHOICE_T6_L3_O1_NAME,Золотая награда,Golden Bounty
+KEY_CHOICE_T6_L3_O1_DESC,За убийство врага башня приносит на 1 золото больше.,Enemy kills grant +1 additional gold.
+KEY_CHOICE_T6_L3_O2_NAME,Стартовый капитал,Seed Capital
+KEY_CHOICE_T6_L3_O2_DESC,Стоимость постройки первого Банка снижена на 10%.,Build cost of your first Bank is reduced by 10%.
+KEY_CHOICE_T6_L7_O1_NAME,Доход сети,Network Income
+KEY_CHOICE_T6_L7_O1_DESC,Доход башни увеличивается на 1% за каждую башню на поле.,Bank income increases by 1% per tower on the field.
+KEY_CHOICE_T6_L7_O2_NAME,Сложный процент,Compound Interest
+KEY_CHOICE_T6_L7_O2_DESC,При 300+ золоте в конце волны выплата Банка +12%. Не суммируется.,"With 300+ gold at wave end, Bank payout +12%. Does not stack."
+KEY_CHOICE_T6_L10_O1_NAME,Золотое спонсорство,Gold Sponsorship
+KEY_CHOICE_T6_L10_O1_DESC,Соседние боевые башни получают +6% урона.,Adjacent combat towers gain +6% damage.
+KEY_CHOICE_T7_L3_O1_NAME,Токсичное замедление,Toxic Slow
+KEY_CHOICE_T7_L3_O1_DESC,Отравленные враги передвигаются на 5% медленнее.,Poisoned enemies move 5% slower.
+KEY_CHOICE_T7_L3_O2_NAME,Едкие споры,Caustic Spores
+KEY_CHOICE_T7_L3_O2_DESC,Длительность яда увеличена на 15%.,Increases poison duration by 15%.
+KEY_CHOICE_T7_L7_O1_NAME,Заразный выстрел,Contagious Shot
+KEY_CHOICE_T7_L7_O1_DESC,С шансом 5% заражает ядом сразу 2 врагов.,5% chance to poison 2 enemies simultaneously.
+KEY_CHOICE_T7_L7_O2_NAME,Быстрый впрыск,Rapid Injection
+KEY_CHOICE_T7_L7_O2_DESC,Частота атак увеличена на 8%.,Increases attack speed by 8%.
+KEY_CHOICE_T7_L10_O1_NAME,Эпидемия,Epidemic
+KEY_CHOICE_T7_L10_O1_DESC,После смерти отравленного врага яд переходит на соседа в радиусе 90 с силой 50%.,"On poisoned enemy death, poison spreads to 1 enemy within 90 range at 50% power."
+KEY_CHOICE_T8_L3_O1_NAME,Ярость стаи,Pack Fury
+KEY_CHOICE_T8_L3_O1_DESC,Апгрейд или появление Минотавра даёт берсерк на 10 с: урон землетрясений +50% и +1% за заряд.,Upgrade or Minotaur spawn grants 10s Berserk: earthquake damage +50% plus +1% per charge.
+KEY_CHOICE_T8_L3_O2_NAME,Широкий замах,Wide Swing
+KEY_CHOICE_T8_L3_O2_DESC,Радиус капкана увеличен на 12%.,Increases trap radius by 12%.
+KEY_CHOICE_T8_L7_O1_NAME,Долгий берсерк,Extended Berserk
+KEY_CHOICE_T8_L7_O1_DESC,"Каждый заряд продлевает берсерк на 1 с, максимум 30 с.","Each fury charge extends Berserk by 1 s, up to 30 s."
+KEY_CHOICE_T8_L7_O2_NAME,Быстрая ковка,Swift Forging
+KEY_CHOICE_T8_L7_O2_DESC,Время подготовки следующего капкана снижено на 10%.,Reduces next trap preparation time by 10%.
+KEY_CHOICE_T8_L10_O1_NAME,Вожак стаи,Pack Leader
+KEY_CHOICE_T8_L10_O1_DESC,Землетрясения в берсерке наносят ещё +15% урона.,Berserk earthquakes deal +15% more damage.
+KEY_CHOICE_T9_L3_O1_NAME,Удар после казни,Execution Follow-Up
+KEY_CHOICE_T9_L3_O1_DESC,После добивания следующий выстрел наносит +300% урона.,"After an execution, the next shot deals +300% damage."
+KEY_CHOICE_T9_L3_O2_NAME,Зоркий взор,Keen Sight
+KEY_CHOICE_T9_L3_O2_DESC,Радиус атаки увеличен на 10%.,Increases attack range by 10%.
+KEY_CHOICE_T9_L7_O1_NAME,Казнь босса,Boss Execution
+KEY_CHOICE_T9_L7_O1_DESC,Открывает возможность добивать боссов.,Unlocks the ability to execute bosses.
+KEY_CHOICE_T9_L7_O2_NAME,Хладнокровие,Cold Blood
+KEY_CHOICE_T9_L7_O2_DESC,Урон обычными выстрелами до порога казни увеличен на 8%.,Increases regular shot damage before execution threshold by 8%.
+KEY_CHOICE_T9_L10_O1_NAME,Жатва трофеев,Trophy Harvest
+KEY_CHOICE_T9_L10_O1_DESC,Казнь обычного врага приносит +2 золота; не чаще 1 раза в 2 с.,Executing a regular enemy grants +2 gold; at most once every 2 s.
+KEY_CHOICE_T10_L3_O1_NAME,Сокрушение босса,Boss Crusher
+KEY_CHOICE_T10_L3_O1_DESC,С шансом 5% удар по боссу наносит 1000% урона атаки.,5% chance to strike a boss for 1000% attack damage.
+KEY_CHOICE_T10_L3_O2_NAME,Задира,Brawler
+KEY_CHOICE_T10_L3_O2_DESC,Базовый урон увеличен на 8%.,Increases base damage by 8%.
+KEY_CHOICE_T10_L7_O1_NAME,Давление толпы,Crowd Pressure
+KEY_CHOICE_T10_L7_O1_DESC,"Урон растёт на 10% за каждого врага на дороге, максимум +100%.","Damage grows by 10% per enemy on the road, up to +100%."
+KEY_CHOICE_T10_L7_O2_NAME,Короткий запал,Short Fuse
+KEY_CHOICE_T10_L7_O2_DESC,Время восстановления Ярости снижено на 12%.,Reduces Rage cooldown by 12%.
+KEY_CHOICE_T10_L10_O1_NAME,Запугивание,Intimidation
+KEY_CHOICE_T10_L10_O1_DESC,"Активация Ярости замедляет врагов рядом на 15% на 1 с, боссов — на 8%.",Activating Rage slows nearby enemies 15% for 1s; bosses 8%.
+KEY_CHOICE_T11_L3_O1_NAME,Третий дрон,Third Drone
+KEY_CHOICE_T11_L3_O1_DESC,При запуске дронов с шансом 50% создаётся третий случайный дрон.,50% chance on launch to spawn a third random drone.
+KEY_CHOICE_T11_L3_O2_NAME,Лёгкие шасси,Light Chassis
+KEY_CHOICE_T11_L3_O2_DESC,Скорость полёта дронов увеличена на 15%.,Increases drone flight speed by 15%.
+KEY_CHOICE_T11_L7_O1_NAME,Усиленные жетоны,Empowered Tokens
+KEY_CHOICE_T11_L7_O1_DESC,Каждый жетон увеличивает урон следующего поколения на 2% вместо 1%.,Each token boosts the next generation’s damage by 2% instead of 1%.
+KEY_CHOICE_T11_L7_O2_NAME,Усиленные батареи,Heavy Batteries
+KEY_CHOICE_T11_L7_O2_DESC,Урон дронов увеличен на 8%.,Increases drone damage by 8%.
+KEY_CHOICE_T11_L10_O1_NAME,Развед-сканер,Recon Scanner
+KEY_CHOICE_T11_L10_O1_DESC,Атакуемая разведчиком цель получает +8% урона от союзников на 2 с.,Targets attacked by the Scout take +8% damage from allies for 2 s.
+KEY_CHOICE_T12_L3_O1_NAME,Сетевая синергия,Network Synergy
+KEY_CHOICE_T12_L3_O1_DESC,При 6+ связях с башнями одного типа сеть удваивает скорость атаки этого типа.,"With 6+ links to one tower type, the network doubles that type’s attack speed."
+KEY_CHOICE_T12_L3_O2_NAME,Дешёвый узел,Low-Cost Node
+KEY_CHOICE_T12_L3_O2_DESC,Стоимость постройки Башни Связи снижена на 10%.,Reduces Link Tower build cost by 10%.
+KEY_CHOICE_T12_L7_O1_NAME,Усиленная связь,Reinforced Link
+KEY_CHOICE_T12_L7_O1_DESC,Бонус урона связанных башен повышен до +15%.,Increases linked towers’ damage bonus to +15%.
+KEY_CHOICE_T12_L7_O2_NAME,Стабилизатор,Stabilizer
+KEY_CHOICE_T12_L7_O2_DESC,Бонус скорости атаки от сети повышается на +8% от его базовой величины.,Network attack speed bonus increases by +8% of its base value.
+KEY_CHOICE_T12_L10_O1_NAME,Усилитель сигнала,Signal Booster
+KEY_CHOICE_T12_L10_O1_DESC,Бонус урона сети увеличен на +3 процентных пункта.,Network damage bonus increases by +3 percentage points.
+KEY_CHOICE_T13_L3_O1_NAME,Преломление луча,Beam Refraction
+KEY_CHOICE_T13_L3_O1_DESC,На пике нагрева от цели отскакивают 2 луча в радиусе 220 за 35% урона тика.,"At max heat, 2 beams refract within 220 range for 35% tick damage."
+KEY_CHOICE_T13_L3_O2_NAME,Фокусирующая линза,Focusing Lens
+KEY_CHOICE_T13_L3_O2_DESC,Дальность луча увеличена на 10%.,Increases beam range by 10%.
+KEY_CHOICE_T13_L7_O1_NAME,Инерция плазмы,Plasma Inertia
+KEY_CHOICE_T13_L7_O1_DESC,При гибели цели сохраняет 60% накопленного нагрева при переключении.,"On target death, retains 60% of accumulated heat when switching targets."
+KEY_CHOICE_T13_L7_O2_NAME,Быстрый розжиг,Fast Ignition
+KEY_CHOICE_T13_L7_O2_DESC,Шкала нагрева заполняется на 12% быстрее.,Heat gauge fills 12% faster.
+KEY_CHOICE_T13_L10_O1_NAME,Тепловой след,Thermal Trail
+KEY_CHOICE_T13_L10_O1_DESC,Цель на пике нагрева получает +8% урона от призмы на 2 с.,Targets at peak heat take +8% Prism damage for 2 s.
+KEY_TURRET_ABILITY_LOCK_SHORT,Ур. %d,Lv. %d
+KEY_TURRET_ABILITY_LOCKED_CARD,Закрыто,Locked
+KEY_ABILITY_CHOICE_PICK_AND_BUY,Выбрать и открыть • %d монет,Choose & unlock • %d coins
+KEY_ABILITY_CHOICE_PROGRESS,НАСТРОЙКА ВЕТОК,BRANCH SETUP
+KEY_ABILITY_CHOICE_BADGE,УРОВЕНЬ %d,LEVEL %d
+KEY_ABILITY_CHOICE_FIXED_BADGE,УРОВЕНЬ 10,LEVEL 10
+KEY_ABILITY_CHOICE_TITLE,%s — выбор способности,%s — ability choice
+KEY_ABILITY_CHOICE_FIXED_TITLE,%s — способность 10 ур.,%s — level 10 ability
+KEY_ABILITY_CHOICE_SUBTITLE,Выберите ветку способности для этого уровня.,Choose an ability branch for this level.
+KEY_ABILITY_CHOICE_FIXED_SUBTITLE,Фиксированная способность 10-го уровня.,Fixed level 10 ability.
+KEY_ABILITY_CHOICE_CONTINUE,ПРОДОЛЖИТЬ,CONTINUE
+KEY_ABILITY_CHOICE_CONFIRM,ПОДТВЕРДИТЬ И ОТКРЫТЬ,CONFIRM & UNLOCK
+KEY_ABILITY_CHOICE_OPTION,ВАРИАНТ %s,OPTION %s
+KEY_ABILITY_CHOICE_SELECTED,ВЫБРАНО,SELECTED
+KEY_ABILITY_CHOICE_PICK_HINT,"Нажмите, чтобы выбрать этот вариант",Tap to choose this option
+KEY_ABILITY_CHOICE_FIXED_SUMMARY,Активная способность: %s,Active ability: %s
+KEY_ABILITY_CHOICE_SUMMARY,"Пороги способностей: %d, %d и %d ур.","Ability milestones: Lv. %d, %d and %d"
+KEY_ABILITY_CHOICE_LEVEL_SHORT,Ур.,Lv.
+KEY_ABILITY_CHOICE_FALLBACK_NAME,Способность,Ability
+KEY_MIMIC_SWITCH_HEADER,Гибкая форма (1/1 в волне):,Flexible Form (1/1 this wave):
+KEY_MIMIC_SWITCH_WAITING,Смена в след. цикле: %s,Switching next cycle: %s
+KEY_MIMIC_SWITCH_USED,Гибкая форма: использовано в волне,Flexible Form: used this wave
+KEY_MIMIC_SWITCH_NONE,Нет другого соседа рядом,No other adjacent tower
+KEY_MIMIC_SWITCH_TO,↻ %s (%s %d),↻ %s (%s %d)

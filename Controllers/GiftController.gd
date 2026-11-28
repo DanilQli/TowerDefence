@@ -2,6 +2,7 @@ extends Node
 
 const DESKTOP_BUF_SCENE: PackedScene = preload("res://Scenes/SupportScenes/buf.tscn")
 const MOBILE_BUF_SCENE: PackedScene = preload("res://Scenes/Mobile/buf_mobile.tscn")
+const MYSTERY_REWARD_ICON: Texture2D = preload("res://Assets/Icons/gift_box.png")
 const CHEST_POOL: Array[int] = [1, 3, 4, 5, 6, 7]
 const MODIFIER_ICONS: Dictionary = {
 	0: preload("res://Assets/Icons/damage.png"),
@@ -15,6 +16,7 @@ var list_gift: Array = []
 var list_random: Array = []
 var list_sprite_box: Array = []
 var have_open_present: bool = false
+var _active_gift_ui: Control = null
 
 const STAT_KEYS_BY_MODIFIER := {
 	0: "damage",
@@ -62,6 +64,34 @@ func _style_modifier_card(mod_node: Panel, perk_type: int, is_winner: bool) -> v
 		hst.set_border_width_all(1)
 		hst.set_corner_radius_all(40)
 		halo.add_theme_stylebox_override("panel", hst)
+
+func _style_mystery_card(mod_node: Panel) -> void:
+	var st := StyleBoxFlat.new()
+	st.bg_color = Color(0.045, 0.068, 0.125, 0.92)
+	st.border_color = Color(0.32, 0.48, 0.74, 0.72)
+	st.set_border_width_all(2)
+	st.set_corner_radius_all(18)
+	mod_node.add_theme_stylebox_override("panel", st)
+
+func _is_mobile_context(ui_root: Node) -> bool:
+	if OS.get_name() in ["Android", "iOS"]:
+		return true
+	if is_instance_valid(main_scene):
+		var sp: String = str(main_scene.scene_file_path)
+		if sp.contains("_mobile") or sp.contains("/Mobile/"):
+			return true
+		var scr := main_scene.get_script() as Script
+		if scr != null and (scr.resource_path.contains("_mobile") or scr.resource_path.contains("/Mobile/")):
+			return true
+	if is_instance_valid(ui_root) and ui_root is Control:
+		var vr: Vector2 = (ui_root as Control).get_viewport_rect().size
+		if vr.y > vr.x and vr.x > 0.0:
+			return true
+	elif is_instance_valid(ui_root) and ui_root.get_viewport() != null:
+		var vr2: Vector2 = ui_root.get_viewport().get_visible_rect().size
+		if vr2.y > vr2.x and vr2.x > 0.0:
+			return true
+	return false
 
 func _tower_buff_title(tower_idx: int) -> String:
 	if tower_idx >= 0 and tower_idx <= 4:
@@ -113,33 +143,47 @@ func launch_gift_box(cleared_wave: int = 0) -> void:
 	get_tree().paused = true
 	AudioManager.play_sfx("gift_appear")
 
-	var is_mobile: bool = OS.get_name() in ["Android", "iOS"]
+	var is_mobile: bool = _is_mobile_context(ui_root)
 	var scene_to_use: PackedScene = MOBILE_BUF_SCENE if is_mobile else DESKTOP_BUF_SCENE
 	var box_gift: Control = scene_to_use.instantiate() as Control
+	_active_gift_ui = box_gift
 	ui_root.add_child(box_gift)
 
+	var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
 	var header_lbl := box_gift.get_node_or_null("Panel/Label") as Label
 	if header_lbl:
 		var wave_num: int = cleared_wave if cleared_wave > 0 else int(GameSession.current_wave)
 		if wave_num > 0:
-			var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
 			var wave_tag: String = ("Волна %d пройдена" % wave_num) if is_ru else ("Wave %d Cleared" % wave_num)
 			header_lbl.text = tr("KEY_CHOOSE_REWARD") + "  ·  " + wave_tag
 		else:
 			header_lbl.text = tr("KEY_CHOOSE_REWARD")
+
+	var status_lbl := box_gift.get_node_or_null("Panel/V/StatusLabel") as Label
+	if status_lbl:
+		status_lbl.text = ("Нажмите на один из 3 сундуков, чтобы усилить башню" if is_ru else "Tap one of the 3 chests to strengthen a tower")
+	var wait_hint := box_gift.find_child("WaitHint", true, false) as Label
+	if wait_hint:
+		wait_hint.text = ("Выберите любой сундук" if is_ru else "Choose any chest")
 
 	generate_gift(box_gift, is_mobile)
 
 	var panel := box_gift.get_node_or_null("Panel") as Control
 	if panel:
 		var vp_size: Vector2 = box_gift.get_viewport_rect().size
+		var base_sz: Vector2 = panel.custom_minimum_size if panel.custom_minimum_size.x > 0.0 else panel.size
+		if base_sz.x <= 0.0:
+			base_sz = Vector2(1008.0, 1240.0) if is_mobile else Vector2(760.0, 568.0)
 		var target_scale := Vector2.ONE
-		var base_w: float = 960.0 if is_mobile else 760.0
-		if vp_size.x > 0.0 and vp_size.x < base_w + 40.0:
-			var fit: float = clampf((vp_size.x - 32.0) / base_w, 0.65, 1.0)
-			target_scale = Vector2(fit, fit)
+		if vp_size.x > 0.0 and vp_size.y > 0.0:
+			var fit_x: float = (vp_size.x - 32.0) / base_sz.x
+			var fit_y: float = (vp_size.y - 48.0) / base_sz.y
+			var fit: float = minf(1.0, minf(fit_x, fit_y))
+			if fit < 1.0:
+				fit = maxf(0.55, fit)
+				target_scale = Vector2(fit, fit)
 		box_gift.set_meta("is_mobile_buf", is_mobile)
-		panel.pivot_offset = panel.size * 0.5
+		panel.pivot_offset = base_sz * 0.5
 		panel.scale = target_scale * 0.90
 		panel.modulate.a = 0.0
 		var tw: Tween = box_gift.create_tween()
@@ -159,6 +203,7 @@ func generate_gift(box_gift: Node, is_mobile: bool = false) -> void:
 	list_sprite_box = []
 	list_random = []
 
+	var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
 	var variants: Array[int] = CHEST_POOL.duplicate()
 	variants.shuffle()
 	var towers: Array[int] = _pick_buffable_towers()
@@ -173,17 +218,36 @@ func generate_gift(box_gift: Node, is_mobile: bool = false) -> void:
 
 		var box_node: Control = box_gift.get_node("Panel/V/H/Box" + str(i + 1)) as Control
 		if is_mobile and box_node:
-			box_node.custom_minimum_size = Vector2(268, 224)
+			box_node.custom_minimum_size = Vector2(300, 390)
 			box_node.pivot_offset = box_node.custom_minimum_size * 0.5
 			var lbl := box_node.get_node_or_null("Label") as Label
 			if lbl:
-				lbl.add_theme_font_size_override("font_size", Typography.D_BUTTON)
+				lbl.add_theme_font_size_override("font_size", Typography.M_BODY)
 				lbl.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 		if box_node and box_node.has_method("configure_chest"):
 			box_node.call("configure_chest", chest_variant, i, _tower_buff_title(t))
+
+		var modifier := box_gift.get_node_or_null("Panel/V/HBox/Modifer" + str(i + 1)) as Panel
+		if is_mobile and modifier:
+			modifier.visible = true
+			modifier.scale = Vector2.ONE
+			modifier.modulate = Color.WHITE
+			var up_lbl := modifier.get_node_or_null("Up") as Label
+			if up_lbl:
+				up_lbl.text = "?"
+				up_lbl.add_theme_color_override("font_color", Color(1.0, 0.86, 0.34, 1.0))
+			var tex := modifier.get_node_or_null("TextureRect") as TextureRect
+			if tex:
+				tex.texture = MYSTERY_REWARD_ICON
+				tex.modulate = Color(0.82, 0.90, 1.0, 0.78)
+			var nm_lbl := modifier.get_node_or_null("Name") as Label
+			if nm_lbl:
+				nm_lbl.text = ("Награда" if is_ru else "Reward")
+			_style_mystery_card(modifier)
+
 	var hbox_mods := box_gift.get_node_or_null("Panel/V/HBox") as Control
 	if hbox_mods:
-		hbox_mods.visible = false
+		hbox_mods.visible = is_mobile
 
 func gift_open(index: int, box_gift: Node) -> void:
 	if not is_instance_valid(box_gift) or box_gift.has_meta("gift_opened"):
@@ -193,14 +257,6 @@ func gift_open(index: int, box_gift: Node) -> void:
 	AudioManager.play_sfx("gift_pick")
 
 	var is_mob_buf: bool = bool(box_gift.get_meta("is_mobile_buf", false))
-	var panel_ctrl := box_gift.get_node_or_null("Panel") as Control
-	if is_mob_buf and panel_ctrl:
-		panel_ctrl.custom_minimum_size = Vector2(960, 880)
-		panel_ctrl.offset_left = -480.0
-		panel_ctrl.offset_right = 480.0
-		panel_ctrl.offset_top = -440.0
-		panel_ctrl.offset_bottom = 440.0
-		panel_ctrl.pivot_offset = Vector2(480.0, 440.0)
 	var hbox_mods := box_gift.get_node_or_null("Panel/V/HBox") as Control
 	if hbox_mods:
 		hbox_mods.visible = true
@@ -221,20 +277,24 @@ func gift_open(index: int, box_gift: Node) -> void:
 		modifier.visible = true
 
 		var mod_kind: int = int(list_random[i])
-		modifier.get_node("TextureRect").texture = MODIFIER_ICONS.get(mod_kind)
+		var mod_tex := modifier.get_node("TextureRect") as TextureRect
+		mod_tex.texture = MODIFIER_ICONS.get(mod_kind)
+		mod_tex.modulate = Color.WHITE
 		modifier.get_node("Name").text = tr("KEY_UP_UP_" + str(mod_kind))
 
 		var is_reload: bool = (mod_kind == 1)
 		var label_sign: String = " - " if is_reload else " + "
-		modifier.get_node("Up").text = label_sign + str(GameConstants.MODIFIER_VALUE) + " %"
+		var up_node := modifier.get_node("Up") as Label
+		up_node.text = label_sign + str(GameConstants.MODIFIER_VALUE) + " %"
+		up_node.add_theme_color_override("font_color", Color(0.32, 0.96, 0.48, 1.0))
 
 		_style_modifier_card(modifier, mod_kind, is_winner)
 
 		modifier.scale = Vector2(0.76, 0.76)
-		modifier.modulate = Color(1, 1, 1, 0.0)
-		var target_mod: Color = Color(1, 1, 1, 1) if is_winner else Color(0.68, 0.72, 0.82, 0.80)
-		var target_scale: Vector2 = Vector2(1.05, 1.05) if is_winner else Vector2(0.94, 0.94)
-		box_node.modulate = Color(1, 1, 1, 1) if is_winner else Color(0.68, 0.72, 0.82, 0.78)
+		modifier.modulate = Color(1, 1, 1, 0.0) if not is_mob_buf else Color(1, 1, 1, 0.35)
+		var target_mod: Color = Color(1, 1, 1, 1) if is_winner else Color(0.68, 0.72, 0.82, 0.72)
+		var target_scale: Vector2 = Vector2(1.05, 1.05) if is_winner else Vector2(0.95, 0.95)
+		box_node.modulate = Color(1, 1, 1, 1) if is_winner else Color(0.68, 0.72, 0.82, 0.72)
 
 		var mtw: Tween = box_gift.create_tween()
 		mtw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
@@ -248,6 +308,15 @@ func gift_open(index: int, box_gift: Node) -> void:
 	var id: int = int(list_gift[index]) + 1
 	var turret_id: String = "Turret_" + str(id) + "T1"
 
+	var status_lbl := box_gift.get_node_or_null("Panel/V/StatusLabel") as Label
+	if status_lbl:
+		var is_ru: bool = TranslationServer.get_locale().begins_with("ru")
+		var win_tower_title: String = _tower_buff_title(int(list_gift[index]))
+		var win_mod_name: String = tr("KEY_UP_UP_" + str(mod_type))
+		var win_sign: String = "-" if mod_type == 1 else "+"
+		status_lbl.text = (("Получено: %s  (%s %s%s%%)" % [win_tower_title, win_mod_name, win_sign, str(GameConstants.MODIFIER_VALUE)]) if is_ru else ("Claimed: %s  (%s %s%s%%)" % [win_tower_title, win_mod_name, win_sign, str(GameConstants.MODIFIER_VALUE)]))
+		status_lbl.add_theme_color_override("font_color", Color(1.0, 0.88, 0.36, 1.0))
+
 	if not stat_key.is_empty():
 		GameSession.record_gift_buff(turret_id, stat_key, factor)
 		if is_instance_valid(main_scene) and is_instance_valid(main_scene.map_node):
@@ -260,42 +329,54 @@ func gift_open(index: int, box_gift: Node) -> void:
 							turret.ui_system.update_menu()
 							turret.ui_system.update_menu_upgrade()
 
-	await get_tree().create_timer(1.35, true, false, true).timeout
-	if not is_instance_valid(box_gift):
-		return
+	if is_mob_buf:
+		await get_tree().create_timer(0.45, true, false, true).timeout
+		if not is_instance_valid(box_gift):
+			return
+		var wait_hint := box_gift.find_child("WaitHint", true, false) as Control
+		if is_instance_valid(wait_hint):
+			wait_hint.visible = false
+	else:
+		await get_tree().create_timer(1.35, true, false, true).timeout
+		if not is_instance_valid(box_gift):
+			return
 
-	var fade_tw: Tween = box_gift.create_tween()
-	fade_tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
-	fade_tw.set_parallel(true)
-	for i in range(3):
-		if i != index:
-			var b_node: Control = box_gift.get_node_or_null("Panel/V/H/Box" + str(i + 1)) as Control
-			var m_node: Control = box_gift.get_node_or_null("Panel/V/HBox/Modifer" + str(i + 1)) as Control
-			if is_instance_valid(b_node):
-				fade_tw.tween_property(b_node, "modulate:a", 0.0, 0.18)
-				fade_tw.tween_property(b_node, "scale", Vector2(0.86, 0.86), 0.18)
-			if is_instance_valid(m_node):
-				fade_tw.tween_property(m_node, "modulate:a", 0.0, 0.18)
-				fade_tw.tween_property(m_node, "scale", Vector2(0.86, 0.86), 0.18)
-	await fade_tw.finished
-	if not is_instance_valid(box_gift):
-		return
+		var fade_tw: Tween = box_gift.create_tween()
+		fade_tw.set_pause_mode(Tween.TWEEN_PAUSE_PROCESS)
+		fade_tw.set_parallel(true)
+		for i in range(3):
+			if i != index:
+				var b_node: Control = box_gift.get_node_or_null("Panel/V/H/Box" + str(i + 1)) as Control
+				var m_node: Control = box_gift.get_node_or_null("Panel/V/HBox/Modifer" + str(i + 1)) as Control
+				if is_instance_valid(b_node):
+					fade_tw.tween_property(b_node, "modulate:a", 0.0, 0.18)
+					fade_tw.tween_property(b_node, "scale", Vector2(0.86, 0.86), 0.18)
+				if is_instance_valid(m_node):
+					fade_tw.tween_property(m_node, "modulate:a", 0.0, 0.18)
+					fade_tw.tween_property(m_node, "scale", Vector2(0.86, 0.86), 0.18)
+		await fade_tw.finished
+		if not is_instance_valid(box_gift):
+			return
 
-	for i in range(3):
-		if i != index:
-			var b_node: Node = box_gift.get_node_or_null("Panel/V/H/Box" + str(i + 1))
-			var m_node: Node = box_gift.get_node_or_null("Panel/V/HBox/Modifer" + str(i + 1))
-			if is_instance_valid(b_node):
-				b_node.queue_free()
-			if is_instance_valid(m_node):
-				m_node.queue_free()
+		for i in range(3):
+			if i != index:
+				var b_node: Node = box_gift.get_node_or_null("Panel/V/H/Box" + str(i + 1))
+				var m_node: Node = box_gift.get_node_or_null("Panel/V/HBox/Modifer" + str(i + 1))
+				if is_instance_valid(b_node):
+					b_node.queue_free()
+				if is_instance_valid(m_node):
+					m_node.queue_free()
 
-	var play_btn := box_gift.get_node("Panel/V/Play") as Button
-	play_btn.visible = true
-	if not play_btn.pressed.is_connected(continue_game):
-		play_btn.pressed.connect(continue_game)
+	var play_btn := box_gift.find_child("Play", true, false) as Button
+	if is_instance_valid(play_btn):
+		play_btn.visible = true
+		if not play_btn.pressed.is_connected(continue_game):
+			play_btn.pressed.connect(continue_game)
 
 func continue_game() -> void:
+	if is_instance_valid(_active_gift_ui):
+		_active_gift_ui.queue_free()
+		_active_gift_ui = null
 	if is_instance_valid(main_scene) and main_scene.has_node("UI/Buf"):
 		main_scene.get_node("UI/Buf").queue_free()
 	have_open_present = false

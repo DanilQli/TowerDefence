@@ -116,8 +116,7 @@ func on_stone(number_block: int, duration: int):
 					continue
 				if turret is MoneyTower or turret is LinkTower:
 					continue
-				var rect = turret.get_node_or_null("NinePatchRect")
-				if rect and not rect.visible:
+				if not turret.block_damage:
 					available_turrets.append(turret)
 
 	# Если нет доступных башен без эффекта, выходим

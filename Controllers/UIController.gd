@@ -157,8 +157,16 @@ func _on_money_changed():
 			var index = i + 1
 			var tower_idx = list_activity_turret[i] + 1
 
-			var cost = GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session
-			if GameSession.get_battle_mastery_lvl(DataManager.keys[tower_idx - 1]) >= 3:
+			var base_cost: float = float(GameConstants.DATA_TOWER[tower_idx - 1].cost_in_session)
+			var cost: float = base_cost
+			if tower_idx == 6:
+				var map_ref: Node = main_scene.get("map_node") if ("map_node" in main_scene) else main_scene.get_node_or_null("Map")
+				cost = MoneyTower.get_bank_build_cost_for_session(base_cost, map_ref, false)
+			elif tower_idx == 12:
+				cost = LinkTower.get_link_build_cost_for_session(base_cost)
+			elif tower_idx == 15:
+				cost = MimicTower.get_mimic_build_cost_for_session(base_cost)
+			elif GameSession.get_battle_mastery_lvl(DataManager.keys[tower_idx - 1]) >= 3:
 				cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 			var affordable: bool = GameSession.current_money_in_game_session >= cost

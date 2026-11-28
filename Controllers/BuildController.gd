@@ -28,8 +28,15 @@ func initiate_build_mode(tower_type: String, tower_index: int) -> bool:
 		cancel_build_mode()
 
 	var build_name = tower_type + "T1"
-	var cost = GameConstants.DATA_TOWER[int(tower_type.split("_")[1]) - 1].cost_in_session
-	if GameSession.get_battle_mastery_lvl(DataManager.keys[tower_index - 1]) >= 3:
+	var base_cost: float = float(GameConstants.DATA_TOWER[int(tower_type.split("_")[1]) - 1].cost_in_session)
+	var cost: float = base_cost
+	if tower_type == "Turret_6":
+		cost = MoneyTower.get_bank_build_cost_for_session(base_cost, main_scene.map_node, false)
+	elif tower_type == "Turret_12":
+		cost = LinkTower.get_link_build_cost_for_session(base_cost)
+	elif tower_type == "Turret_15":
+		cost = MimicTower.get_mimic_build_cost_for_session(base_cost)
+	elif GameSession.get_battle_mastery_lvl(DataManager.keys[tower_index - 1]) >= 3:
 		cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 
 	if GameSession.current_money_in_game_session < cost:
@@ -74,11 +81,21 @@ func set_tower_preview(tower_type: String, mouse_position: Vector2) -> bool:
 
 	var range_texture = Sprite2D.new()
 	var tower_idx: int = int(tower_type.substr(0, tower_type.length() - 2).split("_")[1]) - 1
-	var scaling: float
-	if GameConstants.DATA_TOWER[tower_idx].type_attack != 4:
-		scaling = GameConstants.DATA_TOWER[tower_idx]["parametr_" + str(GameConstants.DATA_TOWER[tower_idx].parametr_range)][0] / 600.0
-	else:
-		scaling = 0.1
+	var spec: Dictionary = GameConstants.DATA_TOWER[tower_idx]
+	var scaling: float = 0.1
+	if spec.type_attack != 4:
+		var raw_r: Variant = spec.get("parametr_" + str(spec.parametr_range), [])
+		var range_px: float = 0.0
+		var bdata: Dictionary = GameSession.get_battle_tower_data(tower_type)
+		if raw_r is Dictionary:
+			var card_lvl: int = clampi(int(bdata.get("level", 0)), 0, 9)
+			var row: Variant = (raw_r as Dictionary).get(card_lvl, (raw_r as Dictionary).get(0, []))
+			range_px = float(row[0]) if row is Array and not (row as Array).is_empty() else float(row)
+		elif raw_r is Array and not (raw_r as Array).is_empty():
+			range_px = float((raw_r as Array)[0])
+		range_px *= GameSession.get_gift_stat_multiplier(tower_type, "range")
+		range_px *= TowerBase.get_preview_ability_range_multiplier(tower_type, bdata)
+		scaling = range_px / 600.0
 
 	range_texture.scale = Vector2(scaling, scaling)
 	range_texture.set_meta("base_scale", scaling)
@@ -110,8 +127,15 @@ func cancel_build_mode():
 func verify_and_build():
 	if build_valid:
 		var tower_index = int(build_type.left(build_type.length() - 2).split("_")[1]) - 1
-		var required_cost = GameConstants.DATA_TOWER[tower_index].cost_in_session
-		if GameSession.get_battle_mastery_lvl(DataManager.keys[tower_index]) >= 3:
+		var base_cost: float = float(GameConstants.DATA_TOWER[tower_index].cost_in_session)
+		var required_cost: float = base_cost
+		if build_type == "Turret_6T1":
+			required_cost = MoneyTower.get_bank_build_cost_for_session(base_cost, main_scene.map_node, false)
+		elif build_type == "Turret_12T1":
+			required_cost = LinkTower.get_link_build_cost_for_session(base_cost)
+		elif build_type == "Turret_15T1":
+			required_cost = MimicTower.get_mimic_build_cost_for_session(base_cost)
+		elif GameSession.get_battle_mastery_lvl(DataManager.keys[tower_index]) >= 3:
 			required_cost = MathUtils.round_to_dec(required_cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
 		if GameSession.current_money_in_game_session < required_cost:
 			AudioManager.play_combat_sfx("tower_invalid", main_scene)
@@ -125,8 +149,15 @@ func verify_and_build():
 		turret.position = build_location
 		turret.name = build_type + "_1"
 		turret.built = true
+		turret.set_meta("build_cost_paid", required_cost)
+		if build_type == "Turret_6T1" and MoneyTower.is_seed_capital_selected_in_data(GameSession.get_battle_tower_data("Turret_6T1")):
+			MoneyTower.mark_seed_capital_used(main_scene.map_node, false)
 		turret_layer.add_child(turret)
 		AudioManager.play_combat_sfx("tower_place", main_scene)
+		if turret.turret_id == "Turret_19T1":
+			AudioManager.play_combat_sfx("turret_resonator_charge", turret, 0.72, -3.0)
+		elif turret.turret_id == "Turret_20T1":
+			AudioManager.play_combat_sfx("turret_echoarchive_build", turret, 0.90, -1.5)
 		TasksManager.record_build(tower_index)
 		turret.get_node("Menu").setup(turret.id)
 		RuneSystem.hide_rune_tooltip(main_scene.get_tree().current_scene)
@@ -140,10 +171,7 @@ func verify_and_build():
 		turret.tree_exited.connect(turret._on_turret_tree_exited.bind(main_scene.map_node.get_node("TowerExlusion"), build_tile))
 		turret.ui_system.update_menu()
 		turret.ui_system.update_menu_upgrade()
-		var cost = GameConstants.DATA_TOWER[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1].cost_in_session
-		if GameSession.get_battle_mastery_lvl(DataManager.keys[int(build_type.left(build_type.length() - 2).split("_")[1]) - 1]) >= 3:
-			cost = MathUtils.round_to_dec(cost * (1 - GameConstants.CARDS_MASTERY_MODIFICATOR_LVL[2][0]), 1)
-		GameSession.spend_money(cost)
+		GameSession.spend_money(required_cost)
 		main_scene.ui_controller._on_money_changed()
 	else:
 		AudioManager.play_combat_sfx("tower_invalid", main_scene)

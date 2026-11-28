@@ -204,6 +204,8 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 			return
 
 	active_spawn_sequences = maxi(0, active_spawn_sequences - 1)
+	if not has_custom_progress:
+		_evaluate_wave_end_bank_interest()
 	if not has_custom_progress and _is_primary_player_controller():
 		AudioManager.play_combat_sfx("wave_complete", main_scene)
 	if not has_custom_progress and (local_wave < wave_data_all.size() or _is_endless_wave_mode()):
@@ -213,10 +215,26 @@ func spawn_enemies(wave: Array, enemy_progress = null):
 		if is_instance_valid(self) and is_inside_tree() and is_instance_valid(main_scene):
 			start_next_wave()
 
+func _evaluate_wave_end_bank_interest():
+	if not is_instance_valid(main_scene):
+		return
+	var map_node: Node = main_scene.get("map_node") if ("map_node" in main_scene) else main_scene.get_node_or_null("Map")
+	if not is_instance_valid(map_node):
+		return
+	if main_scene.has_method("get_meta") and AudioManager.to_bool(main_scene.get_meta("is_ai_player", false)):
+		var ai_gold: float = float(main_scene.get_meta("ai_money", 0.0))
+		MoneyTower.evaluate_wave_end_compound_interest(map_node, ai_gold, true)
+		return
+	if "is_player" in main_scene and not bool(main_scene.is_player):
+		return
+	MoneyTower.evaluate_wave_end_compound_interest(map_node, GameSession.current_money_in_game_session, false)
+
 func set_wave_data(waves: Array):
 	wave_data_all = waves
 
 func start_next_wave():
+	if local_wave >= 1:
+		_evaluate_wave_end_bank_interest()
 	current_wave_index = local_wave
 	wave_data = retrieve_wave_data()
 	if wave_data.size() > 0:

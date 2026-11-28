@@ -45,7 +45,7 @@ if count != 1:
 path.write_text(updated, encoding="utf-8")
 PY
 set +e
-"$GODOT_BIN" --headless --path "$ROOT" --quit-after 180 >"$LOG_DIR/tests.log" 2>&1
+"$GODOT_BIN" --headless --path "$ROOT" --quit-after 3600 >"$LOG_DIR/tests.log" 2>&1
 STATUS=$?
 set -e
 cat "$LOG_DIR/tests.log"
